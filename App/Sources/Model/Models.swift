@@ -143,4 +143,9 @@ final class ConnectionRecord {
     }
 
     var summary: String { kind == "stdio" ? "$ " + command : url }
+
+    @MainActor var brand: Brand? {
+        if kind == "stdio" { return nil }
+        return url.contains("github") ? .github : .mcp
+    }
 }

@@ -88,39 +88,42 @@ struct ThreadListView: View {
     var body: some View {
         List {
             Section {
-                ForEach(Engine.allCases) { engine in
-                    Button {
-                        pickingFolderFor = engine
-                    } label: {
-                        Label {
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("New Task")
-                                Text(engine.title).font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: { Image(systemName: engine.symbol) }
+                HStack(spacing: 10) {
+                    ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
+                        Button { pickingFolderFor = engine } label: { EngineTile(engine: engine) }
+                            .buttonStyle(.plain)
                     }
                 }
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
             } header: {
-                Text("Start")
+                Text("New task")
             } footer: {
-                Text("Codex and Claude Code run on the server with your own subscription.")
+                Text("Claude Code and Codex run on your server with your own subscription. “Your key” uses the model you set up in Settings.")
             }
             if !threads.isEmpty {
                 Section("Recent") {
                     ForEach(threads) { thread in
                         Button { openThread = thread } label: {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(thread.title).foregroundStyle(.primary).lineLimit(1)
-                                HStack(spacing: 4) {
-                                    Text(thread.engine.title)
-                                    Text("·")
-                                    Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
-                                    Text("·")
-                                    Text(thread.updatedAt, style: .relative)
+                            HStack(spacing: 12) {
+                                BrandIcon(brand: thread.engine.brand, size: 30)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(thread.title).font(.body).foregroundStyle(.primary).lineLimit(1)
+                                    HStack(spacing: 4) {
+                                        Text(thread.engine.shortTitle)
+                                        Text("·")
+                                        Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
+                                        Text("·")
+                                        Text(thread.updatedAt, style: .relative)
+                                    }
+                                    .font(.caption).foregroundStyle(.secondary)
                                 }
-                                .font(.caption).foregroundStyle(.secondary)
+                                Spacer(minLength: 0)
+                                Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
                             }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                     }
                     .onDelete { offsets in
                         for i in offsets { context.delete(threads[i]) }
@@ -151,5 +154,35 @@ struct ThreadListView: View {
             openThread = thread
         }
         #endif
+    }
+}
+
+/// One engine as a tappable tile: logo, name, what it uses.
+struct EngineTile: View {
+    let engine: Engine
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            BrandIcon(brand: engine.brand, size: 36)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(engine.shortTitle).font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+                Text(subtitle).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
+        .contentShape(RoundedRectangle(cornerRadius: Theme.corner))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("New task with \(engine.title)")
+    }
+
+    private var subtitle: String {
+        switch engine {
+        case .ownKey: AppSettings.shared.providerKind.displayName.components(separatedBy: " (").first ?? ""
+        case .codex: "ChatGPT plan"
+        case .claudeCode: "Claude plan"
+        }
     }
 }

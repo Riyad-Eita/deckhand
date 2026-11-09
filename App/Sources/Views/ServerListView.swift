@@ -14,17 +14,11 @@ struct ServerListView: View {
 
     var body: some View {
         List {
-            if !settings.isConfigured {
+            if !settings.isConfigured && !servers.isEmpty {
                 Section {
-                    Button { showingSettings = true } label: {
-                        Label {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Connect a model").font(.headline)
-                                Text("Add your Claude, OpenAI or OpenRouter key — or use Claude Code and Codex on your server.")
-                                    .font(.subheadline).foregroundStyle(.secondary)
-                            }
-                        } icon: { Image(systemName: "key.horizontal") }
-                    }
+                    WorksWithCard { showingSettings = true }
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                 }
             }
             Section(servers.isEmpty ? "" : "Servers") {
@@ -41,13 +35,25 @@ struct ServerListView: View {
         }
         .overlay {
             if servers.isEmpty {
-                ContentUnavailableView {
-                    Label("No servers yet", systemImage: "server.rack")
-                } description: {
-                    Text("Add a Linux server you can reach over SSH. Deckhand can create a key for it.")
-                } actions: {
-                    Button("Add Server") { addingServer = true }.buttonStyle(.borderedProminent)
+                VStack(spacing: 22) {
+                    Image(systemName: "server.rack")
+                        .font(.system(size: 40, weight: .light))
+                        .foregroundStyle(Theme.accent)
+                        .frame(width: 84, height: 84)
+                        .background(Theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                    VStack(spacing: 8) {
+                        Text("Add your first server").font(.title2.weight(.semibold))
+                        Text("Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this iPhone.")
+                            .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    }
+                    Button { addingServer = true } label: {
+                        Text("Add Server").font(.headline).frame(maxWidth: 260).padding(.vertical, 6)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    WorksWithStrip().padding(.top, 8)
                 }
+                .padding(32)
             }
         }
         .navigationTitle("Deckhand")
@@ -98,16 +104,68 @@ struct ServerRow: View {
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: "server.rack")
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .frame(width: 32)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(server.displayName).font(.headline)
-                Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(.white)
+                .frame(width: 34, height: 34)
+                .background(
+                    LinearGradient(colors: [Color(white: 0.28), Color(white: 0.14)], startPoint: .top, endPoint: .bottom),
+                    in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+            VStack(alignment: .leading, spacing: 3) {
+                Text(server.displayName).font(.body.weight(.semibold))
+                Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
             }
-            Spacer()
-            StatusDot(state: state)
+            Spacer(minLength: 8)
+            HStack(spacing: 6) {
+                StatusDot(state: state)
+                Text(statusText).font(.caption).foregroundStyle(.secondary)
+            }
         }
         .padding(.vertical, 4)
+    }
+
+    private var statusText: String {
+        switch state {
+        case .connected: "Online"
+        case .connecting: "Connecting"
+        case .failed: "Offline"
+        case .idle: ""
+        }
+    }
+}
+
+/// Logos of everything Deckhand works with.
+struct WorksWithStrip: View {
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("WORKS WITH").font(.caption2.weight(.semibold)).tracking(1.2).foregroundStyle(.tertiary)
+            HStack(spacing: 10) {
+                ForEach([Brand.claude, .codex, .openai, .openrouter, .github, .mcp], id: \.self) { BrandIcon(brand: $0, size: 34) }
+            }
+        }
+    }
+}
+
+/// Shown until a model or engine is set up.
+struct WorksWithCard: View {
+    let action: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: -6) {
+                ForEach([Brand.claude, .codex, .openai, .openrouter], id: \.self) { BrandIcon(brand: $0, size: 32) }
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Bring an agent").font(.headline)
+                Text("Use your Claude or ChatGPT plan through Claude Code and Codex on your server — or add an API key.")
+                    .font(.subheadline).foregroundStyle(.secondary)
+            }
+            Button(action: action) {
+                Text("Set Up").font(.subheadline.weight(.semibold)).frame(maxWidth: .infinity).padding(.vertical, 2)
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding(16)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous).stroke(Theme.hairline))
     }
 }

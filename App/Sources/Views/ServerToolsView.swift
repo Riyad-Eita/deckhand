@@ -63,7 +63,8 @@ struct ServerToolsView: View {
 
     @ViewBuilder private func cliRow(_ cli: ServerCLI, state: ServerInventory.CLIState) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
+            HStack(spacing: 12) {
+                BrandIcon(brand: cli.brand, size: 36)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(cli.displayName).font(.headline)
                     Text(statusText(state)).font(.subheadline).foregroundStyle(statusColor(state))

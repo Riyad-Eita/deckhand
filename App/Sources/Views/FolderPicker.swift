@@ -60,7 +60,7 @@ struct FolderPicker: View {
                         if listing?.isGitRepo == true {
                             Text("git").font(.caption2.weight(.semibold))
                                 .padding(.horizontal, 5).padding(.vertical, 1)
-                                .background(Theme.signal.opacity(0.2), in: Capsule())
+                                .background(Theme.accent.opacity(0.2), in: Capsule())
                         }
                     }
                 }

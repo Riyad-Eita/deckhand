@@ -10,8 +10,24 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Provider", selection: $settings.providerKind) {
-                        ForEach(ProviderKind.allCases) { Text($0.displayName).tag($0) }
+                    Picker(selection: $settings.providerKind) {
+                        ForEach(ProviderKind.allCases) { kind in
+                            Label {
+                                Text(kind.displayName)
+                            } icon: {
+                                if let brand = Brand.forProvider(kind) {
+                                    Image(brand.asset).renderingMode(.template)
+                                } else {
+                                    Image(systemName: "server.rack")
+                                }
+                            }
+                            .tag(kind)
+                        }
+                    } label: {
+                        HStack(spacing: 10) {
+                            BrandIcon(brand: Brand.forProvider(settings.providerKind), fallback: "server.rack", size: 26)
+                            Text("Provider")
+                        }
                     }
                     SecureField(settings.providerKind == .custom ? "API key (optional)" : "API key", text: $settings.apiKey)
                         .textInputAutocapitalization(.never)
@@ -72,7 +88,10 @@ struct SettingsView: View {
                     NavigationLink {
                         ConnectionsView()
                     } label: {
-                        Label("Connections", systemImage: "point.3.connected.trianglepath.dotted")
+                        HStack(spacing: 10) {
+                            BrandIcon(brand: .mcp, size: 26)
+                            Text("Connections")
+                        }
                     }
                 } footer: {
                     Text("MCP servers like GitHub, documentation or your own tools — for every agent.")

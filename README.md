@@ -17,11 +17,12 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/agent.jpg" width="19%" alt="Agents on your server">
-  <img src="docs/images/terminal.jpg" width="19%" alt="A real terminal">
-  <img src="docs/images/servers.jpg" width="19%" alt="Every server one tap away">
-  <img src="docs/images/subscription.jpg" width="19%" alt="Your subscription on your server">
-  <img src="docs/images/connections.jpg" width="19%" alt="Connect everything with MCP">
+  <img src="docs/images/agent.jpg" width="16%" alt="Agents on your server">
+  <img src="docs/images/engines.jpg" width="16%" alt="Claude Code, Codex or your key">
+  <img src="docs/images/terminal.jpg" width="16%" alt="A real terminal">
+  <img src="docs/images/subscription.jpg" width="16%" alt="Your subscription on your server">
+  <img src="docs/images/connections.jpg" width="16%" alt="Connect everything with MCP">
+  <img src="docs/images/servers.jpg" width="16%" alt="Every server one tap away">
 </p>
 
 > **Beta.** Deckhand is brand new and moving fast. Many more features land with every release —

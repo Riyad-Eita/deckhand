@@ -17,7 +17,8 @@ struct ConnectionsView: View {
                 Section {
                     ForEach(connections) { c in
                         Button { editing = c } label: {
-                            HStack {
+                            HStack(spacing: 12) {
+                                BrandIcon(brand: c.brand, fallback: "terminal", size: 32)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(c.name).foregroundStyle(.primary)
                                     Text(c.summary).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
@@ -25,7 +26,9 @@ struct ConnectionsView: View {
                                 Spacer()
                                 Toggle("", isOn: Binding(get: { c.enabled }, set: { c.enabled = $0 })).labelsHidden()
                             }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                     }
                     .onDelete { offsets in
                         for i in offsets {
@@ -40,13 +43,11 @@ struct ConnectionsView: View {
             Section("Add") {
                 ForEach(ConnectionPreset.all) { preset in
                     Button { adding = preset } label: {
-                        Label {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(preset.name).foregroundStyle(.primary)
-                                Text(preset.blurb).font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: { Image(systemName: preset.symbol) }
+                        RowLabel(title: preset.name, subtitle: preset.blurb) {
+                            BrandIcon(brand: preset.brand, fallback: preset.symbol, size: 32)
+                        }
                     }
+                    .buttonStyle(.plain)
                 }
             }
         }
@@ -66,6 +67,14 @@ struct ConnectionPreset: Identifiable, Hashable {
     let command: String
     let needsToken: Bool
     let tokenHint: String
+
+    var brand: Brand? {
+        switch id {
+        case "github": .github
+        case "deepwiki", "context7", "url": .mcp
+        default: nil
+        }
+    }
 
     static let all: [ConnectionPreset] = [
         ConnectionPreset(
