@@ -58,6 +58,7 @@ struct ServerToolsView: View {
             }
             .task { await refresh() }
         }
+        .hostKeyPrompt(inSheet: true)
     }
 
     @ViewBuilder private func cliRow(_ cli: ServerCLI, state: ServerInventory.CLIState) -> some View {

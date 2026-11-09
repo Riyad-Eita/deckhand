@@ -51,6 +51,13 @@ struct ServerListView: View {
             }
         }
         .navigationTitle("Deckhand")
+        .safeAreaInset(edge: .bottom) {
+            if !servers.isEmpty {
+                Text("Beta — new features arrive with every update.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                    .padding(.bottom, 8)
+            }
+        }
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
         #if DEBUG

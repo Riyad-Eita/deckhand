@@ -98,7 +98,12 @@ struct SSHTerminalView: UIViewRepresentable {
         view.nativeBackgroundColor = .black
         view.nativeForegroundColor = UIColor(white: 0.92, alpha: 1)
         context.coordinator.start(view)
-        DispatchQueue.main.async { _ = view.becomeFirstResponder() }
+        #if DEBUG
+        let focus = ProcessInfo.processInfo.environment["DECKHAND_SEED_NOKEYBOARD"] == nil
+        #else
+        let focus = true
+        #endif
+        if focus { DispatchQueue.main.async { _ = view.becomeFirstResponder() } }
         return view
     }
 

@@ -28,6 +28,8 @@ final class Connections {
     private(set) var states: [UUID: State] = [:]
     /// Shown as an alert by the root view.
     var hostKeyPrompt: HostKeyPrompt?
+    /// True while a sheet that can trigger connections is on screen; the sheet then shows the host key alert.
+    var sheetOpen = false
 
     func state(for server: Server) -> State { states[server.id] ?? .idle }
 
