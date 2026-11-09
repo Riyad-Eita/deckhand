@@ -224,6 +224,21 @@ struct CodexEventDecoder: CLIEventDecoder {
             var rest = String(command.dropFirst(prefix.count))
             if rest.hasPrefix("'"), rest.hasSuffix("'"), rest.count >= 2 {
                 rest = String(rest.dropFirst().dropLast()).replacingOccurrences(of: "'\\''", with: "'")
+            } else if rest.hasPrefix("\""), rest.hasSuffix("\""), rest.count >= 2 {
+                var out = ""
+                var escaped = false
+                for ch in rest.dropFirst().dropLast() {
+                    if escaped {
+                        if !"\"\\$`".contains(ch) { out.append("\\") }
+                        out.append(ch)
+                        escaped = false
+                    } else if ch == "\\" {
+                        escaped = true
+                    } else {
+                        out.append(ch)
+                    }
+                }
+                rest = out
             }
             return rest
         }

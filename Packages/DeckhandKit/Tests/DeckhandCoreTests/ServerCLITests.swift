@@ -50,6 +50,12 @@ import Testing
         #expect(d.failure?.message.contains("not logged in") == true)
     }
 
+    @Test func unwrapsShellWrappers() {
+        #expect(CodexEventDecoder.unwrap("/bin/bash -lc 'uname -r'") == "uname -r")
+        #expect(CodexEventDecoder.unwrap(#"/bin/bash -lc "lscpu | rg '^CPU\\(s\\):' && echo \"x\"""#) == #"lscpu | rg '^CPU\(s\):' && echo "x""#)
+        #expect(CodexEventDecoder.unwrap("ls -la") == "ls -la")
+    }
+
     @Test func commandsQuoteAndResume() {
         let c = ServerCLIRun.command(.codex, prompt: "fix it's bug", workingDirectory: "~/app", sessionID: "abc", access: .edit)
         #expect(c == "cd ~/'app' && codex exec --json --skip-git-repo-check -s workspace-write resume 'abc' 'fix it'\\''s bug' < /dev/null")

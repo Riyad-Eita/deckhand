@@ -13,7 +13,7 @@ struct AgentChatView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 14) {
                     if model.messages.isEmpty && !model.isRunning {
                         EmptyChatHint(server: model.server) { draft = $0; composerFocused = true }
                     }
@@ -138,7 +138,7 @@ private struct MessageView: View {
                 ForEach(Array(message.blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .text(let t) where !t.isEmpty:
-                        MarkdownText(t)
+                        MarkdownView(t)
                     case .thinking(let t, _) where !t.isEmpty:
                         ThinkingView(text: t)
                     case .toolUse(let call):
@@ -159,6 +159,12 @@ private struct MessageView: View {
 
 private struct LiveTurnView: View {
     let model: ChatModel
+
+    private func workingLabel(since start: Date, now: Date) -> String {
+        let s = max(0, Int(now.timeIntervalSince(start)))
+        let who = model.thread.engine.serverCLI.map { "\($0.displayName) is working" } ?? "Working"
+        return s < 60 ? "\(who)… \(s) s" : "\(who)… \(s / 60) min \(s % 60) s"
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if !model.liveThinking.isEmpty { ThinkingView(text: model.liveThinking, live: true) }
@@ -170,7 +176,14 @@ private struct LiveTurnView: View {
                     status: .streaming)
             }
             if model.liveText.isEmpty && model.liveTools.isEmpty && model.pendingApproval == nil {
-                ProgressView().padding(.vertical, 4)
+                TimelineView(.periodic(from: model.runStartedAt, by: 1)) { context in
+                    HStack(spacing: 8) {
+                        ProgressView().controlSize(.small)
+                        Text(workingLabel(since: model.runStartedAt, now: context.date))
+                            .font(.footnote).foregroundStyle(.secondary).monospacedDigit()
+                    }
+                }
+                .padding(.vertical, 4)
             }
         }
     }

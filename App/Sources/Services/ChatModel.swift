@@ -26,6 +26,7 @@ final class ChatModel {
     private(set) var liveTools: [(id: String, name: String, input: String)] = []
     private(set) var toolStatus: [String: ToolStatus] = [:]
     private(set) var isRunning = false
+    private(set) var runStartedAt = Date()
     private(set) var error: String?
     private(set) var usage = Usage()
     var pendingApproval: PendingApproval?
@@ -59,6 +60,7 @@ final class ChatModel {
         if history.isEmpty { thread.title = String(trimmed.prefix(60)) }
         persist()
         isRunning = true
+        runStartedAt = Date()
         let config = settings.providerConfig
         let policy = settings.approvalPolicy
         let access = settings.cliAccess
