@@ -111,3 +111,32 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    @Test func stdioMCPServerOverSSH() async throws {
+        let conn = try await connection()
+        let script = try String(contentsOfFile: #filePath.replacingOccurrences(of: "DeckhandSSHTests/SSHTests.swift", with: "DeckhandCoreTests/Fixtures/fake_mcp_server.py"), encoding: .utf8)
+        let remote = "/tmp/deckhand-fake-mcp-\(UUID().uuidString.prefix(6)).py"
+        try await ServerTools.writeFile(remote, content: script, shell: conn)
+        let client = MCPClient(name: "fake", transport: StdioMCPTransport(channel: try await conn.openChannel("python3 -u \(remote)")))
+        let tools = try await client.tools()
+        #expect(tools.count == 2)
+        let r = try await client.call("echo", arguments: ["text": "over ssh"])
+        #expect(r.text == "echo: over ssh")
+        await client.close()
+        _ = try await conn.run("rm -f \(remote)", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
+
+/// Public HTTP MCP server, opt-in: DECKHAND_TEST_HTTP_MCP=1
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_TEST_HTTP_MCP"] != nil))
+struct LiveHTTPMCPTests {
+    @Test func deepWiki() async throws {
+        let client = MCPClient(name: "deepwiki", transport: HTTPMCPTransport(url: URL(string: "https://mcp.deepwiki.com/mcp")!))
+        let tools = try await client.tools()
+        #expect(!tools.isEmpty)
+        print("deepwiki tools:", tools.map(\.name))
+        await client.close()
+    }
+}

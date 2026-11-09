@@ -52,19 +52,19 @@ public enum ServerTools {
     }
 
     /// `~/x` must stay unquoted for the shell to expand it.
-    static func shellPath(_ path: String) -> String {
+    public static func shellPath(_ path: String) -> String {
         if path == "~" { return "~" }
         if path.hasPrefix("~/") { return "~/" + ShellQuote.quote(String(path.dropFirst(2))) }
         return ShellQuote.quote(path)
     }
 
-    static func readFile(_ path: String, shell: any RemoteShell) async throws -> String {
+    public static func readFile(_ path: String, shell: any RemoteShell) async throws -> String {
         let r = try await shell.run("cat -- \(shellPath(path))", timeout: .seconds(30))
         guard r.exitCode == 0 else { throw ToolError.failed(r.stderr.isEmpty ? "cannot read \(path)" : r.stderr) }
         return r.stdout
     }
 
-    static func writeFile(_ path: String, content: String, shell: any RemoteShell) async throws {
+    public static func writeFile(_ path: String, content: String, shell: any RemoteShell) async throws {
         let b64 = Data(content.utf8).base64EncodedString()
         let p = shellPath(path)
         let cmd = "mkdir -p \"$(dirname -- \(p))\" && printf %s \(ShellQuote.quote(b64)) | base64 -d > \(p)"

@@ -227,6 +227,11 @@ public actor SSHConnection: StreamingShell {
         }
     }
 
+    /// Starts `command` (login shell) and exchanges lines with its stdin/stdout, e.g. a stdio MCP server.
+    public func openChannel(_ command: String) throws -> any LineChannel {
+        SSHLineChannel(client: try connectedClient(), command: "bash -lc \(ShellQuote.quote(command))")
+    }
+
     /// Opens an interactive PTY shell (optionally running `command`, e.g. `tmux new -A -s main`).
     public func openTerminal(cols: Int, rows: Int, term: String = "xterm-256color") throws -> TerminalSession {
         TerminalSession(client: try connectedClient(), cols: cols, rows: rows, term: term)
@@ -291,6 +296,58 @@ public final class TerminalSession: @unchecked Sendable {
     }
 
     public func close() {
+        task?.cancel()
+        continuation.finish()
+    }
+}
+
+/// A remote process's stdin/stdout as lines.
+final class SSHLineChannel: LineChannel, @unchecked Sendable {
+    let lines: AsyncThrowingStream<String, Error>
+    private let continuation: AsyncThrowingStream<String, Error>.Continuation
+    private let lock = NSLock()
+    private var writer: TTYStdinWriter?
+    private var queued: [String] = []
+    private var task: Task<Void, Never>?
+
+    init(client: SSHClient, command: String) {
+        (lines, continuation) = AsyncThrowingStream.makeStream(of: String.self)
+        let buffer = LineBuffer()
+        task = Task { [weak self] in
+            do {
+                try await client.withExec(command) { inbound, outbound in
+                    self?.attach(outbound)
+                    for try await chunk in inbound {
+                        if case .stdout(let b) = chunk {
+                            for line in buffer.append(Data(buffer: b)) { self?.continuation.yield(line) }
+                        }
+                    }
+                }
+                self?.continuation.finish()
+            } catch {
+                self?.continuation.finish(throwing: error)
+            }
+        }
+    }
+
+    private func attach(_ writer: TTYStdinWriter) {
+        let pending: [String] = lock.withLock {
+            self.writer = writer
+            defer { queued = [] }
+            return queued
+        }
+        for line in pending { Task { try? await writer.write(ByteBuffer(string: line + "\n")) } }
+    }
+
+    func send(_ line: String) async throws {
+        let writer: TTYStdinWriter? = lock.withLock {
+            if self.writer == nil { queued.append(line) }
+            return self.writer
+        }
+        try await writer?.write(ByteBuffer(string: line + "\n"))
+    }
+
+    func close() {
         task?.cancel()
         continuation.finish()
     }
