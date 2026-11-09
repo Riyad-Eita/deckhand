@@ -17,6 +17,12 @@ enum DebugSeed {
     static func apply(_ context: ModelContext) {
         let env = ProcessInfo.processInfo.environment
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
+        // DECKHAND_SEED_CONNECTION="Name|https://url" adds an HTTP MCP connection once.
+        if let raw = env["DECKHAND_SEED_CONNECTION"], let bar = raw.firstIndex(of: "|") {
+            let name = String(raw[..<bar]), url = String(raw[raw.index(after: bar)...])
+            let have = (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
+            if !have.contains(where: { $0.url == url }) { context.insert(ConnectionRecord(name: name, kind: "http", url: url)) }
+        }
         guard let host = env["DECKHAND_SEED_HOST"], let user = env["DECKHAND_SEED_USER"],
               let key = env["DECKHAND_SEED_KEY"] else { return }
         let existing = (try? context.fetch(FetchDescriptor<Server>())) ?? []

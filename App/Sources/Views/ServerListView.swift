@@ -10,6 +10,7 @@ struct ServerListView: View {
     @State private var addingServer = false
     @State private var showingSettings = false
     @State private var autoOpen: Server?
+    @State private var showingConnections = false
 
     var body: some View {
         List {
@@ -56,7 +57,9 @@ struct ServerListView: View {
         .task {
             try? await Task.sleep(for: .milliseconds(500))
             if DebugSeed.pendingRun != nil { autoOpen = servers.first }
+            if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
         }
+        .sheet(isPresented: $showingConnections) { NavigationStack { ConnectionsView() } }
         #endif
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

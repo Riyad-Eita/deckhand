@@ -68,6 +68,16 @@ struct SettingsView: View {
                     Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command.")
                 }
 
+                Section {
+                    NavigationLink {
+                        ConnectionsView()
+                    } label: {
+                        Label("Connections", systemImage: "point.3.connected.trianglepath.dotted")
+                    }
+                } footer: {
+                    Text("MCP servers like GitHub, documentation or your own tools — for every agent.")
+                }
+
                 VoiceSettingsSection()
 
                 Section {

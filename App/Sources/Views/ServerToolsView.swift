@@ -1,4 +1,5 @@
 import DeckhandCore
+import SwiftData
 import SwiftUI
 
 /// What's on the server: Codex / Claude Code versions and logins, with install, update and login actions.
@@ -27,6 +28,7 @@ struct ServerToolsView: View {
                     } footer: {
                         Text("They run on the server with your own ChatGPT or Claude subscription. Updates install into your home folder, no root needed.")
                     }
+                    ConnectionSyncSection(server: server)
                     Section("Server") {
                         LabeledContent("System", value: inventory.os ?? "Unknown")
                         LabeledContent("Node.js", value: inventory.node ?? "Not installed")
@@ -122,6 +124,69 @@ struct ServerToolsView: View {
             await refresh()
         } catch {
             installLog = error.localizedDescription
+        }
+    }
+}
+
+/// Copies the app's MCP connections into the server's Claude Code and Codex.
+private struct ConnectionSyncSection: View {
+    let server: Server
+    @Query(sort: \ConnectionRecord.createdAt) private var connections: [ConnectionRecord]
+    @State private var syncing = false
+    @State private var results: [String: [ServerCLI: Bool]]?
+    @State private var error: String?
+
+    var body: some View {
+        Section {
+            if connections.isEmpty {
+                NavigationLink("Add connections") { ConnectionsView() }
+            } else {
+                Button {
+                    Task { await sync() }
+                } label: {
+                    HStack {
+                        Label("Sync \(connections.filter(\.enabled).count) connections", systemImage: "arrow.triangle.2.circlepath")
+                        Spacer()
+                        if syncing { ProgressView() }
+                    }
+                }
+                .disabled(syncing)
+                if let results {
+                    ForEach(results.keys.sorted(), id: \.self) { name in
+                        HStack {
+                            Text(name).font(Theme.mono)
+                            Spacer()
+                            ForEach(ServerCLI.allCases) { cli in
+                                if let ok = results[name]?[cli] {
+                                    Label(cli.displayName, systemImage: ok ? "checkmark.circle" : "xmark.circle")
+                                        .font(.caption)
+                                        .foregroundStyle(ok ? .green : .red)
+                                }
+                            }
+                        }
+                    }
+                }
+                if let error { Text(error).font(.footnote).foregroundStyle(.red) }
+            }
+        } header: {
+            Text("Connections")
+        } footer: {
+            Text("Makes Codex and Claude Code on this server use the same MCP servers as the app. Tokens are stored in a private file in your home folder.")
+        }
+    }
+
+    private func sync() async {
+        syncing = true
+        error = nil
+        defer { syncing = false }
+        do {
+            let conn = try await Connections.shared.connection(for: server)
+            let enabled = connections.filter(\.enabled).map { ($0.spec, $0.token) }
+            let r = try await conn.run(ConnectionSync.script(enabled), timeout: .seconds(180))
+            results = ConnectionSync.results(r.stdout)
+            if enabled.isEmpty { results = [:] }
+        } catch {
+            self.error = error.localizedDescription
         }
     }
 }

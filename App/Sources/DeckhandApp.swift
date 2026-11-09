@@ -9,7 +9,7 @@ struct DeckhandApp: App {
                 .environment(AppSettings.shared)
                 .environment(Connections.shared)
         }
-        .modelContainer(for: [Server.self, ChatThread.self])
+        .modelContainer(for: [Server.self, ChatThread.self, ConnectionRecord.self])
     }
 }
 

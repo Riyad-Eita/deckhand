@@ -140,3 +140,18 @@ struct LiveHTTPMCPTests {
         await client.close()
     }
 }
+
+extension LiveSSHTests {
+    @Test func connectionSyncOnServer() async throws {
+        let conn = try await connection()
+        let wiki = MCPConnection(name: "deepwiki-test", transport: .http(url: "https://mcp.deepwiki.com/mcp"))
+        let add = try await conn.run(ConnectionSync.script([(wiki, nil)]), timeout: .seconds(180))
+        #expect(ConnectionSync.results(add.stdout)["deepwiki-test"] == [.claudeCode: true, .codex: true])
+        let listed = try await conn.run("claude mcp list 2>&1; codex mcp list 2>&1", timeout: .seconds(120))
+        #expect(listed.stdout.components(separatedBy: "deepwiki-test").count >= 3)
+        _ = try await conn.run(ConnectionSync.script([]), timeout: .seconds(180))
+        let after = try await conn.run("claude mcp list 2>&1; codex mcp list 2>&1", timeout: .seconds(120))
+        #expect(!after.stdout.contains("deepwiki-test"))
+        await conn.disconnect()
+    }
+}

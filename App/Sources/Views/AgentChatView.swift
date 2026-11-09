@@ -22,6 +22,9 @@ struct AgentChatView: View {
                         MessageView(message: message, model: model)
                     }
                     if model.isRunning { LiveTurnView(model: model) }
+                    if let notice = model.notice {
+                        Label(notice, systemImage: "info.circle").font(.footnote).foregroundStyle(.secondary)
+                    }
                     if let error = model.error {
                         Label(error, systemImage: "exclamationmark.triangle")
                             .font(.footnote)

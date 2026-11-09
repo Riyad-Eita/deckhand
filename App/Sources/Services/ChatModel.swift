@@ -2,6 +2,7 @@ import DeckhandCore
 import DeckhandSSH
 import Foundation
 import Observation
+import SwiftData
 
 /// Drives one agent conversation: streams model output, shows tool calls, asks for approvals.
 @MainActor
@@ -28,6 +29,8 @@ final class ChatModel {
     private(set) var isRunning = false
     private(set) var runStartedAt = Date()
     private(set) var error: String?
+    /// Non-fatal information for the current run (e.g. a connection that could not be opened).
+    private(set) var notice: String?
     private(set) var usage = Usage()
     var pendingApproval: PendingApproval?
     private var task: Task<Void, Never>?
@@ -54,6 +57,7 @@ final class ChatModel {
             return
         }
         error = nil
+        notice = nil
         let user = Message.user(trimmed)
         let history = messages
         messages.append(user)
@@ -77,10 +81,16 @@ final class ChatModel {
                     persist()
                     return
                 }
+                let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
+                let mcp = await MCPConnector.open(records.map { ($0.spec, $0.token) }, server: shell)
+                defer { Task { await mcp.close() } }
+                if !mcp.failures.isEmpty {
+                    notice = "Not available this time: " + mcp.failures.map { "\($0.name) (\($0.error))" }.joined(separator: ", ")
+                }
                 let agent = Agent(
                     provider: Providers.make(config),
                     shell: shell,
-                    tools: ServerTools.all(workingDirectory: thread.workingDirectory),
+                    tools: ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
                     policy: policy,
                     system: Agent.systemPrompt(host: server.host, user: server.username, workingDirectory: thread.workingDirectory),
                     approve: { [weak self] call, _ in

@@ -105,3 +105,35 @@ final class ChatThread {
         }
     }
 }
+
+/// An MCP server connected in the app. Tokens live in the Keychain under `secretAccount`.
+@Model
+final class ConnectionRecord {
+    var id: UUID = UUID()
+    var name: String = ""
+    /// "http" or "stdio"
+    var kind: String = "http"
+    var url: String = ""
+    var command: String = ""
+    var enabled: Bool = true
+    var createdAt: Date = Date()
+
+    init(name: String, kind: String, url: String = "", command: String = "") {
+        self.name = name
+        self.kind = kind
+        self.url = url
+        self.command = command
+    }
+
+    var secretAccount: String { "connection.\(id.uuidString)" }
+    var token: String? { Keychain.get(secretAccount) }
+
+    var spec: MCPConnection {
+        MCPConnection(
+            id: id, name: name,
+            transport: kind == "stdio" ? .stdio(command: command) : .http(url: url),
+            enabled: enabled)
+    }
+
+    var summary: String { kind == "stdio" ? "$ " + command : url }
+}
