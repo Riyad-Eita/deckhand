@@ -49,8 +49,20 @@ struct AgentChatView: View {
             }
             .background(.bar)
         }
-        .navigationTitle(model.thread.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 8) {
+                    BrandIcon(brand: model.thread.engine.brand, size: 24)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(model.thread.title).font(.subheadline.weight(.semibold)).lineLimit(1)
+                        Text("\(model.thread.engine.shortTitle) · \(model.thread.workingDirectory)")
+                            .font(.caption2).foregroundStyle(.secondary).lineLimit(1).truncationMode(.head)
+                    }
+                }
+                .frame(maxWidth: 260)
+            }
+        }
         #if DEBUG
         .task {
             // DECKHAND_SEED_VOICE_FILE=<file in the app's tmp dir>: install Whisper if needed and dictate that file.
@@ -86,8 +98,8 @@ struct AgentChatView: View {
                 .focused($composerFocused)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(.background, in: RoundedRectangle(cornerRadius: 18))
-                .overlay(RoundedRectangle(cornerRadius: 18).stroke(.quaternary))
+                .background(Theme.card, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Theme.hairline))
             if voice.isInstalled && !model.isRunning {
                 MicButton(voice: voice) { text in
                     draft = draft.isEmpty ? text : draft + " " + text
@@ -96,7 +108,7 @@ struct AgentChatView: View {
             }
             if model.isRunning {
                 Button { model.stop() } label: {
-                    Image(systemName: "stop.circle.fill").font(.system(size: 32))
+                    Image(systemName: "stop.circle.fill").font(.system(size: 32)).foregroundStyle(.primary)
                 }
                 .accessibilityLabel("Stop")
             } else {
@@ -128,16 +140,21 @@ private struct EmptyChatHint: View {
     ]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
+            BrandIcon(brand: engine.brand, size: 44)
             Text("What should happen on \(server.displayName)?").font(.title3.weight(.semibold))
             Text("Working in \(workingDirectory). " + (engine == .ownKey ? "The agent asks before it changes anything." : "Runs with your \(engine.serverCLI?.displayName ?? "") subscription on the server."))
                 .font(.subheadline).foregroundStyle(.secondary)
             ForEach(ideas, id: \.self) { idea in
                 Button { pick(idea) } label: {
-                    Text(idea).font(.subheadline).multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 10))
+                    HStack {
+                        Text(idea).font(.subheadline).multilineTextAlignment(.leading).foregroundStyle(.primary)
+                        Spacer(minLength: 8)
+                        Image(systemName: "arrow.up.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                    .padding(12)
+                    .background(Theme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Theme.hairline))
                 }
                 .buttonStyle(.plain)
             }
@@ -157,8 +174,9 @@ private struct MessageView: View {
                 HStack {
                     Spacer(minLength: 48)
                     Text(message.text)
-                        .padding(.horizontal, 12).padding(.vertical, 8)
-                        .background(Theme.signal.opacity(0.15), in: RoundedRectangle(cornerRadius: 16))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14).padding(.vertical, 10)
+                        .background(Theme.userBubble, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
                         .textSelection(.enabled)
                 }
             }
@@ -254,7 +272,12 @@ struct ToolCard: View {
         VStack(alignment: .leading, spacing: 6) {
             Button { withAnimation(.snappy) { expanded.toggle() } } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: icon).foregroundStyle(Theme.signal).frame(width: 18)
+                    if name.contains("__") {
+                        Image(Brand.mcp.asset).resizable().renderingMode(.template).scaledToFit()
+                            .frame(width: 15, height: 15).foregroundStyle(.secondary).frame(width: 18)
+                    } else {
+                        Image(systemName: icon).font(.footnote.weight(.medium)).foregroundStyle(.secondary).frame(width: 18)
+                    }
                     Text(summary).font(Theme.mono).lineLimit(expanded ? nil : 1).foregroundStyle(.primary)
                     Spacer(minLength: 4)
                     statusIcon
@@ -271,8 +294,9 @@ struct ToolCard: View {
                 .frame(maxHeight: 280)
             }
         }
-        .padding(10)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal, 12).padding(.vertical, 10)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Theme.hairline))
     }
 
     @ViewBuilder private var statusIcon: some View {
@@ -293,6 +317,7 @@ struct ToolCard: View {
         case "edit_file": "pencil.line"
         case "list_directory": "folder"
         case "search": "magnifyingglass"
+        case "file_change": "doc.badge.ellipsis"
         default: "wrench"
         }
     }
@@ -305,7 +330,8 @@ struct ToolCard: View {
         case "edit_file": "edit " + (input["path"]?.stringValue ?? "…")
         case "list_directory": "ls " + (input["path"]?.stringValue ?? ".")
         case "search": "search " + (input["pattern"]?.stringValue ?? "…")
-        default: name
+        case "file_change": "changed " + ((input["paths"]?.arrayValue ?? []).compactMap(\.stringValue).joined(separator: ", "))
+        default: name.contains("__") ? name.replacingOccurrences(of: "__", with: " · ") : name
         }
     }
 }
@@ -341,7 +367,7 @@ private struct ApprovalBar: View {
                     Text(approval.danger == nil ? "Allow" : "Run Anyway").frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(approval.danger == nil ? Theme.signal : .red)
+                .tint(approval.danger == nil ? Theme.accent : .red)
             }
             .controlSize(.large)
         }
@@ -400,7 +426,7 @@ private struct MicButton: View {
                 } else {
                     Image(systemName: voice.isRecording ? "stop.circle.fill" : "mic.circle.fill")
                         .font(.system(size: 32))
-                        .foregroundStyle(voice.isRecording ? .red : Theme.signal)
+                        .foregroundStyle(voice.isRecording ? .red : Theme.accent)
                         .scaleEffect(voice.isRecording ? 1 + CGFloat(voice.level) * 0.25 : 1)
                         .animation(.easeOut(duration: 0.08), value: voice.level)
                 }
