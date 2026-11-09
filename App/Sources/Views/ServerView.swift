@@ -79,6 +79,7 @@ struct ThreadListView: View {
     let server: Server
     @Environment(\.modelContext) private var context
     @State private var openThread: ChatThread?
+    @State private var pickingFolderFor: Engine?
 
     private var threads: [ChatThread] {
         (server.threads ?? []).sorted { $0.updatedAt > $1.updatedAt }
@@ -89,9 +90,7 @@ struct ThreadListView: View {
             Section {
                 ForEach(Engine.allCases) { engine in
                     Button {
-                        let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: engine)
-                        context.insert(thread)
-                        openThread = thread
+                        pickingFolderFor = engine
                     } label: {
                         Label {
                             VStack(alignment: .leading, spacing: 1) {
@@ -115,6 +114,8 @@ struct ThreadListView: View {
                                 HStack(spacing: 4) {
                                     Text(thread.engine.title)
                                     Text("·")
+                                    Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
+                                    Text("·")
                                     Text(thread.updatedAt, style: .relative)
                                 }
                                 .font(.caption).foregroundStyle(.secondary)
@@ -128,7 +129,19 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        .sheet(item: $pickingFolderFor) { engine in
+            FolderPicker(server: server, engine: engine) { folder in
+                let thread = ChatThread(server: server, workingDirectory: folder, engine: engine)
+                context.insert(thread)
+                openThread = thread
+            }
+        }
         #if DEBUG
+        .task {
+            if let e = ProcessInfo.processInfo.environment["DECKHAND_SEED_PICK"], let engine = Engine(rawValue: e) {
+                pickingFolderFor = engine
+            }
+        }
         .task {
             guard let run = DebugSeed.pendingRun, let engine = Engine(rawValue: run.engine) else { return }
             DebugSeed.pendingRun = nil

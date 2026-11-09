@@ -19,6 +19,8 @@ final class Server {
     /// OpenSSH host key line, pinned after the first trusted connect.
     var pinnedHostKey: String?
     var workingDirectory: String = "~"
+    /// Folders recently chosen for tasks, newest first.
+    var recentDirectories: [String] = []
     var createdAt: Date = Date()
     var lastConnectedAt: Date?
 

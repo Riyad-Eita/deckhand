@@ -16,7 +16,7 @@ struct AgentChatView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     if model.messages.isEmpty && !model.isRunning {
-                        EmptyChatHint(server: model.server) { draft = $0; composerFocused = true }
+                        EmptyChatHint(server: model.server, workingDirectory: model.thread.workingDirectory, engine: model.thread.engine) { draft = $0; composerFocused = true }
                     }
                     ForEach(model.messages) { message in
                         MessageView(message: message, model: model)
@@ -117,6 +117,8 @@ struct AgentChatView: View {
 
 private struct EmptyChatHint: View {
     let server: Server
+    let workingDirectory: String
+    let engine: Engine
     let pick: (String) -> Void
     private let ideas = [
         "Check disk space, memory and failing services",
@@ -128,7 +130,7 @@ private struct EmptyChatHint: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("What should happen on \(server.displayName)?").font(.title3.weight(.semibold))
-            Text("The agent works in \(server.workingDirectory) and asks before it changes anything.")
+            Text("Working in \(workingDirectory). " + (engine == .ownKey ? "The agent asks before it changes anything." : "Runs with your \(engine.serverCLI?.displayName ?? "") subscription on the server."))
                 .font(.subheadline).foregroundStyle(.secondary)
             ForEach(ideas, id: \.self) { idea in
                 Button { pick(idea) } label: {
