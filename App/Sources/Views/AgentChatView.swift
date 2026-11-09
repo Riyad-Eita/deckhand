@@ -4,6 +4,7 @@ import SwiftUI
 struct AgentChatView: View {
     @State private var model: ChatModel
     @State private var draft = ""
+    @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
 
     init(thread: ChatThread, server: Server) {
@@ -49,6 +50,24 @@ struct AgentChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         #if DEBUG
         .task {
+            // DECKHAND_SEED_VOICE_FILE=<file in the app's tmp dir>: install Whisper if needed and dictate that file.
+            if let name = ProcessInfo.processInfo.environment["DECKHAND_SEED_VOICE_FILE"] {
+                if !voice.isInstalled { voice.install() }
+                while !voice.isInstalled {
+                    if case .failed(let m) = voice.state { draft = "VOICE FAILED: " + m; return }
+                    try? await Task.sleep(for: .seconds(1))
+                }
+                let path = FileManager.default.temporaryDirectory.appending(path: name).path
+                let start = Date()
+                do {
+                    let text = try await voice.transcribe(fileAt: path)
+                    draft = text + " [\(Int(Date().timeIntervalSince(start))) s]"
+                } catch {
+                    draft = "VOICE ERROR: \(error.localizedDescription)"
+                }
+            }
+        }
+        .task {
             if let prompt = DebugSeed.pendingPrompt, model.messages.isEmpty {
                 DebugSeed.pendingPrompt = nil
                 model.send(prompt)
@@ -66,6 +85,12 @@ struct AgentChatView: View {
                 .padding(.vertical, 8)
                 .background(.background, in: RoundedRectangle(cornerRadius: 18))
                 .overlay(RoundedRectangle(cornerRadius: 18).stroke(.quaternary))
+            if voice.isInstalled && !model.isRunning {
+                MicButton(voice: voice) { text in
+                    draft = draft.isEmpty ? text : draft + " " + text
+                    composerFocused = true
+                }
+            }
             if model.isRunning {
                 Button { model.stop() } label: {
                     Image(systemName: "stop.circle.fill").font(.system(size: 32))
@@ -327,5 +352,49 @@ private struct EditPreview: View {
         .frame(maxHeight: 180)
         .padding(8)
         .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
+    }
+}
+
+/// Tap to talk, tap again to stop; the transcript lands in the message field.
+private struct MicButton: View {
+    let voice: VoiceInput
+    let onText: (String) -> Void
+    @State private var error: String?
+
+    var body: some View {
+        Button {
+            Task {
+                if voice.isRecording {
+                    do {
+                        let text = try await voice.stopAndTranscribe()
+                        if !text.isEmpty { onText(text) }
+                    } catch {
+                        self.error = error.localizedDescription
+                    }
+                } else if !(await voice.startRecording()) {
+                    error = "Allow microphone access for Deckhand in Settings."
+                }
+            }
+        } label: {
+            ZStack {
+                if voice.isTranscribing {
+                    ProgressView()
+                } else {
+                    Image(systemName: voice.isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                        .font(.system(size: 32))
+                        .foregroundStyle(voice.isRecording ? .red : Theme.signal)
+                        .scaleEffect(voice.isRecording ? 1 + CGFloat(voice.level) * 0.25 : 1)
+                        .animation(.easeOut(duration: 0.08), value: voice.level)
+                }
+            }
+            .frame(width: 32, height: 32)
+        }
+        .disabled(voice.isTranscribing)
+        .accessibilityLabel(voice.isRecording ? "Stop recording" : "Dictate")
+        .alert("Voice input", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) {
+            Button("OK") { error = nil }
+        } message: {
+            Text(error ?? "")
+        }
     }
 }

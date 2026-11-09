@@ -68,6 +68,8 @@ struct SettingsView: View {
                     Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command.")
                 }
 
+                VoiceSettingsSection()
+
                 Section {
                     LabeledContent("Keys", value: "Stored in this iPhone's Keychain")
                     LabeledContent("Requests", value: "Go straight to your provider")
@@ -94,6 +96,44 @@ struct SettingsView: View {
         case .openAI: "Create a key at platform.openai.com → API keys."
         case .openRouter: "Create a key at openrouter.ai → Keys. One key, many models."
         case .custom: "Any OpenAI-compatible server, e.g. Ollama on your own machine."
+        }
+    }
+}
+
+private struct VoiceSettingsSection: View {
+    @State private var voice = VoiceInput.shared
+    @State private var confirmDelete = false
+
+    var body: some View {
+        Section {
+            switch voice.state {
+            case .notInstalled:
+                Button { voice.install() } label: {
+                    Label("Download Whisper (\(VoiceInput.approximateSize))", systemImage: "arrow.down.circle")
+                }
+            case .downloading(let fraction):
+                VStack(alignment: .leading, spacing: 6) {
+                    ProgressView(value: fraction) {
+                        Text("Downloading Whisper…")
+                    } currentValueLabel: {
+                        Text(fraction, format: .percent.precision(.fractionLength(0)))
+                    }
+                    Button("Cancel", role: .cancel) { voice.cancelInstall() }.font(.footnote)
+                }
+            case .installed:
+                LabeledContent("Whisper large-v3", value: "Installed")
+                Button("Remove Model", role: .destructive) { confirmDelete = true }
+            case .failed(let message):
+                Text(message).font(.footnote).foregroundStyle(.red)
+                Button("Try Again") { voice.install() }
+            }
+        } header: {
+            Text("Voice input")
+        } footer: {
+            Text("Speech is turned into text on this iPhone with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.")
+        }
+        .confirmationDialog("Remove the Whisper model?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Remove", role: .destructive) { voice.remove() }
         }
     }
 }
