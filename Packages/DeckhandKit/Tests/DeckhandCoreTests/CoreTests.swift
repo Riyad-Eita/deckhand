@@ -190,6 +190,20 @@ final class ScriptedProvider: LLMProvider, @unchecked Sendable {
 }
 
 @Suite struct AgentLoopTests {
+    @Test func dangerousCallNeedsApprovalEvenInFullAuto() async throws {
+        let call = ToolCall(id: "t1", name: "run_command", input: ["command": "git reset --hard"])
+        let provider = ScriptedProvider([
+            [.completed(Message(role: .assistant, blocks: [.toolUse(call)]), .toolUse, Usage())],
+            [.completed(Message(role: .assistant, blocks: [.text("ok")]), .endTurn, Usage())],
+        ])
+        let asked = Locked<ApprovalRequest?>(nil)
+        let agent = Agent(
+            provider: provider, shell: LocalShell(), tools: ServerTools.all(workingDirectory: "/tmp"),
+            policy: .auto, system: "s", approve: { req in asked.set(req); return .deny(reason: nil) })
+        for try await _ in agent.run(history: [], userMessage: .user("x")) {}
+        #expect(asked.value?.danger != nil)
+    }
+
     @Test func runsToolThenAnswers() async throws {
         let call = ToolCall(id: "t1", name: "run_command", input: ["command": "echo hello"])
         let provider = ScriptedProvider([
@@ -198,7 +212,7 @@ final class ScriptedProvider: LLMProvider, @unchecked Sendable {
         ])
         let agent = Agent(
             provider: provider, shell: LocalShell(), tools: ServerTools.all(workingDirectory: "/tmp"),
-            policy: .auto, system: "s", approve: { _, _ in .allow })
+            policy: .auto, system: "s", approve: { _ in .allow })
         var events: [AgentEvent] = []
         for try await e in agent.run(history: [], userMessage: .user("say hello")) { events.append(e) }
         #expect(events.last == .finished(.endTurn))
@@ -217,7 +231,7 @@ final class ScriptedProvider: LLMProvider, @unchecked Sendable {
         ])
         let agent = Agent(
             provider: provider, shell: LocalShell(), tools: ServerTools.all(workingDirectory: "/tmp"),
-            policy: .autoRead, system: "s", approve: { _, readOnly in readOnly ? .allow : .deny(reason: "no") })
+            policy: .autoRead, system: "s", approve: { $0.readOnly ? .allow : .deny(reason: "no") })
         for try await _ in agent.run(history: [], userMessage: .user("x")) {}
         guard case .toolResult(let r) = provider.requests[1].messages[2].blocks[0] else { Issue.record("no result"); return }
         #expect(r.isError)
@@ -232,9 +246,17 @@ final class ScriptedProvider: LLMProvider, @unchecked Sendable {
         ])
         let agent = Agent(
             provider: provider, shell: LocalShell(), tools: ServerTools.all(workingDirectory: "/tmp"),
-            policy: .auto, system: "s", approve: { _, _ in .allow })
+            policy: .auto, system: "s", approve: { _ in .allow })
         var ran = false
         for try await e in agent.run(history: [], userMessage: .user("x")) { if case .toolRunning = e { ran = true } }
         #expect(!ran)
     }
+}
+
+final class Locked<T: Sendable>: @unchecked Sendable {
+    private var v: T
+    private let lock = NSLock()
+    init(_ v: T) { self.v = v }
+    var value: T { lock.withLock { v } }
+    func set(_ new: T) { lock.withLock { v = new } }
 }

@@ -33,6 +33,14 @@ public enum AgentEvent: Sendable, Hashable {
     case finished(StopReason)
 }
 
+/// What the user is asked to approve.
+public struct ApprovalRequest: Sendable, Hashable {
+    public var call: ToolCall
+    public var readOnly: Bool
+    /// Set when the call looks destructive; the UI should warn loudly.
+    public var danger: String?
+}
+
 public enum ApprovalDecision: Sendable, Hashable {
     case allow
     case deny(reason: String?)
@@ -46,7 +54,7 @@ public struct Agent: Sendable {
     public var policy: ApprovalPolicy
     public var system: String
     public var maxTurns: Int
-    public var approve: @Sendable (ToolCall, _ readOnly: Bool) async -> ApprovalDecision
+    public var approve: @Sendable (ApprovalRequest) async -> ApprovalDecision
 
     public init(
         provider: any LLMProvider,
@@ -55,7 +63,7 @@ public struct Agent: Sendable {
         policy: ApprovalPolicy,
         system: String,
         maxTurns: Int = 60,
-        approve: @escaping @Sendable (ToolCall, Bool) async -> ApprovalDecision
+        approve: @escaping @Sendable (ApprovalRequest) async -> ApprovalDecision
     ) {
         self.provider = provider
         self.shell = shell
@@ -162,13 +170,16 @@ public struct Agent: Sendable {
         if let raw = call.input["INVALID_JSON"]?.stringValue {
             return ToolResult(toolUseID: call.id, content: "{\"INVALID_JSON\": \(JSONValue.string(raw).jsonString())}", isError: true)
         }
-        let needsApproval = switch policy {
-        case .ask: true
-        case .autoRead: !tool.isReadOnly
-        case .auto: false
-        }
+        let danger = DangerCheck.assess(call)
+        let needsApproval = danger != nil || {
+            switch policy {
+            case .ask: true
+            case .autoRead: !tool.isReadOnly
+            case .auto: false
+            }
+        }()
         if needsApproval {
-            switch await approve(call, tool.isReadOnly) {
+            switch await approve(ApprovalRequest(call: call, readOnly: tool.isReadOnly, danger: danger)) {
             case .allow: break
             case .deny(let reason):
                 let why = reason.map { " Reason: \($0)" } ?? ""

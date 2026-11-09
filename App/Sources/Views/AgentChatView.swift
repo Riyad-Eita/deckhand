@@ -315,7 +315,19 @@ private struct ApprovalBar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Allow this?").font(.subheadline.weight(.semibold))
+            if let danger = approval.danger {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Careful — this can't easily be undone").font(.subheadline.weight(.semibold))
+                        Text(danger).font(.footnote)
+                    }
+                } icon: {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                }
+                .foregroundStyle(.red)
+            } else {
+                Text("Allow this?").font(.subheadline.weight(.semibold))
+            }
             ToolCard(name: approval.call.name, input: approval.call.input, status: .waiting)
             if approval.call.name == "edit_file" || approval.call.name == "write_file" {
                 EditPreview(input: approval.call.input)
@@ -326,9 +338,10 @@ private struct ApprovalBar: View {
                 }
                 .buttonStyle(.bordered)
                 Button { approval.respond(.allow) } label: {
-                    Text("Allow").frame(maxWidth: .infinity)
+                    Text(approval.danger == nil ? "Allow" : "Run Anyway").frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(approval.danger == nil ? Theme.signal : .red)
             }
             .controlSize(.large)
         }

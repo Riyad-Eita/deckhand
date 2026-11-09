@@ -11,6 +11,7 @@ final class ChatModel {
     struct PendingApproval: Identifiable {
         let id = UUID()
         let call: ToolCall
+        let danger: String?
         let respond: (ApprovalDecision) -> Void
     }
 
@@ -93,8 +94,8 @@ final class ChatModel {
                     tools: ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
                     policy: policy,
                     system: Agent.systemPrompt(host: server.host, user: server.username, workingDirectory: thread.workingDirectory),
-                    approve: { [weak self] call, _ in
-                        await self?.requestApproval(call) ?? .deny(reason: nil)
+                    approve: { [weak self] request in
+                        await self?.requestApproval(request) ?? .deny(reason: nil)
                     })
                 for try await event in agent.run(history: history, userMessage: user) {
                     handle(event)
@@ -113,10 +114,10 @@ final class ChatModel {
         pendingApproval?.respond(.deny(reason: "Stopped by the user."))
     }
 
-    private func requestApproval(_ call: ToolCall) async -> ApprovalDecision {
-        toolStatus[call.id] = .waiting
+    private func requestApproval(_ request: ApprovalRequest) async -> ApprovalDecision {
+        toolStatus[request.call.id] = .waiting
         return await withCheckedContinuation { continuation in
-            pendingApproval = PendingApproval(call: call) { [weak self] decision in
+            pendingApproval = PendingApproval(call: request.call, danger: request.danger) { [weak self] decision in
                 self?.pendingApproval = nil
                 continuation.resume(returning: decision)
             }
