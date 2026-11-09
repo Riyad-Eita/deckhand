@@ -4,6 +4,7 @@ import SwiftUI
 
 struct TerminalScreen: View {
     let server: Server
+    @Binding var pendingCommand: String?
     @Environment(Connections.self) private var connections
     @State private var session: TerminalSession?
     @State private var error: String?
@@ -29,7 +30,15 @@ struct TerminalScreen: View {
             }
         }
         .task(id: attempt) { await open() }
+        .onChange(of: pendingCommand) { sendPending() }
+        .onChange(of: session == nil) { sendPending() }
         .onDisappear { session?.close() }
+    }
+
+    private func sendPending() {
+        guard let session, let command = pendingCommand else { return }
+        pendingCommand = nil
+        session.send(command + "\n")
     }
 
     private func open() async {
@@ -92,7 +101,10 @@ struct SSHTerminalView: UIViewRepresentable {
         nonisolated func setTerminalTitle(source: TerminalView, title: String) {}
         nonisolated func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
         nonisolated func scrolled(source: TerminalView, position: Double) {}
-        nonisolated func requestOpenLink(source: TerminalView, request: TerminalLinkRequest) {}
+        nonisolated func requestOpenLink(source: TerminalView, request: TerminalLinkRequest) {
+            guard let url = URL(string: request.link), ["http", "https"].contains(url.scheme?.lowercased() ?? "") else { return }
+            Task { @MainActor in UIApplication.shared.open(url) }
+        }
         nonisolated func clipboardCopy(source: TerminalView, content: Data) {
             if let text = String(data: content, encoding: .utf8) {
                 Task { @MainActor in UIPasteboard.general.string = text }

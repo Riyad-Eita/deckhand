@@ -99,3 +99,15 @@ struct LiveServerCLITests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    @Test func inventoryProbe() async throws {
+        let conn = try await connection()
+        let r = try await conn.run(ServerInventory.probeCommand, timeout: .seconds(60))
+        let inv = ServerInventory.parse(r.stdout)
+        #expect(inv.codex.isInstalled)
+        #expect(inv.claudeCode.isInstalled)
+        #expect(inv.os?.contains("Ubuntu") == true)
+        await conn.disconnect()
+    }
+}
