@@ -59,6 +59,16 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Picker("Access", selection: $settings.cliAccess) {
+                        ForEach(CLIAccess.allCases) { Text($0.title).tag($0) }
+                    }
+                } header: {
+                    Text("Codex & Claude Code on the server")
+                } footer: {
+                    Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command.")
+                }
+
+                Section {
                     LabeledContent("Keys", value: "Stored in this iPhone's Keychain")
                     LabeledContent("Requests", value: "Go straight to your provider")
                 } header: {

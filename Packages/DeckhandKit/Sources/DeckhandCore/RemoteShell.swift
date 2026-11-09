@@ -16,6 +16,12 @@ public protocol RemoteShell: Sendable {
     func run(_ command: String, timeout: Duration) async throws -> CommandResult
 }
 
+/// A shell that can stream a command's stdout line by line (for long-running CLI agents).
+public protocol StreamingShell: RemoteShell {
+    /// Yields stdout lines as they arrive. Throws `CLIError` with stderr when the command exits non-zero.
+    func streamLines(_ command: String) -> AsyncThrowingStream<String, Error>
+}
+
 public enum ShellQuote {
     /// POSIX single-quote escaping: `it's` → `'it'\''s'`.
     public static func quote(_ s: String) -> String {
@@ -24,8 +30,25 @@ public enum ShellQuote {
 }
 
 /// Runs commands with `/bin/sh` on this machine. Used in tests and the Mac debug build.
-public struct LocalShell: RemoteShell {
+public struct LocalShell: StreamingShell {
     public init() {}
+
+    public func streamLines(_ command: String) -> AsyncThrowingStream<String, Error> {
+        AsyncThrowingStream { continuation in
+            Task {
+                do {
+                    let r = try await run(command, timeout: .seconds(600))
+                    for line in r.stdout.split(separator: "\n", omittingEmptySubsequences: false) where !line.isEmpty {
+                        continuation.yield(String(line))
+                    }
+                    if r.exitCode != 0 { throw CLIError(r.stderr.isEmpty ? "exit code \(r.exitCode)" : r.stderr) }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+    }
 
     public func run(_ command: String, timeout: Duration) async throws -> CommandResult {
         #if os(macOS)

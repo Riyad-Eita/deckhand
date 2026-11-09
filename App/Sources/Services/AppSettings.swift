@@ -18,6 +18,8 @@ final class AppSettings {
     var effort: String { didSet { defaults.set(effort, forKey: "provider.effort") } }
     var approvalPolicy: ApprovalPolicy { didSet { defaults.set(approvalPolicy.rawValue, forKey: "agent.policy") } }
     var apiKey: String { didSet { Keychain.set(apiKey, for: "apikey.\(providerKind.rawValue)") } }
+    /// What Codex / Claude Code may do on the server in headless runs.
+    var cliAccess: CLIAccess { didSet { defaults.set(cliAccess.rawValue, forKey: "cli.access") } }
 
     private init() {
         let kind = ProviderKind(rawValue: defaults.string(forKey: "provider.kind") ?? "") ?? .anthropic
@@ -27,6 +29,7 @@ final class AppSettings {
         apiKey = ""
         effort = defaults.string(forKey: "provider.effort") ?? "high"
         approvalPolicy = ApprovalPolicy(rawValue: defaults.string(forKey: "agent.policy") ?? "") ?? .autoRead
+        cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
         loadProviderFields()
     }
 

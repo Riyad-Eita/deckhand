@@ -28,6 +28,8 @@ public enum AgentEvent: Sendable, Hashable {
     case toolRunning(ToolCall)
     case toolFinished(ToolCall, ToolResult)
     case usage(Usage)
+    /// A server CLI started or resumed a session with this id.
+    case sessionStarted(String)
     case finished(StopReason)
 }
 

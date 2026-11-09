@@ -47,6 +47,14 @@ struct AgentChatView: View {
         }
         .navigationTitle(model.thread.title)
         .navigationBarTitleDisplayMode(.inline)
+        #if DEBUG
+        .task {
+            if let prompt = DebugSeed.pendingPrompt, model.messages.isEmpty {
+                DebugSeed.pendingPrompt = nil
+                model.send(prompt)
+            }
+        }
+        #endif
     }
 
     private var composer: some View {

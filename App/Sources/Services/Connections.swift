@@ -72,7 +72,10 @@ final class Connections {
     }
 
     private func askToTrust(serverName: String, fingerprint: String) async -> Bool {
-        await withCheckedContinuation { continuation in
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["DECKHAND_SEED_TRUST"] == "1" { return true }
+        #endif
+        return await withCheckedContinuation { continuation in
             hostKeyPrompt = HostKeyPrompt(serverName: serverName, fingerprint: fingerprint) { [weak self] trusted in
                 self?.hostKeyPrompt = nil
                 continuation.resume(returning: trusted)

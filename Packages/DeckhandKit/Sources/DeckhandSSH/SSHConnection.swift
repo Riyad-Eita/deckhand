@@ -122,7 +122,7 @@ final class HostKeyCheck: NIOSSHClientServerAuthenticationDelegate, @unchecked S
 }
 
 /// One SSH connection to a server. Runs commands for the agent and opens terminal sessions.
-public actor SSHConnection: RemoteShell {
+public actor SSHConnection: StreamingShell {
     public let endpoint: SSHEndpoint
     private let credential: SSHCredential
     private var client: SSHClient?
@@ -187,6 +187,44 @@ public actor SSHConnection: RemoteShell {
         }
         if exitCode == 124 { stderr.writeString("\n[timed out after \(seconds) s]") }
         return CommandResult(stdout: String(buffer: stdout), stderr: String(buffer: stderr), exitCode: exitCode)
+    }
+
+    /// Streams stdout lines of a long-running command (login shell, no timeout). Cancelling stops reading.
+    public nonisolated func streamLines(_ command: String) -> AsyncThrowingStream<String, Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    let client = try await self.connectedClient()
+                    var pending = Data()
+                    var stderr = ""
+                    do {
+                        for try await chunk in try await client.executeCommandStream("bash -lc \(ShellQuote.quote(command))") {
+                            try Task.checkCancellation()
+                            switch chunk {
+                            case .stdout(let b):
+                                pending.append(Data(buffer: b))
+                                while let nl = pending.firstIndex(of: UInt8(ascii: "\n")) {
+                                    let line = String(decoding: pending[pending.startIndex..<nl], as: UTF8.self)
+                                    pending.removeSubrange(pending.startIndex...nl)
+                                    if !line.isEmpty { continuation.yield(line) }
+                                }
+                            case .stderr(let b):
+                                if stderr.count < 20_000 { stderr += String(buffer: b) }
+                            }
+                        }
+                    } catch let failed as SSHClient.CommandFailed {
+                        if !pending.isEmpty { continuation.yield(String(decoding: pending, as: UTF8.self)) }
+                        let tail = stderr.trimmingCharacters(in: .whitespacesAndNewlines).suffix(2000)
+                        throw CLIError(tail.isEmpty ? "Command failed with exit code \(failed.exitCode)." : String(tail))
+                    }
+                    if !pending.isEmpty { continuation.yield(String(decoding: pending, as: UTF8.self)) }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
     }
 
     /// Opens an interactive PTY shell (optionally running `command`, e.g. `tmux new -A -s main`).

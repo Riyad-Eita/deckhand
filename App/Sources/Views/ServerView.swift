@@ -13,6 +13,13 @@ struct ServerView: View {
     @State private var tab: Tab = .agent
     @Environment(Connections.self) private var connections
 
+    init(server: Server) {
+        self.server = server
+        #if DEBUG
+        if DebugSeed.pendingRun?.engine == "terminal" { _tab = State(initialValue: .terminal) }
+        #endif
+    }
+
     var body: some View {
         Group {
             switch tab {
@@ -40,7 +47,6 @@ struct ServerView: View {
 struct ThreadListView: View {
     let server: Server
     @Environment(\.modelContext) private var context
-    @State private var path: [ChatThread] = []
     @State private var openThread: ChatThread?
 
     private var threads: [ChatThread] {
@@ -50,13 +56,24 @@ struct ThreadListView: View {
     var body: some View {
         List {
             Section {
-                Button {
-                    let thread = ChatThread(server: server, workingDirectory: server.workingDirectory)
-                    context.insert(thread)
-                    openThread = thread
-                } label: {
-                    Label("New Task", systemImage: "plus.bubble")
+                ForEach(Engine.allCases) { engine in
+                    Button {
+                        let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: engine)
+                        context.insert(thread)
+                        openThread = thread
+                    } label: {
+                        Label {
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("New Task")
+                                Text(engine.title).font(.caption).foregroundStyle(.secondary)
+                            }
+                        } icon: { Image(systemName: engine.symbol) }
+                    }
                 }
+            } header: {
+                Text("Start")
+            } footer: {
+                Text("Codex and Claude Code run on the server with your own subscription.")
             }
             if !threads.isEmpty {
                 Section("Recent") {
@@ -64,7 +81,12 @@ struct ThreadListView: View {
                         Button { openThread = thread } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(thread.title).foregroundStyle(.primary).lineLimit(1)
-                                Text(thread.updatedAt, style: .relative).font(.caption).foregroundStyle(.secondary)
+                                HStack(spacing: 4) {
+                                    Text(thread.engine.title)
+                                    Text("·")
+                                    Text(thread.updatedAt, style: .relative)
+                                }
+                                .font(.caption).foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -75,5 +97,15 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        #if DEBUG
+        .task {
+            guard let run = DebugSeed.pendingRun, let engine = Engine(rawValue: run.engine) else { return }
+            DebugSeed.pendingRun = nil
+            let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: engine)
+            context.insert(thread)
+            DebugSeed.pendingPrompt = run.prompt
+            openThread = thread
+        }
+        #endif
     }
 }

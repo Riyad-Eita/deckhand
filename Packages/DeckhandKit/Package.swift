@@ -26,7 +26,7 @@ let package = Package(
                 .product(name: "Crypto", package: "swift-crypto"),
             ]
         ),
-        .testTarget(name: "DeckhandCoreTests", dependencies: ["DeckhandCore"]),
+        .testTarget(name: "DeckhandCoreTests", dependencies: ["DeckhandCore"], resources: [.copy("Fixtures")]),
         .testTarget(name: "DeckhandSSHTests", dependencies: ["DeckhandSSH", .product(name: "Citadel", package: "Citadel"), .product(name: "Crypto", package: "swift-crypto")]),
     ]
 )

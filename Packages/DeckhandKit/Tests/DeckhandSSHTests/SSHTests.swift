@@ -73,3 +73,29 @@ struct LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+/// Runs a real Codex turn on the server. Opt-in (uses the user's subscription): DECKHAND_TEST_CLI=1 plus the SSH vars.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_TEST_CLI"] != nil))
+struct LiveServerCLITests {
+    @Test func codexTurnStreamsEvents() async throws {
+        let conn = try await LiveSSHTests().connection()
+        var session: String?
+        var sawCommand = false
+        var finished = false
+        for try await e in ServerCLIRun.run(
+            .codex, shell: conn, prompt: "Run `echo deckhand-ok` and reply with its output only.",
+            workingDirectory: "/tmp", sessionID: nil, access: .readOnly)
+        {
+            switch e {
+            case .sessionStarted(let id): session = id
+            case .toolFinished(let call, let r): if call.name == "run_command", r.content.contains("deckhand-ok") { sawCommand = true }
+            case .finished(.endTurn): finished = true
+            default: break
+            }
+        }
+        #expect(session != nil)
+        #expect(sawCommand)
+        #expect(finished)
+        await conn.disconnect()
+    }
+}

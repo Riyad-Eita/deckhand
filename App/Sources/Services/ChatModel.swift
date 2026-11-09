@@ -48,7 +48,7 @@ final class ChatModel {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, !isRunning else { return }
         let settings = AppSettings.shared
-        guard settings.isConfigured else {
+        guard thread.engine != .ownKey || settings.isConfigured else {
             error = LLMError.missingAPIKey.localizedDescription
             return
         }
@@ -61,9 +61,20 @@ final class ChatModel {
         isRunning = true
         let config = settings.providerConfig
         let policy = settings.approvalPolicy
+        let access = settings.cliAccess
         task = Task {
             do {
                 let shell = try await Connections.shared.connection(for: server)
+                if let cli = thread.engine.serverCLI {
+                    let events = ServerCLIRun.run(
+                        cli, shell: shell, prompt: trimmed, workingDirectory: thread.workingDirectory,
+                        sessionID: thread.cliSessionID, access: access)
+                    for try await event in events { handle(event) }
+                    clearLive()
+                    isRunning = false
+                    persist()
+                    return
+                }
                 let agent = Agent(
                     provider: Providers.make(config),
                     shell: shell,
@@ -115,6 +126,8 @@ final class ChatModel {
             persist()
         case .toolRunning(let call): toolStatus[call.id] = .running
         case .toolFinished(let call, let result): toolStatus[call.id] = .done(result)
+        case .sessionStarted(let id):
+            thread.cliSessionID = id
         case .usage(let u):
             usage.inputTokens += u.inputTokens
             usage.outputTokens += u.outputTokens

@@ -9,6 +9,7 @@ struct ServerListView: View {
     @State private var editing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
+    @State private var autoOpen: Server?
 
     var body: some View {
         List {
@@ -50,6 +51,13 @@ struct ServerListView: View {
         }
         .navigationTitle("Deckhand")
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
+        .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        #if DEBUG
+        .task {
+            try? await Task.sleep(for: .milliseconds(500))
+            if DebugSeed.pendingRun != nil { autoOpen = servers.first }
+        }
+        #endif
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button { showingSettings = true } label: { Image(systemName: "gearshape") }
