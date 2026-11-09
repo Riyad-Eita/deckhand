@@ -23,6 +23,8 @@ struct ServerEditorView: View {
     @State private var importingKey = false
     @State private var testState: TestState = .idle
     @State private var loaded = false
+    /// The server created by "Test Connection", so Save updates it instead of adding a second one.
+    @State private var created: Server?
 
     enum TestState: Equatable {
         case idle, running, ok(String), failed(String)
@@ -35,7 +37,6 @@ struct ServerEditorView: View {
                     TextField("Host or IP", text: $host)
                         .textContentType(.URL).keyboardType(.URL)
                     TextField("User", text: $username)
-                        .textContentType(.username)
                     TextField("Port", text: $port).keyboardType(.numberPad)
                     TextField("Name (optional)", text: $name)
                 } header: {
@@ -57,7 +58,7 @@ struct ServerEditorView: View {
 
                     switch authKind {
                     case .password:
-                        SecureField("Password", text: $password).textContentType(.password)
+                        SecureField("Password", text: $password)
                     case .key:
                         keySection
                     }
@@ -92,7 +93,13 @@ struct ServerEditorView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { _ = save(); dismiss() }.disabled(!isValid)
+                    Button("Save") {
+                        _ = save()
+                        // Already in the Keychain; clearing the field keeps iOS from offering to save it as a web password.
+                        password = ""
+                        dismiss()
+                    }
+                    .disabled(!isValid)
                 }
             }
             .fileImporter(isPresented: $importingKey, allowedContentTypes: [.data, .text]) { result in
@@ -103,6 +110,7 @@ struct ServerEditorView: View {
             }
             .onAppear(perform: load)
         }
+        .hostKeyPrompt(inSheet: true)
     }
 
     @ViewBuilder private var keySection: some View {
@@ -173,7 +181,7 @@ struct ServerEditorView: View {
 
     @discardableResult
     private func save() -> Server {
-        let target = server ?? Server(name: "", host: "", username: "", authKind: authKind)
+        let target = server ?? created ?? Server(name: "", host: "", username: "", authKind: authKind)
         let hostChanged = target.host != host.trimmingCharacters(in: .whitespaces) || target.port != Int(port) ?? 22
         target.name = name.trimmingCharacters(in: .whitespaces)
         target.host = host.trimmingCharacters(in: .whitespaces)
@@ -181,7 +189,10 @@ struct ServerEditorView: View {
         target.username = username.trimmingCharacters(in: .whitespaces)
         target.authKind = authKind
         if hostChanged { target.pinnedHostKey = nil }
-        if server == nil { context.insert(target) }
+        if server == nil && created == nil {
+            context.insert(target)
+            created = target
+        }
         Keychain.set(authKind == .password ? password : privateKey, for: target.secretAccount)
         Keychain.set(authKind == .key ? passphrase : nil, for: target.secretAccount + ".passphrase")
         return target

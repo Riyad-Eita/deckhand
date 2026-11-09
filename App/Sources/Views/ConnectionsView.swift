@@ -154,6 +154,7 @@ struct ConnectionEditor: View {
             }
             .onAppear(perform: load)
         }
+        .hostKeyPrompt(inSheet: true)
     }
 
     private var isValid: Bool {

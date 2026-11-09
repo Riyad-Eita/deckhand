@@ -86,6 +86,7 @@ struct FolderPicker: View {
             .task(id: path) { await load() }
             .refreshable { await load() }
         }
+        .hostKeyPrompt(inSheet: true)
     }
 
     @State private var homePath: String?

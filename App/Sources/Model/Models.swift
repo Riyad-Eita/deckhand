@@ -41,7 +41,12 @@ final class Server {
     }
 
     var displayName: String { name.isEmpty ? host : name }
-    var address: String { port == 22 ? "\(username)@\(host)" : "\(username)@\(host):\(port)" }
+    var address: String {
+        #if DEBUG
+        if let shown = DebugSeed.displayAddress(for: self) { return shown }
+        #endif
+        return port == 22 ? "\(username)@\(host)" : "\(username)@\(host):\(port)"
+    }
 
     /// Keychain account for this server's password or private key.
     var secretAccount: String { "server.\(id.uuidString)" }
