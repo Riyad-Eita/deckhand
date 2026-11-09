@@ -1,23 +1,64 @@
-# Deckhand
+<p align="center">
+  <img src="docs/images/icon.png" width="96" height="96" alt="Deckhand icon">
+</p>
 
-Your servers, an agent and a terminal — in your pocket.
+<h1 align="center">Deckhand</h1>
 
-Deckhand is an iOS app for working on your own Linux servers from the iPhone:
+<p align="center">
+  <b>Your servers, a real terminal and AI coding agents — in your pocket.</b><br>
+  SSH · Codex · Claude Code · your own model key · MCP · on-device voice
+</p>
 
-- **Connect** a server over SSH in seconds (password, imported key, or a new Ed25519 key created on the phone). Host keys are pinned on first connect.
-- **Agent** — bring your own model key (Anthropic, OpenAI, OpenRouter or any OpenAI-compatible endpoint). The agent loop runs on the phone; its tools (shell, read, write, edit, list, search) run on the server over SSH, with approvals for anything that changes the server.
-- **Terminal** — a full xterm-compatible terminal over SSH.
-- Coming next: Claude Code and Codex running on your server with your own subscription, rendered natively; tmux sessions; files.
+<p align="center">
+  <a href="https://github.com/users/Riyad-Eita/projects/3">Roadmap</a> ·
+  <a href="docs/verification.md">How we verify</a> ·
+  <a href="docs/privacy.md">Privacy</a> ·
+  <a href="https://github.com/Riyad-Eita/deckhand/issues">Feedback</a>
+</p>
 
-No account, no backend. Keys stay in the iOS Keychain and requests go straight to your provider and your server.
+<p align="center">
+  <img src="docs/images/agent.jpg" width="19%" alt="Agents on your server">
+  <img src="docs/images/terminal.jpg" width="19%" alt="A real terminal">
+  <img src="docs/images/servers.jpg" width="19%" alt="Every server one tap away">
+  <img src="docs/images/subscription.jpg" width="19%" alt="Your subscription on your server">
+  <img src="docs/images/connections.jpg" width="19%" alt="Connect everything with MCP">
+</p>
 
-## Layout
+> **Beta.** Deckhand is brand new and moving fast. Many more features land with every release —
+> see the [roadmap board](https://github.com/users/Riyad-Eita/projects/3) and tell us what you need.
 
-- `App/` — SwiftUI app (iOS 26+)
-- `Packages/DeckhandKit` — `DeckhandCore` (providers, agent loop, server tools) and `DeckhandSSH` (SSH via Citadel)
-- `project.yml` — XcodeGen spec
+## Why
 
-## Build
+Fixing a server, checking a deploy or letting an agent work on your code usually means: find a laptop, open a
+terminal, SSH in, start Claude Code or Codex, keep the session alive. Deckhand does all of that from your iPhone —
+and grows into the one app for the tools people otherwise pay for separately (SSH client, server panel, monitoring,
+Git client, database GUI, AI subscriptions).
+
+## What works today
+
+- **SSH that just works** — password, imported key, or an Ed25519 key created on the phone. Host keys are pinned on
+  first connect. Connections quietly come back after dead spots.
+- **A real terminal** — xterm-compatible, with Esc/Ctrl/arrow keys. Sessions live in `tmux` or `screen`, so you can
+  reconnect and continue where you left off.
+- **Agents on your server**
+  - *Your own key*: Claude, OpenAI, OpenRouter or any OpenAI-compatible endpoint. The agent loop runs on the phone, its
+    tools (shell, read, write, edit, search) run on your server over SSH. It asks before changing things, and always
+    before destructive commands (`rm -rf`, `DROP DATABASE`, force pushes, reboots …).
+  - *Your subscription*: run **Codex** or **Claude Code** on your server and follow every step natively in the app.
+    Install, update and sign in to them from the app — no root needed.
+  - Pick the project folder per task.
+- **Connections (MCP)** — add GitHub, DeepWiki, Context7 or any MCP server once. The own-key agent uses them directly;
+  one tap syncs them into Codex and Claude Code on your server.
+- **Voice** — optional on-device speech-to-text with OpenAI's Whisper (large-v3). Nothing leaves the phone.
+- **Private by design** — no account, no tracking, no Deckhand backend. Secrets live in the iOS Keychain.
+
+## What's next
+
+Server dashboards, services and logs, Docker, a Git client, file browser, one-tap deploys, uptime checks and
+alerts, database browser, backups, App Store Connect, notifications and Live Activities — every item is a user story
+with acceptance criteria and a linked verification method on the [board](https://github.com/users/Riyad-Eita/projects/3).
+
+## Build it yourself
 
 ```sh
 brew install xcodegen
@@ -26,10 +67,22 @@ xcodebuild -project Deckhand.xcodeproj -scheme Deckhand \
   -destination 'platform=iOS Simulator,name=iPhone 18 Pro' -skipPackagePluginValidation build
 ```
 
-## Tests
+Tests (see [docs/verification.md](docs/verification.md)):
 
 ```sh
-cd Packages/DeckhandKit && swift test
-# live SSH tests against a real server:
-DECKHAND_TEST_HOST=example.com DECKHAND_TEST_PORT=22 DECKHAND_TEST_USER=me DECKHAND_TEST_KEY=~/.ssh/id_ed25519 swift test
+cd Packages/DeckhandKit && swift test                      # unit tests
+DECKHAND_TEST_HOST=example.com DECKHAND_TEST_PORT=22 \
+DECKHAND_TEST_USER=me DECKHAND_TEST_KEY=~/.ssh/id_ed25519 swift test   # live server tests
 ```
+
+## Layout
+
+| Path | What |
+|------|------|
+| `App/` | SwiftUI app (iOS 26+) |
+| `Packages/DeckhandKit/Sources/DeckhandCore` | Providers, agent loop, server tools, server CLIs, MCP, safety checks |
+| `Packages/DeckhandKit/Sources/DeckhandSSH` | SSH (Citadel / SwiftNIO SSH), terminal sessions, line channels |
+| `UITests/` | End-to-end UI tests against a real server |
+| `docs/` | Verification methods, privacy policy |
+
+If Deckhand is useful to you, a ⭐ helps a lot.
