@@ -15,6 +15,7 @@ struct DeckhandApp: App {
 
 struct RootView: View {
     @Environment(Connections.self) private var connections
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var context
 
     var body: some View {
@@ -33,6 +34,11 @@ struct RootView: View {
             Button("Cancel", role: .cancel) { prompt.respond(false) }
         } message: { prompt in
             Text("First connection to \(prompt.serverName). Its host key fingerprint is\n\(prompt.fingerprint)\n\nDeckhand remembers it and warns you if it ever changes.")
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await connections.checkConnections()
+            await connections.heartbeat()
         }
         #if DEBUG
         .onAppear { DebugSeed.apply(context) }

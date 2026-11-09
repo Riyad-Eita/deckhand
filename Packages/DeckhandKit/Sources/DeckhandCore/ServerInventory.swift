@@ -12,6 +12,7 @@ public struct ServerInventory: Sendable, Hashable {
     public var codex: CLIState
     public var claudeCode: CLIState
     public var tmux: String?
+    public var screen: String?
     public var node: String?
     public var os: String?
 
@@ -30,6 +31,7 @@ public struct ServerInventory: Sendable, Hashable {
     p claude.auth "$(command -v claude >/dev/null 2>&1 && claude auth status --json 2>/dev/null)"
     p tmux "$(tmux -V 2>/dev/null)"
     p node "$(node --version 2>/dev/null)"
+    p screen "$(command -v screen 2>/dev/null)"
     p os "$( ( [ -r /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" ) || uname -sr)"
     """
 
@@ -62,6 +64,7 @@ public struct ServerInventory: Sendable, Hashable {
             codex: CLIState(version: values["codex.version"].map(Self.versionNumber), loggedIn: codexLoggedIn, account: codexAccount),
             claudeCode: CLIState(version: values["claude.version"].map(Self.versionNumber), loggedIn: claudeLoggedIn, account: claudeAccount),
             tmux: values["tmux"],
+            screen: values["screen"],
             node: values["node"],
             os: values["os"])
     }
@@ -80,4 +83,16 @@ extension ServerCLI {
         case .claudeCode: "claude auth login"
         }
     }
+}
+
+/// A terminal session that survives disconnects: tmux if the server has it, otherwise GNU screen.
+public enum PersistentSession {
+    public static let name = "deckhand"
+
+    /// First line to type into a fresh login shell; replaces the shell with the multiplexer.
+    /// Falls back to the plain shell when neither is installed.
+    public static let attachCommand = """
+    if command -v tmux >/dev/null 2>&1; then exec tmux new-session -A -s \(name); \
+    elif command -v screen >/dev/null 2>&1; then exec screen -xRR -S \(name); fi
+    """
 }

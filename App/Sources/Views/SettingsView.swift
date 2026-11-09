@@ -78,6 +78,14 @@ struct SettingsView: View {
                     Text("MCP servers like GitHub, documentation or your own tools — for every agent.")
                 }
 
+                Section {
+                    Toggle("Keep terminal sessions", isOn: $settings.keepTerminalSessions)
+                } header: {
+                    Text("Terminal")
+                } footer: {
+                    Text("Opens the terminal inside tmux or screen on the server, so your session keeps running when the connection drops and you can pick up where you left off.")
+                }
+
                 VoiceSettingsSection()
 
                 Section {

@@ -20,6 +20,8 @@ final class AppSettings {
     var apiKey: String { didSet { Keychain.set(apiKey, for: "apikey.\(providerKind.rawValue)") } }
     /// What Codex / Claude Code may do on the server in headless runs.
     var cliAccess: CLIAccess { didSet { defaults.set(cliAccess.rawValue, forKey: "cli.access") } }
+    /// Terminal opens inside tmux/screen so it survives disconnects.
+    var keepTerminalSessions: Bool { didSet { defaults.set(keepTerminalSessions, forKey: "terminal.keep") } }
 
     private init() {
         let kind = ProviderKind(rawValue: defaults.string(forKey: "provider.kind") ?? "") ?? .anthropic
@@ -30,6 +32,7 @@ final class AppSettings {
         effort = defaults.string(forKey: "provider.effort") ?? "high"
         approvalPolicy = ApprovalPolicy(rawValue: defaults.string(forKey: "agent.policy") ?? "") ?? .autoRead
         cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
+        keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
         loadProviderFields()
     }
 

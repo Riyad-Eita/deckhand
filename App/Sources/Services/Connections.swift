@@ -65,6 +65,28 @@ final class Connections {
         return connection
     }
 
+    /// Pings every open connection; dead ones are dropped so the next use reconnects quietly.
+    func checkConnections() async {
+        for (id, connection) in connections {
+            do {
+                let r = try await connection.run("true", timeout: .seconds(10))
+                if r.exitCode != 0 && r.exitCode != 124 { throw SSHError.notConnected }
+            } catch {
+                await connection.disconnect()
+                connections[id] = nil
+                states[id] = .idle
+            }
+        }
+    }
+
+    /// Runs `checkConnections` every 30 s while the app is active.
+    func heartbeat() async {
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(30))
+            await checkConnections()
+        }
+    }
+
     func disconnect(_ server: Server) async {
         await connections[server.id]?.disconnect()
         connections[server.id] = nil

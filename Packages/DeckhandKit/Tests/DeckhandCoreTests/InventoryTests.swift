@@ -10,6 +10,7 @@ import Testing
         @@deckhand:claude.version\t2.1.321 (Claude Code)
         @@deckhand:claude.auth\t{ "loggedIn": false, "authMethod": "none" }
         @@deckhand:tmux\t
+        @@deckhand:screen\t/usr/bin/screen
         @@deckhand:node\tv21.7.3
         @@deckhand:os\tUbuntu 22.04.5 LTS
         """
@@ -17,6 +18,7 @@ import Testing
         #expect(inv.codex == .init(version: "0.167.0", loggedIn: true, account: "ChatGPT"))
         #expect(inv.claudeCode == .init(version: "2.1.321", loggedIn: false, account: nil))
         #expect(inv.tmux == nil)
+        #expect(inv.screen == "/usr/bin/screen")
         #expect(inv.node == "v21.7.3")
         #expect(inv.os == "Ubuntu 22.04.5 LTS")
     }
