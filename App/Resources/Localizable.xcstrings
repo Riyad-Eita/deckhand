@@ -708,6 +708,16 @@
         }
       }
     },
+    "Banned again and again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immer wieder gesperrt"
+          }
+        }
+      }
+    },
     "Base URL": {
       "localizations": {
         "de": {
@@ -764,6 +774,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wiederholte Fehlversuche blockieren (fail2ban)"
+          }
+        }
+      }
+    },
+    "Blocked logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blockierte Logins"
           }
         }
       }
@@ -1369,6 +1389,16 @@
         }
       }
     },
+    "Countries looked up at ipwho.is — only the banned addresses are sent.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Länder werden bei ipwho.is nachgeschlagen – gesendet werden nur die gesperrten Adressen."
+          }
+        }
+      }
+    },
     "Create": {
       "localizations": {
         "de": {
@@ -1661,6 +1691,26 @@
         }
       }
     },
+    "Docker opens published ports itself, before the firewall looks at them — so these are reachable from the internet even if the firewall blocks them. Bind them to 127.0.0.1 if only this server (or a reverse proxy) needs them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker öffnet veröffentlichte Ports selbst, bevor die Firewall sie sieht – sie sind also aus dem Internet erreichbar, selbst wenn die Firewall sie blockt. Binde sie an 127.0.0.1, wenn nur dieser Server (oder ein Reverse Proxy) sie braucht."
+          }
+        }
+      }
+    },
+    "Docker ports past the firewall": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker-Ports an der Firewall vorbei"
+          }
+        }
+      }
+    },
     "Done": {
       "localizations": {
         "de": {
@@ -1881,6 +1931,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Failed SSH logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagene SSH-Logins"
+          }
+        }
+      }
+    },
+    "Failed website logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagene Website-Logins"
           }
         }
       }
@@ -2297,6 +2367,16 @@
         }
       }
     },
+    "Installs fail2ban if needed and bans addresses that keep failing to log in over SSH (and to your website, if nginx or Apache runs here) for an hour.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert fail2ban bei Bedarf und sperrt Adressen für eine Stunde, die sich immer wieder falsch per SSH anmelden (und bei deiner Website, falls hier nginx oder Apache läuft)."
+          }
+        }
+      }
+    },
     "Interrupted": {
       "localizations": {
         "de": {
@@ -2343,6 +2423,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Issues, Pull Requests und Code-Suche für die Agenten."
+          }
+        }
+      }
+    },
+    "Jail %@ · %lld failing right now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jail %1$@ · %2$lld scheitern gerade"
           }
         }
       }
@@ -2787,6 +2877,36 @@
         }
       }
     },
+    "Never ban %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ nie sperren"
+          }
+        }
+      }
+    },
+    "Never ban my address (%@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine Adresse nie sperren (%@)"
+          }
+        }
+      }
+    },
+    "Never banned": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie gesperrt"
+          }
+        }
+      }
+    },
     "New branch from here": {
       "localizations": {
         "de": {
@@ -2937,6 +3057,16 @@
         }
       }
     },
+    "Nobody is banned right now.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade ist niemand gesperrt."
+          }
+        }
+      }
+    },
     "Node.js": {
       "shouldTranslate": false
     },
@@ -3076,6 +3206,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur von (Adresse oder Netz, optional)"
+          }
+        }
+      }
+    },
+    "Only this server itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur dieser Server selbst."
           }
         }
       }
@@ -3794,6 +3934,16 @@
         }
       }
     },
+    "Scanning the website for weak spots": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sucht die Website nach Schwachstellen ab"
+          }
+        }
+      }
+    },
     "Score %lld of 100": {
       "localizations": {
         "de": {
@@ -4010,6 +4160,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ einrichten?"
+          }
+        }
+      }
+    },
+    "Set up fail2ban": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban einrichten"
           }
         }
       }
@@ -4725,6 +4885,16 @@
         }
       }
     },
+    "Too many web requests": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu viele Web-Anfragen"
+          }
+        }
+      }
+    },
     "Topic URL": {
       "localizations": {
         "de": {
@@ -4811,6 +4981,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einschalten: alles blocken außer SSH und Web"
+          }
+        }
+      }
+    },
+    "Unban": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entsperren"
           }
         }
       }
@@ -5229,12 +5409,92 @@
         }
       }
     },
+    "banned now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jetzt gesperrt"
+          }
+        }
+      }
+    },
+    "banned so far": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bisher gesperrt"
+          }
+        }
+      }
+    },
     "fail2ban bans addresses that keep failing to log in, which stops password guessing and keeps logs readable.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "fail2ban sperrt Adressen, die sich immer wieder falsch anmelden. Das stoppt Passwort-Raten und hält die Logs lesbar."
+          }
+        }
+      }
+    },
+    "fail2ban is installed but not running.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban ist installiert, läuft aber nicht."
+          }
+        }
+      }
+    },
+    "fail2ban isn't installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban ist nicht installiert."
+          }
+        }
+      }
+    },
+    "fail2ban watches the logs and blocks addresses that keep guessing passwords.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban beobachtet die Logs und sperrt Adressen, die immer wieder Passwörter raten."
+          }
+        }
+      }
+    },
+    "fail2ban will never ban %@ — the address this iPhone reaches the server from right now. If you're on mobile data this address changes often.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban sperrt %@ nie – die Adresse, über die dieses iPhone gerade den Server erreicht. Im Mobilfunknetz ändert sich diese Adresse oft."
+          }
+        }
+      }
+    },
+    "fail2ban: who's banned and why": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban: wer gesperrt ist und warum"
+          }
+        }
+      }
+    },
+    "failed attempts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlversuche"
           }
         }
       }

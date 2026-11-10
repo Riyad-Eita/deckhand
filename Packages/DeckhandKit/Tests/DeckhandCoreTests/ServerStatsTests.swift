@@ -22,6 +22,7 @@ import Testing
     Filesystem        1024-blocks      Used Available Capacity Mounted on
     /dev/ploop11118p1   123721280 102420108  16147064      87% /
     /dev/sda1              523248      6220    517028       2% /boot/efi
+    /dev/ploop11118p1   123721280 102420108  16147064      87% /etc/hosts
     """
 
     @Test func parsesRealOutput() throws {
