@@ -25,6 +25,8 @@ struct ServerEditorView: View {
     @State private var loaded = false
     /// The server created by "Test Connection", so Save updates it instead of adding a second one.
     @State private var created: Server?
+    /// Replace the password with a freshly made key after a successful password login.
+    @State private var switchToKey = true
 
     enum TestState: Equatable {
         case idle, running, ok(String), failed(String)
@@ -59,6 +61,13 @@ struct ServerEditorView: View {
                     switch authKind {
                     case .password:
                         SecureField("Password", text: $password)
+                        Toggle(isOn: $switchToKey) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Switch to a secure key")
+                                Text("After the first connection Deckhand installs its own key on the server and forgets the password.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
                     case .key:
                         keySection
                     }
@@ -198,6 +207,29 @@ struct ServerEditorView: View {
         return target
     }
 
+    /// Creates a key, adds it to authorized_keys, proves a key login works, then drops the password.
+    private func installKey(on target: Server, using conn: SSHConnection) async throws {
+        let device = UIDevice.current.name.replacingOccurrences(of: " ", with: "-")
+        let pair = SSHKeys.generateEd25519(comment: "deckhand@\(device)")
+        let r = try await conn.run(KeyInstall.command(publicKey: pair.publicKey), timeout: .seconds(20))
+        guard KeyInstall.succeeded(r) else {
+            throw ToolError.failed("Could not add the key on the server: \(r.stderr.isEmpty ? "exit \(r.exitCode)" : r.stderr)")
+        }
+        // Prove the key works before forgetting the password.
+        let probe = SSHConnection(
+            endpoint: SSHEndpoint(host: target.host, port: target.port, username: target.username),
+            credential: .privateKey(pair.privateKey, passphrase: nil))
+        try await probe.connect(pinnedHostKey: target.pinnedHostKey) { _, _ in false }
+        await probe.disconnect()
+        Keychain.set(pair.privateKey, for: target.secretAccount)
+        target.authKind = .key
+        authKind = .key
+        privateKey = pair.privateKey
+        publicKey = pair.publicKey
+        password = ""
+        await connections.disconnect(target)
+    }
+
     private func test() async {
         testState = .running
         let target = save()
@@ -205,7 +237,12 @@ struct ServerEditorView: View {
         do {
             let conn = try await connections.connection(for: target)
             let r = try await conn.run("uname -sr; whoami", timeout: .seconds(15))
-            testState = .ok(r.stdout.trimmingCharacters(in: .whitespacesAndNewlines))
+            var info = r.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+            if authKind == .password && switchToKey {
+                try await installKey(on: target, using: conn)
+                info += "\nSecure key installed — the password is no longer stored."
+            }
+            testState = .ok(info)
         } catch {
             testState = .failed(error.localizedDescription)
         }

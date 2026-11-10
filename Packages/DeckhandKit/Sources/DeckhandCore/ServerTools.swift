@@ -267,3 +267,18 @@ struct SearchTool: AgentTool {
         return r.stdout.isEmpty ? "No matches." : clip(r.stdout)
     }
 }
+
+/// Installs a public key for the current user on the server, idempotently and with safe permissions.
+public enum KeyInstall {
+    public static func command(publicKey: String) -> String {
+        let key = ShellQuote.quote(publicKey.trimmingCharacters(in: .whitespacesAndNewlines))
+        return """
+        umask 077; mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys \
+        && { grep -qxF \(key) ~/.ssh/authorized_keys || printf '%s\\n' \(key) >> ~/.ssh/authorized_keys; } && echo deckhand-key-ok
+        """
+    }
+
+    public static func succeeded(_ result: CommandResult) -> Bool {
+        result.exitCode == 0 && result.stdout.contains("deckhand-key-ok")
+    }
+}

@@ -37,6 +37,8 @@ final class DemoFlowTests: XCTestCase {
         pause(2)
         trust.tap()
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Linux'")).firstMatch.waitForExistence(timeout: 30))
+        // Password login was replaced by a key the app made and installed.
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Secure key installed'")).firstMatch.waitForExistence(timeout: 30))
         pause(2)
         app.buttons["Save"].tap()
         if app.buttons["Not Now"].waitForExistence(timeout: 12) { app.buttons["Not Now"].tap(); pause(1) }
