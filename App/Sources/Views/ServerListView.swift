@@ -66,6 +66,12 @@ struct ServerListView: View {
         }
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
+            // A notification or link for a chat: open its server; the server screen opens the chat.
+            guard let id, let thread = try? context.fetch(FetchDescriptor<ChatThread>(predicate: #Predicate { $0.id == id })).first,
+                  let server = thread.server else { return }
+            if autoOpen?.id != server.id { autoOpen = server }
+        }
         #if DEBUG
         .task {
             try? await Task.sleep(for: .milliseconds(500))

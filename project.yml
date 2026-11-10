@@ -44,6 +44,7 @@ targets:
         PRODUCT_NAME: Deckhand
         TARGETED_DEVICE_FAMILY: "1"
         GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: App/Info.plist
         INFOPLIST_KEY_CFBundleDisplayName: Deckhand
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
         INFOPLIST_KEY_UILaunchScreen_Generation: YES

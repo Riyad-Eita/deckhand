@@ -67,13 +67,20 @@ final class ChatModel {
     private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess) async {
         var delay: Double = 2
         var reconnecting = thread.cliRunLine > 1
+        let starting = thread.cliRunLine <= 1
+        if starting { TaskNotifier.shared.requestPermission() }
+        let topic = AppSettings.shared.ntfyTopicURL
+        let notify = topic.isEmpty ? nil : DetachedRun.Notify(
+            topicURL: topic, doneMessage: String(localized: "Done: \(thread.title)"),
+            failedMessage: String(localized: "Didn't finish: \(thread.title)"), click: AppRouter.link(for: thread.id))
         while !Task.isCancelled {
             do {
                 let shell = try await Connections.shared.connection(for: server)
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
                     sessionID: thread.cliSessionID, access: access, run: run, fromLine: thread.cliRunLine,
-                    meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory))
+                    meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
+                    notify: notify)
                 for try await event in events {
                     if reconnecting { notice = nil; reconnecting = false; delay = 2 }
                     handle(event)
@@ -92,7 +99,10 @@ final class ChatModel {
                 delay = min(delay * 2, 30)
             }
         }
-        if !Task.isCancelled { thread.cliRunActive = false }
+        if !Task.isCancelled {
+            thread.cliRunActive = false
+            TaskNotifier.shared.taskFinished(thread, ok: error == nil)
+        }
         clearLive()
         isRunning = false
         persist()
@@ -179,6 +189,7 @@ final class ChatModel {
 
     private func requestApproval(_ request: ApprovalRequest) async -> ApprovalDecision {
         toolStatus[request.call.id] = .waiting
+        TaskNotifier.shared.approvalNeeded(thread, command: request.call.input["command"]?.stringValue ?? request.call.name)
         return await withCheckedContinuation { continuation in
             pendingApproval = PendingApproval(call: request.call, danger: request.danger) { [weak self] decision in
                 self?.pendingApproval = nil

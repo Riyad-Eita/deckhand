@@ -566,6 +566,16 @@
         }
       }
     },
+    "Approval needed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigabe nötig"
+          }
+        }
+      }
+    },
     "Approvals": {
       "localizations": {
         "de": {
@@ -1239,6 +1249,16 @@
         }
       }
     },
+    "Copy topic": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Topic kopieren"
+          }
+        }
+      }
+    },
     "Could not connect": {
       "localizations": {
         "de": {
@@ -1275,6 +1295,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die GitHub CLI ließ sich auf diesem Server nicht installieren."
+          }
+        }
+      }
+    },
+    "Couldn't reach the topic.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Topic war nicht erreichbar."
           }
         }
       }
@@ -1420,6 +1450,16 @@
         }
       }
     },
+    "Deckhand tells you when a task is done or needs your approval. Once the app is closed, iOS only lets it check now and then — with ntfy, your server pushes the moment a task ends. Subscribe to the topic in the ntfy app; only the task's title is sent. You can use your own ntfy server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand meldet sich, wenn eine Aufgabe fertig ist oder deine Freigabe braucht. Ist die App geschlossen, lässt iOS sie nur ab und zu nachsehen – mit ntfy meldet sich dein Server sofort, wenn eine Aufgabe endet. Abonniere das Topic in der ntfy-App; gesendet wird nur der Titel der Aufgabe. Du kannst auch deinen eigenen ntfy-Server nutzen."
+          }
+        }
+      }
+    },
     "Delete": {
       "localizations": {
         "de": {
@@ -1456,6 +1496,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diktieren"
+          }
+        }
+      }
+    },
+    "Didn't finish: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht fertig geworden: %@"
           }
         }
       }
@@ -1547,6 +1597,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Done: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig: %@"
           }
         }
       }
@@ -1913,6 +1973,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Los geht's"
+          }
+        }
+      }
+    },
+    "Get the ntfy app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ntfy-App laden"
           }
         }
       }
@@ -2770,6 +2840,26 @@
         }
       }
     },
+    "Notifications": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen"
+          }
+        }
+      }
+    },
+    "Notifications from your server work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen von deinem Server funktionieren."
+          }
+        }
+      }
+    },
     "Now": {
       "localizations": {
         "de": {
@@ -3058,6 +3148,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Push"
+          }
+        }
+      }
+    },
+    "Push from the server (ntfy)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push vom Server (ntfy)"
           }
         }
       }
@@ -3520,6 +3620,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senden"
+          }
+        }
+      }
+    },
+    "Send a test": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test senden"
+          }
+        }
+      }
+    },
+    "Sent — check the ntfy app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesendet – schau in die ntfy-App."
           }
         }
       }
@@ -4045,6 +4165,26 @@
         }
       }
     },
+    "Task done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe fertig"
+          }
+        }
+      }
+    },
+    "Task stopped": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe abgebrochen"
+          }
+        }
+      }
+    },
     "Tasks you give Claude Code or Codex keep running here when you close the app or lose the connection.": {
       "localizations": {
         "de": {
@@ -4291,6 +4431,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Änderungen an %@ verwerfen?"
+          }
+        }
+      }
+    },
+    "Topic URL": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Topic-URL"
           }
         }
       }

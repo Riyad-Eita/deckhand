@@ -64,6 +64,8 @@ struct AgentChatView: View {
                 .frame(maxWidth: 260)
             }
         }
+        .onAppear { AppRouter.shared.visibleThread = model.thread.id }
+        .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }
         .task {
             model.resumeIfNeeded()
             if let prompt = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(prompt) }

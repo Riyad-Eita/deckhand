@@ -22,6 +22,8 @@ final class AppSettings {
     var cliAccess: CLIAccess { didSet { defaults.set(cliAccess.rawValue, forKey: "cli.access") } }
     /// Terminal opens inside tmux/screen so it survives disconnects.
     var keepTerminalSessions: Bool { didSet { defaults.set(keepTerminalSessions, forKey: "terminal.keep") } }
+    /// ntfy topic URL the server pushes to when a task ends (empty: off).
+    var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
 
     private init() {
         let kind = ProviderKind(rawValue: defaults.string(forKey: "provider.kind") ?? "") ?? .anthropic
@@ -33,6 +35,7 @@ final class AppSettings {
         approvalPolicy = ApprovalPolicy(rawValue: defaults.string(forKey: "agent.policy") ?? "") ?? .autoRead
         cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
+        ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
         loadProviderFields()
     }
 

@@ -69,6 +69,9 @@ struct ServerView: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
+        .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
+            if let id, server.threads?.contains(where: { $0.id == id }) == true { tab = .agent }
+        }
         .sheet(isPresented: $showingTools) {
             ServerToolsView(server: server) { command in
                 terminalCommand = command
@@ -154,6 +157,11 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
+            guard let id, let thread = threads.first(where: { $0.id == id }) else { return }
+            AppRouter.shared.pendingThread = nil
+            openThread = thread
+        }
         .task(id: startTask) {
             guard let start = startTask else { return }
             startTask = nil
