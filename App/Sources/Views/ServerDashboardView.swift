@@ -56,6 +56,14 @@ struct ServerDashboardView: View {
                         .buttonStyle(.plain)
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            GitReposView(server: server)
+                        } label: {
+                            ManageRow(title: "Git", subtitle: "Status, diffs, commits, branches, pull and push", symbol: "arrow.triangle.branch")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.git")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")

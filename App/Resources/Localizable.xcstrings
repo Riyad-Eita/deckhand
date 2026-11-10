@@ -314,6 +314,16 @@
         }
       }
     },
+    "Add a model key in Settings, or sign in to Claude Code or Codex on this server, to get suggestions.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinterlege einen Modell-Key in den Einstellungen oder melde dich auf diesem Server bei Claude Code oder Codex an, um Vorschläge zu bekommen."
+          }
+        }
+      }
+    },
     "Add connections": {
       "localizations": {
         "de": {
@@ -728,6 +738,16 @@
         }
       }
     },
+    "Branches": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branches"
+          }
+        }
+      }
+    },
     "Bring an agent": {
       "localizations": {
         "de": {
@@ -794,6 +814,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Port ändern"
+          }
+        }
+      }
+    },
+    "Changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen"
           }
         }
       }
@@ -1018,6 +1048,26 @@
         }
       }
     },
+    "Commit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Committen"
+          }
+        }
+      }
+    },
+    "Commit message": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commit-Nachricht"
+          }
+        }
+      }
+    },
     "Comparing…": {
       "localizations": {
         "de": {
@@ -1169,6 +1219,16 @@
         }
       }
     },
+    "Create": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anlegen"
+          }
+        }
+      }
+    },
     "Create %@ with sudo and this iPhone's key": {
       "localizations": {
         "de": {
@@ -1280,6 +1340,16 @@
         }
       }
     },
+    "Deckhand looks for Git repositories up to four folders below your home folder.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand sucht Git-Repositories bis zu vier Ordner unter deinem Home-Ordner."
+          }
+        }
+      }
+    },
     "Deckhand opens the new port next to the old one, logs in on it, and only then closes the old one. If anything goes wrong, the server switches back by itself after 5 minutes.": {
       "localizations": {
         "de": {
@@ -1310,6 +1380,16 @@
         }
       }
     },
+    "Detached HEAD": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Losgelöster HEAD"
+          }
+        }
+      }
+    },
     "Dictate": {
       "localizations": {
         "de": {
@@ -1327,6 +1407,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deaktivieren"
+          }
+        }
+      }
+    },
+    "Discard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwerfen"
           }
         }
       }
@@ -1459,6 +1549,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gründlichkeit"
+          }
+        }
+      }
+    },
+    "Email": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail"
           }
         }
       }
@@ -1727,6 +1827,36 @@
         }
       }
     },
+    "Git": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git"
+          }
+        }
+      }
+    },
+    "Git doesn't know who you are on this server yet. Set your name and email in the repository settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git weiß auf diesem Server noch nicht, wer du bist. Setz Name und E-Mail für das Repository."
+          }
+        }
+      }
+    },
+    "Git reported an error.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git hat einen Fehler gemeldet."
+          }
+        }
+      }
+    },
     "GitHub personal access token": {
       "localizations": {
         "de": {
@@ -1753,6 +1883,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hoch"
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf"
           }
         }
       }
@@ -2307,6 +2447,16 @@
         }
       }
     },
+    "New branch from here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Branch von hier"
+          }
+        }
+      }
+    },
     "New password": {
       "localizations": {
         "de": {
@@ -2397,12 +2547,32 @@
         }
       }
     },
+    "No repositories found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Repositories gefunden"
+          }
+        }
+      }
+    },
     "No sub-folders": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Keine Unterordner"
+          }
+        }
+      }
+    },
+    "No text changes (binary file or only file mode).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Textänderungen (Binärdatei oder nur Dateirechte)."
           }
         }
       }
@@ -2416,6 +2586,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts geändert: SSH läuft weiter auf dem alten Port."
+          }
+        }
+      }
+    },
+    "Nothing to commit — the working tree is clean.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts zu committen – das Arbeitsverzeichnis ist sauber."
           }
         }
       }
@@ -2691,6 +2871,16 @@
         }
       }
     },
+    "Pull": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull"
+          }
+        }
+      }
+    },
     "Pull images": {
       "extractionState": "manual",
       "localizations": {
@@ -2698,6 +2888,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Images aktualisieren"
+          }
+        }
+      }
+    },
+    "Push": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push"
           }
         }
       }
@@ -3064,6 +3264,16 @@
         }
       }
     },
+    "Saved in this repository's Git settings on the server and shown on your commits.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird in den Git-Einstellungen dieses Repositorys auf dem Server gespeichert und an deinen Commits angezeigt."
+          }
+        }
+      }
+    },
     "Score %lld of 100": {
       "localizations": {
         "de": {
@@ -3230,6 +3440,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einrichten"
+          }
+        }
+      }
+    },
+    "Set name and email": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name und E-Mail setzen"
           }
         }
       }
@@ -3414,6 +3634,36 @@
         }
       }
     },
+    "Stage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vormerken"
+          }
+        }
+      }
+    },
+    "Stage all": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle vormerken"
+          }
+        }
+      }
+    },
+    "Staged": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorgemerkt"
+          }
+        }
+      }
+    },
     "Start": {
       "extractionState": "manual",
       "localizations": {
@@ -3451,6 +3701,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Status"
+          }
+        }
+      }
+    },
+    "Status, diffs, commits, branches, pull and push": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status, Diffs, Commits, Branches, Pull und Push"
           }
         }
       }
@@ -3715,6 +3975,16 @@
         }
       }
     },
+    "The remote has commits you don't have yet. Pull first, then push.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Remote hat Commits, die du noch nicht hast. Erst pullen, dann pushen."
+          }
+        }
+      }
+    },
     "The server asks for your sudo password for this. Deckhand opens the terminal with the command so you can type it there.": {
       "localizations": {
         "de": {
@@ -3731,6 +4001,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server konnte Port %1$@ nicht öffnen (%2$@). Die vorherige Konfiguration wurde wiederhergestellt."
+          }
+        }
+      }
+    },
+    "The server has no credentials for this remote. Connect GitHub in Connections, or add an SSH key for the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat keine Zugangsdaten für dieses Remote. Verbinde GitHub unter Verbindungen oder hinterlege einen SSH-Schlüssel für den Server."
           }
         }
       }
@@ -3765,6 +4045,16 @@
         }
       }
     },
+    "This can't be undone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
     "This port is commonly used by other services. Pick another one.": {
       "localizations": {
         "de": {
@@ -3781,6 +4071,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gedanken"
+          }
+        }
+      }
+    },
+    "Throw away": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwerfen"
+          }
+        }
+      }
+    },
+    "Throw away the changes to %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen an %@ verwerfen?"
           }
         }
       }
@@ -3861,6 +4171,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatisch zurückgenommen (%@)."
+          }
+        }
+      }
+    },
+    "Unstage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurücknehmen"
+          }
+        }
+      }
+    },
+    "Unstage all": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle zurücknehmen"
           }
         }
       }
@@ -4089,6 +4419,16 @@
     "Whisper large-v3": {
       "shouldTranslate": false
     },
+    "Who's committing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer committet"
+          }
+        }
+      }
+    },
     "With automatic security updates the server patches itself every day, even when you don't look.": {
       "localizations": {
         "de": {
@@ -4125,6 +4465,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet in %@. Der Agent fragt, bevor er etwas ändert."
+          }
+        }
+      }
+    },
+    "Your branch and the remote have both moved on. Ask an agent to merge or rebase them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Branch und das Remote haben sich beide weiterentwickelt. Lass einen Agenten mergen oder rebasen."
           }
         }
       }
