@@ -163,3 +163,11 @@ final class ChatModel {
         thread.messages = messages
     }
 }
+
+/// Prompts handed to a task that is about to open (e.g. "Investigate" on the server dashboard).
+@MainActor
+enum PendingPrompt {
+    private static var prompts: [UUID: String] = [:]
+    static func set(_ prompt: String, for thread: UUID) { prompts[thread] = prompt }
+    static func take(for thread: UUID) -> String? { prompts.removeValue(forKey: thread) }
+}
