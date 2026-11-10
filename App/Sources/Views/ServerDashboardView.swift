@@ -107,6 +107,14 @@ struct ServerDashboardView: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("dashboard.sshPort")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
+                                FirewallView(server: server)
+                            } label: {
+                                ManageRow(title: "Firewall", subtitle: "Rules, presets and a check from outside", symbol: "flame")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.firewall")
                         }
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
