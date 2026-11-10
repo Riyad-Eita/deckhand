@@ -140,7 +140,8 @@ struct RootTaskSheet: View {
             guard await follow.run(ConfigChange.confirmScript(id: guardID), on: server, connection: fresh) else {
                 throw CLIError("Couldn't confirm the change.")
             }
-            await connections.adopt(fresh, for: server, port: server.port)
+            // Only a check: the app keeps its current connection (swapping it re-renders the screens below).
+            await fresh.disconnect()
             loginState = .done
             done = true
             finished(true)

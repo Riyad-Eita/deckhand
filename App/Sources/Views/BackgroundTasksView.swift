@@ -74,9 +74,9 @@ struct BackgroundTasksView: View {
         }
         .swipeActions {
             if info.status.isActive {
-                Button("Stop", role: .destructive) { confirmStop = info }
+                Button("Stop") { confirmStop = info }.tint(.red)
             } else {
-                Button("Delete", role: .destructive) { Task { await clear([info]) } }
+                Button("Delete") { Task { await clear([info]) } }.tint(.red)
             }
         }
     }

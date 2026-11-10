@@ -284,6 +284,16 @@
         }
       }
     },
+    "Active": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "de": {
@@ -320,6 +330,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hinterlege einen Modell-Key in den Einstellungen oder melde dich auf diesem Server bei Claude Code oder Codex an, um Vorschläge zu bekommen."
+          }
+        }
+      }
+    },
+    "Add a rule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regel hinzufügen"
           }
         }
       }
@@ -475,12 +495,32 @@
         }
       }
     },
+    "Allow a port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port erlauben"
+          }
+        }
+      }
+    },
     "Allow this?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Erlauben?"
+          }
+        }
+      }
+    },
+    "Allowed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaubt"
           }
         }
       }
@@ -868,6 +908,16 @@
         }
       }
     },
+    "Check from outside": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von außen prüfen"
+          }
+        }
+      }
+    },
     "Check it works": {
       "localizations": {
         "de": {
@@ -884,6 +934,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Konfiguration prüfen"
+          }
+        }
+      }
+    },
+    "Check the port and address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe Port und Adresse."
           }
         }
       }
@@ -1366,6 +1426,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Datenbanken und Admin-APIs sollten nur auf localhost oder einem privaten Netz lauschen. Offen sind sie nur ein schwaches Passwort von einem Datenleck entfernt."
+          }
+        }
+      }
+    },
+    "Databases should only be open for the addresses that need them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbanken sollten nur für die Adressen offen sein, die sie brauchen."
           }
         }
       }
@@ -2157,6 +2227,16 @@
         }
       }
     },
+    "Incoming connections are blocked except SSH (port %@) and web (80, 443). Deckhand logs in again before keeping it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingehende Verbindungen werden geblockt, außer SSH (Port %@) und Web (80, 443). Deckhand meldet sich erneut an, bevor es das behält."
+          }
+        }
+      }
+    },
     "Install": {
       "localizations": {
         "de": {
@@ -2347,6 +2427,16 @@
         }
       }
     },
+    "Listening but not reachable from here: %@ — the firewall keeps them private.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lauscht, ist von hier aber nicht erreichbar: %@ – die Firewall hält das privat."
+          }
+        }
+      }
+    },
     "Load": {
       "localizations": {
         "de": {
@@ -2487,6 +2577,16 @@
         }
       }
     },
+    "Make sure this should be public.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe, ob das öffentlich sein soll."
+          }
+        }
+      }
+    },
     "Make system files writable only by their owner": {
       "localizations": {
         "de": {
@@ -2523,6 +2623,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Maximal"
+          }
+        }
+      }
+    },
+    "Meant to be public.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soll öffentlich sein."
           }
         }
       }
@@ -2637,6 +2747,16 @@
         }
       }
     },
+    "MySQL for one address (3306)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MySQL für eine Adresse (3306)"
+          }
+        }
+      }
+    },
     "Name": {
       "localizations": {
         "de": {
@@ -2717,6 +2837,16 @@
         }
       }
     },
+    "Next": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        }
+      }
+    },
     "Next: move SSH off port 22": {
       "localizations": {
         "de": {
@@ -2753,6 +2883,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Änderungen"
+          }
+        }
+      }
+    },
+    "No common port answered.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein üblicher Port hat geantwortet."
           }
         }
       }
@@ -2800,12 +2940,32 @@
     "Node.js": {
       "shouldTranslate": false
     },
+    "None installed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine installiert"
+          }
+        }
+      }
+    },
     "Not connected": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Nicht verbunden"
+          }
+        }
+      }
+    },
+    "Note (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz (optional)"
           }
         }
       }
@@ -2880,6 +3040,16 @@
         }
       }
     },
+    "Off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus"
+          }
+        }
+      }
+    },
     "Offline": {
       "localizations": {
         "de": {
@@ -2896,6 +3066,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Online"
+          }
+        }
+      }
+    },
+    "Only from (address or network, optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur von (Adresse oder Netz, optional)"
           }
         }
       }
@@ -2926,6 +3106,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicherheits-Check öffnen"
+          }
+        }
+      }
+    },
+    "Open to the outside": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen nach außen"
+          }
+        }
+      }
+    },
+    "Opens port %@/%@%@ in the firewall.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet Port %1$@/%2$@%3$@ in der Firewall."
           }
         }
       }
@@ -3060,12 +3260,42 @@
         }
       }
     },
+    "Port, list or range (8080, 80,443, 6000:6007)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port, Liste oder Bereich (8080, 80,443, 6000:6007)"
+          }
+        }
+      }
+    },
     "Ports": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Ports"
+          }
+        }
+      }
+    },
+    "PostgreSQL for one address (5432)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PostgreSQL für eine Adresse (5432)"
+          }
+        }
+      }
+    },
+    "Presets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorlagen"
           }
         }
       }
@@ -3107,6 +3337,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fortschritt"
+          }
+        }
+      }
+    },
+    "Protocol": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokoll"
           }
         }
       }
@@ -3293,6 +3533,16 @@
         }
       }
     },
+    "Removes the rule %@%@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt die Regel %1$@%2$@."
+          }
+        }
+      }
+    },
     "Requests": {
       "localizations": {
         "de": {
@@ -3410,6 +3660,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Root-Login"
+          }
+        }
+      }
+    },
+    "Rules, presets and a check from outside": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regeln, Vorlagen und ein Check von außen"
           }
         }
       }
@@ -3804,6 +4064,16 @@
         }
       }
     },
+    "Shouldn't be reachable from the internet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sollte aus dem Internet nicht erreichbar sein."
+          }
+        }
+      }
+    },
     "Show me what changed in the last git commit here": {
       "localizations": {
         "de": {
@@ -4015,6 +4285,16 @@
         }
       }
     },
+    "State": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zustand"
+          }
+        }
+      }
+    },
     "Status": {
       "localizations": {
         "de": {
@@ -4111,6 +4391,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorschlagen"
+          }
+        }
+      }
+    },
+    "Swipe to remove a rule. The rule that lets Deckhand reach SSH can't be removed. Every change is checked with a fresh login and undone by itself if that fails.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wische, um eine Regel zu entfernen. Die Regel, über die Deckhand SSH erreicht, lässt sich nicht entfernen. Jede Änderung wird mit einer neuen Anmeldung geprüft und nimmt sich selbst zurück, wenn das scheitert."
           }
         }
       }
@@ -4445,6 +4735,16 @@
         }
       }
     },
+    "Tries common ports from the network this iPhone is on. On the same Wi-Fi as the server you see more than the internet does — use mobile data for the real outside view.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probiert übliche Ports aus dem Netz, in dem dieses iPhone ist. Im selben WLAN wie der Server siehst du mehr als das Internet – nutze mobile Daten für den echten Blick von außen."
+          }
+        }
+      }
+    },
     "Trust": {
       "localizations": {
         "de": {
@@ -4501,6 +4801,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Firewall einschalten"
+          }
+        }
+      }
+    },
+    "Turn on: block everything except SSH and web": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einschalten: alles blocken außer SSH und Web"
           }
         }
       }
@@ -4736,6 +5046,16 @@
         }
       }
     },
+    "Website (80, 443)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Website (80, 443)"
+          }
+        }
+      }
+    },
     "Well protected": {
       "localizations": {
         "de": {
@@ -4929,6 +5249,36 @@
         }
       }
     },
+    "for %@ only": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nur für %@"
+          }
+        }
+      }
+    },
+    "from %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "von %@"
+          }
+        }
+      }
+    },
+    "from anywhere": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "von überall"
+          }
+        }
+      }
+    },
     "git": {
       "shouldTranslate": false
     },
@@ -4990,6 +5340,16 @@
     },
     "tmux": {
       "shouldTranslate": false
+    },
+    "unknown service": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unbekannter Dienst"
+          }
+        }
+      }
     },
     "·": {
       "shouldTranslate": false

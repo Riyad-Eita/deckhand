@@ -170,7 +170,7 @@ struct GitRepoView: View {
                 Button("Unstage") { run(Git.unstageCommand(repo, paths: [f.path])) }.tint(.orange)
             } else {
                 Button("Stage") { run(Git.stageCommand(repo, paths: [f.path])) }.tint(.green)
-                Button("Discard", role: .destructive) { confirmDiscard = f }
+                Button("Discard") { confirmDiscard = f }.tint(.red)
             }
         }
     }
