@@ -6,12 +6,17 @@ struct ServerView: View {
 
     enum Tab: String, CaseIterable, Identifiable {
         case agent = "Agent"
+        case server = "Server"
         case terminal = "Terminal"
         var id: String { rawValue }
     }
 
     @State private var tab: Tab = .agent
     @State private var showingTools = false
+    /// A prompt from the dashboard waiting for the user to pick an engine.
+    @State private var investigate: String?
+    /// Engine + prompt for a task the agent tab should open right away.
+    @State private var startTask: StartTask?
     /// A command for the terminal to run once it is connected (e.g. a CLI login).
     @State private var terminalCommand: String?
     @Environment(Connections.self) private var connections
@@ -19,6 +24,7 @@ struct ServerView: View {
     init(server: Server) {
         self.server = server
         #if DEBUG
+        if DebugSeed.pendingRun?.engine == "server" { _tab = State(initialValue: .server) }
         if let run = DebugSeed.pendingRun, run.engine == "terminal" {
             _tab = State(initialValue: .terminal)
             if !run.prompt.isEmpty { _terminalCommand = State(initialValue: run.prompt) }
@@ -29,7 +35,8 @@ struct ServerView: View {
     var body: some View {
         Group {
             switch tab {
-            case .agent: ThreadListView(server: server)
+            case .agent: ThreadListView(server: server, startTask: $startTask)
+            case .server: ServerDashboardView(server: server) { prompt in investigate = prompt }
             case .terminal: TerminalScreen(server: server, pendingCommand: $terminalCommand)
             }
         }
@@ -41,7 +48,7 @@ struct ServerView: View {
                     ForEach(Tab.allCases) { Text($0.rawValue).tag($0) }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 200)
+                .frame(width: 260)
             }
             ToolbarItem(placement: .primaryAction) {
                 Button { showingTools = true } label: {
@@ -57,6 +64,17 @@ struct ServerView: View {
             if showing {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
+        }
+        .confirmationDialog("Investigate with", isPresented: Binding(get: { investigate != nil }, set: { if !$0 { investigate = nil } }), titleVisibility: .visible) {
+            ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
+                Button(engine.title) {
+                    if let prompt = investigate { startTask = StartTask(engine: engine, prompt: prompt) }
+                    investigate = nil
+                    tab = .agent
+                }
+            }
+        } message: {
+            Text(investigate ?? "")
         }
         .sheet(isPresented: $showingTools) {
             ServerToolsView(server: server) { command in
@@ -75,8 +93,14 @@ struct ServerView: View {
     }
 }
 
+struct StartTask: Equatable {
+    let engine: Engine
+    let prompt: String
+}
+
 struct ThreadListView: View {
     let server: Server
+    @Binding var startTask: StartTask?
     @Environment(\.modelContext) private var context
     @State private var openThread: ChatThread?
     @State private var pickingFolderFor: Engine?
@@ -132,6 +156,14 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        .task(id: startTask) {
+            guard let start = startTask else { return }
+            startTask = nil
+            let thread = ChatThread(server: server, workingDirectory: server.recentDirectories.first ?? server.workingDirectory, engine: start.engine)
+            context.insert(thread)
+            PendingPrompt.set(start.prompt, for: thread.id)
+            openThread = thread
+        }
         .sheet(item: $pickingFolderFor) { engine in
             FolderPicker(server: server, engine: engine) { folder in
                 let thread = ChatThread(server: server, workingDirectory: folder, engine: engine)

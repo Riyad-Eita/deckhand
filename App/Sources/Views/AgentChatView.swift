@@ -63,6 +63,9 @@ struct AgentChatView: View {
                 .frame(maxWidth: 260)
             }
         }
+        .task {
+            if let prompt = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(prompt) }
+        }
         #if DEBUG
         .task {
             // DECKHAND_SEED_VOICE_FILE=<file in the app's tmp dir>: install Whisper if needed and dictate that file.

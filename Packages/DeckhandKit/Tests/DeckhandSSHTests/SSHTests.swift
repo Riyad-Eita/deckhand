@@ -155,3 +155,15 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    @Test func serverStatsLive() async throws {
+        let conn = try await connection()
+        let r = try await conn.run(ServerStats.probeCommand, timeout: .seconds(20))
+        let s = try #require(ServerStats.parse(r.stdout))
+        #expect(s.cores > 0)
+        #expect(s.memTotalKB > 0)
+        #expect(!s.disks.isEmpty)
+        await conn.disconnect()
+    }
+}
