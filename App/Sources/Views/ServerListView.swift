@@ -125,9 +125,9 @@ struct ServerRow: View {
 
     private var statusText: String {
         switch state {
-        case .connected: "Online"
-        case .connecting: "Connecting"
-        case .failed: "Offline"
+        case .connected: String(localized: "Online")
+        case .connecting: String(localized: "Connecting")
+        case .failed: String(localized: "Offline")
         case .idle: ""
         }
     }

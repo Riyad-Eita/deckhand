@@ -118,7 +118,7 @@ struct ServiceDetailView: View {
                             } label: {
                                 HStack(spacing: 4) {
                                     if busy == action { ProgressView().controlSize(.mini) }
-                                    Text(action.title)
+                                    Text(LocalizedStringKey(action.title))
                                 }
                             }
                             .buttonStyle(.bordered)
@@ -174,7 +174,7 @@ struct ServiceDetailView: View {
             let conn = try await connections.connection(for: server)
             let r = try await conn.run(Services.actionCommand(action, unit: unit.name), timeout: .seconds(60))
             try Services.check(r, action: action, unit: unit.name)
-            message = "\(action.title) done."
+            message = String(localized: "\(action.title) done.")
             await refresh()
         } catch let ServiceError.needsPassword(command) {
             needsTerminal = command

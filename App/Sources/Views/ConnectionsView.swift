@@ -78,21 +78,21 @@ struct ConnectionPreset: Identifiable, Hashable {
 
     static let all: [ConnectionPreset] = [
         ConnectionPreset(
-            id: "github", name: "GitHub", blurb: "Issues, pull requests and code search for the agents.",
+            id: "github", name: "GitHub", blurb: String(localized: "Issues, pull requests and code search for the agents."),
             symbol: "chevron.left.forwardslash.chevron.right", kind: "http", url: "https://api.githubcopilot.com/mcp/",
-            command: "", needsToken: true, tokenHint: "GitHub personal access token"),
+            command: "", needsToken: true, tokenHint: String(localized: "GitHub personal access token")),
         ConnectionPreset(
-            id: "deepwiki", name: "DeepWiki", blurb: "Ask questions about any public GitHub repository. No account needed.",
+            id: "deepwiki", name: "DeepWiki", blurb: String(localized: "Ask questions about any public GitHub repository. No account needed."),
             symbol: "book", kind: "http", url: "https://mcp.deepwiki.com/mcp", command: "", needsToken: false, tokenHint: ""),
         ConnectionPreset(
-            id: "context7", name: "Context7", blurb: "Up-to-date library documentation for coding.",
+            id: "context7", name: "Context7", blurb: String(localized: "Up-to-date library documentation for coding."),
             symbol: "doc.text.magnifyingglass", kind: "http", url: "https://mcp.context7.com/mcp", command: "",
-            needsToken: false, tokenHint: "API key (optional)"),
+            needsToken: false, tokenHint: String(localized: "API key (optional)")),
         ConnectionPreset(
-            id: "url", name: "Other server (URL)", blurb: "Any MCP server with a streamable HTTP endpoint.",
-            symbol: "link", kind: "http", url: "", command: "", needsToken: false, tokenHint: "Bearer token (optional)"),
+            id: "url", name: String(localized: "Other server (URL)"), blurb: String(localized: "Any MCP server with a streamable HTTP endpoint."),
+            symbol: "link", kind: "http", url: "", command: "", needsToken: false, tokenHint: String(localized: "Bearer token (optional)")),
         ConnectionPreset(
-            id: "command", name: "Command on the server", blurb: "Starts a stdio MCP server on your server, e.g. with npx.",
+            id: "command", name: String(localized: "Command on the server"), blurb: String(localized: "Starts a stdio MCP server on your server, e.g. with npx."),
             symbol: "terminal", kind: "stdio", url: "", command: "", needsToken: false, tokenHint: ""),
     ]
 }

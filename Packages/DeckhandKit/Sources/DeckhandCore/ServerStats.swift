@@ -29,15 +29,32 @@ public struct ServerStats: Sendable, Hashable {
         memTotalKB > 0 ? Double(memTotalKB - memAvailableKB) / Double(memTotalKB) : 0
     }
 
+    public enum Warning: Sendable, Hashable {
+        case diskFull(mount: String, percent: Int)
+        case memoryLow
+        case loadHigh(cores: Int)
+    }
+
     /// Things worth flagging, most important first.
-    public var warnings: [String] {
-        var w: [String] = []
+    public var warningList: [Warning] {
+        var w: [Warning] = []
         for d in disks where d.usedFraction >= 0.85 {
-            w.append("\(d.mount) is \(Int((d.usedFraction * 100).rounded(.up))) % full")
+            w.append(.diskFull(mount: d.mount, percent: Int((d.usedFraction * 100).rounded(.up))))
         }
-        if memUsedFraction >= 0.9 { w.append("Memory is almost exhausted") }
-        if cores > 0 && load.0 > Double(cores) * 1.5 { w.append("Load is high for \(cores) cores") }
+        if memUsedFraction >= 0.9 { w.append(.memoryLow) }
+        if cores > 0 && load.0 > Double(cores) * 1.5 { w.append(.loadHigh(cores: cores)) }
         return w
+    }
+
+    /// English text of the warnings (used for agent prompts).
+    public var warnings: [String] {
+        warningList.map {
+            switch $0 {
+            case .diskFull(let m, let p): "\(m) is \(p) % full"
+            case .memoryLow: "Memory is almost exhausted"
+            case .loadHigh(let c): "Load is high for \(c) cores"
+            }
+        }
     }
 
     public static func == (a: ServerStats, b: ServerStats) -> Bool {

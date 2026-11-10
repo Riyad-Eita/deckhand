@@ -18,7 +18,7 @@ struct DockerView: View {
     var body: some View {
         List {
             Section {
-                Picker("View", selection: $mode) { ForEach(Mode.allCases) { Text($0.rawValue).tag($0) } }
+                Picker("View", selection: $mode) { ForEach(Mode.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) } }
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
@@ -51,7 +51,7 @@ struct DockerView: View {
                                 Text(p.configFiles.joined(separator: ", ")).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(2).truncationMode(.middle)
                                 HStack(spacing: 8) {
                                     ForEach(ComposeAction.allCases, id: \.self) { a in
-                                        Button(a.title) {
+                                        Button(LocalizedStringKey(a.title)) {
                                             let run = ComposeRun(project: p, action: a)
                                             if a.isDisruptive { confirmCompose = run } else { composeRun = run }
                                         }
@@ -169,7 +169,7 @@ struct ContainerDetailView: View {
                         } label: {
                             HStack(spacing: 4) {
                                 if busy == action { ProgressView().controlSize(.mini) }
-                                Text(action.title)
+                                Text(LocalizedStringKey(action.title))
                             }
                         }
                         .buttonStyle(.bordered).controlSize(.small)
