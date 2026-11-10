@@ -98,6 +98,9 @@ final class ChatThread {
     var cliRunID: String?
     var cliRunLine: Int = 1
     var cliRunActive: Bool = false
+    /// Model and effort for Claude Code / Codex in this task; nil = the default from Settings.
+    var cliModel: String?
+    var cliEffort: String?
     var server: Server?
 
     init(server: Server, workingDirectory: String, engine: Engine = .ownKey) {

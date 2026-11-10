@@ -82,10 +82,11 @@ struct SettingsView: View {
                     Picker("Access", selection: $settings.cliAccess) {
                         ForEach(CLIAccess.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
                     }
+                    CLIDefaultsSection()
                 } header: {
                     Text("Codex & Claude Code on the server")
                 } footer: {
-                    Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command.")
+                    Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.")
                 }
 
                 Section {

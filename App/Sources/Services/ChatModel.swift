@@ -79,7 +79,8 @@ final class ChatModel {
                 let shell = try await Connections.shared.connection(for: server)
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
-                    sessionID: thread.cliSessionID, access: access, run: run, fromLine: thread.cliRunLine,
+                    sessionID: thread.cliSessionID, access: access, options: AppSettings.shared.cliOptions(for: cli, thread: thread),
+                    run: run, fromLine: thread.cliRunLine,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
                     notify: notify)
                 for try await event in events {
