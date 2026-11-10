@@ -7,6 +7,7 @@ struct AgentChatView: View {
     @State private var draft = ""
     @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
+    @State private var browsing: BrowserTarget?
 
     init(thread: ChatThread, server: Server) {
         _model = State(initialValue: ChatModel.model(for: thread, server: server))
@@ -64,6 +65,13 @@ struct AgentChatView: View {
                 .frame(maxWidth: 260)
             }
         }
+        // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.
+        .environment(\.openURL, OpenURLAction { url in
+            guard let port = ListeningPorts.localPort(in: url) else { return .systemAction }
+            browsing = BrowserTarget(port: port, path: url.path.isEmpty ? "/" : url.path + (url.query.map { "?" + $0 } ?? ""))
+            return .handled
+        })
+        .sheet(item: $browsing) { BrowserSheet(server: model.server, port: $0.port, path: $0.path) }
         .onAppear { AppRouter.shared.visibleThread = model.thread.id }
         .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }
         .task {

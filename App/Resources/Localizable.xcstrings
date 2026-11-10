@@ -555,6 +555,16 @@
         }
       }
     },
+    "Also reachable from outside": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch von außen erreichbar"
+          }
+        }
+      }
+    },
     "Anthropic (Claude)": {
       "extractionState": "manual",
       "localizations": {
@@ -1405,6 +1415,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der neue Schlüssel ließ sich nicht installieren"
+          }
+        }
+      }
+    },
+    "Couldn't open port %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ ließ sich nicht öffnen"
           }
         }
       }
@@ -3240,12 +3260,32 @@
         }
       }
     },
+    "Nothing answers on port %lld on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf Port %lld antwortet auf dem Server nichts."
+          }
+        }
+      }
+    },
     "Nothing changed: SSH still runs on the old port.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Nichts geändert: SSH läuft weiter auf dem alten Port."
+          }
+        }
+      }
+    },
+    "Nothing listens on a port right now.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade lauscht nichts auf einem Port."
           }
         }
       }
@@ -3370,12 +3410,42 @@
         }
       }
     },
+    "Only on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur auf dem Server"
+          }
+        }
+      }
+    },
     "Only this server itself.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Nur dieser Server selbst."
+          }
+        }
+      }
+    },
+    "Open": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnen"
+          }
+        }
+      }
+    },
+    "Open apps running on the server, even localhost ones": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps auf dem Server öffnen, auch reine localhost-Apps"
           }
         }
       }
@@ -3420,6 +3490,16 @@
         }
       }
     },
+    "Opening a tunnel to port %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne einen Tunnel zu Port %@ …"
+          }
+        }
+      }
+    },
     "Opens port %@/%@%@ in the firewall.": {
       "localizations": {
         "de": {
@@ -3440,12 +3520,32 @@
         }
       }
     },
+    "Opens through your SSH connection, so apps that only listen on the server's localhost (dev servers, admin panels) work too — nothing gets exposed to the internet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet über deine SSH-Verbindung, sodass auch Apps funktionieren, die nur auf localhost des Servers lauschen (Dev-Server, Admin-Panels) – nichts wird ins Internet geöffnet."
+          }
+        }
+      }
+    },
     "Other apps or computers that use these exact keys from this iPhone stop working; your other devices keep their own keys.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Andere Apps oder Computer, die genau diese Schlüssel dieses iPhones nutzen, funktionieren danach nicht mehr; deine anderen Geräte behalten ihre eigenen Schlüssel."
+          }
+        }
+      }
+    },
+    "Other port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anderer Port"
           }
         }
       }
@@ -3819,6 +3919,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paketlisten aktualisieren"
+          }
+        }
+      }
+    },
+    "Reload": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu laden"
           }
         }
       }
@@ -5175,6 +5285,16 @@
         }
       }
     },
+    "This server doesn't allow SSH port forwarding (AllowTcpForwarding no in sshd_config).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server erlaubt keine SSH-Portweiterleitung (AllowTcpForwarding no in sshd_config)."
+          }
+        }
+      }
+    },
     "Thought": {
       "localizations": {
         "de": {
@@ -5415,6 +5535,16 @@
         }
       }
     },
+    "Unknown program": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unbekanntes Programm"
+          }
+        }
+      }
+    },
     "Unstage": {
       "localizations": {
         "de": {
@@ -5642,6 +5772,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wartet bis %@"
+          }
+        }
+      }
+    },
+    "Web apps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Web-Apps"
           }
         }
       }
