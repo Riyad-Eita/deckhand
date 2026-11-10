@@ -43,6 +43,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.files")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            ProcessesView(server: server)
+                        } label: {
+                            ManageRow(title: "Processes", subtitle: "What uses CPU and memory; end stuck processes", symbol: "cpu")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.processes")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             ServicesView(server: server)
                         } label: {
                             ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")

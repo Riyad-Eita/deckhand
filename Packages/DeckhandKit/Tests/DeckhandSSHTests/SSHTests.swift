@@ -618,3 +618,38 @@ extension LiveSSHTests {
         }
     }
 }
+
+extension LiveSSHTests {
+    /// Process list on a real server: finds a process we start, measures a busy one, ends both; a root process can't be killed.
+    @Test func processesLive() async throws {
+        let conn = try await connection()
+        let tag = "deckhand-proc-\(UUID().uuidString.prefix(6))"
+        _ = try await conn.run("nohup bash -c 'exec -a \(tag) sleep 300' >/dev/null 2>&1 </dev/null & "
+            + "nohup sh -c 'while :; do :; done # \(tag)-busy' >/dev/null 2>&1 </dev/null &", timeout: .seconds(10))
+        do {
+            let r = try await conn.run(Processes.command, timeout: .seconds(30))
+            let snap = try #require(Processes.parse(r.stdout), "\(r.stderr)")
+            #expect(snap.cores >= 1 && snap.memTotalKB > 0)
+            let sleeper = try #require(snap.processes.first { $0.command.contains(tag) && !$0.command.contains("busy") })
+            #expect(sleeper.user == snap.me)
+            let busy = try #require(snap.processes.first { $0.command.contains("\(tag)-busy") && $0.name == "sh" })
+            #expect(busy.cpu > 50, "busy loop at \(busy.cpu) %")
+            #expect(Processes.sorted(snap.processes, by: .cpu).prefix(5).contains { $0.pid == busy.pid })
+
+            for pid in [sleeper.pid, busy.pid] {
+                let k = try await conn.run(Processes.killCommand(pid: pid)!, timeout: .seconds(20))
+                #expect(k.exitCode == 0, "\(k.stderr)")
+            }
+            let after = try await conn.run("ps -p \(sleeper.pid),\(busy.pid) -o pid= || true", timeout: .seconds(10))
+            #expect(after.stdout.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+
+            if snap.me != "root", let rootProc = snap.processes.first(where: { $0.user == "root" && !$0.isKernelThread && $0.pid > 1 }) {
+                let denied = try await conn.run(Processes.killCommand(pid: rootProc.pid, force: true)!, timeout: .seconds(10))
+                #expect(denied.exitCode != 0)
+                #expect(Processes.killMessage(denied.stderr) == "This process belongs to another user.")
+            }
+        } catch { Issue.record(error) }
+        _ = try? await conn.run("pkill -f '[d]eckhand-proc-'", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
