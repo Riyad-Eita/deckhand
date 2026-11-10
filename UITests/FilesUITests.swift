@@ -92,6 +92,54 @@ final class FilesUITests: XCTestCase {
         shot(app, "agent-draft")
     }
 
+    /// Code viewer: highlighting, line numbers, find in file with a match counter, wrapping.
+    func testCodeViewerFindsInFile() throws {
+        let env = ProcessInfo.processInfo.environment
+        guard let host = env["DECKHAND_DEMO_HOST"], let password = env["DECKHAND_DEMO_PASSWORD"] else { throw XCTSkip("No demo server") }
+        let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_HOST"] = host
+        app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_DEMO_PORT"] ?? "22"
+        app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_DEMO_USER"] ?? "demo"
+        app.launchEnvironment["DECKHAND_SEED_PASSWORD"] = password
+        app.launchEnvironment["DECKHAND_SEED_NAME"] = "sandbox"
+        app.launchEnvironment["DECKHAND_SEED_TRUST"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_RUN"] = "server|"
+        app.launch()
+
+        let row = app.buttons["dashboard.files"]
+        XCTAssertTrue(row.waitForExistence(timeout: 30))
+        for _ in 0..<10 where !app.buttons["file.projects"].exists {
+            if row.exists && row.isHittable { row.tap() }
+            _ = app.buttons["file.projects"].waitForExistence(timeout: 3)
+        }
+        for name in ["projects", "weather-api", "src", "server.py"] {
+            let item = app.buttons["file.\(name)"]
+            XCTAssertTrue(item.waitForExistence(timeout: 20), name)
+            item.tap()
+        }
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Python'")).firstMatch.waitForExistence(timeout: 20))
+        shot(app, "code")
+
+        app.buttons["File Actions"].tap()
+        app.buttons["Wrap Lines"].tap()
+        sleep(1)
+        shot(app, "wrapped")
+        app.buttons["File Actions"].tap()
+        app.buttons["Wrap Lines"].tap()
+
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("city")
+        let counter = app.staticTexts["viewer.matches"]
+        XCTAssertTrue(counter.waitForExistence(timeout: 5))
+        XCTAssertTrue(counter.label.hasPrefix("1 of "), counter.label)
+        app.buttons["Next Match"].tap()
+        XCTAssertTrue(counter.label.hasPrefix("2 of "), counter.label)
+        shot(app, "find")
+    }
+
     private func waitForGone(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
         return XCTWaiter.wait(for: [gone], timeout: timeout) == .completed

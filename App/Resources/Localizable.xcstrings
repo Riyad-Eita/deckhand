@@ -138,6 +138,26 @@
         }
       }
     },
+    "%lld lines": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zeilen"
+          }
+        }
+      }
+    },
+    "%lld of %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld"
+          }
+        }
+      }
+    },
     "%lld running": {
       "localizations": {
         "de": {
@@ -2235,6 +2255,16 @@
         }
       }
     },
+    "Find in file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Datei suchen"
+          }
+        }
+      }
+    },
     "Find why nginx returns 502": {
       "localizations": {
         "de": {
@@ -3337,6 +3367,16 @@
         }
       }
     },
+    "Next Match": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächster Treffer"
+          }
+        }
+      }
+    },
     "Next: move SSH off port 22": {
       "localizations": {
         "de": {
@@ -3413,6 +3453,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In den Logs wurden keine Logins gefunden."
+          }
+        }
+      }
+    },
+    "No matches": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Treffer"
           }
         }
       }
@@ -3996,6 +4046,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorlagen"
+          }
+        }
+      }
+    },
+    "Previous Match": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorheriger Treffer"
           }
         }
       }
@@ -6295,6 +6355,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet in %@"
+          }
+        }
+      }
+    },
+    "Wrap Lines": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeilen umbrechen"
           }
         }
       }
