@@ -63,8 +63,10 @@ public enum Sudo {
     }
 
     /// Runs `script` as root and streams its output. Throws `SudoError.wrongPassword` if sudo asks twice.
+    /// `input` lines reach the script's stdin (after sudo has its password) — for secrets the script reads
+    /// with `read -r`, so they never show up in a command line.
     public static func run(
-        _ script: String, on shell: any ChannelShell, access: SudoAccess, password: String?
+        _ script: String, on shell: any ChannelShell, access: SudoAccess, password: String?, input: [String] = []
     ) -> AsyncThrowingStream<RootLine, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
@@ -72,6 +74,7 @@ public enum Sudo {
                     guard access != .unavailable else { throw SudoError.unavailable }
                     let channel = try await shell.openChannel(command(script, access: access))
                     defer { channel.close() }
+                    if access != .password { for line in input { try await channel.send(line) } }
                     var prompts = 0
                     var ended = false
                     for try await line in channel.lines {
@@ -79,6 +82,7 @@ public enum Sudo {
                             prompts += 1
                             guard prompts == 1, let password else { throw SudoError.wrongPassword }
                             try await channel.send(password)
+                            for line in input { try await channel.send(line) }
                             continue
                         }
                         if line == "Sorry, try again." { continue }

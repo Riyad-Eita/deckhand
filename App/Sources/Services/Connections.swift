@@ -68,11 +68,12 @@ final class Connections {
     }
 
     /// Logs in on another port with the saved credentials; the host key must match the pinned one.
-    func testLogin(_ server: Server, port: Int) async throws -> SSHConnection {
-        guard let credential = Self.credential(for: server) else {
+    func testLogin(_ server: Server, port: Int, username: String? = nil, credential: SSHCredential? = nil) async throws -> SSHConnection {
+        guard let credential = credential ?? Self.credential(for: server) else {
             throw SSHError.unsupportedKey("No password or key saved for this server.")
         }
-        let connection = SSHConnection(endpoint: SSHEndpoint(host: server.host, port: port, username: server.username), credential: credential)
+        let connection = SSHConnection(
+            endpoint: SSHEndpoint(host: server.host, port: port, username: username ?? server.username), credential: credential)
         let pinned = server.pinnedHostKey
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask { try await connection.connect(pinnedHostKey: pinned) { _, _ in false } }

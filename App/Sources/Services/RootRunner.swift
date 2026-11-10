@@ -18,6 +18,8 @@ final class RootAccess {
     }
 
     func password(for server: Server) -> String? { passwords[server.id] }
+    /// Forget what we know (e.g. after switching the server to another login user).
+    func reset(_ server: Server) { access[server.id] = nil; passwords[server.id] = nil }
     func setPassword(_ password: String?, for server: Server) { passwords[server.id] = password }
 }
 
@@ -50,7 +52,7 @@ final class RootRunner {
     /// Runs `script` as root and waits for it. Returns true if it exited 0 without a failed step.
     /// `connection` overrides the server's current connection (e.g. a fresh login on a new port).
     @discardableResult
-    func run(_ script: String, on server: Server, connection: SSHConnection? = nil) async -> Bool {
+    func run(_ script: String, on server: Server, connection: SSHConnection? = nil, input: [String] = []) async -> Bool {
         self.server = server
         lines = []; steps = []; failedStep = nil
         phase = .running
@@ -65,7 +67,7 @@ final class RootRunner {
                     password = RootAccess.shared.password(for: server)
                 }
                 do {
-                    for try await line in Sudo.run(script, on: conn, access: access, password: password) {
+                    for try await line in Sudo.run(script, on: conn, access: access, password: password, input: input) {
                         switch line {
                         case .output(let text):
                             switch ConfigChange.event(text) {
