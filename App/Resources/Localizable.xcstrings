@@ -888,6 +888,16 @@
         }
       }
     },
+    "Checking…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe …"
+          }
+        }
+      }
+    },
     "Claude Code": {
       "localizations": {
         "de": {
@@ -1098,6 +1108,46 @@
         }
       }
     },
+    "Connect": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden"
+          }
+        }
+      }
+    },
+    "Connect GitHub": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub verbinden"
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden"
+          }
+        }
+      }
+    },
+    "Connected as %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden als %@"
+          }
+        }
+      }
+    },
     "Connecting": {
       "localizations": {
         "de": {
@@ -1215,6 +1265,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Änderung ließ sich nicht bestätigen; der Server stellt innerhalb von 5 Minuten von selbst zurück."
+          }
+        }
+      }
+    },
+    "Couldn't install the GitHub CLI on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die GitHub CLI ließ sich auf diesem Server nicht installieren."
           }
         }
       }
@@ -1421,6 +1481,26 @@
         }
       }
     },
+    "Disconnect": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trennen"
+          }
+        }
+      }
+    },
+    "Disconnect GitHub from %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub von %@ trennen?"
+          }
+        }
+      }
+    },
     "Disconnected": {
       "localizations": {
         "de": {
@@ -1508,6 +1588,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper wird geladen …"
+          }
+        }
+      }
+    },
+    "Easier: open a server's tools and tap Connect next to GitHub — that signs in with your GitHub account and fills this in. Or create a token at github.com → Settings → Developer settings → Personal access tokens.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einfacher: Öffne die Tools eines Servers und tippe neben GitHub auf Verbinden – das meldet dich mit deinem GitHub-Konto an und füllt das hier aus. Oder erstelle einen Token unter github.com → Settings → Developer settings → Personal access tokens."
           }
         }
       }
@@ -1857,12 +1947,62 @@
         }
       }
     },
+    "Git, gh and the agents on this server can use GitHub now.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git, gh und die Agenten auf diesem Server können jetzt GitHub nutzen."
+          }
+        }
+      }
+    },
+    "GitHub CLI not installed yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub CLI noch nicht installiert"
+          }
+        }
+      }
+    },
+    "GitHub is disconnected from this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub ist von diesem Server getrennt."
+          }
+        }
+      }
+    },
+    "GitHub is set up on %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub ist auf %@ eingerichtet."
+          }
+        }
+      }
+    },
     "GitHub personal access token": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "GitHub Personal Access Token"
+          }
+        }
+      }
+    },
+    "GitHub sign-in didn't finish.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die GitHub-Anmeldung wurde nicht abgeschlossen."
           }
         }
       }
@@ -1983,6 +2123,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Updates installieren"
+          }
+        }
+      }
+    },
+    "Installing the GitHub CLI…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere die GitHub CLI …"
           }
         }
       }
@@ -2579,6 +2729,16 @@
     },
     "Node.js": {
       "shouldTranslate": false
+    },
+    "Not connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht verbunden"
+          }
+        }
+      }
     },
     "Nothing changed: SSH still runs on the old port.": {
       "localizations": {
@@ -3604,6 +3764,36 @@
         }
       }
     },
+    "Sign-in didn't work": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung hat nicht geklappt"
+          }
+        }
+      }
+    },
+    "Signs the GitHub CLI in on this server: git push and pull, gh and the agents can use GitHub right away. The agents also get GitHub's MCP tools.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meldet die GitHub CLI auf diesem Server an: git push und pull, gh und die Agenten können GitHub sofort nutzen. Die Agenten bekommen außerdem die MCP-Tools von GitHub."
+          }
+        }
+      }
+    },
+    "Signs the GitHub CLI out on the server, removes git's GitHub credentials there and the GitHub connection for the agents.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meldet die GitHub CLI auf dem Server ab, entfernt dort die GitHub-Zugangsdaten von git und die GitHub-Verbindung der Agenten."
+          }
+        }
+      }
+    },
     "Skip": {
       "localizations": {
         "de": {
@@ -3681,6 +3871,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestartet von"
+          }
+        }
+      }
+    },
+    "Starting GitHub sign-in on %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte GitHub-Anmeldung auf %@ …"
           }
         }
       }

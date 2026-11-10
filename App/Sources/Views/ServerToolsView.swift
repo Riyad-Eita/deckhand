@@ -15,6 +15,8 @@ struct ServerToolsView: View {
     @State private var busy: ServerCLI?
     @State private var installLog: String?
     @State private var signingIn: ServerCLI?
+    @State private var githubSignIn = false
+    @State private var githubClosed = 0
 
     var body: some View {
         NavigationStack {
@@ -29,6 +31,7 @@ struct ServerToolsView: View {
                     } footer: {
                         Text("They run on the server with your own ChatGPT or Claude subscription. Updates install into your home folder, no root needed.")
                     }
+                    GitHubSection(server: server, showSignIn: { githubSignIn = true }, signInClosed: githubClosed)
                     ConnectionSyncSection(server: server)
                     Section("Server") {
                         LabeledContent("System", value: inventory.os ?? "Unknown")
@@ -58,6 +61,7 @@ struct ServerToolsView: View {
                 }
             }
             .task { await refresh() }
+            .sheet(isPresented: $githubSignIn, onDismiss: { githubClosed += 1 }) { GitHubLoginSheet(server: server) }
             .sheet(item: $signingIn) { cli in
                 CLILoginView(server: server, cli: cli) { _ in Task { await refresh() } }
             }

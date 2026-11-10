@@ -134,7 +134,7 @@ struct ConnectionEditor: View {
                     if kind == "stdio" {
                         Text("Runs on the server over SSH whenever an agent needs it.")
                     } else if preset?.id == "github" {
-                        Text("Create a token at github.com → Settings → Developer settings → Personal access tokens. One-tap GitHub sign-in is coming.")
+                        Text("Easier: open a server's tools and tap Connect next to GitHub — that signs in with your GitHub account and fills this in. Or create a token at github.com → Settings → Developer settings → Personal access tokens.")
                     }
                 }
                 Section {
