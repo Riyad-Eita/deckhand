@@ -51,6 +51,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.processes")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            PackageUpdatesView(server: server)
+                        } label: {
+                            ManageRow(title: "Updates", subtitle: "Waiting packages, security first; restart hint", symbol: "arrow.down.circle")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.updates")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             ServicesView(server: server)
                         } label: {
                             ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")
