@@ -15,12 +15,32 @@
         }
       }
     },
+    "%@ didn't quit in time and was forced to.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ hat sich nicht rechtzeitig beendet und wurde beendet."
+          }
+        }
+      }
+    },
     "%@ done.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ erledigt."
+          }
+        }
+      }
+    },
+    "%@ ended.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ beendet."
           }
         }
       }
@@ -154,6 +174,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld von %2$lld"
+          }
+        }
+      }
+    },
+    "%lld processes · %lld cores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Prozesse · %2$lld Kerne"
           }
         }
       }
@@ -938,6 +968,16 @@
         }
       }
     },
+    "CPU is measured over one second; 100 % is one full core.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU wird über eine Sekunde gemessen; 100 % ist ein voller Kern."
+          }
+        }
+      }
+    },
     "Can't open the file": {
       "localizations": {
         "de": {
@@ -1435,6 +1475,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Befehl kopieren"
+          }
+        }
+      }
+    },
+    "Copy PID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PID kopieren"
           }
         }
       }
@@ -2054,6 +2104,46 @@
         }
       }
     },
+    "End": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beenden"
+          }
+        }
+      }
+    },
+    "End Process": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozess beenden"
+          }
+        }
+      }
+    },
+    "End Process…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozess beenden …"
+          }
+        }
+      }
+    },
+    "End “%@” (PID %@)?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%1$@“ (PID %2$@) beenden?"
+          }
+        }
+      }
+    },
     "Endpoint": {
       "localizations": {
         "de": {
@@ -2361,6 +2451,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Live"
+          }
+        }
+      }
+    },
+    "Force Quit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofort beenden"
           }
         }
       }
@@ -2723,6 +2823,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Issues, Pull Requests und Code-Suche für die Agenten."
+          }
+        }
+      }
+    },
+    "It belongs to %@ — Deckhand asks for your sudo password. Unsaved work in it is lost.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er gehört %@ – Deckhand fragt nach deinem sudo-Passwort. Nicht gespeicherte Arbeit darin geht verloren."
           }
         }
       }
@@ -4091,6 +4201,26 @@
         }
       }
     },
+    "Process Options": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozessoptionen"
+          }
+        }
+      }
+    },
+    "Processes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozesse"
+          }
+        }
+      }
+    },
     "Progress": {
       "localizations": {
         "de": {
@@ -4724,6 +4854,16 @@
         }
       }
     },
+    "Search command, user or PID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Befehl, Benutzer oder PID suchen"
+          }
+        }
+      }
+    },
     "Search services": {
       "localizations": {
         "de": {
@@ -5020,6 +5160,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versteckte Dateien zeigen"
+          }
+        }
+      }
+    },
+    "Show Kernel Threads": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kernel-Threads zeigen"
           }
         }
       }
@@ -5755,6 +5905,16 @@
         }
       }
     },
+    "This server doesn't offer /proc — the process list works on Linux servers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server bietet kein /proc – die Prozessliste funktioniert auf Linux-Servern."
+          }
+        }
+      }
+    },
     "Thought": {
       "localizations": {
         "de": {
@@ -6296,6 +6456,16 @@
         }
       }
     },
+    "What uses CPU and memory; end stuck processes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was CPU und Speicher braucht; hängende Prozesse beenden"
+          }
+        }
+      }
+    },
     "Whisper large-v3": {
       "shouldTranslate": false
     },
@@ -6710,6 +6880,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„Vor Änderungen fragen“ lässt den Agenten selbst Dateien lesen und Ordner ansehen und wartet auf dich, bevor er Befehle ausführt oder Dateien ändert."
+          }
+        }
+      }
+    },
+    "“End” asks it to quit and forces it after 5 seconds. Unsaved work in it is lost.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Beenden“ bittet ihn, sich zu beenden, und erzwingt es nach 5 Sekunden. Nicht gespeicherte Arbeit darin geht verloren."
           }
         }
       }
