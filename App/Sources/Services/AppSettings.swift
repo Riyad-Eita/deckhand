@@ -26,6 +26,10 @@ final class AppSettings {
     var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
     /// Tokens, keys and passwords: masked in the chat, replaced before tool output goes to your model.
     var hideSecrets: Bool { didSet { defaults.set(hideSecrets, forKey: "agent.hideSecrets") } }
+    /// Face ID / passcode before the app shows anything.
+    var appLock: Bool { didSet { defaults.set(appLock, forKey: "lock.enabled") } }
+    /// Seconds in the background before the lock comes back (0 = every time).
+    var lockDelay: TimeInterval { didSet { defaults.set(lockDelay, forKey: "lock.delay") } }
 
     private init() {
         let kind = ProviderKind(rawValue: defaults.string(forKey: "provider.kind") ?? "") ?? .anthropic
@@ -39,6 +43,8 @@ final class AppSettings {
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
         hideSecrets = defaults.object(forKey: "agent.hideSecrets") as? Bool ?? true
+        appLock = defaults.bool(forKey: "lock.enabled")
+        lockDelay = defaults.object(forKey: "lock.delay") as? Double ?? 60
         loadProviderFields()
     }
 

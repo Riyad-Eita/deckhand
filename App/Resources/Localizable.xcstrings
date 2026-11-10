@@ -584,6 +584,26 @@
         }
       }
     },
+    "After %lld min": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach %lld Min."
+          }
+        }
+      }
+    },
+    "After 1 hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach 1 Stunde"
+          }
+        }
+      }
+    },
     "After signing in, the page shows a code. Copy it and paste it here.": {
       "localizations": {
         "de": {
@@ -1810,6 +1830,16 @@
         }
       }
     },
+    "Deckhand asks for %@ when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand fragt beim Öffnen und nach dem Hintergrund nach %@ und verbirgt seinen Inhalt im App-Umschalter. Hintergrundprüfungen und Mitteilungen laufen weiter."
+          }
+        }
+      }
+    },
     "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your iPhone.": {
       "localizations": {
         "de": {
@@ -1836,6 +1866,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand kümmert sich um Updates auf Debian-, Ubuntu-, Fedora-, RHEL- und ähnlichen Servern."
+          }
+        }
+      }
+    },
+    "Deckhand is locked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand ist gesperrt"
           }
         }
       }
@@ -2827,6 +2867,16 @@
         }
       }
     },
+    "Immediately": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofort"
+          }
+        }
+      }
+    },
     "Import Private Key…": {
       "localizations": {
         "de": {
@@ -3183,6 +3233,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Last ist hoch für %lld Kerne"
+          }
+        }
+      }
+    },
+    "Lock after": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperren nach"
+          }
+        }
+      }
+    },
+    "Lock with %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ sperren"
           }
         }
       }
@@ -4226,6 +4296,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ausgabe"
+          }
+        }
+      }
+    },
+    "Passcode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code"
           }
         }
       }
@@ -5304,6 +5384,16 @@
         }
       }
     },
+    "Set a passcode on this iPhone to use App Lock.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege auf diesem iPhone einen Code fest, um die App-Sperre zu nutzen."
+          }
+        }
+      }
+    },
     "Set name and email": {
       "localizations": {
         "de": {
@@ -6345,6 +6435,16 @@
         }
       }
     },
+    "Turn on App Lock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Sperre einschalten"
+          }
+        }
+      }
+    },
     "Turn on SSH login alerts": {
       "localizations": {
         "de": {
@@ -6431,6 +6531,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unbekanntes Programm"
+          }
+        }
+      }
+    },
+    "Unlock Deckhand": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand entsperren"
+          }
+        }
+      }
+    },
+    "Unlock with %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ entsperren"
           }
         }
       }
@@ -6592,6 +6712,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ordner verwenden"
+          }
+        }
+      }
+    },
+    "Use Passcode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code verwenden"
           }
         }
       }
@@ -6915,6 +7045,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Server ist eingerichtet."
+          }
+        }
+      }
+    },
+    "Your servers and keys stay hidden until you unlock.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Server und Schlüssel bleiben verborgen, bis du entsperrst."
           }
         }
       }
