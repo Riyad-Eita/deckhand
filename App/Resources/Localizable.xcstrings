@@ -45,6 +45,16 @@
         }
       }
     },
+    "%@ is ready": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist bereit"
+          }
+        }
+      }
+    },
     "%@ is signed in on %@": {
       "localizations": {
         "de": {
@@ -123,6 +133,16 @@
     },
     "..": {
       "shouldTranslate": false
+    },
+    "A real terminal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein echtes Terminal"
+          }
+        }
+      }
     },
     "API key": {
       "localizations": {
@@ -214,6 +234,16 @@
         }
       }
     },
+    "Add your server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge deinen Server hinzu"
+          }
+        }
+      }
+    },
     "After signing in, the page shows a code. Copy it and paste it here.": {
       "localizations": {
         "de": {
@@ -240,6 +270,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Agent"
+          }
+        }
+      }
+    },
+    "Agents on your server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agenten auf deinem Server"
           }
         }
       }
@@ -468,6 +508,16 @@
         }
       }
     },
+    "Claude Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code"
+          }
+        }
+      }
+    },
     "Claude Code and Codex run on your server with your own subscription. “Your key” uses the model you set up in Settings.": {
       "localizations": {
         "de": {
@@ -488,12 +538,32 @@
         }
       }
     },
+    "Claude Code, Codex or your own model key fix, build and explain things for you.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code, Codex oder dein eigener Modell-Key reparieren, bauen und erklären für dich."
+          }
+        }
+      }
+    },
     "Claude plan": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Claude-Abo"
+          }
+        }
+      }
+    },
+    "Claude, OpenAI, OpenRouter or a local model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude, OpenAI, OpenRouter oder ein lokales Modell"
           }
         }
       }
@@ -514,6 +584,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code von der Seite"
+          }
+        }
+      }
+    },
+    "Codex": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codex"
           }
         }
       }
@@ -619,6 +699,16 @@
         }
       }
     },
+    "Continue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        }
+      }
+    },
     "Copied": {
       "localizations": {
         "de": {
@@ -706,6 +796,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand"
+          }
+        }
+      }
+    },
+    "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand verbindet sich per SSH mit deinen Linux-Servern und lässt KI-Agenten die Arbeit machen – vom iPhone aus."
           }
         }
       }
@@ -987,6 +1087,16 @@
         }
       }
     },
+    "Get Started": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los geht's"
+          }
+        }
+      }
+    },
     "GitHub personal access token": {
       "localizations": {
         "de": {
@@ -1013,6 +1123,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host oder IP"
+          }
+        }
+      }
+    },
+    "Host, user and password are enough — Deckhand swaps the password for a secure key it creates on this iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host, Benutzer und Passwort reichen – Deckhand ersetzt das Passwort durch einen sicheren Schlüssel, den es auf diesem iPhone erzeugt."
           }
         }
       }
@@ -1143,6 +1263,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Letzte Installation"
+          }
+        }
+      }
+    },
+    "Later": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Später"
           }
         }
       }
@@ -1327,6 +1457,16 @@
         }
       }
     },
+    "No account, no tracking. Keys stay in your iPhone's Keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Konto, kein Tracking. Schlüssel bleiben im Schlüsselbund deines iPhones."
+          }
+        }
+      }
+    },
     "No lines": {
       "localizations": {
         "de": {
@@ -1450,6 +1590,16 @@
         }
       }
     },
+    "Pick your agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle deinen Agenten"
+          }
+        }
+      }
+    },
     "Port": {
       "localizations": {
         "de": {
@@ -1476,6 +1626,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Datenschutz"
+          }
+        }
+      }
+    },
+    "Private by design": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privat von Grund auf"
           }
         }
       }
@@ -1754,6 +1914,16 @@
         }
       }
     },
+    "Sessions keep running when the connection drops.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen laufen weiter, wenn die Verbindung abbricht."
+          }
+        }
+      }
+    },
     "Set Up": {
       "localizations": {
         "de": {
@@ -1824,12 +1994,42 @@
         }
       }
     },
+    "Sign in with your ChatGPT plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deinem ChatGPT-Abo anmelden"
+          }
+        }
+      }
+    },
+    "Sign in with your Claude plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deinem Claude-Abo anmelden"
+          }
+        }
+      }
+    },
     "Sign-in didn't finish": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Anmeldung nicht abgeschlossen"
+          }
+        }
+      }
+    },
+    "Skip": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überspringen"
           }
         }
       }
@@ -2156,6 +2356,16 @@
         }
       }
     },
+    "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze das Abo, das du schon bezahlst – der Agent läuft dann auf deinem Server. Oder bring einen API-Schlüssel mit, dann läuft der Agent auf diesem iPhone."
+          }
+        }
+      }
+    },
     "Use your Claude or ChatGPT plan through Claude Code and Codex on your server — or add an API key.": {
       "localizations": {
         "de": {
@@ -2269,12 +2479,32 @@
         }
       }
     },
+    "Your own API key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigener API-Schlüssel"
+          }
+        }
+      }
+    },
     "Your own-key agent uses enabled connections right away. For Codex and Claude Code, open a server's tools and tap Sync.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dein Agent mit eigenem Key nutzt aktive Verbindungen sofort. Für Codex und Claude Code öffne die Server-Werkzeuge und tippe auf Übertragen."
+          }
+        }
+      }
+    },
+    "Your servers, in your pocket": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Server in der Hosentasche"
           }
         }
       }

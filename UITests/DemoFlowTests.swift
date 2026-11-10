@@ -15,6 +15,7 @@ final class DemoFlowTests: XCTestCase {
         }
         let app = XCUIApplication()
         app.launch()
+        if app.buttons["Skip"].waitForExistence(timeout: 3) { app.buttons["Skip"].tap() }
 
         // Add the server
         app.buttons["Add Server"].firstMatch.tap()
