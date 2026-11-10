@@ -274,6 +274,16 @@
         }
       }
     },
+    "Agent tasks that keep running without the app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agent-Aufgaben, die ohne die App weiterlaufen"
+          }
+        }
+      }
+    },
     "Agents on your server": {
       "localizations": {
         "de": {
@@ -394,6 +404,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fragen zu jedem öffentlichen GitHub-Repository. Kein Konto nötig."
+          }
+        }
+      }
+    },
+    "Background tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundaufgaben"
           }
         }
       }
@@ -564,6 +584,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude, OpenAI, OpenRouter oder ein lokales Modell"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leeren"
           }
         }
       }
@@ -1035,6 +1065,16 @@
         }
       }
     },
+    "Failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagen"
+          }
+        }
+      }
+    },
     "Filter": {
       "localizations": {
         "de": {
@@ -1051,6 +1091,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Finde heraus, warum nginx 502 liefert"
+          }
+        }
+      }
+    },
+    "Finished": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beendet"
           }
         }
       }
@@ -1143,6 +1193,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host, Benutzer und Passwort reichen – Deckhand ersetzt das Passwort durch einen sicheren Schlüssel, den es auf diesem iPhone erzeugt."
+          }
+        }
+      }
+    },
+    "If a task hits your plan's usage limit, it waits on the server until the limit resets and then continues by itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreicht eine Aufgabe das Nutzungslimit deines Abos, wartet sie auf dem Server, bis das Limit zurückgesetzt ist, und macht dann von selbst weiter."
           }
         }
       }
@@ -1473,6 +1533,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kein Konto, kein Tracking. Schlüssel bleiben im Schlüsselbund deines iPhones."
+          }
+        }
+      }
+    },
+    "No background tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Hintergrundaufgaben"
           }
         }
       }
@@ -1824,6 +1894,16 @@
         }
       }
     },
+    "Running": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft"
+          }
+        }
+      }
+    },
     "Runs on the server over SSH whenever an agent needs it.": {
       "localizations": {
         "de": {
@@ -2105,12 +2185,42 @@
         }
       }
     },
+    "Stop %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ stoppen?"
+          }
+        }
+      }
+    },
     "Stop recording": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Aufnahme beenden"
+          }
+        }
+      }
+    },
+    "Stop task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe stoppen"
+          }
+        }
+      }
+    },
+    "Stopped": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestoppt"
           }
         }
       }
@@ -2175,6 +2285,16 @@
         }
       }
     },
+    "Tasks you give Claude Code or Codex keep running here when you close the app or lose the connection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgaben für Claude Code oder Codex laufen hier weiter, wenn du die App schließt oder die Verbindung abbricht."
+          }
+        }
+      }
+    },
     "Tell the agent what to do…": {
       "localizations": {
         "de": {
@@ -2201,6 +2321,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbindung testen"
+          }
+        }
+      }
+    },
+    "The agent is stopped on the server. Changes it already made stay.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Agent wird auf dem Server gestoppt. Bereits gemachte Änderungen bleiben."
           }
         }
       }
@@ -2366,6 +2496,16 @@
         }
       }
     },
+    "Usage limit reached. The task waits on the server and continues at %@ by itself — you can close the app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzungslimit erreicht. Die Aufgabe wartet auf dem Server und macht um %@ von selbst weiter – du kannst die App schließen."
+          }
+        }
+      }
+    },
     "Use Folder": {
       "localizations": {
         "de": {
@@ -2432,6 +2572,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "FUNKTIONIERT MIT"
+          }
+        }
+      }
+    },
+    "Waits until %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet bis %@"
           }
         }
       }

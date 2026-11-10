@@ -46,6 +46,8 @@ final class ChatModel {
     private(set) var usage = Usage()
     var pendingApproval: PendingApproval?
     private var task: Task<Void, Never>?
+    private var waitingForLimit = false
+    private var waitingLine = 0
 
     init(thread: ChatThread, server: Server) {
         self.thread = thread
@@ -70,7 +72,8 @@ final class ChatModel {
                 let shell = try await Connections.shared.connection(for: server)
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
-                    sessionID: thread.cliSessionID, access: access, run: run, fromLine: thread.cliRunLine)
+                    sessionID: thread.cliSessionID, access: access, run: run, fromLine: thread.cliRunLine,
+                    meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory))
                 for try await event in events {
                     if reconnecting { notice = nil; reconnecting = false; delay = 2 }
                     handle(event)
@@ -201,6 +204,12 @@ final class ChatModel {
         case .toolFinished(let call, let result): toolStatus[call.id] = .done(result)
         case .checkpoint(let line):
             thread.cliRunLine = line
+            if waitingForLimit, line > waitingLine { waitingForLimit = false; notice = nil }
+        case .waitingForLimit(let until):
+            waitingForLimit = true
+            waitingLine = thread.cliRunLine + 1
+            let time = until.formatted(Calendar.current.isDateInToday(until) ? .dateTime.hour().minute() : .dateTime.weekday().hour().minute())
+            notice = String(localized: "Usage limit reached. The task waits on the server and continues at \(time) by itself — you can close the app.")
         case .sessionStarted(let id):
             thread.cliSessionID = id
         case .usage(let u):

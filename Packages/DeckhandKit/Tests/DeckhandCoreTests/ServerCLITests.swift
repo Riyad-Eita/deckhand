@@ -25,9 +25,9 @@ import Testing
     @Test func codexFailureIsFriendly() throws {
         var d = CodexEventDecoder()
         _ = try d.consume(line: #"{"type":"error","message":"Re-connecting... 1/5"}"#)
-        #expect(throws: CLIError.self) {
-            _ = try d.consume(line: #"{"type":"turn.failed","error":{"message":"unexpected status 400 Bad Request: {\"detail\":\"The 'x' model requires a newer version of Codex.\"}"}}"#)
-        }
+        // The failure is reported when the stream ends (a limit-aware run may continue after a failed turn).
+        _ = try d.consume(line: #"{"type":"turn.failed","error":{"message":"unexpected status 400 Bad Request: {\"detail\":\"The 'x' model requires a newer version of Codex.\"}"}}"#)
+        #expect(throws: CLIError.self) { _ = try d.finish() }
         #expect(d.failure?.message.contains("too old") == true)
     }
 
@@ -44,9 +44,8 @@ import Testing
 
     @Test func claudeNotLoggedIn() throws {
         var d = ClaudeCodeEventDecoder()
-        #expect(throws: CLIError.self) {
-            _ = try d.consume(line: #"{"type":"result","subtype":"success","is_error":true,"result":"Invalid API key · Please run /login"}"#)
-        }
+        _ = try d.consume(line: #"{"type":"result","subtype":"success","is_error":true,"result":"Invalid API key · Please run /login"}"#)
+        #expect(throws: CLIError.self) { _ = try d.finish() }
         #expect(d.failure?.message.contains("not logged in") == true)
     }
 

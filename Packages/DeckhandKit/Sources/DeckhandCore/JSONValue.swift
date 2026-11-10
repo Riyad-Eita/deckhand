@@ -40,6 +40,7 @@ public enum JSONValue: Sendable, Hashable, Codable {
 
     public var stringValue: String? { if case .string(let s) = self { return s } else { return nil } }
     public var intValue: Int? { if case .number(let n) = self { return Int(n) } else { return nil } }
+    public var doubleValue: Double? { if case .number(let n) = self { return n } else { return nil } }
     public var boolValue: Bool? { if case .bool(let b) = self { return b } else { return nil } }
     public var arrayValue: [JSONValue]? { if case .array(let a) = self { return a } else { return nil } }
     public var objectValue: [String: JSONValue]? { if case .object(let o) = self { return o } else { return nil } }

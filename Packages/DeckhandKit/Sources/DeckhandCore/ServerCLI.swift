@@ -91,15 +91,16 @@ public enum ServerCLIRun {
     /// Pass `fromLine` > 1 to reattach to a run that is already going; nothing is started then.
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
-        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1
+        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1, meta: DetachedRun.Meta? = nil
     ) -> AsyncThrowingStream<AgentEvent, Error> {
-        let cliCommand = command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access)
+        let cliCommand = LimitAwareRun.command(
+            cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, run: run)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()
                 do {
                     if fromLine <= 1 {
-                        let started = try await shell.run(run.startCommand(cliCommand), timeout: .seconds(30))
+                        let started = try await shell.run(run.startCommand(cliCommand, meta: meta), timeout: .seconds(30))
                         guard started.stdout.contains("started") else { throw CLIError("Couldn't start \(cli.displayName) on the server.") }
                     }
                     var line = max(1, fromLine)
@@ -162,6 +163,20 @@ public struct CLIError: Error, LocalizedError, Sendable, Equatable {
     public var errorDescription: String? { message }
 }
 
+/// Lines the limit-aware wrapper adds to the CLI's output (see `LimitAwareRun`).
+enum WrapperLine {
+    case waiting(Date)
+    case resumed
+
+    static func parse(_ json: JSONValue) -> WrapperLine? {
+        switch json["type"]?.stringValue {
+        case "deckhand.waiting": .waiting(Date(timeIntervalSince1970: json["until"]?.doubleValue ?? 0))
+        case "deckhand.resumed": .resumed
+        default: nil
+        }
+    }
+}
+
 protocol CLIEventDecoder: Sendable {
     /// The CLI's own error message, if it reported one before failing.
     var failure: CLIError? { get }
@@ -182,6 +197,11 @@ struct CodexEventDecoder: CLIEventDecoder {
 
     mutating func consume(line: String) throws -> [AgentEvent] {
         guard let json = try? JSONValue.parse(line), let type = json["type"]?.stringValue else { return [] }
+        switch WrapperLine.parse(json) {
+        case .waiting(let until): failure = nil; return [.waitingForLimit(until: until)]
+        case .resumed: failure = nil; finished = false; return []
+        case nil: break
+        }
         switch type {
         case "thread.started":
             return json["thread_id"]?.stringValue.map { [.sessionStarted($0)] } ?? []
@@ -211,6 +231,7 @@ struct CodexEventDecoder: CLIEventDecoder {
             }
         case "turn.completed":
             finished = true
+            failure = nil
             let u = json["usage"]
             return [
                 .usage(Usage(
@@ -221,8 +242,8 @@ struct CodexEventDecoder: CLIEventDecoder {
             ]
         case "turn.failed":
             let message = json["error"]?["message"]?.stringValue ?? "Codex failed."
+            // Reported when the stream ends: a limit-aware run may still wait and continue after this.
             failure = CLIError(Self.friendly(message))
-            throw failure!
         case "error":
             let message = json["message"]?.stringValue ?? ""
             if !message.hasPrefix("Re-connecting") { failure = CLIError(Self.friendly(message)) }
@@ -233,8 +254,8 @@ struct CodexEventDecoder: CLIEventDecoder {
     }
 
     mutating func finish() throws -> [AgentEvent] {
-        if finished { return [] }
         if let failure { throw failure }
+        if finished { return [] }
         return [.finished(.other)]
     }
 
@@ -314,6 +335,11 @@ struct ClaudeCodeEventDecoder: CLIEventDecoder {
 
     mutating func consume(line: String) throws -> [AgentEvent] {
         guard let json = try? JSONValue.parse(line), let type = json["type"]?.stringValue else { return [] }
+        switch WrapperLine.parse(json) {
+        case .waiting(let until): failure = nil; return [.waitingForLimit(until: until)]
+        case .resumed: failure = nil; finished = false; return []
+        case nil: break
+        }
         switch type {
         case "system":
             if json["subtype"]?.stringValue == "init", let id = json["session_id"]?.stringValue { return [.sessionStarted(id)] }
@@ -364,9 +390,12 @@ struct ClaudeCodeEventDecoder: CLIEventDecoder {
                 cacheReadTokens: u?["cache_read_input_tokens"]?.intValue ?? 0))]
             if json["is_error"]?.boolValue == true {
                 let message = json["result"]?.stringValue ?? json["subtype"]?.stringValue ?? "Claude Code failed."
+                // Reported when the stream ends: a limit-aware run may still wait and continue after this.
                 failure = CLIError(Self.friendly(message))
-                throw failure!
+                finished = false
+                return events
             }
+            failure = nil
             events.append(.finished(.endTurn))
             return events
         default:
