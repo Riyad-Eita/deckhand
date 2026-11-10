@@ -1399,6 +1399,16 @@
         }
       }
     },
+    "Couldn't install the new key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der neue Schlüssel ließ sich nicht installieren"
+          }
+        }
+      }
+    },
     "Couldn't reach the topic.": {
       "localizations": {
         "de": {
@@ -1941,6 +1951,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jede Änderung mit Backup, Vergleich und Rückgängig"
+          }
+        }
+      }
+    },
+    "Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This iPhone's own keys can't be removed here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses iPhones lassen sich hier nicht entfernen."
           }
         }
       }
@@ -2507,6 +2527,16 @@
         }
       }
     },
+    "Key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel"
+          }
+        }
+      }
+    },
     "Key passphrase": {
       "localizations": {
         "de": {
@@ -2523,6 +2553,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel"
+          }
+        }
+      }
+    },
+    "Keys that can log in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel, die sich anmelden können"
           }
         }
       }
@@ -2747,6 +2787,16 @@
         }
       }
     },
+    "Makes a new key for each server, installs it, logs in with it, and only then removes the old one. If anything fails, the old key stays.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erzeugt für jeden Server einen neuen Schlüssel, installiert ihn, meldet sich damit an und entfernt erst dann den alten. Geht etwas schief, bleibt der alte Schlüssel."
+          }
+        }
+      }
+    },
     "Max": {
       "localizations": {
         "de": {
@@ -2957,6 +3007,16 @@
         }
       }
     },
+    "New key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Schlüssel"
+          }
+        }
+      }
+    },
     "New password": {
       "localizations": {
         "de": {
@@ -3083,6 +3143,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In den Logs wurden keine Logins gefunden."
+          }
+        }
+      }
+    },
+    "No name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Namen"
           }
         }
       }
@@ -3270,6 +3340,16 @@
         }
       }
     },
+    "On %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf %@"
+          }
+        }
+      }
+    },
     "Online": {
       "localizations": {
         "de": {
@@ -3356,6 +3436,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffnet das Terminal in tmux oder screen auf dem Server. So läuft deine Sitzung weiter, wenn die Verbindung abbricht, und du machst genau dort weiter."
+          }
+        }
+      }
+    },
+    "Other apps or computers that use these exact keys from this iPhone stop working; your other devices keep their own keys.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Apps oder Computer, die genau diese Schlüssel dieses iPhones nutzen, funktionieren danach nicht mehr; deine anderen Geräte behalten ihre eigenen Schlüssel."
           }
         }
       }
@@ -3643,6 +3733,16 @@
         }
       }
     },
+    "Reading the servers…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lese die Server …"
+          }
+        }
+      }
+    },
     "Reading the server…": {
       "localizations": {
         "de": {
@@ -3753,12 +3853,32 @@
         }
       }
     },
+    "Remove everywhere": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überall entfernen"
+          }
+        }
+      }
+    },
     "Remove the Whisper model?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Whisper-Modell entfernen?"
+          }
+        }
+      }
+    },
+    "Remove “%@” from %lld servers?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%1$@“ von %2$lld Servern entfernen?"
           }
         }
       }
@@ -3904,6 +4024,56 @@
         }
       }
     },
+    "Rotate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tauschen"
+          }
+        }
+      }
+    },
+    "Rotate keys now?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel jetzt tauschen?"
+          }
+        }
+      }
+    },
+    "Rotate keys on %lld servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel auf %lld Servern tauschen"
+          }
+        }
+      }
+    },
+    "Rotate keys, remove lost devices": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel tauschen, verlorene Geräte entfernen"
+          }
+        }
+      }
+    },
+    "Rotate the key on 1 server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel auf 1 Server tauschen"
+          }
+        }
+      }
+    },
     "Rules, presets and a check from outside": {
       "localizations": {
         "de": {
@@ -3975,6 +4145,16 @@
       }
     },
     "SSH key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Schlüssel"
+          }
+        }
+      }
+    },
+    "SSH keys": {
       "localizations": {
         "de": {
           "stringUnit": {
@@ -4785,6 +4965,16 @@
         }
       }
     },
+    "That key can't log in to these servers anymore. A backup of each authorized_keys file stays next to it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Schlüssel kann sich auf diesen Servern nicht mehr anmelden. Ein Backup jeder authorized_keys-Datei bleibt daneben liegen."
+          }
+        }
+      }
+    },
     "That sudo password didn't work.": {
       "localizations": {
         "de": {
@@ -4861,6 +5051,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Anmeldeprüfung nach dem Schließen des alten Ports ist fehlgeschlagen, daher öffnet der Server ihn innerhalb von 5 Minuten von selbst wieder."
+          }
+        }
+      }
+    },
+    "The new key didn't work — the old one stays": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der neue Schlüssel hat nicht funktioniert – der alte bleibt"
           }
         }
       }
@@ -4951,6 +5151,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "This iPhone's keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel dieses iPhones"
           }
         }
       }
@@ -5372,6 +5582,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Benutzername"
+          }
+        }
+      }
+    },
+    "Uses a password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzt ein Passwort"
           }
         }
       }
