@@ -32,6 +32,8 @@ public enum AgentEvent: Sendable, Hashable {
     case sessionStarted(String)
     /// Detached server runs: the next output line to read when reattaching.
     case checkpoint(Int)
+    /// A server run hit a usage limit and waits on the server until it resets, then continues by itself.
+    case waitingForLimit(until: Date)
     case finished(StopReason)
 }
 

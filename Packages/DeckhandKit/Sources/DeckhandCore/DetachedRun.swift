@@ -8,13 +8,15 @@ public struct DetachedRun: Sendable, Hashable, Codable {
 
     public init(id: String = UUID().uuidString.lowercased()) { self.id = id }
 
-    var base: String { "~/.deckhand/runs/\(id)" }
+    public var base: String { "~/.deckhand/runs/\(id)" }
 
     /// Starts `command` in the background with a login shell; prints the PID.
-    public func startCommand(_ command: String) -> String {
-        """
+    /// `meta` (one line of JSON) is stored next to the run so the job list can describe it.
+    public func startCommand(_ command: String, meta: Meta? = nil) -> String {
+        let metaLine = meta.map { "printf '%s\\n' \(ShellQuote.quote($0.json)) > \(base).meta\n" } ?? ""
+        return """
         mkdir -p ~/.deckhand/runs; chmod 700 ~/.deckhand ~/.deckhand/runs
-        S=; command -v setsid >/dev/null 2>&1 && S=setsid
+        \(metaLine)        S=; command -v setsid >/dev/null 2>&1 && S=setsid
         $S nohup bash -lc \(ShellQuote.quote(command + "; echo $? > \(base).exit")) > \(base).out 2> \(base).err < /dev/null &
         echo $! > \(base).pid
         echo started
@@ -46,8 +48,83 @@ public struct DetachedRun: Sendable, Hashable, Codable {
           kids=$(pgrep -P "$p" 2>/dev/null)
           kill -TERM -- "-$p" 2>/dev/null || { kill -TERM "$p" 2>/dev/null; [ -n "$kids" ] && kill -TERM $kids 2>/dev/null; }
         fi
-        echo 143 > \(base).exit; echo stopped
+        rm -f \(base).waiting; echo 143 > \(base).exit; echo stopped
         """
+    }
+
+    /// Removes a run's files from the server.
+    public var deleteCommand: String { "rm -f \(base).out \(base).err \(base).pid \(base).exit \(base).meta \(base).waiting" }
+
+    /// What a run is about, stored as `<id>.meta`.
+    public struct Meta: Sendable, Hashable, Codable {
+        public var title: String
+        public var engine: String
+        public var directory: String
+        public var started: Date
+        public init(title: String, engine: String, directory: String, started: Date = Date()) {
+            self.title = title; self.engine = engine; self.directory = directory; self.started = started
+        }
+        var json: String {
+            let obj: JSONValue = ["title": .string(title), "engine": .string(engine), "directory": .string(directory),
+                                  "started": .number(started.timeIntervalSince1970.rounded())]
+            return obj.jsonString()
+        }
+        init?(json line: String) {
+            guard let j = try? JSONValue.parse(line), let title = j["title"]?.stringValue else { return nil }
+            self.title = title
+            engine = j["engine"]?.stringValue ?? ""
+            directory = j["directory"]?.stringValue ?? "~"
+            started = Date(timeIntervalSince1970: j["started"]?.doubleValue ?? 0)
+        }
+    }
+
+    public enum Status: Sendable, Hashable {
+        case running
+        /// Paused by a usage limit until the given time, then it continues by itself.
+        case waiting(until: Date)
+        case ended(exitCode: Int32)
+
+        public var isActive: Bool { if case .ended = self { false } else { true } }
+    }
+
+    /// A run found on the server.
+    public struct Info: Sendable, Hashable, Identifiable {
+        public var run: DetachedRun
+        public var status: Status
+        public var meta: Meta?
+        public var id: String { run.id }
+    }
+
+    /// Lists every run that has a `.meta` file: one `@@run <id> <status…>` line, then the meta line.
+    public static let listCommand = """
+    cd ~/.deckhand/runs 2>/dev/null || exit 0
+    for m in *.meta; do
+      [ -f "$m" ] || continue; id=${m%.meta}
+      if [ -f "$id.exit" ]; then st="ended $(cat "$id.exit")"
+      elif kill -0 "$(cat "$id.pid" 2>/dev/null)" 2>/dev/null; then
+        if [ -f "$id.waiting" ]; then st="waiting $(cat "$id.waiting")"; else st=running; fi
+      else st="ended 137"; fi
+      echo "@@run $id $st"; head -n 1 "$m"
+    done
+    """
+
+    public static func parseList(_ output: String) -> [Info] {
+        var result: [Info] = []
+        for line in output.split(separator: "\n").map(String.init) {
+            if line.hasPrefix("@@run ") {
+                let parts = line.split(separator: " ").map(String.init)
+                guard parts.count >= 3 else { continue }
+                let status: Status = switch parts[2] {
+                case "running": .running
+                case "waiting": .waiting(until: Date(timeIntervalSince1970: Double(parts.count > 3 ? parts[3] : "") ?? 0))
+                default: .ended(exitCode: Int32(parts.count > 3 ? parts[3] : "") ?? 1)
+                }
+                result.append(Info(run: DetachedRun(id: parts[1]), status: status, meta: nil))
+            } else if !result.isEmpty, result[result.count - 1].meta == nil {
+                result[result.count - 1].meta = Meta(json: line)
+            }
+        }
+        return result.sorted { ($0.meta?.started ?? .distantPast) > ($1.meta?.started ?? .distantPast) }
     }
 
     /// Lines the reader prints besides the run's own output.

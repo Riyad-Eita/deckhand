@@ -54,6 +54,14 @@ struct ServerDashboardView: View {
                             ManageRow(title: "Docker", subtitle: "Containers, logs and compose stacks", symbol: "shippingbox")
                         }
                         .buttonStyle(.plain)
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            BackgroundTasksView(server: server)
+                        } label: {
+                            ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.backgroundTasks")
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))

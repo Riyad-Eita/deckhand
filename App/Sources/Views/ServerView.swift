@@ -136,6 +136,11 @@ struct ThreadListView: View {
                                     .font(.caption).foregroundStyle(.secondary)
                                 }
                                 Spacer(minLength: 0)
+                                if thread.cliRunActive {
+                                    Text("Running").font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
+                                        .padding(.horizontal, 7).padding(.vertical, 3)
+                                        .background(Theme.accent.opacity(0.13), in: Capsule())
+                                }
                                 Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
                             }
                             .contentShape(Rectangle())

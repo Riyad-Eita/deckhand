@@ -228,3 +228,37 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// A run that hits a usage limit waits on the server until the reset time it reads from the message, then resumes.
+    @Test func limitAwareRunResumesAfterReset() async throws {
+        let conn = try await connection()
+        let dir = "/tmp/dh-limit-\(UUID().uuidString.prefix(6))"
+        // A fake `claude`: the first turn hits a limit that resets at one to two minutes (UTC), --resume finishes.
+        let fake = #"""
+        #!/bin/bash
+        case " $* " in
+          *" --resume "*) echo '{"type":"system","subtype":"init","session_id":"s-1"}'; echo '{"type":"result","is_error":false,"result":"ok","usage":{}}' ;;
+          *) echo '{"type":"system","subtype":"init","session_id":"s-1"}'
+             echo "{\"type\":\"result\",\"is_error\":true,\"result\":\"You've hit your limit · resets $(TZ=UTC date -d '+2 min' +%-I:%M%P) (Etc/UTC)\",\"usage\":{}}"
+             exit 1 ;;
+        esac
+        """#
+        _ = try await conn.run("mkdir -p \(dir)/bin && printf '%s\\n' \(ShellQuote.quote(fake)) > \(dir)/bin/claude && chmod +x \(dir)/bin/claude", timeout: .seconds(10))
+        let run = DetachedRun()
+        let command = "export PATH=\(dir)/bin:$PATH DH_SLACK=0; " + LimitAwareRun.command(
+            .claudeCode, prompt: "fix it", workingDirectory: "~", sessionID: nil, access: .edit, run: run)
+        _ = try await conn.run(run.startCommand(command, meta: .init(title: "Limit test", engine: "Claude Code", directory: "~")), timeout: .seconds(20))
+        try await Task.sleep(for: .seconds(3))
+        let during = DetachedRun.parseList(try await conn.run(DetachedRun.listCommand, timeout: .seconds(10)).stdout).first { $0.id == run.id }
+        guard case .waiting(let until)? = during?.status else { Issue.record("not waiting: \(String(describing: during))"); return }
+        #expect(until.timeIntervalSinceNow < 135)
+        var lines: [String] = []
+        for try await line in conn.streamLines(run.readCommand(fromLine: 1)) { lines.append(line) }
+        #expect(lines.contains { $0.contains("deckhand.waiting") })
+        #expect(lines.contains { $0.contains("deckhand.resumed") })
+        #expect(lines.last == "@@exit 0")
+        _ = try await conn.run(run.deleteCommand + "; rm -rf \(dir)", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
