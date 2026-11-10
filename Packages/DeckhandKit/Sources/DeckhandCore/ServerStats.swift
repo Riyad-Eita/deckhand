@@ -111,6 +111,8 @@ public struct ServerStats: Sendable, Hashable {
             guard p.count >= 6, let total = Int64(p[1]), let used = Int64(p[2]), let avail = Int64(p[3]), total > 0 else { continue }
             let mount = p[5...].joined(separator: " ")
             if mount.hasPrefix("/boot") || mount.hasPrefix("/snap") { continue }
+            // Files Docker binds into a container (/etc/hosts, …) show up as "disks" of the host — skip them.
+            if ["/etc/hosts", "/etc/hostname", "/etc/resolv.conf"].contains(mount) { continue }
             disks.append(Disk(mount: mount, totalKB: total, usedKB: used, availableKB: avail))
         }
 

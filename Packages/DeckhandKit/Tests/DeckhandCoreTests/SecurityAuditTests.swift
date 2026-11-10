@@ -22,6 +22,7 @@ struct SecurityAuditTests {
     emptypw=
     shellusers=root deploy
     worldwritable=/etc/app.conf
+    dockerpublic=web:8080 db:5432
     reboot=yes
     timesync=yes
     """)
@@ -32,6 +33,8 @@ struct SecurityAuditTests {
         #expect(byID["ssh.password"]?.level == .bad)
         #expect(byID["firewall"]?.level == .bad)
         #expect(byID["ports"]?.detail.contains("PostgreSQL (5432)") == true)
+        // A firewall is off here, so Docker's bypass isn't the problem yet.
+        #expect(byID["docker"] == nil)
         #expect(byID["updates"]?.detail == "3 security updates waiting")
         #expect(checks.first?.level == .bad)
         #expect(SecurityAudit.score(checks) < 40)
@@ -50,6 +53,14 @@ struct SecurityAuditTests {
         guard case .change(let ssh, _)? = pw.fix else { Issue.record("no fix"); return }
         #expect(!ssh.apply.contains("PasswordAuthentication"))
         #expect(ssh.apply.contains("'PermitRootLogin prohibit-password'"))
+    }
+
+    @Test func dockerBypassesTheFirewall() {
+        let f = SecurityAudit.parse("ssh.ports=22\nfirewall=ufw\ndockerpublic=web:8080 db:5432\n")
+        let docker = SecurityAudit.checks(f, context: .init(loginUser: "deploy", usesKey: true)).first { $0.id == "docker" }
+        #expect(docker?.level == .bad)
+        #expect(docker?.detail == "web → 8080, db → 5432")
+        if case .agent(let prompt)? = docker?.fix { #expect(prompt.contains("127.0.0.1")) } else { Issue.record("no agent fix") }
     }
 
     @Test func hardenedServerScoresFull() {

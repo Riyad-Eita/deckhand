@@ -40,6 +40,11 @@ public enum SecurityAudit {
     echo "emptypw=$(awk -F: '($2==""){print $1}' /etc/shadow 2>/dev/null | tr '\n' ' ')"
     echo "shellusers=$(awk -F: '($7 !~ /(nologin|false|sync|halt|shutdown)$/ && ($3==0 || $3>=1000)){print $1}' /etc/passwd | tr '\n' ' ')"
     echo "worldwritable=$(find /etc /usr/local/bin /usr/local/sbin /usr/bin /usr/sbin -xdev -type f -perm -0002 2>/dev/null | head -n 20 | tr '\n' ' ')"
+    if command -v docker >/dev/null 2>&1; then
+      echo "dockerpublic=$(docker ps --format '{{.Names}}|{{.Ports}}' 2>/dev/null | while IFS='|' read -r n p; do
+        printf '%s' "$p" | tr ',' '\n' | grep -E '^ *(0\.0\.0\.0|\[::\]|:::):[0-9]+' | sed -E 's/^ *[^:]*:([0-9]+).*/\1/' | sort -u | sed "s/^/$n:/"
+      done | sort -u | tr '\n' ' ')"
+    fi
     echo "reboot=$([ -f /var/run/reboot-required ] && echo yes || echo no)"
     echo "timesync=$(timedatectl show -p NTPSynchronized --value 2>/dev/null)"
     """#
@@ -186,6 +191,17 @@ public enum SecurityAudit {
             explanation: "Databases and admin APIs should only listen on localhost or a private network. Exposed, they are one weak password away from a data leak.",
             weight: 3, fix: risky.isEmpty ? nil : .agent("These services listen on all network addresses on this server: \(risky.joined(separator: ", ")). Find out which configuration makes them listen publicly and suggest how to bind them to 127.0.0.1 (or a private network) without breaking the apps that use them. Ask me before changing anything.")))
 
+        // Docker publishes ports past the firewall (it writes its own iptables rules).
+        let dockerPublic = f.list("dockerpublic")
+        if !dockerPublic.isEmpty && hasFirewall {
+            let shown = dockerPublic.prefix(6).map { $0.replacingOccurrences(of: ":", with: " → ") }.joined(separator: ", ")
+            out.append(Check(
+                id: "docker", title: "Docker ports past the firewall", level: dockerPublic.contains { e in riskyPorts.keys.contains { e.hasSuffix(":\($0)") } } ? .bad : .warn,
+                detail: shown,
+                explanation: "Docker opens published ports itself, before the firewall looks at them — so these are reachable from the internet even if the firewall blocks them. Bind them to 127.0.0.1 if only this server (or a reverse proxy) needs them.",
+                weight: 2, fix: .agent("These Docker containers publish ports on all addresses, which bypasses the firewall: \(dockerPublic.joined(separator: ", ")). For each one, find out whether it must be reachable from the internet. For the ones that don't, show me how to bind them to 127.0.0.1 in their compose file or run command (or add DOCKER-USER rules), and restart them only after I agree.")))
+        }
+
         // Accounts
         let empty = f.list("emptypw")
         out.append(Check(
@@ -284,6 +300,10 @@ public enum Hardening {
             mkdir -p /etc/fail2ban/jail.d
             printf '%s\\n' \(jail) > \(fail2banJail)
             if [ ! -f /var/log/auth.log ] && command -v journalctl >/dev/null 2>&1; then echo 'backend = systemd' >> \(fail2banJail); fi
+            # Web servers get their login and scanner jails too.
+            [ -f /var/log/nginx/error.log ] && printf '\\n[nginx-http-auth]\\nenabled = true\\n\\n[nginx-botsearch]\\nenabled = true\\n' >> \(fail2banJail)
+            [ -f /var/log/apache2/error.log ] && printf '\\n[apache-auth]\\nenabled = true\\n\\n[apache-badbots]\\nenabled = true\\n' >> \(fail2banJail)
+            true
             systemctl enable fail2ban >/dev/null 2>&1 || true
             """,
             validate: "fail2ban-client -t >/dev/null 2>&1 || ! [ -f \(fail2banJail) ]",

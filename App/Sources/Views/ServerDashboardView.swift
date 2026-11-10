@@ -115,6 +115,14 @@ struct ServerDashboardView: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("dashboard.firewall")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
+                                Fail2banView(server: server)
+                            } label: {
+                                ManageRow(title: "Blocked logins", subtitle: "fail2ban: who's banned and why", symbol: "hand.raised")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.fail2ban")
                         }
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
