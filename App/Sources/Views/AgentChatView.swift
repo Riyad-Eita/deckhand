@@ -9,7 +9,7 @@ struct AgentChatView: View {
     @FocusState private var composerFocused: Bool
 
     init(thread: ChatThread, server: Server) {
-        _model = State(initialValue: ChatModel(thread: thread, server: server))
+        _model = State(initialValue: ChatModel.model(for: thread, server: server))
     }
 
     var body: some View {
@@ -65,6 +65,7 @@ struct AgentChatView: View {
             }
         }
         .task {
+            model.resumeIfNeeded()
             if let prompt = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(prompt) }
         }
         #if DEBUG

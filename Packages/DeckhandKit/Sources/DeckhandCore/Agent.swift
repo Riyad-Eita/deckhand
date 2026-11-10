@@ -30,6 +30,8 @@ public enum AgentEvent: Sendable, Hashable {
     case usage(Usage)
     /// A server CLI started or resumed a session with this id.
     case sessionStarted(String)
+    /// Detached server runs: the next output line to read when reattaching.
+    case checkpoint(Int)
     case finished(StopReason)
 }
 

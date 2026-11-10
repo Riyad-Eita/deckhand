@@ -668,6 +668,16 @@
         }
       }
     },
+    "Connection lost — the run continues on the server. Reconnecting…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung verloren – der Lauf geht auf dem Server weiter. Verbinde neu …"
+          }
+        }
+      }
+    },
     "Connections": {
       "localizations": {
         "de": {
@@ -1689,6 +1699,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server wird gelesen …"
+          }
+        }
+      }
+    },
+    "Reattaching to the run on the server…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hänge mich wieder an den Lauf auf dem Server …"
           }
         }
       }

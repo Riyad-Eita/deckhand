@@ -87,6 +87,48 @@ public enum ServerCLIRun {
         }
     }
 
+    /// Runs one turn detached from the connection: it keeps going on the server if the phone disconnects.
+    /// Pass `fromLine` > 1 to reattach to a run that is already going; nothing is started then.
+    public static func runDetached(
+        _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
+        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1
+    ) -> AsyncThrowingStream<AgentEvent, Error> {
+        let cliCommand = command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access)
+        return AsyncThrowingStream { continuation in
+            let task = Task {
+                var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()
+                do {
+                    if fromLine <= 1 {
+                        let started = try await shell.run(run.startCommand(cliCommand), timeout: .seconds(30))
+                        guard started.stdout.contains("started") else { throw CLIError("Couldn't start \(cli.displayName) on the server.") }
+                    }
+                    var line = max(1, fromLine)
+                    var exit: Int32?
+                    for try await text in shell.streamLines(run.readCommand(fromLine: line)) {
+                        switch DetachedRun.marker(text) {
+                        case .exit(let code): exit = code
+                        case .missing: throw CLIError("This run is no longer on the server.")
+                        case nil:
+                            for event in try decoder.consume(line: text) { continuation.yield(event) }
+                            line += 1
+                            continuation.yield(.checkpoint(line))
+                        }
+                    }
+                    guard exit != nil else { throw CLIError("Lost the connection to the run.") }
+                    if exit == 143 { continuation.yield(.finished(.cancelled)) } else {
+                        for event in try decoder.finish() { continuation.yield(event) }
+                    }
+                    continuation.finish()
+                } catch is CancellationError {
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: decoder.failure ?? error)
+                }
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
     /// Runs one turn and translates the CLI's JSON lines into agent events.
     public static func run(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
