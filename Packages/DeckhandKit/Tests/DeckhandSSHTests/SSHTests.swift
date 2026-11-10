@@ -167,3 +167,16 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    @Test func servicesLive() async throws {
+        let conn = try await connection()
+        let list = Services.parse(try await conn.run(Services.listCommand, timeout: .seconds(20)).stdout)
+        #expect(!list.isEmpty)
+        let status = try await conn.run(Services.statusCommand(list[0].name), timeout: .seconds(20))
+        #expect(status.stdout.contains(list[0].name))
+        let logs = try await conn.run(Services.logsCommand(list[0].name, lines: 5), timeout: .seconds(20))
+        #expect(!logs.stdout.isEmpty)
+        await conn.disconnect()
+    }
+}

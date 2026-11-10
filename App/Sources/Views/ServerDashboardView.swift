@@ -6,6 +6,8 @@ struct ServerDashboardView: View {
     let server: Server
     /// Hands a prompt to the agent ("Investigate").
     var investigate: (String) -> Void = { _ in }
+    /// Opens the terminal with a command (e.g. something that needs a sudo password).
+    var runInTerminal: (String) -> Void = { _ in }
     @Environment(Connections.self) private var connections
     @State private var stats: ServerStats?
     @State private var error: String?
@@ -32,6 +34,15 @@ struct ServerDashboardView: View {
                             fraction: stats.cores > 0 ? min(1, stats.load.0 / Double(stats.cores)) : 0)
                         MetricCard(title: "Uptime", value: ByteFormat.duration(stats.uptime), detail: "since last boot", fraction: nil)
                     }
+                    VStack(spacing: 0) {
+                        NavigationLink {
+                            ServicesView(server: server, runInTerminal: runInTerminal, investigate: investigate)
+                        } label: {
+                            ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")
+                        }
+                    }
+                    .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Disks").font(.headline)
                         ForEach(stats.disks) { disk in DiskRow(disk: disk) }
@@ -152,5 +163,25 @@ private struct WarningsCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .background(Color.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+    }
+}
+
+struct ManageRow: View {
+    let title: String
+    let subtitle: String
+    let symbol: String
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: symbol).font(.system(size: 15, weight: .medium)).foregroundStyle(Theme.accent)
+                .frame(width: 32, height: 32).background(Theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.body.weight(.medium)).foregroundStyle(.primary)
+                Text(subtitle).font(.caption).foregroundStyle(.secondary)
+            }
+            Spacer()
+            Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+        }
+        .padding(14)
+        .contentShape(Rectangle())
     }
 }
