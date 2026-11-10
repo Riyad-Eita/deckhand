@@ -58,6 +58,8 @@ struct SettingsView: View {
                     }
                 }
 
+                AppLockSection()
+
                 Section {
                     Picker("Effort", selection: $settings.effort) {
                         Text("Low").tag("low")
@@ -223,6 +225,49 @@ private struct NotificationSettingsSection: View {
             Text("Notifications")
         } footer: {
             Text("Deckhand tells you when a task is done or needs your approval. Once the app is closed, iOS only lets it check now and then — with ntfy, your server pushes the moment a task ends. Subscribe to the topic in the ntfy app; only the task's title is sent. You can use your own ntfy server.")
+        }
+    }
+}
+
+/// App lock: on/off (needs one successful Face ID / passcode check) and how long the app may stay in the background.
+private struct AppLockSection: View {
+    @Environment(AppSettings.self) private var settings
+    @State private var method = AppLock.shared.method
+
+    var body: some View {
+        @Bindable var settings = settings
+        Section {
+            Toggle(isOn: Binding(get: { settings.appLock }, set: { on in
+                if !on { settings.appLock = false; return }
+                Task { if await AppLock.shared.confirmEnable() { settings.appLock = true } }
+            })) {
+                Label(String(localized: "Lock with \(method ?? "Face ID")"), systemImage: method == "Touch ID" ? "touchid" : "faceid")
+            }
+            .disabled(method == nil)
+            .accessibilityIdentifier("settings.appLock")
+            if settings.appLock {
+                Picker("Lock after", selection: $settings.lockDelay) {
+                    ForEach(AppLockPolicy.delays, id: \.self) { d in
+                        Text(label(for: d)).tag(d)
+                    }
+                }
+            }
+        } header: {
+            Text("Security")
+        } footer: {
+            if method == nil {
+                Text("Set a passcode on this iPhone to use App Lock.")
+            } else {
+                Text("Deckhand asks for \(method ?? "Face ID") when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
+            }
+        }
+    }
+
+    private func label(for delay: TimeInterval) -> String {
+        switch delay {
+        case 0: String(localized: "Immediately")
+        case 3600: String(localized: "After 1 hour")
+        default: String(localized: "After \(Int(delay / 60)) min")
         }
     }
 }

@@ -47,7 +47,9 @@ struct RootView: View {
         }
         .hostKeyPrompt()
         .onOpenURL { AppRouter.shared.handle($0) }
+        .onAppear { AppLock.shared.appeared() }
         .onChange(of: scenePhase) { _, phase in
+            AppLock.shared.scenePhaseChanged(phase)
             guard phase == .background else { return }
             let active = ((try? context.fetch(FetchDescriptor<ChatThread>())) ?? []).contains { $0.cliRunActive }
             TaskNotifier.shared.scheduleCheck(hasActiveRuns: active)
