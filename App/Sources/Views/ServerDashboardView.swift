@@ -45,6 +45,12 @@ struct ServerDashboardView: View {
                         } label: {
                             ManageRow(title: "Logs", subtitle: "Journal and log files: follow, search, explain", symbol: "text.alignleft")
                         }
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            DockerView(server: server)
+                        } label: {
+                            ManageRow(title: "Docker", subtitle: "Containers, logs and compose stacks", symbol: "shippingbox")
+                        }
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))

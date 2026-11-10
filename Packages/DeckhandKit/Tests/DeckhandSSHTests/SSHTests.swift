@@ -196,3 +196,14 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// Read-only: lists containers and compose projects on the test server.
+    @Test func dockerOverviewLive() async throws {
+        let conn = try await connection()
+        let o = Docker.parseOverview(try await conn.run(Docker.overviewCommand, timeout: .seconds(60)).stdout)
+        #expect(o.installed)
+        if !o.permissionDenied { #expect(!o.containers.isEmpty) }
+        await conn.disconnect()
+    }
+}
