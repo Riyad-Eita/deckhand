@@ -1278,6 +1278,26 @@
         }
       }
     },
+    "Claude Code effort": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Code-Aufwand"
+          }
+        }
+      }
+    },
+    "Claude Code model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Code-Modell"
+          }
+        }
+      }
+    },
     "Claude Code on the server": {
       "localizations": {
         "de": {
@@ -1384,6 +1404,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Codex & Claude Code auf dem Server"
+          }
+        }
+      }
+    },
+    "Codex effort": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codex-Aufwand"
+          }
+        }
+      }
+    },
+    "Codex model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codex-Modell"
           }
         }
       }
@@ -1940,6 +1980,26 @@
         }
       }
     },
+    "Default (%@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard (%@)"
+          }
+        }
+      }
+    },
+    "Default (server setting)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard (Servereinstellung)"
+          }
+        }
+      }
+    },
     "Delete": {
       "localizations": {
         "de": {
@@ -2401,6 +2461,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erklären"
+          }
+        }
+      }
+    },
+    "Extra high": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sehr hoch"
           }
         }
       }
@@ -3513,6 +3583,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modell"
+          }
+        }
+      }
+    },
+    "Model and Effort": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modell und Aufwand"
           }
         }
       }
@@ -5324,12 +5404,22 @@
         }
       }
     },
-    "Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command.": {
+    "Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Läufe auf dem Server können nicht zwischendurch fragen. „Dateien bearbeiten“ erlaubt Änderungen im Ordner der Aufgabe, „Voller Zugriff“ auch beliebige Befehle."
+            "value": "Server-Läufe können nicht anhalten, um dich zu fragen. „Dateien bearbeiten“ erlaubt Änderungen im Ordner der Aufgabe; „Voller Zugriff“ führt auch beliebige Befehle aus. Modell und Aufwand lassen sich pro Aufgabe auch im Chat-Kopf ändern; „Servereinstellung“ nutzt die Konfiguration der CLI."
+          }
+        }
+      }
+    },
+    "Server setting": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servereinstellung"
           }
         }
       }
@@ -6491,6 +6581,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einschalten: alles blocken außer SSH und Web"
+          }
+        }
+      }
+    },
+    "Ultra": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ultra"
           }
         }
       }

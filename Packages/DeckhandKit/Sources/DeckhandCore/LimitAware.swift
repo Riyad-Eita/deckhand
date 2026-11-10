@@ -8,10 +8,11 @@ public enum LimitAwareRun {
     public static let continuePrompt = "You were paused by a usage limit, which has now reset. Continue the task where you left off."
 
     public static func command(
-        _ cli: ServerCLI, prompt: String, workingDirectory: String, sessionID: String?, access: CLIAccess, run: DetachedRun
+        _ cli: ServerCLI, prompt: String, workingDirectory: String, sessionID: String?, access: CLIAccess,
+        options: CLIOptions = .init(), run: DetachedRun
     ) -> String {
-        let first = ServerCLIRun.command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access)
-        let resume = ServerCLIRun.command(cli, prompt: continuePrompt, workingDirectory: workingDirectory, sessionID: "@@SID@@", access: access)
+        let first = ServerCLIRun.command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options)
+        let resume = ServerCLIRun.command(cli, prompt: continuePrompt, workingDirectory: workingDirectory, sessionID: "@@SID@@", access: access, options: options)
             .replacingOccurrences(of: ShellQuote.quote("@@SID@@"), with: "\"$sid\"")
         let out = run.base + ".out"
         return """

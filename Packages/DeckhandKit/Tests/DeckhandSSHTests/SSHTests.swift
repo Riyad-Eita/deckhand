@@ -99,6 +99,33 @@ struct LiveServerCLITests {
         #expect(finished)
         await conn.disconnect()
     }
+
+    /// The server's Codex lists its models; a turn with a chosen model and effort runs; Claude Code accepts the flags.
+    @Test func modelAndEffortReachTheCLIs() async throws {
+        let conn = try await LiveSSHTests().connection()
+        let models = CLIModels.parseCodex(try await conn.run(CLIModels.codexCommand, timeout: .seconds(60)).stdout)
+        #expect(!models.isEmpty)
+        let pick = try #require(models.first)
+        let effort = pick.efforts.first ?? "low"
+        let run = DetachedRun()
+        var text = ""
+        var finished = false
+        for try await e in ServerCLIRun.runDetached(
+            .codex, shell: conn, prompt: "Reply with just: model-ok", workingDirectory: "/tmp", sessionID: nil,
+            access: .readOnly, options: CLIOptions(model: pick.id, effort: effort), run: run)
+        {
+            if case .message(let m) = e { text += m.text }
+            if case .finished(.endTurn) = e { finished = true }
+        }
+        #expect(finished && text.contains("model-ok"), "\(text)")
+        _ = try await conn.run("rm -f ~/.deckhand/runs/\(run.id).*", timeout: .seconds(10))
+        // Claude Code: unknown flags would fail with "unknown option" before any login check.
+        let claude = try await conn.run(
+            "PATH=$HOME/.local/bin:$PATH timeout 20 claude -p hi --model sonnet --effort low --output-format stream-json --verbose </dev/null 2>&1 | head -c 2000",
+            timeout: .seconds(40))
+        #expect(!claude.stdout.lowercased().contains("unknown option"), "\(claude.stdout)")
+        await conn.disconnect()
+    }
 }
 
 extension LiveSSHTests {

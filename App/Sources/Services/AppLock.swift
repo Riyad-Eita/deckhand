@@ -38,7 +38,13 @@ final class AppLock {
         launched = true
         #if DEBUG
         // DECKHAND_SEED_APPLOCK=1: start with the lock on (UI tests).
-        if ProcessInfo.processInfo.environment["DECKHAND_SEED_APPLOCK"] == "1" { settings.appLock = true; settings.lockDelay = 0 }
+        // DECKHAND_RESET=1 starts unlocked, so one test's lock doesn't spill into the next.
+        let env = ProcessInfo.processInfo.environment
+        if env["DECKHAND_SEED_APPLOCK"] == "1" {
+            settings.appLock = true; settings.lockDelay = 0
+        } else if env["DECKHAND_RESET"] == "1" {
+            settings.appLock = false; settings.lockDelay = 60
+        }
         #endif
         if AppLockPolicy.shouldLock(enabled: settings.appLock, backgroundedAt: nil, now: Date(), delay: settings.lockDelay) {
             lock()

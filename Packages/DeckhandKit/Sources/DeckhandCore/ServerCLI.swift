@@ -59,7 +59,7 @@ public enum CLIAccess: String, Sendable, Codable, CaseIterable, Identifiable {
 public enum ServerCLIRun {
     /// The shell command for one headless turn. `sessionID` continues an earlier conversation.
     public static func command(
-        _ cli: ServerCLI, prompt: String, workingDirectory: String, sessionID: String?, access: CLIAccess, model: String? = nil
+        _ cli: ServerCLI, prompt: String, workingDirectory: String, sessionID: String?, access: CLIAccess, options: CLIOptions = .init()
     ) -> String {
         let dir = ServerTools.shellPath(workingDirectory)
         let p = ShellQuote.quote(prompt)
@@ -70,8 +70,7 @@ public enum ServerCLIRun {
             case .edit: "workspace-write"
             case .full: "danger-full-access"
             }
-            var cmd = "cd \(dir) && codex exec --json --skip-git-repo-check -s \(sandbox)"
-            if let model { cmd += " -m \(ShellQuote.quote(model))" }
+            var cmd = "cd \(dir) && codex exec --json --skip-git-repo-check -s \(sandbox)" + CLIModels.flags(cli, options)
             if let sessionID { cmd += " resume \(ShellQuote.quote(sessionID))" }
             return cmd + " \(p) < /dev/null"
         case .claudeCode:
@@ -80,8 +79,7 @@ public enum ServerCLIRun {
             case .edit: "acceptEdits"
             case .full: "bypassPermissions"
             }
-            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose --permission-mode \(mode)"
-            if let model { cmd += " --model \(ShellQuote.quote(model))" }
+            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose --permission-mode \(mode)" + CLIModels.flags(cli, options)
             if let sessionID { cmd += " --resume \(ShellQuote.quote(sessionID))" }
             return cmd + " < /dev/null"
         }
@@ -91,11 +89,11 @@ public enum ServerCLIRun {
     /// Pass `fromLine` > 1 to reattach to a run that is already going; nothing is started then.
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
-        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1, meta: DetachedRun.Meta? = nil,
-        notify: DetachedRun.Notify? = nil
+        sessionID: String?, access: CLIAccess, options: CLIOptions = .init(), run: DetachedRun, fromLine: Int = 1,
+        meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil
     ) -> AsyncThrowingStream<AgentEvent, Error> {
         let cliCommand = LimitAwareRun.command(
-            cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, run: run)
+            cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()

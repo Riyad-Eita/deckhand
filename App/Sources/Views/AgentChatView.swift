@@ -20,6 +20,16 @@ struct AgentChatView: View {
         _model = State(initialValue: ChatModel.model(for: thread, server: server))
     }
 
+    private var headerSubtitle: String {
+        let engine = model.thread.engine
+        var parts = [engine.shortTitle]
+        if let cli = engine.serverCLI, let chosen = CLIModelMenu.summary(cli: cli, thread: model.thread, settings: AppSettings.shared) {
+            parts.append(chosen)
+        }
+        parts.append(model.thread.workingDirectory)
+        return parts.joined(separator: " · ")
+    }
+
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
@@ -79,11 +89,16 @@ struct AgentChatView: View {
                     BrandIcon(brand: model.thread.engine.brand, size: 24)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(model.thread.title).font(.subheadline.weight(.semibold)).lineLimit(1)
-                        Text("\(model.thread.engine.shortTitle) · \(model.thread.workingDirectory)")
+                        Text(headerSubtitle)
                             .font(.caption2).foregroundStyle(.secondary).lineLimit(1).truncationMode(.head)
                     }
                 }
                 .frame(maxWidth: 260)
+            }
+            if let cli = model.thread.engine.serverCLI {
+                ToolbarItem(placement: .primaryAction) {
+                    CLIModelMenu(thread: model.thread, server: model.server, cli: cli)
+                }
             }
         }
         // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.

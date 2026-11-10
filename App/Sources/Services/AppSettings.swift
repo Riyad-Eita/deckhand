@@ -26,6 +26,15 @@ final class AppSettings {
     var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
     /// Tokens, keys and passwords: masked in the chat, replaced before tool output goes to your model.
     var hideSecrets: Bool { didSet { defaults.set(hideSecrets, forKey: "agent.hideSecrets") } }
+    /// Default model / effort per server CLI ("" = the CLI's own config on the server).
+    var codexModel: String { didSet { defaults.set(codexModel, forKey: "cli.codex.model") } }
+    var codexEffort: String { didSet { defaults.set(codexEffort, forKey: "cli.codex.effort") } }
+    var claudeModel: String { didSet { defaults.set(claudeModel, forKey: "cli.claude.model") } }
+    var claudeEffort: String { didSet { defaults.set(claudeEffort, forKey: "cli.claude.effort") } }
+    /// Codex's model list as last read from a server, for the Settings picker.
+    var codexModels: [CLIModel] {
+        didSet { defaults.set(try? JSONEncoder().encode(codexModels), forKey: "cli.codex.models") }
+    }
     /// Face ID / passcode before the app shows anything.
     var appLock: Bool { didSet { defaults.set(appLock, forKey: "lock.enabled") } }
     /// Seconds in the background before the lock comes back (0 = every time).
@@ -43,6 +52,11 @@ final class AppSettings {
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
         hideSecrets = defaults.object(forKey: "agent.hideSecrets") as? Bool ?? true
+        codexModel = defaults.string(forKey: "cli.codex.model") ?? ""
+        codexEffort = defaults.string(forKey: "cli.codex.effort") ?? ""
+        claudeModel = defaults.string(forKey: "cli.claude.model") ?? ""
+        claudeEffort = defaults.string(forKey: "cli.claude.effort") ?? ""
+        codexModels = (defaults.data(forKey: "cli.codex.models")).flatMap { try? JSONDecoder().decode([CLIModel].self, from: $0) } ?? []
         appLock = defaults.bool(forKey: "lock.enabled")
         lockDelay = defaults.object(forKey: "lock.delay") as? Double ?? 60
         loadProviderFields()
@@ -53,6 +67,14 @@ final class AppSettings {
         model = defaults.string(forKey: "provider.\(k).model") ?? providerKind.suggestedModels.first ?? ""
         baseURL = defaults.string(forKey: "provider.\(k).baseURL") ?? providerKind.defaultBaseURL.absoluteString
         apiKey = Keychain.get("apikey.\(k)") ?? ""
+    }
+
+    /// What a task runs with: its own choice, else the default here, else the CLI's config.
+    func cliOptions(for cli: ServerCLI, thread: ChatThread) -> CLIOptions {
+        switch cli {
+        case .codex: CLIOptions(model: thread.cliModel ?? codexModel, effort: thread.cliEffort ?? codexEffort)
+        case .claudeCode: CLIOptions(model: thread.cliModel ?? claudeModel, effort: thread.cliEffort ?? claudeEffort)
+        }
     }
 
     var isConfigured: Bool {
