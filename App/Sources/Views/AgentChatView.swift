@@ -1,5 +1,6 @@
 import DeckhandCore
 import SwiftUI
+import os
 
 struct AgentChatView: View {
     @State private var model: ChatModel
@@ -76,12 +77,22 @@ struct AgentChatView: View {
                     try? await Task.sleep(for: .seconds(1))
                 }
                 let path = FileManager.default.temporaryDirectory.appending(path: name).path
+                let result = FileManager.default.temporaryDirectory.appending(path: "voice-result.txt")
                 let start = Date()
                 do {
+                    // First call loads the model (Neural Engine compile on first launch), second is a warm run.
                     let text = try await voice.transcribe(fileAt: path)
-                    draft = text + " [\(Int(Date().timeIntervalSince(start))) s]"
+                    let first = Date().timeIntervalSince(start)
+                    let warmStart = Date()
+                    _ = try await voice.transcribe(fileAt: path)
+                    let warm = Date().timeIntervalSince(warmStart)
+                    draft = text + " [\(Int(first)) s / warm \(String(format: "%.1f", warm)) s]"
+                    let mem = String(format: "%.0f MB", Double(os_proc_available_memory()) / 1_048_576)
+                    try? "\(text)\nfirst=\(String(format: "%.1f", first))s warm=\(String(format: "%.1f", warm))s availableMemory=\(mem)\n"
+                        .write(to: result, atomically: true, encoding: .utf8)
                 } catch {
                     draft = "VOICE ERROR: \(error.localizedDescription)"
+                    try? "ERROR \(error.localizedDescription)\n".write(to: result, atomically: true, encoding: .utf8)
                 }
             }
         }
