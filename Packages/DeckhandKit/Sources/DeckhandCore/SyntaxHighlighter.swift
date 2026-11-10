@@ -12,6 +12,11 @@ public enum SyntaxHighlighter {
         public var kind: Kind
         public var start: Int
         public var length: Int
+        public init(kind: Kind, start: Int, length: Int) {
+            self.kind = kind
+            self.start = start
+            self.length = length
+        }
     }
 
     public struct Language: Sendable {
@@ -69,6 +74,20 @@ public enum SyntaxHighlighter {
         case "lua": return lua
         default: return nil
         }
+    }
+
+    /// The language of a Markdown code fence: ```python, ```ts, ```bash, ```dockerfile …
+    public static func language(forFence fence: String) -> Language? {
+        let name = fence.trimmingCharacters(in: .whitespaces).lowercased().split(separator: " ").first.map(String.init) ?? ""
+        guard !name.isEmpty else { return nil }
+        let aliases: [String: String] = [
+            "python": "py", "python3": "py", "javascript": "js", "typescript": "ts", "node": "js",
+            "bash": "sh", "shell": "sh", "console": "sh", "terminal": "sh", "shellscript": "sh", "zsh": "sh",
+            "golang": "go", "rust": "rs", "ruby": "rb", "kotlin": "kt", "csharp": "cs", "c#": "cs", "c++": "cpp",
+            "objective-c": "m", "objc": "m", "systemd": "service", "nginx": "conf", "dotenv": "env",
+        ]
+        if let ext = aliases[name] { return language(forFileName: "f.\(ext)") }
+        return language(forFileName: "f.\(name)") ?? language(forFileName: name)
     }
 
     public static let swift = Language(

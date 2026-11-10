@@ -24,6 +24,16 @@ import Testing
         #expect(H.language(forFileName: "notes.txt") == nil)
     }
 
+    @Test func picksLanguagesByCodeFence() {
+        #expect(H.language(forFence: "python")?.name == "Python")
+        #expect(H.language(forFence: "ts")?.name == "JavaScript")
+        #expect(H.language(forFence: "bash")?.name == "Shell")
+        #expect(H.language(forFence: "Dockerfile")?.name == "Dockerfile")
+        #expect(H.language(forFence: "yaml title=compose.yml")?.name == "YAML")
+        #expect(H.language(forFence: "text") == nil)
+        #expect(H.language(forFence: "") == nil)
+    }
+
     @Test func swiftLine() {
         #expect(spans("let x = \"hi\" // note", H.swift) == ["keyword:let", "string:\"hi\"", "comment:// note"])
         #expect(spans("func load(id: UUID) async throws -> Int { 42 }", H.swift)

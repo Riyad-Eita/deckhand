@@ -48,7 +48,8 @@ struct MarkdownView: View {
                     Text(language).font(Theme.monoSmall).foregroundStyle(.secondary)
                 }
                 ScrollView(.horizontal, showsIndicators: false) {
-                    Text(text).font(Theme.monoSmall).fixedSize()
+                    Text(CodeColors.attributed(code: text, language: language.flatMap(SyntaxHighlighter.language(forFence:))))
+                        .font(Theme.monoSmall).fixedSize()
                 }
             }
             .padding(10)

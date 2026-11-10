@@ -195,17 +195,7 @@ private struct CodeLine: View {
     }
 
     private var attributed: AttributedString {
-        let ns = NSMutableAttributedString(string: text.isEmpty ? " " : String(text))
-        let length = ns.length
-        for t in tokens where t.start + t.length <= length {
-            ns.addAttribute(.foregroundColor, value: CodeColors.color(t.kind), range: NSRange(location: t.start, length: t.length))
-        }
-        for h in hits where h.start + h.length <= length {
-            let isFocused = h == focused
-            ns.addAttribute(.backgroundColor, value: UIColor.systemYellow.withAlphaComponent(isFocused ? 0.75 : 0.3),
-                            range: NSRange(location: h.start, length: h.length))
-        }
-        return (try? AttributedString(ns, including: \.uiKit)) ?? AttributedString(String(text))
+        CodeColors.attributed(text.isEmpty ? " " : String(text), tokens: tokens, hits: hits, focused: focused)
     }
 }
 
@@ -222,6 +212,34 @@ enum CodeColors {
         case .tag: dynamic(0x8A3FBF, 0xB281EB)
         case .plain: .label
         }
+    }
+
+    /// Colours tokens and search hits into an AttributedString.
+    static func attributed(_ text: String, tokens: [SyntaxHighlighter.Token], hits: [TextSearch.Match] = [], focused: TextSearch.Match? = nil) -> AttributedString {
+        let ns = NSMutableAttributedString(string: text)
+        let length = ns.length
+        for t in tokens where t.start + t.length <= length {
+            ns.addAttribute(.foregroundColor, value: color(t.kind), range: NSRange(location: t.start, length: t.length))
+        }
+        for h in hits where h.start + h.length <= length {
+            ns.addAttribute(.backgroundColor, value: UIColor.systemYellow.withAlphaComponent(h == focused ? 0.75 : 0.3),
+                            range: NSRange(location: h.start, length: h.length))
+        }
+        return (try? AttributedString(ns, including: \.uiKit)) ?? AttributedString(text)
+    }
+
+    /// A whole block of code (e.g. from a chat reply) in one AttributedString.
+    static func attributed(code: String, language: SyntaxHighlighter.Language?) -> AttributedString {
+        guard let language else { return AttributedString(code) }
+        let lines = code.split(separator: "\n", omittingEmptySubsequences: false)
+        let perLine = SyntaxHighlighter.highlight(lines, language: language)
+        var tokens: [SyntaxHighlighter.Token] = []
+        var offset = 0
+        for (line, lineTokens) in zip(lines, perLine) {
+            tokens += lineTokens.map { SyntaxHighlighter.Token(kind: $0.kind, start: $0.start + offset, length: $0.length) }
+            offset += line.utf16.count + 1
+        }
+        return attributed(code, tokens: tokens)
     }
 
     private static func dynamic(_ light: Int, _ dark: Int) -> UIColor {

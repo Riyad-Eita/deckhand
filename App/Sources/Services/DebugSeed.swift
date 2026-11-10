@@ -1,4 +1,5 @@
 #if DEBUG
+import DeckhandCore
 import Foundation
 import SwiftData
 
@@ -13,6 +14,32 @@ enum DebugSeed {
         }
         return nil
     }
+
+    /// A reply that uses every Markdown block the chat renders.
+    static let markdownReply = Message(role: .assistant, blocks: [.text("""
+    ## What happens
+    `FORECAST.get(city)` returns **None** for unknown cities, so the handler answers *404*:
+
+    ```python
+    def do_GET(self):
+        city = self.path.strip("/").lower() or "berlin"
+        temp = FORECAST.get(city)  # None for unknown cities
+        self.send_response(200 if temp is not None else 404)
+    ```
+
+    | City | °C | Status |
+    | --- | --- | --- |
+    | berlin | 14 | 200 |
+    | paris | – | 404 |
+
+    1. Add the missing cities to `FORECAST`
+    2. Or return a clear error message
+
+    - Restart with `systemctl restart weather-api`
+    - Then check `curl localhost:8080/paris`
+
+    > Nothing was changed yet — tell me which fix you want.
+    """)])
 
     /// Prompt the next opened chat sends automatically.
     @MainActor static var pendingPrompt: String?
