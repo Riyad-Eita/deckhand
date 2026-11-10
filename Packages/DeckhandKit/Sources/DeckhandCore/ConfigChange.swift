@@ -13,13 +13,23 @@ public struct ConfigChange: Sendable, Hashable {
     public var validate: String
     /// Bash that makes the change take effect, e.g. `systemctl reload ssh`. Also run after a rollback.
     public var reload: String
+    /// Bash that must succeed once the change is live (e.g. sshd listens on the new port). Not run on rollback.
+    public var verify: String
+    /// If set, the server rolls the change back by itself after this many seconds unless the app confirms it
+    /// (`confirmScript`) — protects against locking yourself out.
+    public var guardSeconds: Int?
 
-    public init(title: String, files: [String], apply: String, validate: String = "true", reload: String = "true") {
+    public init(
+        title: String, files: [String], apply: String, validate: String = "true", reload: String = "true",
+        verify: String = "true", guardSeconds: Int? = nil
+    ) {
         self.title = title
         self.files = files
         self.apply = apply
         self.validate = validate
         self.reload = reload
+        self.verify = verify
+        self.guardSeconds = guardSeconds
     }
 
     public static let defaultRoot = "/var/backups/deckhand"
@@ -51,6 +61,8 @@ public struct ConfigChange: Sendable, Hashable {
         printf '%s\\n' \(ShellQuote.quote(apply)) > "$B/apply.sh"
         printf '%s\\n' \(ShellQuote.quote(validate)) > "$B/validate.sh"
         printf '%s\\n' \(ShellQuote.quote(reload)) > "$B/reload.sh"
+        printf '%s\\n' \(ShellQuote.quote(verify)) > "$B/verify.sh"
+        printf '%s\\n' \(ShellQuote.quote(Self.rollbackScript(id: id, root: root))) > "$B/rollback.sh"
         : > "$B/files.txt"
         echo '@@step backup'
         for f in \(list); do
@@ -66,6 +78,32 @@ public struct ConfigChange: Sendable, Hashable {
         bash "$B/validate.sh" || dh_fail validate
         echo '@@step reload'
         bash "$B/reload.sh" || dh_fail reload
+        echo '@@step verify'
+        bash "$B/verify.sh" || dh_fail verify
+        \(guardLines)
+        echo '@@done'
+        """
+    }
+
+    private var guardLines: String {
+        guard let guardSeconds else { return "echo applied > \"$B/status\"" }
+        return """
+        echo pending > "$B/status"
+        S=; command -v setsid >/dev/null 2>&1 && S=setsid
+        $S nohup bash -c 'sleep \(guardSeconds); [ -e "$1/confirmed" ] || DH_GUARD=1 bash "$1/rollback.sh"' dh-guard "$B" > "$B/guard.log" 2>&1 < /dev/null &
+        echo $! > "$B/guard.pid"
+        echo "@@guard \(guardSeconds)"
+        """
+    }
+
+    /// Keeps a guarded change: stops the automatic rollback.
+    public static func confirmScript(id: String, root: String = ConfigChange.defaultRoot) -> String {
+        """
+        B=\(ShellQuote.quote("\(root)/\(id)"))
+        [ "$(cat "$B/status" 2>/dev/null)" = pending ] || { echo '@@failed not-pending'; exit 1; }
+        touch "$B/confirmed"
+        kill "$(cat "$B/guard.pid" 2>/dev/null)" 2>/dev/null
+        rm -f "$B/guard.pid"
         echo applied > "$B/status"
         echo '@@done'
         """
@@ -87,6 +125,8 @@ public struct ConfigChange: Sendable, Hashable {
         set -u
         B=\(ShellQuote.quote("\(root)/\(id)"))
         [ -f "$B/files.txt" ] || { echo '@@failed missing'; exit 1; }
+        # A manual rollback also stops a pending automatic one.
+        if [ -z "${DH_GUARD:-}" ] && [ -f "$B/guard.pid" ]; then touch "$B/confirmed"; kill "$(cat "$B/guard.pid")" 2>/dev/null; rm -f "$B/guard.pid"; fi
         \(restoreFunction)
         echo '@@step restore'
         dh_restore
@@ -117,6 +157,8 @@ public struct ConfigChange: Sendable, Hashable {
 
     public enum Status: String, Sendable, Hashable {
         case applied, failed, rolledback
+        /// Live, but rolls back by itself unless confirmed.
+        case pending
         /// Interrupted while running (e.g. the connection dropped mid-change).
         case unknown
     }
@@ -166,6 +208,8 @@ public struct ConfigChange: Sendable, Hashable {
     public enum Event: Equatable, Sendable {
         case step(String)
         case failed(String)
+        /// The change is live but rolls back after this many seconds unless confirmed.
+        case guarded(Int)
         case done
         case output(String)
     }
@@ -174,6 +218,7 @@ public struct ConfigChange: Sendable, Hashable {
         if line == "@@done" { return .done }
         if line.hasPrefix("@@step ") { return .step(String(line.dropFirst(7))) }
         if line.hasPrefix("@@failed ") { return .failed(String(line.dropFirst(9))) }
+        if line.hasPrefix("@@guard "), let s = Int(line.dropFirst(8)) { return .guarded(s) }
         return .output(line)
     }
 }

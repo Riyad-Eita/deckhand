@@ -134,6 +134,16 @@
     "..": {
       "shouldTranslate": false
     },
+    "A port other than 22 keeps most automated login attempts away. If your hosting provider has its own firewall (security groups, cloud firewall), allow the new port there first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein anderer Port als 22 hält die meisten automatischen Login-Versuche fern. Hat dein Hoster eine eigene Firewall (Security Groups, Cloud-Firewall), gib den neuen Port dort zuerst frei."
+          }
+        }
+      }
+    },
     "A real terminal": {
       "localizations": {
         "de": {
@@ -688,6 +698,16 @@
         }
       }
     },
+    "Close port %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ schließen"
+          }
+        }
+      }
+    },
     "Code from the page": {
       "localizations": {
         "de": {
@@ -889,6 +909,16 @@
         }
       }
     },
+    "Couldn't confirm the change; the server switches back by itself within 5 minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Änderung ließ sich nicht bestätigen; der Server stellt innerhalb von 5 Minuten von selbst zurück."
+          }
+        }
+      }
+    },
     "Create a New Key": {
       "localizations": {
         "de": {
@@ -936,6 +966,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand verbindet sich per SSH mit deinen Linux-Servern und lässt KI-Agenten die Arbeit machen – vom iPhone aus."
+          }
+        }
+      }
+    },
+    "Deckhand couldn't log in on port %@: %@ Most often a firewall at your hosting provider blocks the port.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand konnte sich nicht auf Port %1$@ anmelden: %2$@ Meist blockiert eine Firewall beim Hoster den Port."
+          }
+        }
+      }
+    },
+    "Deckhand opens the new port next to the old one, logs in on it, and only then closes the old one. If anything goes wrong, the server switches back by itself after 5 minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand öffnet den neuen Port neben dem alten, meldet sich darüber an und schließt erst dann den alten. Geht etwas schief, stellt der Server nach 5 Minuten von selbst zurück."
           }
         }
       }
@@ -1124,6 +1174,16 @@
         }
       }
     },
+    "Enter a number.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib eine Zahl ein."
+          }
+        }
+      }
+    },
     "Enter this code on the page": {
       "localizations": {
         "de": {
@@ -1211,6 +1271,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beendet"
+          }
+        }
+      }
+    },
+    "Firewall": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall"
           }
         }
       }
@@ -1497,6 +1567,26 @@
         }
       }
     },
+    "Log in on port %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf Port %@ anmelden"
+          }
+        }
+      }
+    },
+    "Log in on port %@ again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut auf Port %@ anmelden"
+          }
+        }
+      }
+    },
     "Logs": {
       "localizations": {
         "de": {
@@ -1627,6 +1717,46 @@
         }
       }
     },
+    "Move SSH": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH verlegen"
+          }
+        }
+      }
+    },
+    "Move SSH off port 22 without locking yourself out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH von Port 22 verlegen, ohne dich auszusperren"
+          }
+        }
+      }
+    },
+    "Move SSH to port %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH auf Port %@ verlegen"
+          }
+        }
+      }
+    },
+    "Move SSH to port %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH auf Port %@ verlegen?"
+          }
+        }
+      }
+    },
     "Name": {
       "localizations": {
         "de": {
@@ -1643,6 +1773,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Name (optional)"
+          }
+        }
+      }
+    },
+    "New port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Port"
           }
         }
       }
@@ -1720,6 +1860,26 @@
     "Node.js": {
       "shouldTranslate": false
     },
+    "Nothing changed: SSH still runs on the old port.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts geändert: SSH läuft weiter auf dem alten Port."
+          }
+        }
+      }
+    },
+    "Now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt"
+          }
+        }
+      }
+    },
     "OK": {
       "localizations": {
         "de": {
@@ -1756,6 +1916,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In Safari öffnen"
+          }
+        }
+      }
+    },
+    "Open port %@ next to %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %1$@ neben %2$@ öffnen"
           }
         }
       }
@@ -1830,6 +2000,16 @@
         }
       }
     },
+    "Pick a port between 1024 and 65535.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle einen Port zwischen 1024 und 65535."
+          }
+        }
+      }
+    },
     "Pick your agent": {
       "localizations": {
         "de": {
@@ -1846,6 +2026,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port"
+          }
+        }
+      }
+    },
+    "Port %@ works, but the old port is still open. You can close it later.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ funktioniert, aber der alte Port ist noch offen. Du kannst ihn später schließen."
           }
         }
       }
@@ -2144,12 +2334,42 @@
         }
       }
     },
+    "SSH already uses this port.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH nutzt diesen Port bereits."
+          }
+        }
+      }
+    },
     "SSH key": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Schlüssel"
+          }
+        }
+      }
+    },
+    "SSH now runs on port %@. Deckhand saved the new port for this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH läuft jetzt auf Port %@. Deckhand hat den neuen Port für diesen Server gespeichert."
+          }
+        }
+      }
+    },
+    "SSH port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Port"
           }
         }
       }
@@ -2394,6 +2614,16 @@
         }
       }
     },
+    "Something else on the server already uses this port.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas anderes auf dem Server nutzt diesen Port bereits."
+          }
+        }
+      }
+    },
     "Speech is turned into text on this iPhone with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.": {
       "localizations": {
         "de": {
@@ -2411,6 +2641,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starten"
+          }
+        }
+      }
+    },
+    "Started by": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestartet von"
           }
         }
       }
@@ -2501,6 +2741,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sudo-Passwort"
+          }
+        }
+      }
+    },
+    "Suggest": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschlagen"
           }
         }
       }
@@ -2665,12 +2915,42 @@
         }
       }
     },
+    "The login check after closing the old port failed, so the server opens it again by itself within 5 minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldeprüfung nach dem Schließen des alten Ports ist fehlgeschlagen, daher öffnet der Server ihn innerhalb von 5 Minuten von selbst wieder."
+          }
+        }
+      }
+    },
+    "The old port couldn't be closed (%@). Both ports stay open; you can try again later.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der alte Port ließ sich nicht schließen (%@). Beide Ports bleiben offen; du kannst es später erneut versuchen."
+          }
+        }
+      }
+    },
     "The server asks for your sudo password for this. Deckhand opens the terminal with the command so you can type it there.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der Server verlangt dafür dein sudo-Passwort. Deckhand öffnet das Terminal mit dem Befehl, damit du es dort eingibst."
+          }
+        }
+      }
+    },
+    "The server couldn't open port %@ (%@). Its previous configuration was put back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server konnte Port %1$@ nicht öffnen (%2$@). Die vorherige Konfiguration wurde wiederhergestellt."
           }
         }
       }
@@ -2701,6 +2981,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das kann alles lahmlegen, was von %@ abhängt."
+          }
+        }
+      }
+    },
+    "This port is commonly used by other services. Pick another one.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Port wird oft von anderen Diensten genutzt. Wähle einen anderen."
           }
         }
       }
@@ -2896,6 +3186,16 @@
         }
       }
     },
+    "Waiting for confirmation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf Bestätigung"
+          }
+        }
+      }
+    },
     "Waits until %@": {
       "localizations": {
         "de": {
@@ -2945,6 +3245,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet in %@. Der Agent fragt, bevor er etwas ändert."
+          }
+        }
+      }
+    },
+    "Your current session stays open. Other SSH clients and scripts need the new port afterwards.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine aktuelle Sitzung bleibt offen. Andere SSH-Clients und Skripte brauchen danach den neuen Port."
           }
         }
       }
@@ -3024,6 +3334,16 @@
     },
     "https://example.com/mcp": {
       "shouldTranslate": false
+    },
+    "none found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keine gefunden"
+          }
+        }
+      }
     },
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false

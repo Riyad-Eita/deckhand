@@ -195,6 +195,7 @@ struct ChangeStatusPill: View {
         case .applied: (Text("Applied"), .green)
         case .failed: (Text("Undone automatically"), .orange)
         case .rolledback: (Text("Rolled back"), .secondary)
+        case .pending: (Text("Waiting for confirmation"), .orange)
         case .unknown: (Text("Interrupted"), .red)
         }
         text.font(.caption2.weight(.semibold)).foregroundStyle(color)
@@ -239,7 +240,7 @@ struct ChangeDetailView: View {
             } header: {
                 Text("Before → now")
             }
-            if record.status == .applied {
+            if record.status == .applied || record.status == .pending {
                 Section {
                     Button(role: .destructive) { rollingBack = true } label: { Label("Roll back", systemImage: "arrow.uturn.backward") }
                 } footer: {
