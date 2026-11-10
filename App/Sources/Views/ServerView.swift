@@ -36,7 +36,14 @@ struct ServerView: View {
         Group {
             switch tab {
             case .agent: ThreadListView(server: server, startTask: $startTask)
-            case .server: ServerDashboardView(server: server) { prompt in investigate = prompt }
+            case .server:
+                ServerDashboardView(
+                    server: server,
+                    investigate: { prompt in investigate = prompt },
+                    runInTerminal: { command in
+                        terminalCommand = command
+                        tab = .terminal
+                    })
             case .terminal: TerminalScreen(server: server, pendingCommand: $terminalCommand)
             }
         }
