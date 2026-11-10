@@ -109,6 +109,15 @@ struct SettingsView: View {
                 NotificationSettingsSection()
 
                 Section {
+                    NavigationLink { KeysView() } label: {
+                        RowLabel(title: String(localized: "SSH keys"), subtitle: String(localized: "Rotate keys, remove lost devices")) {
+                            Image(systemName: "key").foregroundStyle(Theme.accent).frame(width: 26)
+                        }
+                    }
+                    .accessibilityIdentifier("settings.keys")
+                }
+
+                Section {
                     LabeledContent("Keys", value: "Stored in this iPhone's Keychain")
                     LabeledContent("Requests", value: "Go straight to your provider")
                 } header: {
