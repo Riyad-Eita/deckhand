@@ -75,6 +75,10 @@ struct ServerListView: View {
         #if DEBUG
         .task {
             try? await Task.sleep(for: .milliseconds(500))
+            // After DECKHAND_RESET the query can lag behind the seeded insert: wait for the server.
+            for _ in 0..<20 where DebugSeed.pendingRun != nil && servers.isEmpty {
+                try? await Task.sleep(for: .milliseconds(250))
+            }
             if DebugSeed.pendingRun != nil { autoOpen = servers.first }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
         }

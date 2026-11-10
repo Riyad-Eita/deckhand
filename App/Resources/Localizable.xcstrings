@@ -1680,6 +1680,16 @@
         }
       }
     },
+    "Didn't finish": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht fertig geworden"
+          }
+        }
+      }
+    },
     "Didn't finish: %@": {
       "localizations": {
         "de": {
@@ -1889,6 +1899,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien bearbeiten"
+          }
+        }
+      }
+    },
+    "Editing %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeite %@"
           }
         }
       }
@@ -2793,6 +2813,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Logs, Zertifikate und Zwei-Faktor-Codes brauchen eine richtige Uhr."
+          }
+        }
+      }
+    },
+    "Looking around %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sehe mich in %@ um"
           }
         }
       }
@@ -3903,6 +3933,16 @@
         }
       }
     },
+    "Reading %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lese %@"
+          }
+        }
+      }
+    },
     "Reading the servers…": {
       "localizations": {
         "de": {
@@ -4434,6 +4474,16 @@
         }
       }
     },
+    "Searching for %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche nach %@"
+          }
+        }
+      }
+    },
     "Secure a fresh server": {
       "localizations": {
         "de": {
@@ -4901,6 +4951,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starte GitHub-Anmeldung auf %@ …"
+          }
+        }
+      }
+    },
+    "Starting…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte …"
           }
         }
       }
