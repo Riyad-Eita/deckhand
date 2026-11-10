@@ -184,6 +184,16 @@ struct ThreadListView: View {
             }
         }
         .task {
+            // "markdown|": a finished chat with a reply that uses every Markdown block (UI tests, screenshots).
+            guard DebugSeed.pendingRun?.engine == "markdown" else { return }
+            DebugSeed.pendingRun = nil
+            let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: .codex)
+            thread.title = "Why does the API return 404?"
+            thread.messages = [.user("Why does the weather API return 404 for some cities?"), DebugSeed.markdownReply]
+            context.insert(thread)
+            openThread = thread
+        }
+        .task {
             guard let run = DebugSeed.pendingRun, let engine = Engine(rawValue: run.engine) else { return }
             DebugSeed.pendingRun = nil
             let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: engine)
