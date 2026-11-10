@@ -33,11 +33,20 @@ struct RootTaskSheet: View {
     let steps: [(String, LocalizedStringKey)]
     var confirm: LocalizedStringKey = "Apply"
     var destructive = false
+    /// For a guarded change (`ConfigChange.guardSeconds`): its id. After applying, the app logs in afresh
+    /// and only then confirms; if that login fails, the change is rolled back at once.
+    var guardID: String? = nil
     var finished: (Bool) -> Void = { _ in }
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(Connections.self) private var connections
     @State private var runner = RootRunner()
+    @State private var follow = RootRunner()
     @State private var showLog = false
+    @State private var working = false
+    @State private var done = false
+    @State private var loginState: SSHPortView.Step.State?
+    @State private var note: String?
 
     var body: some View {
         NavigationStack {
@@ -64,6 +73,17 @@ struct RootTaskSheet: View {
                                 Text(step.1)
                             }
                         }
+                        if guardID != nil {
+                            HStack(spacing: 10) {
+                                loginIcon.frame(width: 20)
+                                Text("Log in again to make sure you still can")
+                            }
+                        }
+                    }
+                }
+                if let note {
+                    Section {
+                        Label(note, systemImage: "arrow.uturn.backward.circle").font(.footnote).foregroundStyle(.orange)
                     }
                 }
                 if case .failed(let message) = runner.phase {
@@ -87,23 +107,60 @@ struct RootTaskSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(isDone ? "Done" : "Cancel") { runner.cancel(); dismiss() }.disabled(runner.isRunning)
+                    Button(isDone ? "Done" : "Cancel") { runner.cancel(); dismiss() }.disabled(working)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    if runner.isRunning { ProgressView() } else if !isDone {
-                        Button(confirm) { runner.start(script, on: server) }
+                    if working { ProgressView() } else if !isDone {
+                        Button(confirm) { Task { await perform() } }
                             .tint(destructive ? .red : Theme.accent)
                             .accessibilityIdentifier("rootTask.confirm")
                     }
                 }
             }
             .sudoPassword(runner, server: server)
-            .onChange(of: runner.phase) { _, phase in if case .finished = phase { finished(runner.succeeded) } }
-            .interactiveDismissDisabled(runner.isRunning)
+            .sudoPassword(follow, server: server)
+            .interactiveDismissDisabled(working)
         }
     }
 
-    private var isDone: Bool { if case .finished = runner.phase { true } else { false } }
+    private var isDone: Bool { done }
+
+    private func perform() async {
+        working = true
+        defer { working = false }
+        let ok = await runner.run(script, on: server)
+        guard ok, let guardID else {
+            if case .finished = runner.phase { done = true }
+            finished(ok)
+            return
+        }
+        loginState = .running
+        do {
+            let fresh = try await connections.testLogin(server, port: server.port)
+            guard await follow.run(ConfigChange.confirmScript(id: guardID), on: server, connection: fresh) else {
+                throw CLIError("Couldn't confirm the change.")
+            }
+            await connections.adopt(fresh, for: server, port: server.port)
+            loginState = .done
+            done = true
+            finished(true)
+        } catch {
+            loginState = .failed
+            await follow.run(ConfigChange.rollbackScript(id: guardID), on: server)
+            note = String(localized: "A fresh login didn't work (\(error.localizedDescription)), so the change was rolled back right away.")
+            done = true
+            finished(false)
+        }
+    }
+
+    @ViewBuilder private var loginIcon: some View {
+        switch loginState {
+        case nil, .waiting?: Image(systemName: "circle").foregroundStyle(.tertiary)
+        case .running?: ProgressView().controlSize(.small)
+        case .done?: Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
+        case .failed?: Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
+        }
+    }
 
     private func label(for step: String) -> LocalizedStringKey { steps.first { $0.0 == step }?.1 ?? LocalizedStringKey(step) }
 
@@ -123,7 +180,7 @@ struct RootTaskSheet: View {
 
     static let changeSteps: [(String, LocalizedStringKey)] = [
         ("backup", "Back up the files"), ("apply", "Make the change"),
-        ("validate", "Check the configuration"), ("reload", "Reload the service"),
+        ("validate", "Check the configuration"), ("reload", "Reload the service"), ("verify", "Check it works"),
     ]
     static let rollbackSteps: [(String, LocalizedStringKey)] = [
         ("restore", "Restore the backed-up files"), ("validate", "Check the configuration"), ("reload", "Reload the service"),

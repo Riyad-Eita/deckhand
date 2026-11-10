@@ -69,6 +69,14 @@ struct ServerDashboardView: View {
                         Text("Security").font(.headline).padding(.leading, 4)
                         VStack(spacing: 0) {
                             NavigationLink {
+                                SecurityAuditView(server: server)
+                            } label: {
+                                ManageRow(title: "Security check-up", subtitle: "A score and a list of fixes, worst first", symbol: "checkmark.shield")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.audit")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 ChangesView(server: server)
                             } label: {
                                 ManageRow(title: "Change history", subtitle: "Every change with a backup, diff and rollback", symbol: "clock.arrow.circlepath")
