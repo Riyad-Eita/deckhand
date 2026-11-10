@@ -204,6 +204,16 @@
         }
       }
     },
+    "A push for every SSH login you don't expect": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Push für jeden SSH-Login, den du nicht erwartest"
+          }
+        }
+      }
+    },
     "A real terminal": {
       "localizations": {
         "de": {
@@ -390,6 +400,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Füge deinen Server hinzu"
+          }
+        }
+      }
+    },
+    "Adds a small login hook (PAM) that pushes to your ntfy topic. It can't block a login. Subscribe to the topic in the ntfy app: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügt einen kleinen Login-Hook (PAM) hinzu, der an dein ntfy-Topic pusht. Er kann keinen Login blockieren. Abonniere das Topic in der ntfy-App: %@"
           }
         }
       }
@@ -1885,6 +1905,16 @@
         }
       }
     },
+    "Every SSH login from an address that isn't trusted sends a push with user, address, country and time — through your ntfy topic, straight from the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder SSH-Login von einer nicht vertrauten Adresse schickt einen Push mit Nutzer, Adresse, Land und Uhrzeit – über dein ntfy-Topic, direkt vom Server."
+          }
+        }
+      }
+    },
     "Every account that can log in is a door. Accounts without a password are an open door.": {
       "localizations": {
         "de": {
@@ -2617,6 +2647,16 @@
         }
       }
     },
+    "Login alerts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login-Benachrichtigungen"
+          }
+        }
+      }
+    },
     "Logs": {
       "localizations": {
         "de": {
@@ -2987,6 +3027,16 @@
         }
       }
     },
+    "No alerts for these. Deckhand trusts the address this iPhone connects from when you turn alerts on, so it doesn't alert you about itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese gibt es keine Benachrichtigung. Beim Einschalten vertraut Deckhand der Adresse, von der dieses iPhone verbindet, damit es dich nicht über sich selbst benachrichtigt."
+          }
+        }
+      }
+    },
     "No background tasks": {
       "localizations": {
         "de": {
@@ -3023,6 +3073,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Zeilen"
+          }
+        }
+      }
+    },
+    "No logins found in the logs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Logs wurden keine Logins gefunden."
           }
         }
       }
@@ -3076,6 +3136,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine installiert"
+          }
+        }
+      }
+    },
+    "None yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine."
           }
         }
       }
@@ -3186,6 +3256,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline"
+          }
+        }
+      }
+    },
+    "On": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An"
           }
         }
       }
@@ -3593,6 +3673,16 @@
         }
       }
     },
+    "Recent logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Logins"
+          }
+        }
+      }
+    },
     "Recent logs": {
       "localizations": {
         "de": {
@@ -3669,6 +3759,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper-Modell entfernen?"
+          }
+        }
+      }
+    },
+    "Removes the login hook from the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt den Login-Hook vom Server."
           }
         }
       }
@@ -4040,6 +4140,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Test senden"
+          }
+        }
+      }
+    },
+    "Send alerts to this iPhone's ntfy topic": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benachrichtigungen an das ntfy-Topic dieses iPhones senden"
           }
         }
       }
@@ -4925,12 +5035,52 @@
         }
       }
     },
+    "Trust my current address (%@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meiner aktuellen Adresse vertrauen (%@)"
+          }
+        }
+      }
+    },
     "Trust this server?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Diesem Server vertrauen?"
+          }
+        }
+      }
+    },
+    "Trusted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertraut"
+          }
+        }
+      }
+    },
+    "Trusted addresses": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertraute Adressen"
+          }
+        }
+      }
+    },
+    "Trusted: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertraut: %@"
           }
         }
       }
@@ -4945,6 +5095,26 @@
         }
       }
     },
+    "Turn off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausschalten"
+          }
+        }
+      }
+    },
+    "Turn off SSH login alerts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Login-Benachrichtigungen ausschalten"
+          }
+        }
+      }
+    },
     "Turn off root and password logins": {
       "localizations": {
         "de": {
@@ -4955,12 +5125,32 @@
         }
       }
     },
+    "Turn on SSH login alerts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Login-Benachrichtigungen einschalten"
+          }
+        }
+      }
+    },
     "Turn on automatic security updates": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Automatische Sicherheitsupdates einschalten"
+          }
+        }
+      }
+    },
+    "Turn on login alerts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login-Benachrichtigungen einschalten"
           }
         }
       }
@@ -5082,6 +5272,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aktualisiere die Systempakete und sag mir, was einen Neustart braucht"
+          }
+        }
+      }
+    },
+    "Update trusted login addresses": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertraute Login-Adressen aktualisieren"
           }
         }
       }
@@ -5545,6 +5745,16 @@
     "https://example.com/mcp": {
       "shouldTranslate": false
     },
+    "key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel"
+          }
+        }
+      }
+    },
     "none found": {
       "localizations": {
         "de": {
@@ -5557,6 +5767,16 @@
     },
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false
+    },
+    "password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort"
+          }
+        }
+      }
     },
     "public": {
       "localizations": {
@@ -5594,6 +5814,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "systemd: Status, Neustart, Logs"
+          }
+        }
+      }
+    },
+    "this iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dieses iPhone"
           }
         }
       }

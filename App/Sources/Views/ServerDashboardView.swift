@@ -123,6 +123,14 @@ struct ServerDashboardView: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("dashboard.fail2ban")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
+                                LoginAlertsView(server: server)
+                            } label: {
+                                ManageRow(title: "Login alerts", subtitle: "A push for every SSH login you don't expect", symbol: "bell.badge")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.loginAlerts")
                         }
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
