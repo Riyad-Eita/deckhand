@@ -394,3 +394,46 @@ struct LivePortTests {
         await conn.disconnect()
     }
 }
+
+extension LivePortTests {
+    /// Security check-up on the disposable systemd server: audit, apply fixes (fail2ban, automatic updates,
+    /// guarded SSH hardening with a fresh login), see the score go up, then roll everything back.
+    @Test func auditAndFixes() async throws {
+        let conn = try await connect(oldPort)
+        let ctx = SecurityAudit.Context(loginUser: env["DECKHAND_PORT_USER"]!, usesKey: false)
+        func audit() async throws -> [SecurityAudit.Check] {
+            SecurityAudit.checks(SecurityAudit.parse(try await root(SecurityAudit.script, conn).joined(separator: "\n")), context: ctx)
+        }
+        let before = try await audit()
+        let level = { (checks: [SecurityAudit.Check], id: String) in checks.first { $0.id == id }?.level }
+        #expect(level(before, "ssh.password") == .bad)
+        #expect(level(before, "firewall") == .good)
+        #expect(level(before, "fail2ban") == .warn)
+
+        var ids: [String] = []
+        for id in ["fail2ban", "autoupdates", "ssh.extras"] {
+            guard case .change(let change, let guarded)? = before.first(where: { $0.id == id })?.fix else { Issue.record("no fix for \(id)"); continue }
+            let cid = ConfigChange.makeID(title: change.title, date: Date().addingTimeInterval(Double(ids.count)))
+            let out = try await root(change.script(id: cid), conn)
+            #expect(out.contains("@@done"), "\(id): \(out.suffix(8))")
+            if guarded {
+                let fresh = try await connect(oldPort)   // still able to log in
+                #expect(try await root(ConfigChange.confirmScript(id: cid), fresh).contains("@@done"))
+                await fresh.disconnect()
+            }
+            ids.append(cid)
+        }
+        let after = try await audit()
+        #expect(level(after, "fail2ban") == .good)
+        #expect(level(after, "autoupdates") == .good)
+        #expect(level(after, "ssh.extras") == .good)
+        #expect(SecurityAudit.score(after) > SecurityAudit.score(before))
+
+        for cid in ids.reversed() { #expect(try await root(ConfigChange.rollbackScript(id: cid), conn).contains("@@done")) }
+        let undone = try await audit()
+        #expect(level(undone, "ssh.extras") == .warn)
+        #expect(level(undone, "autoupdates") == .warn)
+        _ = try await root("rm -rf \(ConfigChange.defaultRoot)/*", conn)
+        await conn.disconnect()
+    }
+}

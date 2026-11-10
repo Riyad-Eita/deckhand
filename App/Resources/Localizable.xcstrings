@@ -128,11 +128,51 @@
         }
       }
     },
+    "%lld things to look at": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Punkte zum Ansehen"
+          }
+        }
+      }
+    },
     "%lld.": {
       "shouldTranslate": false
     },
     "..": {
       "shouldTranslate": false
+    },
+    "1 thing to look at": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Punkt zum Ansehen"
+          }
+        }
+      }
+    },
+    "A firewall blocks everything you didn't open on purpose — a database or admin panel that listens by accident stays private.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Firewall blockt alles, was du nicht bewusst geöffnet hast – eine Datenbank oder ein Admin-Panel, das versehentlich lauscht, bleibt privat."
+          }
+        }
+      }
+    },
+    "A fresh login didn't work (%@), so the change was rolled back right away.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine neue Anmeldung hat nicht funktioniert (%@), deshalb wurde die Änderung sofort zurückgesetzt."
+          }
+        }
+      }
     },
     "A port other than 22 keeps most automated login attempts away. If your hosting provider has its own firewall (security groups, cloud firewall), allow the new port there first.": {
       "localizations": {
@@ -150,6 +190,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein echtes Terminal"
+          }
+        }
+      }
+    },
+    "A score and a list of fixes, worst first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Score und eine Liste von Fixes, das Wichtigste zuerst"
+          }
+        }
+      }
+    },
+    "A system file every user can write is an easy way to become root.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Systemdatei, die jeder Nutzer ändern kann, ist ein einfacher Weg zu root."
           }
         }
       }
@@ -180,6 +240,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zugriff"
+          }
+        }
+      }
+    },
+    "Accounts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konten"
           }
         }
       }
@@ -366,6 +436,16 @@
         }
       }
     },
+    "Anyone who gets into such an account is root at once. Fine for automation accounts, risky for people.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer in so ein Konto kommt, ist sofort root. Okay für Automatisierungskonten, riskant für Menschen."
+          }
+        }
+      }
+    },
     "Anything using %@ is interrupted.": {
       "localizations": {
         "de": {
@@ -434,6 +514,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fragen zu jedem öffentlichen GitHub-Repository. Kein Konto nötig."
+          }
+        }
+      }
+    },
+    "Automatic security updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Sicherheitsupdates"
           }
         }
       }
@@ -518,6 +608,36 @@
         }
       }
     },
+    "Block repeated failed logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholte Fehlversuche blockieren"
+          }
+        }
+      }
+    },
+    "Blocking repeated failed logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholte Fehlversuche blockieren"
+          }
+        }
+      }
+    },
+    "Bots try millions of passwords against every server on the internet. With password logins off, only someone holding your key can get in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bots probieren Millionen Passwörter an jedem Server im Internet. Ohne Passwort-Logins kommt nur rein, wer deinen Schlüssel hat."
+          }
+        }
+      }
+    },
     "Bring an agent": {
       "localizations": {
         "de": {
@@ -578,6 +698,16 @@
         }
       }
     },
+    "Change the SSH port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Port ändern"
+          }
+        }
+      }
+    },
     "ChatGPT plan": {
       "localizations": {
         "de": {
@@ -588,12 +718,32 @@
         }
       }
     },
+    "Check again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut prüfen"
+          }
+        }
+      }
+    },
     "Check disk space, memory and failing services": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Speicherplatz, Arbeitsspeicher und ausgefallene Dienste"
+          }
+        }
+      }
+    },
+    "Check it works": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfen, ob es funktioniert"
           }
         }
       }
@@ -684,6 +834,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Leeren"
+          }
+        }
+      }
+    },
+    "Clock sync": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitsynchronisation"
           }
         }
       }
@@ -950,6 +1110,16 @@
         }
       }
     },
+    "Databases and admin APIs should only listen on localhost or a private network. Exposed, they are one weak password away from a data leak.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbanken und Admin-APIs sollten nur auf localhost oder einem privaten Netz lauschen. Offen sind sie nur ein schwaches Passwort von einem Datenleck entfernt."
+          }
+        }
+      }
+    },
     "Deckhand": {
       "localizations": {
         "de": {
@@ -976,6 +1146,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand konnte sich nicht auf Port %1$@ anmelden: %2$@ Meist blockiert eine Firewall beim Hoster den Port."
+          }
+        }
+      }
+    },
+    "Deckhand itself logs in with a password. Switch this server to a key in its settings first, so turning passwords off can't lock you out.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand selbst meldet sich mit einem Passwort an. Stell diesen Server zuerst in seinen Einstellungen auf einen Schlüssel um, damit dich das Abschalten der Passwörter nicht aussperrt."
+          }
+        }
+      }
+    },
+    "Deckhand logs in as root with a password. Switch to a key first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand meldet sich als root mit Passwort an. Stell zuerst auf einen Schlüssel um."
           }
         }
       }
@@ -1088,6 +1278,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stoppen"
+          }
+        }
+      }
+    },
+    "Down from %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorher %lld"
           }
         }
       }
@@ -1205,6 +1405,16 @@
         }
       }
     },
+    "Every account that can log in is a door. Accounts without a password are an open door.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jedes Konto, das sich anmelden kann, ist eine Tür. Konten ohne Passwort sind eine offene Tür."
+          }
+        }
+      }
+    },
     "Every change with a backup, diff and rollback": {
       "localizations": {
         "de": {
@@ -1235,12 +1445,32 @@
         }
       }
     },
+    "Fewer password tries per connection slow down guessing; X11 forwarding is rarely needed on a server and widens the attack surface.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger Versuche pro Verbindung bremsen das Raten; X11-Weiterleitung braucht ein Server selten, sie vergrößert nur die Angriffsfläche."
+          }
+        }
+      }
+    },
     "Files": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dateien"
+          }
+        }
+      }
+    },
+    "Files anyone can change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien, die jeder ändern kann"
           }
         }
       }
@@ -1295,6 +1525,36 @@
         }
       }
     },
+    "Fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beheben"
+          }
+        }
+      }
+    },
+    "Fix with an agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit einem Agenten beheben"
+          }
+        }
+      }
+    },
+    "Fixes back up every file first and can be rolled back in the change history.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixes sichern vorher jede Datei und lassen sich im Änderungsverlauf zurücksetzen."
+          }
+        }
+      }
+    },
     "Follow": {
       "localizations": {
         "de": {
@@ -1343,6 +1603,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "GitHub Personal Access Token"
+          }
+        }
+      }
+    },
+    "Harden SSH logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Logins absichern"
           }
         }
       }
@@ -1427,6 +1697,36 @@
         }
       }
     },
+    "Install the updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates installieren"
+          }
+        }
+      }
+    },
+    "Install updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates installieren"
+          }
+        }
+      }
+    },
+    "Installs all waiting updates with the package manager. Services may restart briefly. This can't be rolled back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert alle wartenden Updates mit dem Paketmanager. Dienste starten eventuell kurz neu. Das lässt sich nicht zurücksetzen."
+          }
+        }
+      }
+    },
     "Interrupted": {
       "localizations": {
         "de": {
@@ -1493,6 +1793,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Terminal-Sitzungen behalten"
+          }
+        }
+      }
+    },
+    "Kernel and library updates only protect you after a restart.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kernel- und Bibliotheksupdates schützen erst nach einem Neustart."
           }
         }
       }
@@ -1567,6 +1877,16 @@
         }
       }
     },
+    "Log in again to make sure you still can": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu anmelden, um sicherzugehen, dass es noch geht"
+          }
+        }
+      }
+    },
     "Log in on port %@": {
       "localizations": {
         "de": {
@@ -1597,6 +1917,16 @@
         }
       }
     },
+    "Logs, certificates and two-factor codes depend on a correct clock.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs, Zertifikate und Zwei-Faktor-Codes brauchen eine richtige Uhr."
+          }
+        }
+      }
+    },
     "Low": {
       "localizations": {
         "de": {
@@ -1623,6 +1953,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erstellt"
+          }
+        }
+      }
+    },
+    "Make system files writable only by their owner": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Systemdateien nur für ihren Besitzer beschreibbar machen"
           }
         }
       }
@@ -1717,6 +2057,16 @@
         }
       }
     },
+    "Most break-ins use holes that already have a fix. Installing updates closes them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die meisten Einbrüche nutzen Lücken, für die es längst einen Fix gibt. Updates schließen sie."
+          }
+        }
+      }
+    },
     "Move SSH": {
       "localizations": {
         "de": {
@@ -1773,6 +2123,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Name (optional)"
+          }
+        }
+      }
+    },
+    "Needs attention": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht Aufmerksamkeit"
           }
         }
       }
@@ -1866,6 +2226,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts geändert: SSH läuft weiter auf dem alten Port."
+          }
+        }
+      }
+    },
+    "Nothing to fix.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts zu beheben."
           }
         }
       }
@@ -1970,6 +2340,16 @@
         }
       }
     },
+    "Password logins over SSH": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort-Logins über SSH"
+          }
+        }
+      }
+    },
     "Password needed": {
       "localizations": {
         "de": {
@@ -2036,6 +2416,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port %@ funktioniert, aber der alte Port ist noch offen. Du kannst ihn später schließen."
+          }
+        }
+      }
+    },
+    "Port 22 gets nearly all automated attacks. Another port doesn't make SSH secure by itself, but it keeps the logs quiet and the noise away.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port 22 bekommt fast alle automatischen Angriffe ab. Ein anderer Port macht SSH nicht allein sicher, hält aber die Logs ruhig und den Lärm fern."
           }
         }
       }
@@ -2193,6 +2583,16 @@
         }
       }
     },
+    "Refresh the package lists": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paketlisten aktualisieren"
+          }
+        }
+      }
+    },
     "Reload the service": {
       "localizations": {
         "de": {
@@ -2254,6 +2654,16 @@
         }
       }
     },
+    "Restart pending": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neustart ausstehend"
+          }
+        }
+      }
+    },
     "Restore the backed-up files": {
       "localizations": {
         "de": {
@@ -2290,6 +2700,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zurückgesetzt"
+          }
+        }
+      }
+    },
+    "Room to improve": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da geht noch was"
+          }
+        }
+      }
+    },
+    "Root is the one account every attacker knows exists. Logging in as a normal user and using sudo leaves a trail and stops password guessing on root.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Root ist das eine Konto, von dem jeder Angreifer weiß. Wer sich als normaler Nutzer anmeldet und sudo nutzt, hinterlässt Spuren und verhindert Passwort-Raten bei root."
+          }
+        }
+      }
+    },
+    "Root login": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Root-Login"
           }
         }
       }
@@ -2354,6 +2794,16 @@
         }
       }
     },
+    "SSH limits": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Grenzen"
+          }
+        }
+      }
+    },
     "SSH now runs on port %@. Deckhand saved the new port for this server.": {
       "localizations": {
         "de": {
@@ -2380,6 +2830,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sichern"
+          }
+        }
+      }
+    },
+    "Score %lld of 100": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Score %lld von 100"
           }
         }
       }
@@ -2420,6 +2880,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicherheitsänderungen mit Deckhand erscheinen hier. Zu jeder gibt es ein Backup, zu dem du zurückkehren kannst."
+          }
+        }
+      }
+    },
+    "Security check-up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheits-Check"
+          }
+        }
+      }
+    },
+    "Security updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsupdates"
           }
         }
       }
@@ -2480,6 +2960,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienste"
+          }
+        }
+      }
+    },
+    "Services open to the internet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dienste offen zum Internet"
           }
         }
       }
@@ -3035,6 +3525,26 @@
         }
       }
     },
+    "Turn on automatic security updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Sicherheitsupdates einschalten"
+          }
+        }
+      }
+    },
+    "Turn on the firewall": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall einschalten"
+          }
+        }
+      }
+    },
     "Undone automatically": {
       "localizations": {
         "de": {
@@ -3052,6 +3562,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starten"
+          }
+        }
+      }
+    },
+    "Up from %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorher %lld"
           }
         }
       }
@@ -3206,6 +3726,16 @@
         }
       }
     },
+    "Well protected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gut geschützt"
+          }
+        }
+      }
+    },
     "What should happen on %@?": {
       "localizations": {
         "de": {
@@ -3218,6 +3748,16 @@
     },
     "Whisper large-v3": {
       "shouldTranslate": false
+    },
+    "With automatic security updates the server patches itself every day, even when you don't look.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit automatischen Sicherheitsupdates patcht sich der Server jeden Tag selbst, auch wenn du nicht hinschaust."
+          }
+        }
+      }
     },
     "Work in…": {
       "localizations": {
@@ -3319,6 +3859,16 @@
         }
       }
     },
+    "fail2ban bans addresses that keep failing to log in, which stops password guessing and keeps logs readable.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban sperrt Adressen, die sich immer wieder falsch anmelden. Das stoppt Passwort-Raten und hält die Logs lesbar."
+          }
+        }
+      }
+    },
     "for %@ on %@. Deckhand keeps it in memory until you quit the app.": {
       "localizations": {
         "de": {
@@ -3364,6 +3914,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "seit dem letzten Start"
+          }
+        }
+      }
+    },
+    "sudo without a password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sudo ohne Passwort"
           }
         }
       }
