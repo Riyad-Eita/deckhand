@@ -92,7 +92,7 @@ struct SSHTerminalView: UIViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(session: session, onClosed: onClosed) }
 
     func makeUIView(context: Context) -> TerminalView {
-        let view = TerminalView(frame: .zero)
+        let view = DeckhandTerminalView(frame: .zero)
         view.terminalDelegate = context.coordinator
         view.font = UIFont.monospacedSystemFont(ofSize: 13, weight: .regular)
         view.nativeBackgroundColor = .black
@@ -157,5 +157,21 @@ struct SSHTerminalView: UIViewRepresentable {
             }
         }
         nonisolated func rangeChanged(source: TerminalView, startY: Int, endY: Int) {}
+    }
+}
+
+/// SwiftTerm's view without answers to xterm size reports (CSI 14/16/18/19 t and friends).
+/// Over SSH these replies can arrive after tmux or the shell stopped waiting for them and then show up as
+/// typed text like ";52;55t". Size changes still reach the server through the SSH window-change request.
+final class DeckhandTerminalView: TerminalView {
+    nonisolated override func windowCommand(source: Terminal, command: Terminal.WindowManipulationCommand) -> [UInt8]? {
+        switch command {
+        case .reportTextAreaPixelDimension, .reportTerminalWindowPixelDimension, .reportSizeOfScreenInPixels,
+             .reportCellSizeInPixels, .reportTextAreaCharacters, .reportScreenSizeCharacters,
+             .reportTerminalPosition, .reportTextAreaPosition:
+            return []
+        default:
+            return super.windowCommand(source: source, command: command)
+        }
     }
 }
