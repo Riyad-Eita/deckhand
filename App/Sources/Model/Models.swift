@@ -94,6 +94,10 @@ final class ChatThread {
     var engineRaw: String = Engine.ownKey.rawValue
     /// Session id of the server CLI conversation, used to resume it.
     var cliSessionID: String?
+    /// The detached run on the server for the current CLI turn, and the next output line to read.
+    var cliRunID: String?
+    var cliRunLine: Int = 1
+    var cliRunActive: Bool = false
     var server: Server?
 
     init(server: Server, workingDirectory: String, engine: Engine = .ownKey) {

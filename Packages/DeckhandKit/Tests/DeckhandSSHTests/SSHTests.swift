@@ -207,3 +207,24 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// A detached run survives a dropped connection: read a bit, disconnect, reconnect and continue from the checkpoint.
+    @Test func detachedRunSurvivesDisconnect() async throws {
+        let run = DetachedRun()
+        var conn = try await connection()
+        _ = try await conn.run(run.startCommand("for i in 1 2 3 4 5; do echo line$i; sleep 1; done"), timeout: .seconds(20))
+        var seen: [String] = []
+        for try await line in conn.streamLines(run.readCommand(fromLine: 1)) {
+            seen.append(line)
+            if seen.count == 2 { break }
+        }
+        await conn.disconnect()               // the phone loses its connection
+        try await Task.sleep(for: .seconds(2))
+        conn = try await connection()         // …and comes back
+        for try await line in conn.streamLines(run.readCommand(fromLine: seen.count + 1)) { seen.append(line) }
+        #expect(seen == ["line1", "line2", "line3", "line4", "line5", "@@exit 0"])
+        _ = try await conn.run("rm -f ~/.deckhand/runs/\(run.id).*", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}

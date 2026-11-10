@@ -27,7 +27,18 @@ final class ChatModel {
     private(set) var liveThinking = ""
     private(set) var liveTools: [(id: String, name: String, input: String)] = []
     private(set) var toolStatus: [String: ToolStatus] = [:]
-    private(set) var isRunning = false
+    private(set) var isRunning = false {
+        didSet {
+            // Keep a running chat alive across views, so reopening it shows the same live run.
+            if isRunning { Self.live[thread.id] = self } else if Self.live[thread.id] === self { Self.live[thread.id] = nil }
+        }
+    }
+    private static var live: [UUID: ChatModel] = [:]
+
+    /// The chat model for a thread: the one still running if there is one, otherwise a fresh one.
+    static func model(for thread: ChatThread, server: Server) -> ChatModel {
+        live[thread.id] ?? ChatModel(thread: thread, server: server)
+    }
     private(set) var runStartedAt = Date()
     private(set) var error: String?
     /// Non-fatal information for the current run (e.g. a connection that could not be opened).
@@ -40,6 +51,48 @@ final class ChatModel {
         self.thread = thread
         self.server = server
         self.messages = thread.messages
+    }
+
+    /// A server run that was going when the app closed or the connection dropped: pick it up again.
+    func resumeIfNeeded() {
+        guard !isRunning, thread.cliRunActive, let id = thread.cliRunID, let cli = thread.engine.serverCLI else { return }
+        isRunning = true
+        notice = String(localized: "Reattaching to the run on the server…")
+        task = Task { await follow(cli, run: DetachedRun(id: id), prompt: "", access: AppSettings.shared.cliAccess) }
+    }
+
+    /// Reads a detached server run until it ends; reconnects and continues from the last line if the connection drops.
+    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess) async {
+        var delay: Double = 2
+        var reconnecting = thread.cliRunLine > 1
+        while !Task.isCancelled {
+            do {
+                let shell = try await Connections.shared.connection(for: server)
+                let events = ServerCLIRun.runDetached(
+                    cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
+                    sessionID: thread.cliSessionID, access: access, run: run, fromLine: thread.cliRunLine)
+                for try await event in events {
+                    if reconnecting { notice = nil; reconnecting = false; delay = 2 }
+                    handle(event)
+                }
+                break
+            } catch let e as CLIError where e.message != "Lost the connection to the run." {
+                self.error = e.localizedDescription
+                break
+            } catch {
+                if Task.isCancelled { break }
+                // Connection trouble: the run keeps going on the server. Try again with growing pauses.
+                notice = String(localized: "Connection lost — the run continues on the server. Reconnecting…")
+                reconnecting = true
+                await Connections.shared.disconnect(server)
+                try? await Task.sleep(for: .seconds(delay))
+                delay = min(delay * 2, 30)
+            }
+        }
+        if !Task.isCancelled { thread.cliRunActive = false }
+        clearLive()
+        isRunning = false
+        persist()
     }
 
     func result(for callID: String) -> ToolResult? {
@@ -73,13 +126,11 @@ final class ChatModel {
             do {
                 let shell = try await Connections.shared.connection(for: server)
                 if let cli = thread.engine.serverCLI {
-                    let events = ServerCLIRun.run(
-                        cli, shell: shell, prompt: trimmed, workingDirectory: thread.workingDirectory,
-                        sessionID: thread.cliSessionID, access: access)
-                    for try await event in events { handle(event) }
-                    clearLive()
-                    isRunning = false
-                    persist()
+                    let run = DetachedRun()
+                    thread.cliRunID = run.id
+                    thread.cliRunLine = 1
+                    thread.cliRunActive = true
+                    await follow(cli, run: run, prompt: trimmed, access: access)
                     return
                 }
                 let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
@@ -110,6 +161,15 @@ final class ChatModel {
     }
 
     func stop() {
+        if thread.cliRunActive, let id = thread.cliRunID {
+            thread.cliRunActive = false
+            let server = self.server
+            Task {
+                if let conn = try? await Connections.shared.connection(for: server) {
+                    _ = try? await conn.run(DetachedRun(id: id).stopCommand, timeout: .seconds(15))
+                }
+            }
+        }
         task?.cancel()
         pendingApproval?.respond(.deny(reason: "Stopped by the user."))
     }
@@ -139,6 +199,8 @@ final class ChatModel {
             persist()
         case .toolRunning(let call): toolStatus[call.id] = .running
         case .toolFinished(let call, let result): toolStatus[call.id] = .done(result)
+        case .checkpoint(let line):
+            thread.cliRunLine = line
         case .sessionStarted(let id):
             thread.cliSessionID = id
         case .usage(let u):
