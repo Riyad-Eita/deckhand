@@ -92,7 +92,23 @@ struct MarkdownView: View {
     }
 
     private func inline(_ text: String) -> AttributedString {
-        (try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)))
+        let parsed = (try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)))
             ?? AttributedString(text)
+        return Self.autolinked(parsed)
+    }
+
+    /// Makes bare URLs tappable too (agents often write `http://localhost:3000` without Markdown link syntax).
+    static func autolinked(_ text: AttributedString) -> AttributedString {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
+              let ns = try? NSMutableAttributedString(text, including: \.foundation) else { return text }
+        let plain = ns.string
+        var changed = false
+        for match in detector.matches(in: plain, range: NSRange(location: 0, length: (plain as NSString).length)) {
+            guard let url = match.url, ns.attribute(.link, at: match.range.location, effectiveRange: nil) == nil else { continue }
+            ns.addAttribute(.link, value: url, range: match.range)
+            changed = true
+        }
+        guard changed, let result = try? AttributedString(ns, including: \.foundation) else { return text }
+        return result
     }
 }

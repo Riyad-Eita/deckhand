@@ -503,3 +503,36 @@ struct LiveProvisionTests {
         await again.disconnect(); await fresh.disconnect(); await asAdmin.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// A web server that only listens on the server's localhost opens through a local forwarded port.
+    @Test func forwardsAPortToTheServersLocalhost() async throws {
+        let conn = try await connection()
+        let port = Int.random(in: 41000...48000)
+        let dir = "/tmp/dh-fwd-\(port)"
+        _ = try await conn.run("mkdir -p \(dir) && echo 'hello through ssh' > \(dir)/index.html && { nohup python3 -m http.server \(port) --bind 127.0.0.1 --directory \(dir) </dev/null >/dev/null 2>&1 & } ; sleep 1", timeout: .seconds(15))
+        let forward = try await conn.forward(remotePort: port)
+        defer { forward.stop() }
+        for path in ["index.html", "index.html"] {   // twice: every request gets its own SSH channel
+            let (data, response) = try await URLSession.shared.data(from: forward.url.appending(path: path))
+            #expect((response as? HTTPURLResponse)?.statusCode == 200)
+            #expect(String(decoding: data, as: UTF8.self) == "hello through ssh\n")
+        }
+        _ = try await conn.run("pkill -f 'http.server \(port) --bind 127.0.0.1'; rm -rf \(dir)", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
+
+extension LiveSSHTests {
+    /// A closed port gets a clear error instead of a tunnel to nowhere.
+    @Test func forwardToAClosedPortSaysSo() async throws {
+        let conn = try await connection()
+        do {
+            _ = try await conn.forward(remotePort: 1)
+            Issue.record("expected an error")
+        } catch let failure as PortForward.Failure {
+            #expect(failure == .nothingListening(1), "\(failure)")
+        }
+        await conn.disconnect()
+    }
+}

@@ -64,6 +64,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.git")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            WebAppsView(server: server)
+                        } label: {
+                            ManageRow(title: "Web apps", subtitle: "Open apps running on the server, even localhost ones", symbol: "safari")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.webApps")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")

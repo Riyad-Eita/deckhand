@@ -161,6 +161,11 @@ public actor SSHConnection: StreamingShell {
         client = nil
     }
 
+    /// Forwards `127.0.0.1:<random port>` on this device to `remoteHost:remotePort` as seen from the server.
+    public func forward(remoteHost: String = "127.0.0.1", remotePort: Int) async throws -> PortForward {
+        try await PortForward.start(client: try connectedClient(), remoteHost: remoteHost, remotePort: remotePort)
+    }
+
     private func connectedClient() throws -> SSHClient {
         guard let client, client.isConnected else { throw SSHError.notConnected }
         return client
