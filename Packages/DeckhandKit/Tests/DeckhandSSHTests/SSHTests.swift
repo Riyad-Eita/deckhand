@@ -437,3 +437,69 @@ extension LivePortTests {
         await conn.disconnect()
     }
 }
+
+/// Provisions a disposable fresh server (root login with a password), e.g.
+/// DECKHAND_PROV_HOST=example.com DECKHAND_PROV_PORT=22 DECKHAND_PROV_ROOT_PASSWORD=… swift test
+/// Leaves the server hardened — recreate it before running again.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_PROV_HOST"] != nil), .serialized)
+struct LiveProvisionTests {
+    let env = ProcessInfo.processInfo.environment
+
+    func connect(_ user: String, _ credential: SSHCredential) async throws -> SSHConnection {
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_PROV_HOST"]!, port: Int(env["DECKHAND_PROV_PORT"] ?? "22")!, username: user),
+            credential: credential)
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        return conn
+    }
+
+    func root(_ script: String, _ conn: SSHConnection, access: SudoAccess, password: String? = nil, input: [String] = []) async throws -> [String] {
+        var out: [String] = []
+        for try await l in Sudo.run(script, on: conn, access: access, password: password, input: input) {
+            if case .output(let s) = l { out.append(s) }
+        }
+        return out
+    }
+
+    @Test func freshServerEndsUpHardened() async throws {
+        let rootPW = env["DECKHAND_PROV_ROOT_PASSWORD"]!
+        let asRoot = try await connect("root", .password(rootPW))
+        #expect(Sudo.parseProbe(try await asRoot.run(Sudo.probeCommand, timeout: .seconds(10)).stdout) == .root)
+        let facts = SecurityAudit.parse(try await root(Provisioning.inspectScript, asRoot, access: .root).joined(separator: "\n"))
+        #expect(facts["pm"] == "apt")
+        #expect(facts["firewall"] == "none")
+
+        // 1. Admin user with sudo and a fresh key; the sudo password only travels over stdin.
+        let pair = SSHKeys.generateEd25519(comment: "deckhand-test")
+        let sudoPW = Provisioning.generatePassword()
+        let created = try await root(Provisioning.createAdminScript(username: "deploy", publicKey: pair.publicKey), asRoot, access: .root, input: [sudoPW])
+        #expect(created.contains("@@done"), "\(created)")
+
+        // 2. Key login as the new user, sudo with the new password.
+        let asAdmin = try await connect("deploy", .privateKey(pair.privateKey, passphrase: nil))
+        #expect(Sudo.parseProbe(try await asAdmin.run(Sudo.probeCommand, timeout: .seconds(10)).stdout) == .password)
+        #expect(try await root("id -u", asAdmin, access: .password, password: sudoPW) == ["0"])
+        await asRoot.disconnect()
+
+        // 3. Root and password logins off (guarded), proven with a fresh key login before confirming.
+        let ssh = Hardening.ssh(context: .init(loginUser: "deploy", usesKey: true), includeEnabled: facts["ssh.include"] == "yes")
+        let sshID = ConfigChange.makeID(title: ssh.title)
+        #expect(try await root(ssh.script(id: sshID), asAdmin, access: .password, password: sudoPW).contains("@@done"))
+        let fresh = try await connect("deploy", .privateKey(pair.privateKey, passphrase: nil))
+        #expect(try await root(ConfigChange.confirmScript(id: sshID), fresh, access: .password, password: sudoPW).contains("@@done"))
+        await #expect(throws: (any Error).self) { _ = try await connect("root", .password(rootPW)) }
+
+        // 4. Firewall (guarded), SSH stays reachable.
+        let ufw = Hardening.ufw(open: [22])
+        let fwID = ConfigChange.makeID(title: ufw.title, date: Date().addingTimeInterval(1))
+        #expect(try await root(ufw.script(id: fwID), fresh, access: .password, password: sudoPW).contains("@@done"))
+        let again = try await connect("deploy", .privateKey(pair.privateKey, passphrase: nil))
+        #expect(try await root(ConfigChange.confirmScript(id: fwID), again, access: .password, password: sudoPW).contains("@@done"))
+
+        let audit = SecurityAudit.checks(
+            SecurityAudit.parse(try await root(SecurityAudit.script, again, access: .password, password: sudoPW).joined(separator: "\n")),
+            context: .init(loginUser: "deploy", usesKey: true))
+        for id in ["ssh.password", "ssh.root", "firewall"] { #expect(audit.first { $0.id == id }?.level == .good, "\(id)") }
+        await again.disconnect(); await fresh.disconnect(); await asAdmin.disconnect()
+    }
+}

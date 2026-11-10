@@ -5,6 +5,16 @@
     "%@ %@?": {
       "shouldTranslate": false
     },
+    "%@ MB": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ MB"
+          }
+        }
+      }
+    },
     "%@ done.": {
       "localizations": {
         "de": {
@@ -174,6 +184,16 @@
         }
       }
     },
+    "A fresh login failed, so this was rolled back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine neue Anmeldung ist fehlgeschlagen, deshalb wurde das zurückgesetzt."
+          }
+        }
+      }
+    },
     "A port other than 22 keeps most automated login attempts away. If your hosting provider has its own firewall (security groups, cloud firewall), allow the new port there first.": {
       "localizations": {
         "de": {
@@ -274,6 +294,16 @@
         }
       }
     },
+    "Add %lld MB of swap": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld MB Swap hinzufügen"
+          }
+        }
+      }
+    },
     "Add Server": {
       "localizations": {
         "de": {
@@ -290,6 +320,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verbindungen hinzufügen"
+          }
+        }
+      }
+    },
+    "Add swap": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap hinzufügen"
           }
         }
       }
@@ -324,6 +364,26 @@
         }
       }
     },
+    "Admin user": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Nutzer"
+          }
+        }
+      }
+    },
+    "Admin user, key login, firewall and more in one go": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Nutzer, Key-Login, Firewall und mehr in einem Rutsch"
+          }
+        }
+      }
+    },
     "After signing in, the page shows a code. Copy it and paste it here.": {
       "localizations": {
         "de": {
@@ -340,6 +400,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nach der ersten Verbindung installiert Deckhand einen eigenen Schlüssel auf dem Server und vergisst das Passwort."
+          }
+        }
+      }
+    },
+    "Afterwards you log in as %@ with this iPhone's key; root and password logins are turned off. Keep the sudo password somewhere safe.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danach meldest du dich als %@ mit dem Schlüssel dieses iPhones an; Root- und Passwort-Logins sind aus. Bewahre das Sudo-Passwort sicher auf."
           }
         }
       }
@@ -401,6 +471,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erlauben?"
+          }
+        }
+      }
+    },
+    "Also": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Außerdem"
           }
         }
       }
@@ -614,6 +694,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wiederholte Fehlversuche blockieren"
+          }
+        }
+      }
+    },
+    "Block repeated failed logins (fail2ban)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholte Fehlversuche blockieren (fail2ban)"
           }
         }
       }
@@ -1079,6 +1169,16 @@
         }
       }
     },
+    "Create %@ with sudo and this iPhone's key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ mit sudo und dem Schlüssel dieses iPhones anlegen"
+          }
+        }
+      }
+    },
     "Create a New Key": {
       "localizations": {
         "de": {
@@ -1166,6 +1266,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand meldet sich als root mit Passwort an. Stell zuerst auf einen Schlüssel um."
+          }
+        }
+      }
+    },
+    "Deckhand logs in as this user with a key it creates on this iPhone. The password is for sudo — save it in your password manager.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand meldet sich als dieser Nutzer mit einem Schlüssel an, den es auf diesem iPhone erzeugt. Das Passwort ist für sudo – speichere es in deinem Passwortmanager."
           }
         }
       }
@@ -1415,6 +1525,16 @@
         }
       }
     },
+    "Every change is backed up first and shows up in the change history, where you can roll it back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Änderung wird vorher gesichert und erscheint im Änderungsverlauf, wo du sie zurücksetzen kannst."
+          }
+        }
+      }
+    },
     "Every change with a backup, diff and rollback": {
       "localizations": {
         "de": {
@@ -1511,6 +1631,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Firewall"
+          }
+        }
+      }
+    },
+    "Firewall: block everything except SSH and open web ports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall: alles blocken außer SSH und offenen Web-Ports"
           }
         }
       }
@@ -1797,6 +1927,16 @@
         }
       }
     },
+    "Keep the clock in sync": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhr synchron halten"
+          }
+        }
+      }
+    },
     "Kernel and library updates only protect you after a restart.": {
       "localizations": {
         "de": {
@@ -1887,6 +2027,26 @@
         }
       }
     },
+    "Log in as %@ with the key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als %@ mit dem Schlüssel anmelden"
+          }
+        }
+      }
+    },
+    "Log in as root to set up a fresh server. You're logged in as %@ — the security check-up can harden this server instead.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melde dich als root an, um einen frischen Server einzurichten. Du bist als %@ angemeldet – der Sicherheits-Check kann diesen Server stattdessen absichern."
+          }
+        }
+      }
+    },
     "Log in on port %@": {
       "localizations": {
         "de": {
@@ -1903,6 +2063,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erneut auf Port %@ anmelden"
+          }
+        }
+      }
+    },
+    "Login": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login"
           }
         }
       }
@@ -2137,6 +2307,16 @@
         }
       }
     },
+    "New password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Passwort"
+          }
+        }
+      }
+    },
     "New port": {
       "localizations": {
         "de": {
@@ -2163,6 +2343,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neue Aufgabe mit %@"
+          }
+        }
+      }
+    },
+    "Next: move SSH off port 22": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Nächstes: SSH von Port 22 verlegen"
           }
         }
       }
@@ -2296,6 +2486,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port %1$@ neben %2$@ öffnen"
+          }
+        }
+      }
+    },
+    "Open the security check-up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheits-Check öffnen"
           }
         }
       }
@@ -2714,6 +2914,26 @@
         }
       }
     },
+    "Root and password logins are only turned off after the key login as %@ worked. Steps that could lock you out roll back by themselves unless Deckhand can log in again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Root- und Passwort-Logins werden erst abgeschaltet, wenn der Key-Login als %@ geklappt hat. Schritte, die dich aussperren könnten, nehmen sich selbst zurück, falls Deckhand sich nicht erneut anmelden kann."
+          }
+        }
+      }
+    },
+    "Root and password logins stay on. %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Root- und Passwort-Logins bleiben an. %@"
+          }
+        }
+      }
+    },
     "Root is the one account every attacker knows exists. Logging in as a normal user and using sudo leaves a trail and stops password guessing on root.": {
       "localizations": {
         "de": {
@@ -2750,6 +2970,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Im Terminal ausführen"
+          }
+        }
+      }
+    },
+    "Run the security check-up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheits-Check starten"
           }
         }
       }
@@ -2860,6 +3090,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienste suchen"
+          }
+        }
+      }
+    },
+    "Secure a fresh server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frischen Server absichern"
           }
         }
       }
@@ -2990,6 +3230,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einrichten"
+          }
+        }
+      }
+    },
+    "Set up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einrichten"
+          }
+        }
+      }
+    },
+    "Set up %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ einrichten?"
+          }
+        }
+      }
+    },
+    "Set up the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server einrichten"
+          }
+        }
+      }
+    },
+    "Set up — %lld steps need a look.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingerichtet – %lld Schritte brauchen einen Blick."
+          }
+        }
+      }
+    },
+    "Set up — 1 step needs a look.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingerichtet – 1 Schritt braucht einen Blick."
           }
         }
       }
@@ -3525,6 +3815,16 @@
         }
       }
     },
+    "Turn off root and password logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Root- und Passwort-Logins abschalten"
+          }
+        }
+      }
+    },
     "Turn on automatic security updates": {
       "localizations": {
         "de": {
@@ -3551,6 +3851,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatisch rückgängig gemacht"
+          }
+        }
+      }
+    },
+    "Undone automatically (%@).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch zurückgenommen (%@)."
           }
         }
       }
@@ -3646,6 +3956,16 @@
         }
       }
     },
+    "Use lowercase letters, digits, - or _, and not a system name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze Kleinbuchstaben, Ziffern, - oder _ und keinen Systemnamen."
+          }
+        }
+      }
+    },
     "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this iPhone.": {
       "localizations": {
         "de": {
@@ -3672,6 +3992,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Benutzer"
+          }
+        }
+      }
+    },
+    "Username": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzername"
           }
         }
       }
@@ -3732,6 +4062,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gut geschützt"
+          }
+        }
+      }
+    },
+    "What happens": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was passiert"
           }
         }
       }
@@ -3835,6 +4175,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Agent mit eigenem Key nutzt aktive Verbindungen sofort. Für Codex und Claude Code öffne die Server-Werkzeuge und tippe auf Übertragen."
+          }
+        }
+      }
+    },
+    "Your server is set up.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Server ist eingerichtet."
           }
         }
       }

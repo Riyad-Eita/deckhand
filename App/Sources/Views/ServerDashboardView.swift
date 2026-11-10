@@ -77,6 +77,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.audit")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                ProvisionView(server: server)
+                            } label: {
+                                ManageRow(title: "Secure a fresh server", subtitle: "Admin user, key login, firewall and more in one go", symbol: "sparkles.rectangle.stack")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.provision")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 ChangesView(server: server)
                             } label: {
                                 ManageRow(title: "Change history", subtitle: "Every change with a backup, diff and rollback", symbol: "clock.arrow.circlepath")
