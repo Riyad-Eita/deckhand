@@ -59,6 +59,7 @@ final class ChatModel {
     func resumeIfNeeded() {
         guard !isRunning, thread.cliRunActive, let id = thread.cliRunID, let cli = thread.engine.serverCLI else { return }
         isRunning = true
+        LiveTasks.shared.start(thread, server: server)
         notice = String(localized: "Reattaching to the run on the server…")
         task = Task { await follow(cli, run: DetachedRun(id: id), prompt: "", access: AppSettings.shared.cliAccess) }
     }
@@ -102,6 +103,9 @@ final class ChatModel {
         if !Task.isCancelled {
             thread.cliRunActive = false
             TaskNotifier.shared.taskFinished(thread, ok: error == nil)
+            LiveTasks.shared.end(thread, ok: error == nil)
+        } else {
+            LiveTasks.shared.end(thread, ok: false, stopped: true)
         }
         clearLive()
         isRunning = false
@@ -132,6 +136,7 @@ final class ChatModel {
         persist()
         isRunning = true
         runStartedAt = Date()
+        LiveTasks.shared.start(thread, server: server)
         let config = settings.providerConfig
         let policy = settings.approvalPolicy
         let access = settings.cliAccess
@@ -167,6 +172,7 @@ final class ChatModel {
             } catch {
                 self.error = error.localizedDescription
             }
+            LiveTasks.shared.end(thread, ok: error == nil, stopped: Task.isCancelled)
             clearLive()
             isRunning = false
             persist()
@@ -190,6 +196,7 @@ final class ChatModel {
     private func requestApproval(_ request: ApprovalRequest) async -> ApprovalDecision {
         toolStatus[request.call.id] = .waiting
         TaskNotifier.shared.approvalNeeded(thread, command: request.call.input["command"]?.stringValue ?? request.call.name)
+        LiveTasks.shared.update(thread, phase: .approval, step: LiveTasks.step(for: request.call), force: true)
         return await withCheckedContinuation { continuation in
             pendingApproval = PendingApproval(call: request.call, danger: request.danger) { [weak self] decision in
                 self?.pendingApproval = nil
@@ -211,12 +218,15 @@ final class ChatModel {
             messages.append(message)
             clearLive()
             persist()
-        case .toolRunning(let call): toolStatus[call.id] = .running
+        case .toolRunning(let call):
+            toolStatus[call.id] = .running
+            LiveTasks.shared.update(thread, phase: .running, step: LiveTasks.step(for: call))
         case .toolFinished(let call, let result): toolStatus[call.id] = .done(result)
         case .checkpoint(let line):
             thread.cliRunLine = line
             if waitingForLimit, line > waitingLine { waitingForLimit = false; notice = nil }
         case .waitingForLimit(let until):
+            LiveTasks.shared.update(thread, phase: .waiting, step: "", waitingUntil: until, force: true)
             waitingForLimit = true
             waitingLine = thread.cliRunLine + 1
             let time = until.formatted(Calendar.current.isDateInToday(until) ? .dateTime.hour().minute() : .dateTime.weekday().hour().minute())

@@ -1,0 +1,36 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Needs your approval: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht deine Freigabe: %@"
+          }
+        }
+      }
+    },
+    "Usage limit — continues at %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzungslimit – geht um %@ weiter"
+          }
+        }
+      }
+    },
+    "Waiting for the usage limit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf das Nutzungslimit"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
