@@ -223,6 +223,34 @@ final class ScriptedProvider: LLMProvider, @unchecked Sendable {
         #expect(!r.isError)
     }
 
+    @Test func secretsInToolOutputAreRedactedForTheModelOnly() async throws {
+        let token = "ghp_" + String(repeating: "Zz9y", count: 9)
+        let call = ToolCall(id: "t1", name: "run_command", input: ["command": .string("echo GITHUB_TOKEN=\(token)")])
+        func run(redact: Bool) async throws -> (model: String, screen: String) {
+            let provider = ScriptedProvider([
+                [.completed(Message(role: .assistant, blocks: [.toolUse(call)]), .toolUse, Usage())],
+                [.completed(Message(role: .assistant, blocks: [.text("ok")]), .endTurn, Usage())],
+            ])
+            let agent = Agent(
+                provider: provider, shell: LocalShell(), tools: ServerTools.all(workingDirectory: "/tmp"),
+                policy: .auto, system: "s", redactSecrets: redact, approve: { _ in .allow })
+            var screen = ""
+            var stored = ""
+            for try await e in agent.run(history: [], userMessage: .user("x")) {
+                if case .toolFinished(_, let r) = e { screen = r.content }
+                if case .message(let m) = e, case .toolResult(let r)? = m.blocks.first { stored = r.content }
+            }
+            guard case .toolResult(let sent) = provider.requests[1].messages[2].blocks[0] else { return ("", screen) }
+            #expect(stored == sent.content)   // the transcript keeps what the model saw
+            return (sent.content, screen)
+        }
+        let on = try await run(redact: true)
+        #expect(!on.model.contains(token) && on.model.contains("[REDACTED: GitHub token]"))
+        #expect(on.screen.contains(token))
+        let off = try await run(redact: false)
+        #expect(off.model.contains(token))
+    }
+
     @Test func deniedCallReturnsErrorResult() async throws {
         let call = ToolCall(id: "t1", name: "write_file", input: ["path": "/tmp/x", "content": "y"])
         let provider = ScriptedProvider([
