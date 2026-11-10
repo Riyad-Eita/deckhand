@@ -1,5 +1,7 @@
 import DeckhandCore
+import PhotosUI
 import SwiftUI
+import UniformTypeIdentifiers
 import os
 
 struct AgentChatView: View {
@@ -8,6 +10,11 @@ struct AgentChatView: View {
     @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
     @State private var browsing: BrowserTarget?
+    @State private var photoItem: PhotosPickerItem?
+    @State private var choosingPhoto = false
+    @State private var choosingFile = false
+    @State private var upload: (name: String, progress: Double)?
+    @State private var uploadError: String?
 
     init(thread: ChatThread, server: Server) {
         _model = State(initialValue: ChatModel.model(for: thread, server: server))
@@ -46,6 +53,20 @@ struct AgentChatView: View {
             VStack(spacing: 0) {
                 if let approval = model.pendingApproval {
                     ApprovalBar(approval: approval)
+                }
+                if let upload {
+                    HStack(spacing: 10) {
+                        Image(systemName: "arrow.up.doc").foregroundStyle(Theme.accent)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Uploading \(upload.name)").font(.caption).lineLimit(1)
+                            ProgressView(value: upload.progress)
+                        }
+                    }
+                    .padding(.horizontal, 16).padding(.top, 8)
+                    .accessibilityIdentifier("upload.progress")
+                }
+                if let uploadError {
+                    Text(uploadError).font(.caption).foregroundStyle(.red).padding(.horizontal, 16).padding(.top, 6)
                 }
                 composer
             }
@@ -118,6 +139,25 @@ struct AgentChatView: View {
 
     private var composer: some View {
         HStack(alignment: .bottom, spacing: 8) {
+            Menu {
+                Button { choosingPhoto = true } label: { Label("Photo", systemImage: "photo") }
+                Button { choosingFile = true } label: { Label("File", systemImage: "doc") }
+            } label: {
+                Image(systemName: "paperclip").font(.system(size: 20, weight: .medium)).frame(width: 32, height: 36)
+            }
+            .disabled(upload != nil)
+            .accessibilityLabel("Attach a file")
+            .accessibilityIdentifier("chat.attach")
+            .photosPicker(isPresented: $choosingPhoto, selection: $photoItem, matching: .images)
+            .fileImporter(isPresented: $choosingFile, allowedContentTypes: [.item]) { result in
+                guard case .success(let url) = result else { return }
+                Task { await uploadFile(url) }
+            }
+            .onChange(of: photoItem) { _, item in
+                guard let item else { return }
+                photoItem = nil
+                Task { await uploadPhoto(item) }
+            }
             TextField("Tell the agent what to do…", text: $draft, axis: .vertical)
                 .lineLimit(1...6)
                 .focused($composerFocused)
@@ -149,6 +189,44 @@ struct AgentChatView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
+    }
+
+    // MARK: Uploads
+
+    private func uploadPhoto(_ item: PhotosPickerItem) async {
+        guard let data = try? await item.loadTransferable(type: Data.self) else { uploadError = String(localized: "Couldn't read the photo."); return }
+        let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd-HHmmss"
+        let stamp = f.string(from: Date())
+        await send(data, name: "photo-\(stamp).\(ext)")
+    }
+
+    private func uploadFile(_ url: URL) async {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        guard let data = try? Data(contentsOf: url) else { uploadError = String(localized: "Couldn't read the file."); return }
+        await send(data, name: url.lastPathComponent)
+    }
+
+    /// Uploads into the task's folder and puts a note into the message, so the agent uses the file right away.
+    private func send(_ data: Data, name: String) async {
+        guard data.count < 500_000_000 else { uploadError = String(localized: "Files up to 500 MB."); return }
+        uploadError = nil
+        upload = (name, 0)
+        defer { upload = nil }
+        do {
+            let conn = try await Connections.shared.connection(for: model.server)
+            let path = try await conn.upload(data, named: name, into: model.thread.workingDirectory) { p in
+                Task { @MainActor in if upload != nil { upload?.progress = p } }
+            }
+            let note = String(localized: "I uploaded a file to \(path).")
+            draft = draft.isEmpty ? note + " " : draft + "\n" + note + " "
+            composerFocused = true
+        } catch {
+            uploadError = error.localizedDescription
+        }
     }
 }
 

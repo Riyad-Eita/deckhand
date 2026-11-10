@@ -45,6 +45,11 @@ import Testing
         try await login("192.0.2.10")
         #expect(!FileManager.default.fileExists(atPath: dir + "/curl.log"))
         try await login("203.0.113.9")
+        // The hook posts in the background: wait for both curl calls (country lookup, push), up to 5 s.
+        for _ in 0..<50 {
+            if let t = try? String(contentsOfFile: dir + "/curl.log", encoding: .utf8), t.contains("ntfy.example.com") { break }
+            try await Task.sleep(for: .milliseconds(100))
+        }
         let log = try String(contentsOfFile: dir + "/curl.log", encoding: .utf8)
         #expect(log.contains("deploy from 203.0.113.9 (Testland)"))
         #expect(log.contains("https://ntfy.example.com/t"))

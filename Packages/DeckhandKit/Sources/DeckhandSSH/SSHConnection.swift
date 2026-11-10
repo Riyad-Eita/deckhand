@@ -161,6 +161,54 @@ public actor SSHConnection: StreamingShell {
         client = nil
     }
 
+    /// Uploads `data` into `directory` (may start with `~`) as `name`, never overwriting: `photo.jpg` becomes
+    /// `photo-2.jpg` if needed. Uses SFTP, or base64 chunks over exec when the server has no SFTP.
+    /// Returns the absolute path. `progress` gets 0…1.
+    public func upload(
+        _ data: Data, named name: String, into directory: String, useSFTP: Bool = true,
+        progress: @escaping @Sendable (Double) -> Void
+    ) async throws -> String {
+        let safe = name.replacingOccurrences(of: "/", with: "-").trimmingCharacters(in: .whitespaces)
+        let dir = ServerTools.shellPath(directory)
+        let target = try await run("""
+            mkdir -p \(dir) && cd \(dir) && n=\(ShellQuote.quote(safe.isEmpty ? "upload" : safe)); b="${n%.*}"; e="${n##*.}"
+            [ "$b" = "$n" ] && e="" || e=".$e"; f="$n"; i=2
+            while [ -e "$f" ]; do f="$b-$i$e"; i=$((i+1)); done; printf '%s/%s' "$(pwd)" "$f"
+            """, timeout: .seconds(20))
+        let path = target.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard target.exitCode == 0, path.hasPrefix("/") else { throw SSHError.notConnected }
+        let chunk = 32 * 1024
+        do {
+            guard useSFTP else { throw SSHError.notConnected }
+            let sftp = try await connectedClient().openSFTP()
+            defer { Task { try? await sftp.close() } }
+            try await sftp.withFile(filePath: path, flags: [.write, .create, .truncate]) { file in
+                var offset = 0
+                while offset < data.count {
+                    let end = min(offset + chunk, data.count)
+                    try await file.write(ByteBuffer(bytes: data[offset..<end]), at: UInt64(offset))
+                    offset = end
+                    progress(Double(offset) / Double(max(data.count, 1)))
+                }
+            }
+        } catch {
+            // No SFTP subsystem: send base64 in pieces small enough for a command line.
+            let piece = 48 * 1024
+            _ = try await run(": > \(ShellQuote.quote(path))", timeout: .seconds(20))
+            var offset = 0
+            while offset < data.count {
+                let end = min(offset + piece, data.count)
+                let b64 = data[offset..<end].base64EncodedString()
+                let r = try await run("printf '%s' '\(b64)' | base64 -d >> \(ShellQuote.quote(path))", timeout: .seconds(60))
+                guard r.exitCode == 0 else { throw SSHError.unsupportedKey("Upload failed: \(r.stderr)") }
+                offset = end
+                progress(Double(offset) / Double(max(data.count, 1)))
+            }
+        }
+        progress(1)
+        return path
+    }
+
     /// Forwards `127.0.0.1:<random port>` on this device to `remoteHost:remotePort` as seen from the server.
     public func forward(remoteHost: String = "127.0.0.1", remotePort: Int) async throws -> PortForward {
         try await PortForward.start(client: try connectedClient(), remoteHost: remoteHost, remotePort: remotePort)

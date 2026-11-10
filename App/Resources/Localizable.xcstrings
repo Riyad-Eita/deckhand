@@ -688,6 +688,16 @@
         }
       }
     },
+    "Attach a file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei anhängen"
+          }
+        }
+      }
+    },
     "Automatic security updates": {
       "localizations": {
         "de": {
@@ -1439,6 +1449,26 @@
         }
       }
     },
+    "Couldn't read the file.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei ließ sich nicht lesen."
+          }
+        }
+      }
+    },
+    "Couldn't read the photo.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Foto ließ sich nicht lesen."
+          }
+        }
+      }
+    },
     "Countries looked up at ipwho.is — only the banned addresses are sent.": {
       "localizations": {
         "de": {
@@ -2035,6 +2065,16 @@
         }
       }
     },
+    "File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei"
+          }
+        }
+      }
+    },
     "Files": {
       "localizations": {
         "de": {
@@ -2051,6 +2091,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien, die jeder ändern kann"
+          }
+        }
+      }
+    },
+    "Files up to 500 MB.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien bis 500 MB."
           }
         }
       }
@@ -2333,6 +2383,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host, Benutzer und Passwort reichen – Deckhand ersetzt das Passwort durch einen sicheren Schlüssel, den es auf diesem iPhone erzeugt."
+          }
+        }
+      }
+    },
+    "I uploaded a file to %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich habe eine Datei nach %@ hochgeladen."
           }
         }
       }
@@ -3616,6 +3676,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code einfügen"
+          }
+        }
+      }
+    },
+    "Photo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto"
           }
         }
       }
@@ -5632,6 +5702,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aktualisiert %@"
+          }
+        }
+      }
+    },
+    "Uploading %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lade %@ hoch"
           }
         }
       }

@@ -1,3 +1,4 @@
+import Crypto
 import DeckhandCore
 import Foundation
 import Testing
@@ -535,4 +536,32 @@ extension LiveSSHTests {
         }
         await conn.disconnect()
     }
+}
+
+extension LiveSSHTests {
+    /// Uploads arrive byte for byte and never overwrite an existing file.
+    @Test func uploadsWithoutOverwriting() async throws {
+        let conn = try await connection()
+        let dir = "/tmp/dh-up-\(UUID().uuidString.prefix(8))"
+        let data = Data((0..<200_000).map { _ in UInt8.random(in: 0...255) })
+        let progress = ProgressLog()
+        let first = try await conn.upload(data, named: "photo one.jpg", into: dir) { progress.add($0) }
+        // The second one without SFTP: base64 over exec.
+        let second = try await conn.upload(data, named: "photo one.jpg", into: dir, useSFTP: false) { _ in }
+        #expect(first == "\(dir)/photo one.jpg")
+        #expect(second == "\(dir)/photo one-2.jpg")
+        let sums = try await conn.run("sha256sum \(ShellQuote.quote(first)) \(ShellQuote.quote(second)) | cut -d' ' -f1", timeout: .seconds(10)).stdout
+        let local = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+        #expect(sums == "\(local)\n\(local)\n")
+        #expect(progress.values.last == 1 && progress.values.count > 3)
+        _ = try await conn.run("rm -rf \(ShellQuote.quote(dir))", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
+
+final class ProgressLog: @unchecked Sendable {
+    private let lock = NSLock()
+    private var all: [Double] = []
+    func add(_ v: Double) { lock.withLock { all.append(v) } }
+    var values: [Double] { lock.withLock { all } }
 }
