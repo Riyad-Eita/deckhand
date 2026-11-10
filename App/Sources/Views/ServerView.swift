@@ -13,8 +13,6 @@ struct ServerView: View {
 
     @State private var tab: Tab = .agent
     @State private var showingTools = false
-    /// A prompt from the dashboard waiting for the user to pick an engine.
-    @State private var investigate: String?
     /// Engine + prompt for a task the agent tab should open right away.
     @State private var startTask: StartTask?
     /// A command for the terminal to run once it is connected (e.g. a CLI login).
@@ -39,7 +37,6 @@ struct ServerView: View {
             case .server:
                 ServerDashboardView(
                     server: server,
-                    investigate: { prompt in investigate = prompt },
                     runInTerminal: { command in
                         terminalCommand = command
                         tab = .terminal
@@ -71,17 +68,6 @@ struct ServerView: View {
             if showing {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
-        }
-        .confirmationDialog("Investigate with", isPresented: Binding(get: { investigate != nil }, set: { if !$0 { investigate = nil } }), titleVisibility: .visible) {
-            ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
-                Button(engine.title) {
-                    if let prompt = investigate { startTask = StartTask(engine: engine, prompt: prompt) }
-                    investigate = nil
-                    tab = .agent
-                }
-            }
-        } message: {
-            Text(investigate ?? "")
         }
         .sheet(isPresented: $showingTools) {
             ServerToolsView(server: server) { command in

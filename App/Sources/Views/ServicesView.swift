@@ -4,8 +4,6 @@ import SwiftUI
 /// systemd services on one server: failed first, search, tap for details.
 struct ServicesView: View {
     let server: Server
-    let runInTerminal: (String) -> Void
-    let investigate: (String) -> Void
 
     @Environment(Connections.self) private var connections
     @State private var units: [ServiceUnit] = []
@@ -28,7 +26,7 @@ struct ServicesView: View {
             Section {
                 ForEach(visible) { unit in
                     NavigationLink {
-                        ServiceDetailView(server: server, unit: unit, runInTerminal: runInTerminal, investigate: investigate)
+                        ServiceDetailView(server: server, unit: unit)
                     } label: {
                         ServiceRow(unit: unit)
                     }
@@ -81,8 +79,6 @@ private struct ServiceRow: View {
 struct ServiceDetailView: View {
     let server: Server
     let unit: ServiceUnit
-    let runInTerminal: (String) -> Void
-    let investigate: (String) -> Void
 
     @Environment(Connections.self) private var connections
     @Environment(\.dismiss) private var dismiss
@@ -93,6 +89,7 @@ struct ServiceDetailView: View {
     @State private var needsTerminal: String?
     @State private var message: String?
     @State private var terminal: TerminalRequest?
+    @State private var investigatePrompt: String?
 
     var body: some View {
         List {
@@ -106,7 +103,7 @@ struct ServiceDetailView: View {
                 }
                 if unit.isFailed {
                     Button {
-                        investigate("The service \(unit.name) has failed on this server. Read its status and recent logs, find the cause and suggest a fix. Don't change anything yet — ask me first.")
+                        investigatePrompt = ("The service \(unit.name) has failed on this server. Read its status and recent logs, find the cause and suggest a fix. Don't change anything yet — ask me first.")
                     } label: {
                         Label("Investigate with an agent", systemImage: "sparkle.magnifyingglass")
                     }
@@ -147,6 +144,7 @@ struct ServiceDetailView: View {
         }
         .navigationTitle(unit.shortName)
         .navigationBarTitleDisplayMode(.inline)
+        .investigate(on: server, prompt: $investigatePrompt)
         .sheet(item: $terminal, onDismiss: { Task { await refresh() } }) { request in
             TerminalSheet(server: server, command: request.command)
         }

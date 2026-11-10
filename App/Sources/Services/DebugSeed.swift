@@ -25,6 +25,15 @@ enum DebugSeed {
     @MainActor
     static func apply(_ context: ModelContext) {
         let env = ProcessInfo.processInfo.environment
+        // DECKHAND_RESET=1: start from an empty app (UI tests run one after another in the same simulator).
+        if env["DECKHAND_RESET"] == "1" {
+            for server in (try? context.fetch(FetchDescriptor<Server>())) ?? [] {
+                Keychain.set(nil, for: server.secretAccount)
+                context.delete(server)
+            }
+            for c in (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? [] { context.delete(c) }
+            try? context.save()
+        }
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
         // DECKHAND_SEED_CONNECTION="Name|https://url" adds an HTTP MCP connection once.
         if let raw = env["DECKHAND_SEED_CONNECTION"], let bar = raw.firstIndex(of: "|") {

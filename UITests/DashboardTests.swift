@@ -9,6 +9,7 @@ final class DashboardTests: XCTestCase {
             throw XCTSkip("No dashboard server configured")
         }
         let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
         app.launchEnvironment["DECKHAND_SEED_HOST"] = host
         app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_DASH_PORT"] ?? "22"
         app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_DASH_USER"] ?? "root"
