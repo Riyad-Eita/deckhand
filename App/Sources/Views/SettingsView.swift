@@ -106,6 +106,7 @@ struct SettingsView: View {
                 }
 
                 VoiceSettingsSection()
+                NotificationSettingsSection()
 
                 Section {
                     LabeledContent("Keys", value: "Stored in this iPhone's Keychain")
@@ -171,6 +172,46 @@ private struct VoiceSettingsSection: View {
         }
         .confirmationDialog("Remove the Whisper model?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Remove", role: .destructive) { voice.remove() }
+        }
+    }
+}
+
+/// Local notifications always; optional push straight from the server through an ntfy topic.
+private struct NotificationSettingsSection: View {
+    @Environment(AppSettings.self) private var settings
+    @State private var testResult: String?
+    @State private var testing = false
+
+    var body: some View {
+        @Bindable var settings = settings
+        Section {
+            Toggle("Push from the server (ntfy)", isOn: Binding(
+                get: { !settings.ntfyTopicURL.isEmpty },
+                set: { settings.ntfyTopicURL = $0 ? TaskNotifier.newTopicURL() : "" }))
+            if !settings.ntfyTopicURL.isEmpty {
+                TextField("Topic URL", text: $settings.ntfyTopicURL)
+                    .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .font(Theme.monoSmall)
+                HStack {
+                    Button("Copy topic") { UIPasteboard.general.string = settings.ntfyTopicURL }
+                    Spacer()
+                    Button {
+                        Task {
+                            testing = true
+                            let ok = await TaskNotifier.testNtfy(settings.ntfyTopicURL)
+                            testResult = ok ? String(localized: "Sent — check the ntfy app.") : String(localized: "Couldn't reach the topic.")
+                            testing = false
+                        }
+                    } label: { if testing { ProgressView() } else { Text("Send a test") } }
+                }
+                .buttonStyle(.borderless)
+                if let testResult { Text(testResult).font(.footnote).foregroundStyle(.secondary) }
+                Link("Get the ntfy app", destination: URL(string: "https://apps.apple.com/app/ntfy/id1625396347")!)
+            }
+        } header: {
+            Text("Notifications")
+        } footer: {
+            Text("Deckhand tells you when a task is done or needs your approval. Once the app is closed, iOS only lets it check now and then — with ntfy, your server pushes the moment a task ends. Subscribe to the topic in the ntfy app; only the task's title is sent. You can use your own ntfy server.")
         }
     }
 }

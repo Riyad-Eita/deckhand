@@ -40,6 +40,25 @@ import Testing
         #expect(out.stdout.contains("@@exit 143"))
     }
 
+    /// The run pushes to ntfy when it ends — tested with a fake curl that records its arguments.
+    @Test func notifiesWhenDone() async throws {
+        let h = try home()
+        try FileManager.default.createDirectory(atPath: h + "/bin", withIntermediateDirectories: true)
+        try "#!/bin/bash\nprintf '%s\\n' \"$@\" > \"$HOME/curl.args\"\n".write(toFile: h + "/bin/curl", atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: h + "/bin/curl")
+        let run = DetachedRun()
+        let notify = DetachedRun.Notify(topicURL: "https://ntfy.example.com/deckhand-test", doneMessage: "Done: Fix it's build",
+                                        failedMessage: "Failed", click: "deckhand://thread/abc")
+        try "export PATH=\"$HOME/bin:$PATH\"\n".write(toFile: h + "/.bash_profile", atomically: true, encoding: .utf8)
+        _ = try await sh(h, run.startCommand("echo hi", notify: notify))
+        _ = try await sh(h, run.readCommand(fromLine: 1))
+        try await Task.sleep(for: .milliseconds(500))
+        let args = try String(contentsOfFile: h + "/curl.args", encoding: .utf8)
+        #expect(args.contains("Done: Fix it's build"))
+        #expect(args.contains("Click: deckhand://thread/abc"))
+        #expect(args.contains("https://ntfy.example.com/deckhand-test"))
+    }
+
     @Test func markers() {
         #expect(DetachedRun.marker("@@exit 0") == .exit(0))
         #expect(DetachedRun.marker("@@missing") == .missing)

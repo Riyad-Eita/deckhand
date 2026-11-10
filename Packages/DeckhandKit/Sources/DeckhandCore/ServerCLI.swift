@@ -91,7 +91,8 @@ public enum ServerCLIRun {
     /// Pass `fromLine` > 1 to reattach to a run that is already going; nothing is started then.
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
-        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1, meta: DetachedRun.Meta? = nil
+        sessionID: String?, access: CLIAccess, run: DetachedRun, fromLine: Int = 1, meta: DetachedRun.Meta? = nil,
+        notify: DetachedRun.Notify? = nil
     ) -> AsyncThrowingStream<AgentEvent, Error> {
         let cliCommand = LimitAwareRun.command(
             cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, run: run)
@@ -100,7 +101,7 @@ public enum ServerCLIRun {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()
                 do {
                     if fromLine <= 1 {
-                        let started = try await shell.run(run.startCommand(cliCommand, meta: meta), timeout: .seconds(30))
+                        let started = try await shell.run(run.startCommand(cliCommand, meta: meta, notify: notify), timeout: .seconds(30))
                         guard started.stdout.contains("started") else { throw CLIError("Couldn't start \(cli.displayName) on the server.") }
                     }
                     var line = max(1, fromLine)

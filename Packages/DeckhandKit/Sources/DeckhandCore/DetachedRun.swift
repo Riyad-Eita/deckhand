@@ -12,12 +12,13 @@ public struct DetachedRun: Sendable, Hashable, Codable {
 
     /// Starts `command` in the background with a login shell; prints the PID.
     /// `meta` (one line of JSON) is stored next to the run so the job list can describe it.
-    public func startCommand(_ command: String, meta: Meta? = nil) -> String {
+    public func startCommand(_ command: String, meta: Meta? = nil, notify: Notify? = nil) -> String {
         let metaLine = meta.map { "printf '%s\\n' \(ShellQuote.quote($0.json)) > \(base).meta\n" } ?? ""
+        let after = notify.map { "; " + $0.command(exitFile: "\(base).exit") } ?? ""
         return """
         mkdir -p ~/.deckhand/runs; chmod 700 ~/.deckhand ~/.deckhand/runs
         \(metaLine)        S=; command -v setsid >/dev/null 2>&1 && S=setsid
-        $S nohup bash -lc \(ShellQuote.quote(command + "; echo $? > \(base).exit")) > \(base).out 2> \(base).err < /dev/null &
+        $S nohup bash -lc \(ShellQuote.quote(command + "; echo $? > \(base).exit" + after)) > \(base).out 2> \(base).err < /dev/null &
         echo $! > \(base).pid
         echo started
         """
@@ -50,6 +51,31 @@ public struct DetachedRun: Sendable, Hashable, Codable {
         fi
         rm -f \(base).waiting; echo 143 > \(base).exit; echo stopped
         """
+    }
+
+    /// A push to an ntfy topic when the run ends (not when it was stopped) — real notifications without our own backend.
+    public struct Notify: Sendable, Hashable {
+        /// The full topic URL, e.g. `https://ntfy.sh/deckhand-abc123`.
+        public var topicURL: String
+        public var doneMessage: String
+        public var failedMessage: String
+        /// Opened when the notification is tapped, e.g. `deckhand://thread/<id>`.
+        public var click: String?
+
+        public init(topicURL: String, doneMessage: String, failedMessage: String, click: String? = nil) {
+            self.topicURL = topicURL
+            self.doneMessage = doneMessage
+            self.failedMessage = failedMessage
+            self.click = click
+        }
+
+        func command(exitFile: String) -> String {
+            let click = self.click.map { " -H \(ShellQuote.quote("Click: " + $0))" } ?? ""
+            return """
+            c=$(cat \(exitFile) 2>/dev/null); if [ "$c" != 143 ]; then if [ "$c" = 0 ]; then m=\(ShellQuote.quote(doneMessage)); t=white_check_mark; else m=\(ShellQuote.quote(failedMessage)); t=warning; fi; \
+            curl -fsS -m 15 -H 'Title: Deckhand' -H "Tags: $t"\(click) -d "$m" \(ShellQuote.quote(topicURL)) >/dev/null 2>&1; fi
+            """
+        }
     }
 
     /// Removes a run's files from the server.

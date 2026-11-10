@@ -3,13 +3,21 @@ import SwiftUI
 
 @main
 struct DeckhandApp: App {
+    /// Shared so background checks can read the same store.
+    static let container: ModelContainer = {
+        do { return try ModelContainer(for: Server.self, ChatThread.self, ConnectionRecord.self) }
+        catch { fatalError("Couldn't open the app's data: \(error)") }
+    }()
+
+    init() { TaskNotifier.shared.start() }
+
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(AppSettings.shared)
                 .environment(Connections.shared)
         }
-        .modelContainer(for: [Server.self, ChatThread.self, ConnectionRecord.self])
+        .modelContainer(Self.container)
     }
 }
 
@@ -38,6 +46,12 @@ struct RootView: View {
                 .hostKeyPrompt(inSheet: true)
         }
         .hostKeyPrompt()
+        .onOpenURL { AppRouter.shared.handle($0) }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .background else { return }
+            let active = ((try? context.fetch(FetchDescriptor<ChatThread>())) ?? []).contains { $0.cliRunActive }
+            TaskNotifier.shared.scheduleCheck(hasActiveRuns: active)
+        }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await connections.checkConnections()
@@ -45,6 +59,13 @@ struct RootView: View {
         }
         #if DEBUG
         .onAppear { DebugSeed.apply(context) }
+        .task {
+            // DECKHAND_SEED_OPEN_URL=deckhand://thread/<id>: open it like a tapped notification.
+            if let s = ProcessInfo.processInfo.environment["DECKHAND_SEED_OPEN_URL"], let url = URL(string: s) {
+                try? await Task.sleep(for: .seconds(1))
+                AppRouter.shared.handle(url)
+            }
+        }
         #endif
     }
 }
