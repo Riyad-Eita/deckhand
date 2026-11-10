@@ -14,14 +14,28 @@ struct DeckhandApp: App {
 }
 
 struct RootView: View {
+    @AppStorage("onboarding.done") private var onboardingDone = false
+    @Query private var servers: [Server]
     @Environment(Connections.self) private var connections
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var context
+
+    private var showOnboarding: Bool {
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["DECKHAND_SEED_HOST"] != nil { return false }
+        if ProcessInfo.processInfo.environment["DECKHAND_SEED_ONBOARDING"] == "1" { return !onboardingDone }
+        #endif
+        return !onboardingDone && servers.isEmpty
+    }
 
     var body: some View {
         @Bindable var connections = connections
         NavigationStack {
             ServerListView()
+        }
+        .fullScreenCover(isPresented: Binding(get: { showOnboarding }, set: { if !$0 { onboardingDone = true } })) {
+            OnboardingView { onboardingDone = true }
+                .hostKeyPrompt(inSheet: true)
         }
         .hostKeyPrompt()
         .task(id: scenePhase) {
