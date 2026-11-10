@@ -67,6 +67,34 @@ final class Connections {
         return connection
     }
 
+    /// Logs in on another port with the saved credentials; the host key must match the pinned one.
+    func testLogin(_ server: Server, port: Int) async throws -> SSHConnection {
+        guard let credential = Self.credential(for: server) else {
+            throw SSHError.unsupportedKey("No password or key saved for this server.")
+        }
+        let connection = SSHConnection(endpoint: SSHEndpoint(host: server.host, port: port, username: server.username), credential: credential)
+        let pinned = server.pinnedHostKey
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask { try await connection.connect(pinnedHostKey: pinned) { _, _ in false } }
+            group.addTask {
+                try await Task.sleep(for: .seconds(20))
+                throw CLIError("No answer on port \(port).")
+            }
+            try await group.next()
+            group.cancelAll()
+        }
+        _ = try await connection.run("true", timeout: .seconds(10))
+        return connection
+    }
+
+    /// Makes `connection` (on `port`) the server's connection and saves the new port.
+    func adopt(_ connection: SSHConnection, for server: Server, port: Int) async {
+        if let old = connections[server.id], old !== connection { await old.disconnect() }
+        server.port = port
+        connections[server.id] = connection
+        states[server.id] = .connected
+    }
+
     /// Pings every open connection; dead ones are dropped so the next use reconnects quietly.
     func checkConnections() async {
         for (id, connection) in connections {

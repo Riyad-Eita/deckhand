@@ -310,3 +310,87 @@ struct LiveSudoTests {
         await conn.disconnect()
     }
 }
+
+/// Moves SSH to another port on a disposable systemd server (Ubuntu 24.04 with ssh.socket and ufw), e.g.
+/// DECKHAND_PORT_HOST=example.com DECKHAND_PORT_OLD=22 DECKHAND_PORT_NEW=40022 DECKHAND_PORT_USER=me DECKHAND_PORT_PASSWORD=… swift test
+/// DECKHAND_PORT_OLD is how the old port is reached from here (it may be mapped); the server itself uses 22.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_PORT_HOST"] != nil), .serialized)
+struct LivePortTests {
+    let env = ProcessInfo.processInfo.environment
+    var newPort: Int { Int(env["DECKHAND_PORT_NEW"]!)! }
+
+    func connect(_ port: Int) async throws -> SSHConnection {
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_PORT_HOST"]!, port: port, username: env["DECKHAND_PORT_USER"]!),
+            credential: .password(env["DECKHAND_PORT_PASSWORD"]!))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        return conn
+    }
+    var oldPort: Int { Int(env["DECKHAND_PORT_OLD"]!)! }
+
+    func root(_ script: String, _ conn: SSHConnection) async throws -> [String] {
+        var out: [String] = []
+        for try await l in Sudo.run(script, on: conn, access: .password, password: env["DECKHAND_PORT_PASSWORD"]!) {
+            if case .output(let s) = l { out.append(s) }
+        }
+        return out
+    }
+
+    func inspect(_ conn: SSHConnection) async throws -> SSHPort.Inspection {
+        SSHPort.parse(try await root(SSHPort.inspectScript, conn).joined(separator: "\n"))
+    }
+
+    @Test func movesThePortInTwoGuardedSteps() async throws {
+        var conn = try await connect(oldPort)
+        let before = try await inspect(conn)
+        #expect(before.ports == [22])
+        #expect(before.socketActivated)
+        #expect(before.firewall == .ufw)
+        #expect(before.firewallSSHRules == ["22/tcp:allow"])
+
+        // Step 1: the new port next to 22, then prove a login on it and confirm.
+        let add = SSHPort.addPort(newPort, inspection: before)
+        let addID = ConfigChange.makeID(title: add.title)
+        let r1 = try await root(add.script(id: addID), conn)
+        #expect(r1.contains("@@done"), "\(r1)")
+        let onNew = try await connect(newPort)
+        #expect(try await onNew.run("echo ok", timeout: .seconds(10)).stdout == "ok\n")
+        #expect(try await root(ConfigChange.confirmScript(id: addID), onNew).contains("@@done"))
+        await conn.disconnect()
+        conn = onNew
+
+        // Step 2: close 22 over the new connection.
+        let mid = try await inspect(conn)
+        #expect(Set(mid.ports) == [22, newPort])
+        let close = SSHPort.closeOldPorts(keep: newPort, inspection: mid)
+        let closeID = ConfigChange.makeID(title: close.title, date: Date().addingTimeInterval(1))
+        let r2 = try await root(close.script(id: closeID), conn)
+        #expect(r2.contains("@@done"), "\(r2)")
+        let again = try await connect(newPort)
+        #expect(try await root(ConfigChange.confirmScript(id: closeID), again).contains("@@done"))
+        await #expect(throws: (any Error).self) { _ = try await connect(oldPort).run("true", timeout: .seconds(5)) }
+        let after = try await inspect(again)
+        #expect(after.ports == [newPort])
+        #expect(!after.firewallSSHRules.contains("22/tcp:allow"))
+
+        // Undo both (newest first) so the server is as before.
+        #expect(try await root(ConfigChange.rollbackScript(id: closeID), again).contains("@@done"))
+        #expect(try await root(ConfigChange.rollbackScript(id: addID), again).contains("@@done"))
+        await again.disconnect()
+        let back = try await connect(oldPort)
+        #expect(try await inspect(back).ports == [22])
+        await back.disconnect()
+        await conn.disconnect()
+    }
+
+    @Test func unconfirmedPortChangeRollsBackByItself() async throws {
+        let conn = try await connect(oldPort)
+        let add = SSHPort.addPort(newPort, inspection: try await inspect(conn), guardSeconds: 15)
+        let r = try await root(add.script(id: ConfigChange.makeID(title: add.title + " guard")), conn)
+        #expect(r.contains("@@guard 15"))
+        #expect(try await inspect(conn).ports.contains(newPort))
+        try await Task.sleep(for: .seconds(25))
+        #expect(try await inspect(conn).ports == [22])
+        await conn.disconnect()
+    }
+}

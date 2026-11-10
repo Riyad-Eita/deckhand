@@ -75,6 +75,14 @@ struct ServerDashboardView: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("dashboard.changes")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
+                                SSHPortView(server: server)
+                            } label: {
+                                ManageRow(title: "SSH port", subtitle: "Move SSH off port 22 without locking yourself out", symbol: "door.left.hand.closed")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.sshPort")
                         }
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))

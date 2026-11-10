@@ -40,7 +40,12 @@ final class LocalChannel: LineChannel, @unchecked Sendable {
     }
 
     func send(_ line: String) async throws { stdin.fileHandleForWriting.write(Data((line + "\n").utf8)) }
-    func close() { if process.isRunning { process.terminate() } }
+    /// Ends the process only if it hangs: terminating it right away would also take down background jobs
+    /// it started (macOS has no `setsid`; on Linux servers the guard runs in its own session).
+    func close() {
+        let p = process
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) { if p.isRunning { p.terminate() } }
+    }
 }
 
 @Suite(.serialized) struct ConfigChangeTests {
@@ -114,6 +119,38 @@ final class LocalChannel: LineChannel, @unchecked Sendable {
             apply: "echo 'first' >> \(d)/etc/app.conf\nfalse\necho 'never' >> \(d)/etc/app.conf")
         let r = try await runAsRoot(change.script(id: "y", root: d + "/b"))
         #expect(r.lines.map(ConfigChange.event).contains(.failed("apply")))
+        #expect(read(d + "/etc/app.conf") == "Port 22\nPasswordAuthentication yes\n")
+    }
+
+    @Test func guardRollsBackUnlessConfirmed() async throws {
+        let d = try sandbox()
+        let original = "Port 22\nPasswordAuthentication yes\n"
+        func change() -> ConfigChange {
+            ConfigChange(title: "Risky", files: ["\(d)/etc/app.conf"], apply: "echo 'Port 2222' > \(d)/etc/app.conf",
+                         verify: "grep -q 2222 \(d)/etc/app.conf", guardSeconds: 2)
+        }
+        // Not confirmed: the server puts the old file back by itself.
+        let r = try await runAsRoot(change().script(id: "g1", root: d + "/b"))
+        #expect(r.lines.map(ConfigChange.event).contains(.guarded(2)))
+        #expect(ConfigChange.parseList(try await shell.run(ConfigChange.listCommand(root: d + "/b"), timeout: .seconds(10)).stdout).first?.status == .pending)
+        try await Task.sleep(for: .seconds(4))
+        #expect(read(d + "/etc/app.conf") == original)
+        #expect(ConfigChange.parseList(try await shell.run(ConfigChange.listCommand(root: d + "/b"), timeout: .seconds(10)).stdout).first?.status == .rolledback)
+
+        // Confirmed in time: the change stays.
+        _ = try await runAsRoot(change().script(id: "g2", root: d + "/c"))
+        let ok = try await runAsRoot(ConfigChange.confirmScript(id: "g2", root: d + "/c"))
+        #expect(ok.lines.contains("@@done"))
+        try await Task.sleep(for: .seconds(4))
+        #expect(read(d + "/etc/app.conf") == "Port 2222\n")
+        #expect(ConfigChange.parseList(try await shell.run(ConfigChange.listCommand(root: d + "/c"), timeout: .seconds(10)).stdout).first?.status == .applied)
+    }
+
+    @Test func failedVerifyRestores() async throws {
+        let d = try sandbox()
+        let change = ConfigChange(title: "No effect", files: ["\(d)/etc/app.conf"], apply: "echo 'Port 1' > \(d)/etc/app.conf", verify: "false")
+        let r = try await runAsRoot(change.script(id: "v", root: d + "/b"))
+        #expect(r.lines.map(ConfigChange.event).contains(.failed("verify")))
         #expect(read(d + "/etc/app.conf") == "Port 22\nPasswordAuthentication yes\n")
     }
 

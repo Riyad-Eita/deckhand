@@ -21,7 +21,7 @@ final class RootAccess {
     func setPassword(_ password: String?, for server: Server) { passwords[server.id] = password }
 }
 
-/// Runs one root script for a screen: asks for the sudo password when needed and collects the output.
+/// Runs root scripts for a screen: asks for the sudo password when needed and collects the output.
 @MainActor
 @Observable
 final class RootRunner {
@@ -34,66 +34,84 @@ final class RootRunner {
     private(set) var failedStep: String?
     var passwordPrompt = false
     var password = ""
-    private var pending: (script: String, server: Server)?
+    private var passwordReply: CheckedContinuation<Bool, Never>?
+    private var server: Server?
     private var task: Task<Void, Never>?
 
-    var isRunning: Bool { phase == .running }
+    var isRunning: Bool { phase == .running || phase == .needsPassword }
     var succeeded: Bool { phase == .finished(0) && failedStep == nil }
 
+    /// Starts `script` in the background (for buttons).
     func start(_ script: String, on server: Server) {
-        pending = (script, server)
+        task?.cancel()
+        task = Task { _ = await run(script, on: server) }
+    }
+
+    /// Runs `script` as root and waits for it. Returns true if it exited 0 without a failed step.
+    /// `connection` overrides the server's current connection (e.g. a fresh login on a new port).
+    @discardableResult
+    func run(_ script: String, on server: Server, connection: SSHConnection? = nil) async -> Bool {
+        self.server = server
         lines = []; steps = []; failedStep = nil
-        task?.cancel()
-        task = Task { await run() }
-    }
-
-    func submitPassword() {
-        guard let pending else { return }
-        RootAccess.shared.setPassword(password, for: pending.server)
-        password = ""
-        start(pending.script, on: pending.server)
-    }
-
-    func cancel() {
-        task?.cancel()
-        if phase == .needsPassword || phase == .running { phase = .idle }
-    }
-
-    private func run() async {
-        guard let (script, server) = pending else { return }
         phase = .running
         do {
-            let conn = try await Connections.shared.connection(for: server)
+            let conn: SSHConnection
+            if let connection { conn = connection } else { conn = try await Connections.shared.connection(for: server) }
             let access = try await RootAccess.shared.access(for: server, connection: conn)
-            let password = RootAccess.shared.password(for: server)
-            if access == .password && password == nil {
-                phase = .needsPassword
-                passwordPrompt = true
-                return
-            }
-            for try await line in Sudo.run(script, on: conn, access: access, password: password) {
-                switch line {
-                case .output(let text):
-                    switch ConfigChange.event(text) {
-                    case .step(let s): steps.append(s)
-                    case .failed(let s): failedStep = s
-                    case .done: break
-                    case .output(let t): lines.append(t)
+            while true {
+                var password = RootAccess.shared.password(for: server)
+                if access == .password && password == nil {
+                    guard await askForPassword() else { phase = .idle; return false }
+                    password = RootAccess.shared.password(for: server)
+                }
+                do {
+                    for try await line in Sudo.run(script, on: conn, access: access, password: password) {
+                        switch line {
+                        case .output(let text):
+                            switch ConfigChange.event(text) {
+                            case .step(let s): steps.append(s)
+                            case .failed(let s): failedStep = s
+                            case .done, .guarded: break
+                            case .output(let t): lines.append(t)
+                            }
+                        case .exit(let code):
+                            phase = .finished(code)
+                        }
                     }
-                case .exit(let code):
-                    phase = .finished(code)
+                    break
+                } catch SudoError.wrongPassword {
+                    RootAccess.shared.setPassword(nil, for: server)
+                    lines.append(String(localized: "That sudo password didn't work."))
                 }
             }
             if phase == .running { phase = .failed(String(localized: "The command ended without a result.")) }
-        } catch SudoError.wrongPassword {
-            if let server = pending?.server { RootAccess.shared.setPassword(nil, for: server) }
-            phase = .needsPassword
-            lines.append(String(localized: "That sudo password didn't work."))
-            passwordPrompt = true
         } catch is CancellationError {
             phase = .idle
         } catch {
             phase = .failed(error.localizedDescription)
         }
+        return succeeded
+    }
+
+    private func askForPassword() async -> Bool {
+        phase = .needsPassword
+        passwordPrompt = true
+        return await withCheckedContinuation { passwordReply = $0 }
+    }
+
+    func submitPassword() {
+        guard let server else { return }
+        RootAccess.shared.setPassword(password, for: server)
+        password = ""
+        phase = .running
+        passwordReply?.resume(returning: true)
+        passwordReply = nil
+    }
+
+    func cancel() {
+        task?.cancel()
+        passwordReply?.resume(returning: false)
+        passwordReply = nil
+        if phase == .needsPassword || phase == .running { phase = .idle }
     }
 }
