@@ -98,6 +98,16 @@
     "%@ · %@": {
       "shouldTranslate": false
     },
+    "%@ — open it in the terminal or ask the agent about it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – öffne sie im Terminal oder frag den Agenten danach."
+          }
+        }
+      }
+    },
     "%lld cores": {
       "localizations": {
         "de": {
@@ -114,6 +124,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld ausgefallen · %2$lld laufen"
+          }
+        }
+      }
+    },
+    "%lld hidden": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ausgeblendet"
           }
         }
       }
@@ -688,6 +708,16 @@
         }
       }
     },
+    "Ask the Agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den Agenten fragen"
+          }
+        }
+      }
+    },
     "Attach a file": {
       "localizations": {
         "de": {
@@ -868,12 +898,32 @@
         }
       }
     },
+    "Browse, rename and delete; hand a folder to the agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchsuchen, umbenennen, löschen; Ordner an den Agenten geben"
+          }
+        }
+      }
+    },
     "CPU": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "CPU"
+          }
+        }
+      }
+    },
+    "Can't open the file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei lässt sich nicht öffnen"
           }
         }
       }
@@ -1369,6 +1419,26 @@
         }
       }
     },
+    "Copy Path": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pfad kopieren"
+          }
+        }
+      }
+    },
+    "Copy Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text kopieren"
+          }
+        }
+      }
+    },
     "Copy topic": {
       "localizations": {
         "de": {
@@ -1550,6 +1620,16 @@
         }
       }
     },
+    "Date Modified": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungsdatum"
+          }
+        }
+      }
+    },
     "Deckhand": {
       "localizations": {
         "de": {
@@ -1646,6 +1726,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delete “%@”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ löschen?"
           }
         }
       }
@@ -2095,6 +2185,16 @@
         }
       }
     },
+    "File Actions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateiaktionen"
+          }
+        }
+      }
+    },
     "Files": {
       "localizations": {
         "de": {
@@ -2211,6 +2311,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fixes sichern vorher jede Datei und lassen sich im Änderungsverlauf zurücksetzen."
+          }
+        }
+      }
+    },
+    "Folder Actions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordneraktionen"
           }
         }
       }
@@ -2363,6 +2473,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Logins absichern"
+          }
+        }
+      }
+    },
+    "Have a look at `%@`: ": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh dir `%@` an: "
           }
         }
       }
@@ -2573,6 +2693,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Issues, Pull Requests und Code-Suche für die Agenten."
+          }
+        }
+      }
+    },
+    "It is deleted on the server. This can't be undone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es wird auf dem Server gelöscht. Das lässt sich nicht rückgängig machen."
           }
         }
       }
@@ -3107,6 +3237,26 @@
         }
       }
     },
+    "New Folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "New Task Here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Aufgabe hier"
+          }
+        }
+      }
+    },
     "New branch from here": {
       "localizations": {
         "de": {
@@ -3153,6 +3303,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neue Aufgabe"
+          }
+        }
+      }
+    },
+    "New task with": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Aufgabe mit"
           }
         }
       }
@@ -3330,6 +3490,16 @@
         }
       }
     },
+    "Not a text file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Textdatei"
+          }
+        }
+      }
+    },
     "Not connected": {
       "localizations": {
         "de": {
@@ -3376,6 +3546,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gerade lauscht nichts auf einem Port."
+          }
+        }
+      }
+    },
+    "Nothing matches.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts passt."
           }
         }
       }
@@ -3546,6 +3726,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In Safari öffnen"
+          }
+        }
+      }
+    },
+    "Open in Terminal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Terminal öffnen"
           }
         }
       }
@@ -4119,6 +4309,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entfernt die Regel %1$@%2$@."
+          }
+        }
+      }
+    },
+    "Rename": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umbenennen"
           }
         }
       }
@@ -4754,6 +4954,16 @@
         }
       }
     },
+    "Show Hidden Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versteckte Dateien zeigen"
+          }
+        }
+      }
+    },
     "Show me what changed in the last git commit here": {
       "localizations": {
         "de": {
@@ -4780,6 +4990,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unterschied zu jetzt zeigen"
+          }
+        }
+      }
+    },
+    "Showing the first %@ of %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ersten %@ von %@ werden angezeigt."
+          }
+        }
+      }
+    },
+    "Showing the first %lld entries.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ersten %lld Einträge werden angezeigt."
           }
         }
       }
@@ -4864,6 +5094,16 @@
         }
       }
     },
+    "Size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größe"
+          }
+        }
+      }
+    },
     "Skip": {
       "localizations": {
         "de": {
@@ -4880,6 +5120,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Etwas anderes auf dem Server nutzt diesen Port bereits."
+          }
+        }
+      }
+    },
+    "Sort by": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sortieren nach"
           }
         }
       }
@@ -5285,6 +5535,16 @@
         }
       }
     },
+    "The folder and everything in it is deleted on the server. This can't be undone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Ordner und alles darin wird auf dem Server gelöscht. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
     "The login check after closing the old port failed, so the server opens it again by itself within 5 minutes.": {
       "localizations": {
         "de": {
@@ -5391,6 +5651,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "This folder is empty.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Ordner ist leer."
           }
         }
       }
@@ -6019,6 +6289,16 @@
         }
       }
     },
+    "Works in %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeitet in %@"
+          }
+        }
+      }
+    },
     "Your branch and the remote have both moved on. Ask an agent to merge or rebase them.": {
       "localizations": {
         "de": {
@@ -6284,6 +6564,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "öffentlich"
+          }
+        }
+      }
+    },
+    "read-only": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "schreibgeschützt"
           }
         }
       }

@@ -262,4 +262,9 @@ enum PendingPrompt {
     private static var prompts: [UUID: String] = [:]
     static func set(_ prompt: String, for thread: UUID) { prompts[thread] = prompt }
     static func take(for thread: UUID) -> String? { prompts.removeValue(forKey: thread) }
+
+    /// Text the composer of a new chat starts with, not sent (e.g. "Have a look at `app.py`: ").
+    private static var drafts: [UUID: String] = [:]
+    static func setDraft(_ text: String, for thread: UUID) { drafts[thread] = text }
+    static func takeDraft(for thread: UUID) -> String? { drafts.removeValue(forKey: thread) }
 }

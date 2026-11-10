@@ -565,3 +565,56 @@ final class ProgressLog: @unchecked Sendable {
     func add(_ v: Double) { lock.withLock { all.append(v) } }
     var values: [Double] { lock.withLock { all } }
 }
+
+extension LiveSSHTests {
+    /// File browser on a real server: awkward names, links, hidden files, rename, conflicts, new folder, delete.
+    /// Also lists the same folder with the POSIX fallback inside a BusyBox container when Docker is available.
+    @Test func remoteFilesLive() async throws {
+        let conn = try await connection()
+        let dir = "/tmp/deckhand-files-\(UUID().uuidString.prefix(8))"
+        _ = try await conn.run(
+            "mkdir -p \(dir)/sub && cd \(dir) && printf hello > 'a b.txt' && printf x > .hidden && "
+                + "printf y > \"$(printf 'new\\nline')\" && ln -s sub link && ln -s nowhere dead && printf z > \"it's\"",
+            timeout: .seconds(20))
+        do { try await checkRemoteFiles(conn, dir) } catch { Issue.record(error) }
+        _ = try? await conn.run("rm -rf \(dir)", timeout: .seconds(20))
+        await conn.disconnect()
+    }
+
+    private func checkRemoteFiles(_ conn: SSHConnection, _ dir: String) async throws {
+        let folder = try await RemoteFiles.list(dir, shell: conn)
+        #expect(folder.path == dir && folder.writable)
+        let names = Set(folder.entries.map(\.name))
+        #expect(names == ["sub", "a b.txt", ".hidden", "new\nline", "link", "dead", "it's"])
+        #expect(folder.entries.first { $0.name == "link" }?.opensAsFolder == true)
+        #expect(folder.entries.first { $0.name == "dead" }?.opensAsFolder == false)
+        #expect(folder.entries.first { $0.name == "a b.txt" }?.size == 5)
+
+        try await RemoteFiles.rename(in: dir, from: "a b.txt", to: "c d.txt", shell: conn)
+        await #expect(throws: ToolError.self) { try await RemoteFiles.rename(in: dir, from: "c d.txt", to: "it's", shell: conn) }
+        try await RemoteFiles.makeFolder(in: dir, name: "new folder", shell: conn)
+        await #expect(throws: ToolError.self) { try await RemoteFiles.makeFolder(in: dir, name: "new folder", shell: conn) }
+        try await RemoteFiles.delete("\(dir)/sub", shell: conn)
+        try await RemoteFiles.delete("\(dir)/new\nline", shell: conn)
+        let after = Set(try await RemoteFiles.list(dir, shell: conn).entries.map(\.name))
+        #expect(after == ["c d.txt", ".hidden", "link", "dead", "it's", "new folder"])
+        await #expect(throws: ToolError.self) { try await RemoteFiles.delete("/tmp", shell: conn) }
+        let home = try await conn.run("cd ~ && pwd -P", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        if home.split(separator: "/").count >= 2 {
+            await #expect(throws: ToolError.self) { try await RemoteFiles.delete(home, shell: conn) }
+        }
+
+        // POSIX fallback (BusyBox: no find -printf).
+        let docker = try await conn.run("docker info >/dev/null 2>&1 && echo yes", timeout: .seconds(20))
+        if docker.stdout.contains("yes") {
+            let r = try await conn.run(
+                "docker run --rm -v \(dir):/d:ro busybox sh -c \(ShellQuote.quote(RemoteFiles.listCommand("/d")))",
+                timeout: .seconds(120))
+            let busy = try #require(RemoteFiles.parse(r.stdout), "\(r.stderr)")
+            #expect(Set(busy.entries.map(\.name)) == after)
+            #expect(busy.entries.first { $0.name == "link" }?.kind == .link)
+            #expect(busy.entries.first { $0.name == "c d.txt" }?.size == 5)
+            #expect(busy.entries.first { $0.name == "new folder" }?.opensAsFolder == true)
+        }
+    }
+}

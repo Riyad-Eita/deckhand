@@ -98,6 +98,7 @@ struct AgentChatView: View {
         .task {
             model.resumeIfNeeded()
             if let prompt = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(prompt) }
+            if let draft = PendingPrompt.takeDraft(for: model.thread.id) { self.draft = draft; composerFocused = true }
         }
         #if DEBUG
         .task {
