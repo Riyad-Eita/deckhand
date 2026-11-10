@@ -1,0 +1,238 @@
+import DeckhandCore
+import SwiftUI
+
+/// Reads a file on the server: syntax highlighting, line numbers, find in file, optional line wrapping.
+/// Loads the first 512 KB; rows are lazy so long files scroll smoothly.
+struct FileViewer: View {
+    let server: Server
+    let path: String
+    let size: Int64
+
+    static let maxBytes = 512 * 1024
+    @Environment(Connections.self) private var connections
+    @AppStorage("viewer.wrap") private var wrap = false
+    @State private var lines: [Substring] = []
+    @State private var tokens: [[SyntaxHighlighter.Token]] = []
+    @State private var binary = false
+    @State private var error: String?
+    @State private var loading = true
+    @State private var task: FileTask?
+    @State private var query = ""
+    @State private var matches: [TextSearch.Match] = []
+    @State private var current = 0
+    /// Characters in the longest line, for the width of the unwrapped view.
+    @State private var longest = 0
+
+    /// Minified files and other very long lines are always wrapped.
+    private var wrapping: Bool { wrap || longest > 1000 }
+
+    private var name: String { (path as NSString).lastPathComponent }
+    private var language: SyntaxHighlighter.Language? { SyntaxHighlighter.language(forFileName: name) }
+
+    var body: some View {
+        Group {
+            if let error {
+                ContentUnavailableView("Can't open the file", systemImage: "exclamationmark.triangle", description: Text(error))
+            } else if binary {
+                ContentUnavailableView(
+                    "Not a text file", systemImage: "doc",
+                    description: Text("\(size.formatted(.byteCount(style: .file))) — open it in the terminal or ask the agent about it."))
+            } else if loading {
+                ProgressView()
+            } else {
+                code
+            }
+        }
+        .navigationTitle(name)
+        .navigationSubtitle(subtitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Find in file")
+        .onChange(of: query) { _, q in
+            matches = TextSearch.matches(in: lines, query: q)
+            current = 0
+        }
+        .safeAreaInset(edge: .bottom) {
+            if !query.isEmpty { searchBar }
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Toggle(isOn: $wrap) { Label("Wrap Lines", systemImage: "text.word.spacing") }
+                    Divider()
+                    Button {
+                        task = FileTask(directory: DirectoryListing.parent(of: path), draft: String(localized: "Have a look at `\(name)`: "))
+                    } label: { Label("Ask the Agent", systemImage: "sparkles") }
+                    Button { UIPasteboard.general.string = path } label: { Label("Copy Path", systemImage: "doc.on.doc") }
+                    if !binary && !lines.isEmpty {
+                        Button { UIPasteboard.general.string = lines.joined(separator: "\n") } label: { Label("Copy Text", systemImage: "doc.plaintext") }
+                    }
+                } label: { Image(systemName: "ellipsis.circle") }
+                .accessibilityLabel("File Actions")
+            }
+        }
+        .fileTask($task, server: server)
+        .task { await load() }
+    }
+
+    private var subtitle: String {
+        guard !loading, !binary, error == nil else { return "" }
+        let count = String(localized: "\(lines.count) lines")
+        return [language?.name, count].compactMap { $0 }.joined(separator: " · ")
+    }
+
+    private var code: some View {
+        ScrollViewReader { proxy in
+            ScrollView(wrapping ? .vertical : [.vertical, .horizontal]) {
+                let width = String(lines.count).count
+                let focused = matches.indices.contains(current) ? matches[current] : nil
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    ForEach(lines.indices, id: \.self) { i in
+                        CodeLine(
+                            number: i + 1, width: width, text: lines[i],
+                            tokens: tokens.indices.contains(i) ? tokens[i] : [],
+                            hits: matches.isEmpty ? [] : hits(on: i), focused: focused?.line == i ? focused : nil,
+                            wrap: wrapping)
+                        .id(i)
+                    }
+                    if size > Int64(Self.maxBytes) {
+                        Text("Showing the first \(Int64(Self.maxBytes).formatted(.byteCount(style: .file))) of \(size.formatted(.byteCount(style: .file))).")
+                            .font(.footnote).foregroundStyle(.secondary).padding(.top, 12)
+                    }
+                }
+                // Every row as wide as the longest one, so rows wider than the screen keep their line numbers
+                // (lazy rows would otherwise overflow centred).
+                .frame(minWidth: wrapping ? nil : contentWidth(digits: width), alignment: .leading)
+                .padding(.vertical, 10)
+                .padding(.trailing, 12)
+            }
+            .onChange(of: current) { _, _ in jump(proxy) }
+            .onChange(of: matches) { _, _ in jump(proxy) }
+        }
+    }
+
+    private func contentWidth(digits: Int) -> CGFloat {
+        let font = UIFont.monospacedSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .caption1).pointSize, weight: .regular)
+        let char = ("0" as NSString).size(withAttributes: [.font: font]).width
+        return 12 + CGFloat(digits) * char + 10 + CGFloat(longest + 1) * char
+    }
+
+    private var searchBar: some View {
+        HStack(spacing: 14) {
+            Text(matches.isEmpty ? String(localized: "No matches") : String(localized: "\(current + 1) of \(matches.count)"))
+                .font(.footnote.monospacedDigit()).foregroundStyle(.secondary)
+                .accessibilityIdentifier("viewer.matches")
+            Spacer()
+            Button { step(-1) } label: { Image(systemName: "chevron.up") }
+                .disabled(matches.isEmpty).accessibilityLabel("Previous Match")
+            Button { step(1) } label: { Image(systemName: "chevron.down") }
+                .disabled(matches.isEmpty).accessibilityLabel("Next Match")
+        }
+        .padding(.horizontal, 16).padding(.vertical, 10)
+        .background(.bar)
+    }
+
+    private func hits(on line: Int) -> [TextSearch.Match] {
+        matches.filter { $0.line == line }
+    }
+
+    private func step(_ delta: Int) {
+        guard !matches.isEmpty else { return }
+        current = (current + delta + matches.count) % matches.count
+    }
+
+    private func jump(_ proxy: ScrollViewProxy) {
+        guard matches.indices.contains(current) else { return }
+        withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo(matches[current].line, anchor: UnitPoint(x: 0, y: 0.4)) }
+    }
+
+    private func load() async {
+        loading = true
+        defer { loading = false }
+        do {
+            let conn = try await connections.connection(for: server)
+            let r = try await conn.run("head -c \(Self.maxBytes) -- \(ShellQuote.quote(path))", timeout: .seconds(30))
+            guard r.exitCode == 0 else { throw ToolError.failed(r.stderr.isEmpty ? "Can't read \(path)" : r.stderr) }
+            if r.stdout.contains("\0") || r.stdout.contains("\u{FFFD}") { binary = true; return }
+            var split = r.stdout.split(separator: "\n", omittingEmptySubsequences: false)
+            if split.last?.isEmpty == true { split.removeLast() }
+            // Windows line endings: drop the \r so it doesn't show up.
+            let clean = split.map { $0.hasSuffix("\r") ? $0.dropLast() : $0 }
+            lines = clean
+            longest = clean.reduce(0) { max($0, $1.utf16.count) }
+            if let language {
+                tokens = await Task.detached(priority: .userInitiated) {
+                    SyntaxHighlighter.highlight(clean, language: language)
+                }.value
+            }
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+}
+
+/// One line: number, coloured code, search hits.
+private struct CodeLine: View {
+    let number: Int
+    let width: Int
+    let text: Substring
+    let tokens: [SyntaxHighlighter.Token]
+    let hits: [TextSearch.Match]
+    let focused: TextSearch.Match?
+    let wrap: Bool
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(String(number).leftPadded(to: width))
+                .foregroundStyle(.tertiary)
+                .padding(.leading, 12)
+            Text(attributed)
+                .textSelection(.enabled)
+                .fixedSize(horizontal: !wrap, vertical: true)
+        }
+        .font(Theme.monoSmall)
+        .padding(.vertical, 0.5)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var attributed: AttributedString {
+        let ns = NSMutableAttributedString(string: text.isEmpty ? " " : String(text))
+        let length = ns.length
+        for t in tokens where t.start + t.length <= length {
+            ns.addAttribute(.foregroundColor, value: CodeColors.color(t.kind), range: NSRange(location: t.start, length: t.length))
+        }
+        for h in hits where h.start + h.length <= length {
+            let isFocused = h == focused
+            ns.addAttribute(.backgroundColor, value: UIColor.systemYellow.withAlphaComponent(isFocused ? 0.75 : 0.3),
+                            range: NSRange(location: h.start, length: h.length))
+        }
+        return (try? AttributedString(ns, including: \.uiKit)) ?? AttributedString(String(text))
+    }
+}
+
+/// Colours for code, tuned for the light and dark backgrounds of the app.
+enum CodeColors {
+    static func color(_ kind: SyntaxHighlighter.Kind) -> UIColor {
+        switch kind {
+        case .keyword: dynamic(0xAD3DA4, 0xFF7AB2)
+        case .string: dynamic(0xC41A16, 0xFC6A5D)
+        case .comment: dynamic(0x6C7986, 0x7F8C98)
+        case .number: dynamic(0x1C00CF, 0xD9C97C)
+        case .type: dynamic(0x3D6FF2, 0x6E95FF)
+        case .key: dynamic(0x0F68A0, 0x41A1C0)
+        case .tag: dynamic(0x8A3FBF, 0xB281EB)
+        case .plain: .label
+        }
+    }
+
+    private static func dynamic(_ light: Int, _ dark: Int) -> UIColor {
+        UIColor { $0.userInterfaceStyle == .dark ? rgb(dark) : rgb(light) }
+    }
+
+    private static func rgb(_ v: Int) -> UIColor {
+        UIColor(red: CGFloat((v >> 16) & 0xFF) / 255, green: CGFloat((v >> 8) & 0xFF) / 255, blue: CGFloat(v & 0xFF) / 255, alpha: 1)
+    }
+}
+
+extension String {
+    func leftPadded(to width: Int) -> String { String(repeating: " ", count: max(0, width - count)) + self }
+}
