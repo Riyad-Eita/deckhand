@@ -68,10 +68,12 @@ struct SettingsView: View {
                     Picker("Approvals", selection: $settings.approvalPolicy) {
                         ForEach(ApprovalPolicy.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
                     }
+                    Toggle("Hide Secrets", isOn: $settings.hideSecrets)
+                        .accessibilityIdentifier("settings.hideSecrets")
                 } header: {
                     Text("Agent")
                 } footer: {
-                    Text("“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files.")
+                    Text("“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model.")
                 }
 
                 Section {

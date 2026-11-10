@@ -41,6 +41,28 @@ enum DebugSeed {
     > Nothing was changed yet — tell me which fix you want.
     """)])
 
+    /// A finished chat whose tool output and reply contain made-up secrets (built at runtime, not real keys).
+    static var secretsChat: [Message] {
+        let token = "ghp_" + String(repeating: "dEmO", count: 9)
+        let key = "sk-proj-" + String(repeating: "Demo_", count: 6)
+        let call = ToolCall(id: "seed-env", name: "run_command", input: ["command": "cat .env"])
+        return [
+            .user("Why can't the app reach the database?"),
+            Message(role: .assistant, blocks: [.text("Let me look at the settings."), .toolUse(call)]),
+            Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: call.id, content: """
+            DATABASE_URL=postgres://app:S3cretDbPass@db:5432/weather
+            OPENAI_API_KEY=\(key)
+            GITHUB_TOKEN=\(token)
+            PORT=8080
+            """))]),
+            Message(role: .assistant, blocks: [.text("""
+            The app points at host **db**, which doesn't resolve on this server. Your `GITHUB_TOKEN` (\(token)) is fine.
+
+            Change `DATABASE_URL` to use `localhost` and restart the app.
+            """)]),
+        ]
+    }
+
     /// Prompt the next opened chat sends automatically.
     @MainActor static var pendingPrompt: String?
     /// DECKHAND_SEED_RUN="codex|prompt" (or ownKey|…, claudeCode|…, terminal|): open the first server and start it.

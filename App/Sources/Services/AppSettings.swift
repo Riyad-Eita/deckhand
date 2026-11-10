@@ -24,6 +24,8 @@ final class AppSettings {
     var keepTerminalSessions: Bool { didSet { defaults.set(keepTerminalSessions, forKey: "terminal.keep") } }
     /// ntfy topic URL the server pushes to when a task ends (empty: off).
     var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
+    /// Tokens, keys and passwords: masked in the chat, replaced before tool output goes to your model.
+    var hideSecrets: Bool { didSet { defaults.set(hideSecrets, forKey: "agent.hideSecrets") } }
 
     private init() {
         let kind = ProviderKind(rawValue: defaults.string(forKey: "provider.kind") ?? "") ?? .anthropic
@@ -36,6 +38,7 @@ final class AppSettings {
         cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
+        hideSecrets = defaults.object(forKey: "agent.hideSecrets") as? Bool ?? true
         loadProviderFields()
     }
 

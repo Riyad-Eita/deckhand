@@ -292,7 +292,7 @@ private struct MessageView: View {
                 ForEach(Array(message.blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .text(let t) where !t.isEmpty:
-                        MarkdownView(t)
+                        ReplyText(text: t)
                     case .thinking(let t, _) where !t.isEmpty:
                         ThinkingView(text: t)
                     case .toolUse(let call):
@@ -373,6 +373,8 @@ struct ToolCard: View {
     let input: JSONValue
     let status: ChatModel.ToolStatus
     @State private var expanded = false
+    /// Secrets in the command or output are masked until the user taps Show.
+    @State private var revealed = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -384,25 +386,53 @@ struct ToolCard: View {
                     } else {
                         Image(systemName: icon).font(.footnote.weight(.medium)).foregroundStyle(.secondary).frame(width: 18)
                     }
-                    Text(summary).font(Theme.mono).lineLimit(expanded ? nil : 1).foregroundStyle(.primary)
+                    Text(shown(summary)).font(Theme.mono).lineLimit(expanded ? nil : 1).foregroundStyle(.primary)
                     Spacer(minLength: 4)
                     statusIcon
                 }
             }
             .buttonStyle(.plain)
             if expanded, case .done(let result) = status {
+                let output = String(result.content.prefix(8000))
                 ScrollView(.horizontal) {
-                    Text(result.content.prefix(8000))
+                    Text(shown(output))
                         .font(Theme.monoSmall)
                         .foregroundStyle(result.isError ? .red : .secondary)
                         .textSelection(.enabled)
                 }
                 .frame(maxHeight: 280)
             }
+            if expanded || hiding(summary) {
+                let count = secretCount
+                if count > 0 {
+                    Button { revealed.toggle() } label: {
+                        Label(revealed ? String(localized: "Hide secrets") : String(localized: "\(count) secrets hidden · Show"),
+                              systemImage: revealed ? "eye.slash" : "eye")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.borderless)
+                    .accessibilityIdentifier("toolCard.secrets")
+                }
+            }
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
         .background(Theme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Theme.hairline))
+    }
+
+    private var hideSecrets: Bool { AppSettings.shared.hideSecrets }
+
+    private func hiding(_ text: String) -> Bool { hideSecrets && !Secrets.find(in: text).isEmpty }
+
+    private func shown(_ text: String) -> String {
+        hideSecrets && !revealed ? Secrets.mask(text) : text
+    }
+
+    private var secretCount: Int {
+        guard hideSecrets else { return 0 }
+        var n = Secrets.find(in: summary).count
+        if case .done(let result) = status { n += Secrets.find(in: String(result.content.prefix(8000))).count }
+        return n
     }
 
     @ViewBuilder private var statusIcon: some View {
@@ -545,6 +575,28 @@ private struct MicButton: View {
             Button("OK") { error = nil }
         } message: {
             Text(error ?? "")
+        }
+    }
+}
+
+/// An assistant reply; tokens, keys and passwords in it stay masked until the user taps Show.
+struct ReplyText: View {
+    let text: String
+    @State private var revealed = false
+
+    var body: some View {
+        let count = AppSettings.shared.hideSecrets ? Secrets.find(in: text).count : 0
+        VStack(alignment: .leading, spacing: 6) {
+            MarkdownView(count > 0 && !revealed ? Secrets.mask(text) : text)
+            if count > 0 {
+                Button { revealed.toggle() } label: {
+                    Label(revealed ? String(localized: "Hide secrets") : String(localized: "\(count) secrets hidden · Show"),
+                          systemImage: revealed ? "eye.slash" : "eye")
+                        .font(.caption)
+                }
+                .buttonStyle(.borderless)
+                .accessibilityIdentifier("reply.secrets")
+            }
         }
     }
 }

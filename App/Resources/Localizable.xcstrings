@@ -228,6 +228,46 @@
         }
       }
     },
+    "%lld secrets hidden · Show": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld secret hidden · Show"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld secrets hidden · Show"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Geheimnis ausgeblendet · Zeigen"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Geheimnisse ausgeblendet · Zeigen"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld things to look at": {
       "localizations": {
         "de": {
@@ -2693,6 +2733,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sieh dir `%@` an: "
+          }
+        }
+      }
+    },
+    "Hide Secrets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geheimnisse verbergen"
+          }
+        }
+      }
+    },
+    "Hide secrets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geheimnisse ausblenden"
           }
         }
       }
@@ -7144,12 +7204,12 @@
     "·": {
       "shouldTranslate": false
     },
-    "“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files.": {
+    "“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "„Vor Änderungen fragen“ lässt den Agenten selbst Dateien lesen und Ordner ansehen und wartet auf dich, bevor er Befehle ausführt oder Dateien ändert."
+            "value": "„Vor Änderungen fragen“ lässt den Agenten selbst Dateien lesen und Ordner auflisten und wartet auf dich, bevor er Befehle ausführt oder Dateien ändert. „Geheimnisse verbergen“ maskiert Tokens, Schlüssel und Passwörter im Chat (antippen zum Zeigen) und ersetzt sie, bevor Befehlsausgaben an dein Modell gehen."
           }
         }
       }

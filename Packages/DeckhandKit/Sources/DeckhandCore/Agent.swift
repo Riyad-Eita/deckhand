@@ -58,6 +58,9 @@ public struct Agent: Sendable {
     public var policy: ApprovalPolicy
     public var system: String
     public var maxTurns: Int
+    /// Tool output goes to the model with tokens, keys and passwords replaced by `[REDACTED: …]`.
+    /// The app still gets the original output for the user (masked on screen until tapped).
+    public var redactSecrets: Bool
     public var approve: @Sendable (ApprovalRequest) async -> ApprovalDecision
 
     public init(
@@ -67,8 +70,10 @@ public struct Agent: Sendable {
         policy: ApprovalPolicy,
         system: String,
         maxTurns: Int = 60,
+        redactSecrets: Bool = true,
         approve: @escaping @Sendable (ApprovalRequest) async -> ApprovalDecision
     ) {
+        self.redactSecrets = redactSecrets
         self.provider = provider
         self.shell = shell
         self.tools = tools
@@ -85,7 +90,8 @@ public struct Agent: Sendable {
         Your tools run on that server over SSH. Inspect before you change things, prefer small precise edits,
         and verify your work (build, test, curl, systemctl status…) before you say it is done.
         The user reads your replies on a small screen: keep them short, lead with the result, use Markdown sparingly.
-        Never print secrets you come across. Ask before destructive or irreversible operations (deleting data,
+        Never print secrets you come across. Secrets in tool output may appear as [REDACTED: kind]: that is on
+        purpose — refer to them by file and variable name, don't try to reveal them. Ask before destructive or irreversible operations (deleting data,
         dropping databases, force pushes, rebooting) unless the user clearly asked for them.
         \(extra)
         """
@@ -162,7 +168,7 @@ public struct Agent: Sendable {
             }
             let result = await runTool(call, emit: emit)
             emit(.toolFinished(call, result))
-            results.append(result)
+            results.append(redactSecrets ? ToolResult(toolUseID: result.toolUseID, content: Secrets.redact(result.content), isError: result.isError) : result)
         }
         return results
     }

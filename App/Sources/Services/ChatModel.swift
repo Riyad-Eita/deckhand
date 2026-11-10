@@ -140,6 +140,7 @@ final class ChatModel {
         let config = settings.providerConfig
         let policy = settings.approvalPolicy
         let access = settings.cliAccess
+        let hideSecrets = settings.hideSecrets
         task = Task {
             do {
                 let shell = try await Connections.shared.connection(for: server)
@@ -163,6 +164,7 @@ final class ChatModel {
                     tools: ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
                     policy: policy,
                     system: Agent.systemPrompt(host: server.host, user: server.username, workingDirectory: thread.workingDirectory),
+                    redactSecrets: hideSecrets,
                     approve: { [weak self] request in
                         await self?.requestApproval(request) ?? .deny(reason: nil)
                     })

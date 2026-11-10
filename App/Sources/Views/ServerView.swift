@@ -185,11 +185,17 @@ struct ThreadListView: View {
         }
         .task {
             // "markdown|": a finished chat with a reply that uses every Markdown block (UI tests, screenshots).
-            guard DebugSeed.pendingRun?.engine == "markdown" else { return }
+            let seed = DebugSeed.pendingRun?.engine
+            guard seed == "markdown" || seed == "secrets" else { return }
             DebugSeed.pendingRun = nil
             let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: .codex)
-            thread.title = "Why does the API return 404?"
-            thread.messages = [.user("Why does the weather API return 404 for some cities?"), DebugSeed.markdownReply]
+            if seed == "secrets" {
+                thread.title = "Why can't the app reach the database?"
+                thread.messages = DebugSeed.secretsChat
+            } else {
+                thread.title = "Why does the API return 404?"
+                thread.messages = [.user("Why does the weather API return 404 for some cities?"), DebugSeed.markdownReply]
+            }
             context.insert(thread)
             openThread = thread
         }
