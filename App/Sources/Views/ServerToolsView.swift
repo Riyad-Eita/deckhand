@@ -14,6 +14,7 @@ struct ServerToolsView: View {
     @State private var error: String?
     @State private var busy: ServerCLI?
     @State private var installLog: String?
+    @State private var signingIn: ServerCLI?
 
     var body: some View {
         NavigationStack {
@@ -57,6 +58,9 @@ struct ServerToolsView: View {
                 }
             }
             .task { await refresh() }
+            .sheet(item: $signingIn) { cli in
+                CLILoginView(server: server, cli: cli) { _ in Task { await refresh() } }
+            }
         }
         .hostKeyPrompt(inSheet: true)
     }
@@ -90,8 +94,7 @@ struct ServerToolsView: View {
     }
 
     private func logIn(_ cli: ServerCLI) {
-        dismiss()
-        runInTerminal(cli.loginCommand)
+        signingIn = cli
     }
 
     private func statusText(_ s: ServerInventory.CLIState) -> String {
