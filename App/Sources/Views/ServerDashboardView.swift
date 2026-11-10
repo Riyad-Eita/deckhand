@@ -35,6 +35,14 @@ struct ServerDashboardView: View {
                     }
                     VStack(spacing: 0) {
                         NavigationLink {
+                            FilesView(server: server, runInTerminal: runInTerminal)
+                        } label: {
+                            ManageRow(title: "Files", subtitle: "Browse, rename and delete; hand a folder to the agent", symbol: "folder")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.files")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             ServicesView(server: server)
                         } label: {
                             ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")
