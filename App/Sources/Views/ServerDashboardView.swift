@@ -4,14 +4,13 @@ import SwiftUI
 /// Health of one server at a glance; refreshes every few seconds while visible.
 struct ServerDashboardView: View {
     let server: Server
-    /// Hands a prompt to the agent ("Investigate").
-    var investigate: (String) -> Void = { _ in }
     /// Opens the terminal with a command (e.g. something that needs a sudo password).
     var runInTerminal: (String) -> Void = { _ in }
     @Environment(Connections.self) private var connections
     @State private var stats: ServerStats?
     @State private var error: String?
     @State private var updated: Date?
+    @State private var investigatePrompt: String?
 
     var body: some View {
         ScrollView {
@@ -19,7 +18,7 @@ struct ServerDashboardView: View {
                 if let stats {
                     if !stats.warnings.isEmpty {
                         WarningsCard(warnings: stats.warnings) { warning in
-                            investigate("On this server: \(warning). Find out what causes it and suggest safe fixes, biggest win first. Don't change anything yet — ask me before you do.")
+                            investigatePrompt = ("On this server: \(warning). Find out what causes it and suggest safe fixes, biggest win first. Don't change anything yet — ask me before you do.")
                         }
                     }
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
@@ -36,9 +35,15 @@ struct ServerDashboardView: View {
                     }
                     VStack(spacing: 0) {
                         NavigationLink {
-                            ServicesView(server: server, runInTerminal: runInTerminal, investigate: investigate)
+                            ServicesView(server: server)
                         } label: {
                             ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")
+                        }
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            LogsView(server: server)
+                        } label: {
+                            ManageRow(title: "Logs", subtitle: "Journal and log files: follow, search, explain", symbol: "text.alignleft")
                         }
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
@@ -70,6 +75,7 @@ struct ServerDashboardView: View {
             }
         }
         .refreshable { await refresh() }
+        .investigate(on: server, prompt: $investigatePrompt)
     }
 
     private func percent(_ f: Double) -> String { "\(Int((f * 100).rounded())) %" }

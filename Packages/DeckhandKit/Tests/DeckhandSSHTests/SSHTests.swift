@@ -180,3 +180,19 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    @Test func logsLive() async throws {
+        let conn = try await connection()
+        let sources = Logs.parseSources(try await conn.run(Logs.discoverCommand, timeout: .seconds(30)).stdout)
+        #expect(!sources.isEmpty)
+        if let file = sources.first(where: { if case .file = $0 { true } else { false } }) {
+            let r = try await conn.run(Logs.readCommand(file, lines: 5), timeout: .seconds(20))
+            #expect(r.exitCode == 0)
+        }
+        var got = false
+        for try await _ in conn.streamLines(Logs.followCommand(.journal(unit: nil), seconds: 2)) { got = true; break }
+        _ = got
+        await conn.disconnect()
+    }
+}

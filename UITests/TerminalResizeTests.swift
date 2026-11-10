@@ -8,6 +8,7 @@ final class TerminalResizeTests: XCTestCase {
             throw XCTSkip("No demo server configured")
         }
         let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
         app.launchEnvironment["DECKHAND_SEED_HOST"] = host
         app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_DEMO_PORT"] ?? "22"
         app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_DEMO_USER"] ?? "demo"
