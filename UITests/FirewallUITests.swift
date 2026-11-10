@@ -62,7 +62,8 @@ final class FirewallUITests: XCTestCase {
         tries = 0
         while !scan.isHittable && tries < 4 { app.swipeUp(); tries += 1 }
         scan.tap()
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label BEGINSWITH '2310'")).firstMatch.waitForExistence(timeout: 60))
+        let sshPort = env["DECKHAND_PORT_OLD"] ?? "22"
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label BEGINSWITH %@", sshPort)).firstMatch.waitForExistence(timeout: 60))
         shot(app, "outside")
     }
 
