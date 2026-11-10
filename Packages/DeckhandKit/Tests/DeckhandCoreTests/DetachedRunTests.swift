@@ -52,7 +52,8 @@ import Testing
         try "export PATH=\"$HOME/bin:$PATH\"\n".write(toFile: h + "/.bash_profile", atomically: true, encoding: .utf8)
         _ = try await sh(h, run.startCommand("echo hi", notify: notify))
         _ = try await sh(h, run.readCommand(fromLine: 1))
-        try await Task.sleep(for: .milliseconds(500))
+        // The push runs right after the exit code is written: wait for it (up to 5 s).
+        for _ in 0..<50 where !FileManager.default.fileExists(atPath: h + "/curl.args") { try await Task.sleep(for: .milliseconds(100)) }
         let args = try String(contentsOfFile: h + "/curl.args", encoding: .utf8)
         #expect(args.contains("Done: Fix it's build"))
         #expect(args.contains("Click: deckhand://thread/abc"))
