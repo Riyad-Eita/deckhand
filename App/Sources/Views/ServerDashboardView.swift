@@ -65,6 +65,20 @@ struct ServerDashboardView: View {
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Security").font(.headline).padding(.leading, 4)
+                        VStack(spacing: 0) {
+                            NavigationLink {
+                                ChangesView(server: server)
+                            } label: {
+                                ManageRow(title: "Change history", subtitle: "Every change with a backup, diff and rollback", symbol: "clock.arrow.circlepath")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.changes")
+                        }
+                        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
+                    }
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Disks").font(.headline)
                         ForEach(stats.disks) { disk in DiskRow(disk: disk) }

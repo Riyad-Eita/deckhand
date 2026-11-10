@@ -366,6 +366,26 @@
         }
       }
     },
+    "Applied": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angewendet"
+          }
+        }
+      }
+    },
+    "Apply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anwenden"
+          }
+        }
+      }
+    },
     "Approvals": {
       "localizations": {
         "de": {
@@ -408,12 +428,42 @@
         }
       }
     },
+    "Back up the files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien sichern"
+          }
+        }
+      }
+    },
+    "Backed up on the server before anything changes. If the check fails, they're put back at once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werden auf dem Server gesichert, bevor sich etwas ändert. Schlägt die Prüfung fehl, kommen sie sofort zurück."
+          }
+        }
+      }
+    },
     "Background tasks": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Hintergrundaufgaben"
+          }
+        }
+      }
+    },
+    "Backups live in %@ on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Backups liegen auf dem Server in %@."
           }
         }
       }
@@ -434,6 +484,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bearer-Token (optional)"
+          }
+        }
+      }
+    },
+    "Before → now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorher → jetzt"
           }
         }
       }
@@ -498,6 +558,16 @@
         }
       }
     },
+    "Change history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungsverlauf"
+          }
+        }
+      }
+    },
     "ChatGPT plan": {
       "localizations": {
         "de": {
@@ -514,6 +584,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Speicherplatz, Arbeitsspeicher und ausgefallene Dienste"
+          }
+        }
+      }
+    },
+    "Check the configuration": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konfiguration prüfen"
           }
         }
       }
@@ -664,6 +744,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Befehl auf dem Server"
+          }
+        }
+      }
+    },
+    "Comparing…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergleiche …"
           }
         }
       }
@@ -1055,6 +1145,16 @@
         }
       }
     },
+    "Every change with a backup, diff and rollback": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Änderung mit Backup, Vergleich und Rückgängig"
+          }
+        }
+      }
+    },
     "Explain": {
       "localizations": {
         "de": {
@@ -1071,6 +1171,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien"
           }
         }
       }
@@ -1247,6 +1357,16 @@
         }
       }
     },
+    "Interrupted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterbrochen"
+          }
+        }
+      }
+    },
     "Investigate": {
       "localizations": {
         "de": {
@@ -1407,6 +1527,26 @@
         }
       }
     },
+    "Made": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellt"
+          }
+        }
+      }
+    },
+    "Make the change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderung vornehmen"
+          }
+        }
+      }
+    },
     "Makes Codex and Claude Code on this server use the same MCP servers as the app. Tokens are stored in a private file in your home folder.": {
       "localizations": {
         "de": {
@@ -1547,6 +1687,16 @@
         }
       }
     },
+    "No changes yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Änderungen"
+          }
+        }
+      }
+    },
     "No lines": {
       "localizations": {
         "de": {
@@ -1626,6 +1776,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anderer Server (URL)"
+          }
+        }
+      }
+    },
+    "Output": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe"
           }
         }
       }
@@ -1731,6 +1891,16 @@
         }
       }
     },
+    "Progress": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortschritt"
+          }
+        }
+      }
+    },
     "Provider": {
       "localizations": {
         "de": {
@@ -1748,6 +1918,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Images aktualisieren"
+          }
+        }
+      }
+    },
+    "Puts the files back as they were before this change and reloads the service.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stellt die Dateien wie vor dieser Änderung wieder her und lädt den Dienst neu."
           }
         }
       }
@@ -1823,6 +2003,16 @@
         }
       }
     },
+    "Reload the service": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dienst neu laden"
+          }
+        }
+      }
+    },
     "Remove": {
       "localizations": {
         "de": {
@@ -1870,6 +2060,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neustart"
+          }
+        }
+      }
+    },
+    "Restore the backed-up files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesicherte Dateien wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restores the files from the backup made before “%@”, checks the configuration and reloads the service.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stellt die Dateien aus dem Backup vor „%@“ wieder her, prüft die Konfiguration und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Roll back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurücksetzen"
+          }
+        }
+      }
+    },
+    "Rolled back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurückgesetzt"
           }
         }
       }
@@ -1950,6 +2180,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienste suchen"
+          }
+        }
+      }
+    },
+    "Security": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheit"
+          }
+        }
+      }
+    },
+    "Security changes made with Deckhand show up here. Each one keeps a backup you can go back to.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsänderungen mit Deckhand erscheinen hier. Zu jeder gibt es ein Backup, zu dem du zurückkehren kannst."
           }
         }
       }
@@ -2070,6 +2320,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestoppte Dienste zeigen"
+          }
+        }
+      }
+    },
+    "Show the difference to now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterschied zu jetzt zeigen"
           }
         }
       }
@@ -2235,6 +2495,16 @@
         }
       }
     },
+    "Sudo password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudo-Passwort"
+          }
+        }
+      }
+    },
     "Switch Account": {
       "localizations": {
         "de": {
@@ -2325,6 +2595,26 @@
         }
       }
     },
+    "That sudo password didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Sudo-Passwort hat nicht funktioniert."
+          }
+        }
+      }
+    },
+    "The %@ step failed. Your previous files were put back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schritt „%@“ ist fehlgeschlagen. Deine vorherigen Dateien wurden zurückgelegt."
+          }
+        }
+      }
+    },
     "The agent is stopped on the server. Changes it already made stay.": {
       "localizations": {
         "de": {
@@ -2345,12 +2635,32 @@
         }
       }
     },
+    "The command ended without a result.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Befehl endete ohne Ergebnis."
+          }
+        }
+      }
+    },
     "The container is deleted. Volumes stay.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der Container wird gelöscht. Volumes bleiben erhalten."
+          }
+        }
+      }
+    },
+    "The files are the same as before this change.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Dateien sind wieder wie vor dieser Änderung."
           }
         }
       }
@@ -2431,6 +2741,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erneut versuchen"
+          }
+        }
+      }
+    },
+    "Undone automatically": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch rückgängig gemacht"
           }
         }
       }
@@ -2685,6 +3005,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Benutzer darf Docker nicht nutzen. Füge ihn der Gruppe docker hinzu: sudo usermod -aG docker $USER (danach neu anmelden)."
+          }
+        }
+      }
+    },
+    "for %@ on %@. Deckhand keeps it in memory until you quit the app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "für %1$@ auf %2$@. Deckhand behält es nur im Speicher, bis du die App beendest."
           }
         }
       }
