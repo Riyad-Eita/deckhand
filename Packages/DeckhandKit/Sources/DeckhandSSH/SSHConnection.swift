@@ -352,3 +352,5 @@ final class SSHLineChannel: LineChannel, @unchecked Sendable {
         continuation.finish()
     }
 }
+
+extension SSHConnection: ChannelShell {}

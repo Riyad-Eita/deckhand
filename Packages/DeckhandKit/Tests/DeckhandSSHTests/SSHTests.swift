@@ -262,3 +262,51 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+/// Live root tests against a disposable server where the user needs a sudo password, e.g.
+/// DECKHAND_SUDO_HOST=example.com DECKHAND_SUDO_PORT=22 DECKHAND_SUDO_USER=me DECKHAND_SUDO_PASSWORD=… swift test
+/// (the password is both the login and the sudo password). Changes only /etc/deckhand-test.conf.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_SUDO_HOST"] != nil), .serialized)
+struct LiveSudoTests {
+    let env = ProcessInfo.processInfo.environment
+
+    func connection() async throws -> SSHConnection {
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_SUDO_HOST"]!, port: Int(env["DECKHAND_SUDO_PORT"] ?? "22")!, username: env["DECKHAND_SUDO_USER"]!),
+            credential: .password(env["DECKHAND_SUDO_PASSWORD"]!))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        return conn
+    }
+
+    func root(_ script: String, _ conn: SSHConnection, password: String?) async throws -> [RootLine] {
+        var out: [RootLine] = []
+        for try await l in Sudo.run(script, on: conn, access: .password, password: password) { out.append(l) }
+        return out
+    }
+
+    @Test func changeWithSudoPasswordDiffAndRollback() async throws {
+        let conn = try await connection()
+        let pw = env["DECKHAND_SUDO_PASSWORD"]!
+        #expect(Sudo.parseProbe(try await conn.run(Sudo.probeCommand, timeout: .seconds(15)).stdout) == .password)
+        let who = try await root("id -u", conn, password: pw); #expect(who.last == .exit(0) && who.contains(.output("0")), "\(who)")
+        await #expect(throws: SudoError.wrongPassword) { _ = try await root("id -u", conn, password: "wrong-" + pw) }
+
+        let file = "/etc/deckhand-test.conf"
+        let change = ConfigChange(title: "Live test", files: [file], apply: "echo 'MaxAuthTries 3' > \(file)", validate: "true")
+        let id = ConfigChange.makeID(title: change.title)
+        let applied = try await root(change.script(id: id), conn, password: pw)
+        #expect(applied.contains(.output("@@done")))
+        #expect(try await conn.run("cat \(file)", timeout: .seconds(10)).stdout == "MaxAuthTries 3\n")
+        // The history is readable without root, the backed-up files are not.
+        let history = ConfigChange.parseList(try await conn.run(ConfigChange.listCommand(), timeout: .seconds(10)).stdout)
+        #expect(history.first { $0.id == id }?.status == .applied)
+        #expect(try await conn.run("ls \(ConfigChange.defaultRoot)/\(id)/files", timeout: .seconds(10)).exitCode != 0)
+        let diff = try await root(ConfigChange.diffScript(id: id), conn, password: pw)
+        #expect(diff.contains(.output("+MaxAuthTries 3")))
+        let back = try await root(ConfigChange.rollbackScript(id: id), conn, password: pw)
+        #expect(back.contains(.output("@@done")))
+        #expect(try await conn.run("test -e \(file)", timeout: .seconds(10)).exitCode != 0)
+        _ = try await root("rm -rf \(ConfigChange.defaultRoot)/\(id)", conn, password: pw)
+        await conn.disconnect()
+    }
+}
