@@ -653,3 +653,41 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// Package updates: the read-only status on the test server, then refresh + install one update as root inside a
+    /// throwaway Ubuntu container (when Docker and DECKHAND_TEST_UBUNTU_IMAGE are available). Removes the container.
+    @Test func packageUpdatesLive() async throws {
+        let conn = try await connection()
+        do {
+            let status = PackageUpdates.parse(try await conn.run(PackageUpdates.statusCommand, timeout: .seconds(120)).stdout)
+            #expect(status.manager != nil)
+            #expect(!status.runningKernel.isEmpty)
+            if status.manager == "apt" {
+                let count = try await conn.run("apt list --upgradable 2>/dev/null | grep -c 'upgradable from' || true", timeout: .seconds(60))
+                #expect(status.updates.count == Int(count.stdout.trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1)
+            }
+
+            if let image = ProcessInfo.processInfo.environment["DECKHAND_TEST_UBUNTU_IMAGE"] {
+                let box = "dh-updates-\(UUID().uuidString.prefix(6).lowercased())"
+                _ = try await conn.run("docker run -d --rm --name \(box) --entrypoint sleep \(ShellQuote.quote(image)) 900", timeout: .seconds(60))
+                func inBox(_ script: String) async throws -> CommandResult {
+                    try await conn.run("docker exec \(box) bash -c \(ShellQuote.quote(script))", timeout: .seconds(600))
+                }
+                let refresh = try await inBox(PackageUpdates.refreshScript("apt"))
+                #expect(refresh.stdout.contains("@@done"), "\(refresh.stderr)")
+                let before = PackageUpdates.parse(try await inBox(PackageUpdates.statusCommand).stdout)
+                #expect(before.manager == "apt" && before.listAgeDays == 0)
+                // The smallest-looking candidate: libraries and tools, not the kernel.
+                if let pick = before.updates.first(where: { !$0.name.hasPrefix("linux") }) {
+                    let install = try await inBox(PackageUpdates.installScript("apt", packages: [pick.name]))
+                    #expect(install.exitCode == 0 && install.stdout.contains("@@done"), "\(install.stdout.suffix(500)) \(install.stderr)")
+                    let after = PackageUpdates.parse(try await inBox(PackageUpdates.statusCommand).stdout)
+                    #expect(!after.updates.contains { $0.name == pick.name }, "\(pick.name) still listed")
+                }
+                _ = try? await conn.run("docker rm -f \(box)", timeout: .seconds(60))
+            }
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}

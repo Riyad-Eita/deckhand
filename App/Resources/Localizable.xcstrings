@@ -118,6 +118,16 @@
     "%@ · %@": {
       "shouldTranslate": false
     },
+    "%@ · lists from %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · Listen von %2$@"
+          }
+        }
+      }
+    },
     "%@ — open it in the terminal or ask the agent about it.": {
       "localizations": {
         "de": {
@@ -134,6 +144,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Kerne"
+          }
+        }
+      }
+    },
+    "%lld days ago": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld Tagen"
           }
         }
       }
@@ -214,6 +234,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Punkte zum Ansehen"
+          }
+        }
+      }
+    },
+    "%lld updates waiting": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Updates warten"
+          }
+        }
+      }
+    },
+    "%lld updates, %lld for security": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Updates, %2$lld für die Sicherheit"
           }
         }
       }
@@ -1058,6 +1098,16 @@
         }
       }
     },
+    "Check": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfen"
+          }
+        }
+      }
+    },
     "Check again": {
       "localizations": {
         "de": {
@@ -1074,6 +1124,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Speicherplatz, Arbeitsspeicher und ausgefallene Dienste"
+          }
+        }
+      }
+    },
+    "Check for Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Updates suchen"
           }
         }
       }
@@ -1730,6 +1790,16 @@
         }
       }
     },
+    "Deckhand handles updates on Debian, Ubuntu, Fedora, RHEL and similar servers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand kümmert sich um Updates auf Debian-, Ubuntu-, Fedora-, RHEL- und ähnlichen Servern."
+          }
+        }
+      }
+    },
     "Deckhand itself logs in with a password. Switch this server to a key in its settings first, so turning passwords off can't lock you out.": {
       "localizations": {
         "de": {
@@ -2018,6 +2088,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper wird geladen …"
+          }
+        }
+      }
+    },
+    "Downloads the latest package lists. Nothing is installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lädt die neuesten Paketlisten. Es wird nichts installiert."
           }
         }
       }
@@ -2717,12 +2797,52 @@
         }
       }
     },
+    "Install All Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Updates installieren"
+          }
+        }
+      }
+    },
+    "Install All Updates (%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Updates installieren (%lld)"
+          }
+        }
+      }
+    },
     "Install Docker on this server to manage containers here.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Installiere Docker auf diesem Server, um Container hier zu verwalten."
+          }
+        }
+      }
+    },
+    "Install Security Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsupdates installieren"
+          }
+        }
+      }
+    },
+    "Install Security Updates (%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherheitsupdates installieren (%lld)"
           }
         }
       }
@@ -2753,6 +2873,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installiere die GitHub CLI …"
+          }
+        }
+      }
+    },
+    "Installs %lld security updates. Services may restart briefly. Your changed config files are kept. This can't be rolled back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert %lld Sicherheitsupdates. Dienste starten eventuell kurz neu. Deine geänderten Konfigurationsdateien bleiben erhalten. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "Installs %lld updates. Services may restart briefly. Your changed config files are kept. This can't be rolled back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert %lld Updates. Dienste starten eventuell kurz neu. Deine geänderten Konfigurationsdateien bleiben erhalten. Das lässt sich nicht rückgängig machen."
           }
         }
       }
@@ -3517,6 +3657,16 @@
         }
       }
     },
+    "No apt or dnf": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein apt oder dnf"
+          }
+        }
+      }
+    },
     "No background tasks": {
       "localizations": {
         "de": {
@@ -3996,6 +4146,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anderer Server (URL)"
+          }
+        }
+      }
+    },
+    "Other updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weitere Updates"
           }
         }
       }
@@ -4530,6 +4690,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neustart"
+          }
+        }
+      }
+    },
+    "Restart Server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server neu starten"
+          }
+        }
+      }
+    },
+    "Restart Server…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server neu starten …"
+          }
+        }
+      }
+    },
+    "Restart needed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neustart nötig"
           }
         }
       }
@@ -5785,6 +5975,16 @@
         }
       }
     },
+    "The package lists are %lld days old — check for updates to see the latest.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Paketlisten sind %lld Tage alt – such nach Updates, um den neuesten Stand zu sehen."
+          }
+        }
+      }
+    },
     "The remote has commits you don't have yet. Pull first, then push.": {
       "localizations": {
         "de": {
@@ -5821,6 +6021,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server hat keine Zugangsdaten für dieses Remote. Verbinde GitHub unter Verbindungen oder hinterlege einen SSH-Schlüssel für den Server."
+          }
+        }
+      }
+    },
+    "The server restarts in a few seconds and is unreachable for a minute or two. Running tasks, terminals and web apps stop; services set to start at boot come back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server startet in wenigen Sekunden neu und ist ein, zwei Minuten nicht erreichbar. Laufende Aufgaben, Terminals und Web-Apps stoppen; Dienste mit Autostart kommen zurück."
           }
         }
       }
@@ -6206,6 +6416,16 @@
         }
       }
     },
+    "Up to date": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem neuesten Stand"
+          }
+        }
+      }
+    },
     "Up-to-date library documentation for coding.": {
       "localizations": {
         "de": {
@@ -6252,6 +6472,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aktualisiert %@"
+          }
+        }
+      }
+    },
+    "Updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates"
+          }
+        }
+      }
+    },
+    "Updates are installed but only take effect after a restart.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates sind installiert, wirken aber erst nach einem Neustart."
           }
         }
       }
@@ -6392,6 +6632,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wartet auf Bestätigung"
+          }
+        }
+      }
+    },
+    "Waiting packages, security first; restart hint": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartende Pakete, Sicherheit zuerst; Neustart-Hinweis"
           }
         }
       }
@@ -6861,12 +7111,32 @@
     "tmux": {
       "shouldTranslate": false
     },
+    "today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "heute"
+          }
+        }
+      }
+    },
     "unknown service": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "unbekannter Dienst"
+          }
+        }
+      }
+    },
+    "yesterday": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gestern"
           }
         }
       }
