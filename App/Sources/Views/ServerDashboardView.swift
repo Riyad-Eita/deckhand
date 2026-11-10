@@ -16,22 +16,22 @@ struct ServerDashboardView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if let stats {
-                    if !stats.warnings.isEmpty {
-                        WarningsCard(warnings: stats.warnings) { warning in
+                    if !stats.warningList.isEmpty {
+                        WarningsCard(warnings: stats.warningList) { warning in
                             investigatePrompt = ("On this server: \(warning). Find out what causes it and suggest safe fixes, biggest win first. Don't change anything yet — ask me before you do.")
                         }
                     }
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-                        MetricCard(title: "CPU", value: percent(stats.cpu), detail: "\(stats.cores) cores", fraction: stats.cpu)
+                        MetricCard(title: "CPU", value: percent(stats.cpu), detail: String(localized: "\(stats.cores) cores"), fraction: stats.cpu)
                         MetricCard(
                             title: "Memory", value: percent(stats.memUsedFraction),
-                            detail: "\(ByteFormat.kb(stats.memTotalKB - stats.memAvailableKB)) of \(ByteFormat.kb(stats.memTotalKB))",
+                            detail: String(localized: "\(ByteFormat.kb(stats.memTotalKB - stats.memAvailableKB)) of \(ByteFormat.kb(stats.memTotalKB))"),
                             fraction: stats.memUsedFraction)
                         MetricCard(
                             title: "Load", value: String(format: "%.2f", stats.load.0),
                             detail: String(format: "5m %.2f · 15m %.2f", stats.load.1, stats.load.2),
                             fraction: stats.cores > 0 ? min(1, stats.load.0 / Double(stats.cores)) : 0)
-                        MetricCard(title: "Uptime", value: ByteFormat.duration(stats.uptime), detail: "since last boot", fraction: nil)
+                        MetricCard(title: "Uptime", value: ByteFormat.duration(stats.uptime), detail: String(localized: "since last boot"), fraction: nil)
                     }
                     VStack(spacing: 0) {
                         NavigationLink {
@@ -39,18 +39,21 @@ struct ServerDashboardView: View {
                         } label: {
                             ManageRow(title: "Services", subtitle: "systemd: status, restart, logs", symbol: "gearshape.2")
                         }
+                        .buttonStyle(.plain)
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             LogsView(server: server)
                         } label: {
                             ManageRow(title: "Logs", subtitle: "Journal and log files: follow, search, explain", symbol: "text.alignleft")
                         }
+                        .buttonStyle(.plain)
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             DockerView(server: server)
                         } label: {
                             ManageRow(title: "Docker", subtitle: "Containers, logs and compose stacks", symbol: "shippingbox")
                         }
+                        .buttonStyle(.plain)
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
@@ -103,14 +106,14 @@ struct ServerDashboardView: View {
 }
 
 private struct MetricCard: View {
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     let detail: String
     let fraction: Double?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title.uppercased()).font(.caption2.weight(.semibold)).tracking(0.8).foregroundStyle(.secondary)
+            Text(title).textCase(.uppercase).font(.caption2.weight(.semibold)).tracking(0.8).foregroundStyle(.secondary)
             Text(value).font(.system(.title2, design: .rounded).weight(.semibold)).monospacedDigit()
             if let fraction { UsageBar(fraction: fraction) }
             Text(detail).font(.caption).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
@@ -155,17 +158,17 @@ private struct DiskRow: View {
 }
 
 private struct WarningsCard: View {
-    let warnings: [String]
+    let warnings: [ServerStats.Warning]
     let investigate: (String) -> Void
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(warnings, id: \.self) { w in
                 HStack {
-                    Label(w, systemImage: "exclamationmark.triangle.fill")
+                    Label(text(w), systemImage: "exclamationmark.triangle.fill")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.orange)
                     Spacer()
-                    Button("Investigate") { investigate(w) }
+                    Button("Investigate") { investigate(english(w)) }
                         .font(.subheadline.weight(.semibold))
                         .buttonStyle(.bordered)
                         .controlSize(.small)
@@ -176,11 +179,27 @@ private struct WarningsCard: View {
         .padding(14)
         .background(Color.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
     }
+    private func text(_ w: ServerStats.Warning) -> String {
+        switch w {
+        case .diskFull(let mount, let percent): String(localized: "\(mount) is \(percent) % full")
+        case .memoryLow: String(localized: "Memory is almost exhausted")
+        case .loadHigh(let cores): String(localized: "Load is high for \(cores) cores")
+        }
+    }
+
+    /// Prompts to the agent stay in English; the agent answers in the user's language anyway.
+    private func english(_ w: ServerStats.Warning) -> String {
+        switch w {
+        case .diskFull(let m, let p): "\(m) is \(p) % full"
+        case .memoryLow: "Memory is almost exhausted"
+        case .loadHigh(let c): "Load is high for \(c) cores"
+        }
+    }
 }
 
 struct ManageRow: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let symbol: String
     var body: some View {
         HStack(spacing: 12) {

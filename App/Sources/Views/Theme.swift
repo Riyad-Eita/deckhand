@@ -113,7 +113,7 @@ extension Engine {
 
     var shortTitle: String {
         switch self {
-        case .ownKey: "Your key"
+        case .ownKey: String(localized: "Your key")
         case .codex: "Codex"
         case .claudeCode: "Claude Code"
         }

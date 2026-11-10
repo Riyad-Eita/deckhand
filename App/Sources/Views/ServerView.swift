@@ -49,7 +49,7 @@ struct ServerView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("View", selection: $tab) {
-                    ForEach(Tab.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(Tab.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 260)
@@ -206,8 +206,8 @@ struct EngineTile: View {
     private var subtitle: String {
         switch engine {
         case .ownKey: AppSettings.shared.providerKind.displayName.components(separatedBy: " (").first ?? ""
-        case .codex: "ChatGPT plan"
-        case .claudeCode: "Claude plan"
+        case .codex: String(localized: "ChatGPT plan")
+        case .claudeCode: String(localized: "Claude plan")
         }
     }
 }

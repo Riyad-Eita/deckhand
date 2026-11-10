@@ -13,7 +13,7 @@ struct SettingsView: View {
                     Picker(selection: $settings.providerKind) {
                         ForEach(ProviderKind.allCases) { kind in
                             Label {
-                                Text(kind.displayName)
+                                Text(LocalizedStringKey(kind.displayName))
                             } icon: {
                                 if let brand = Brand.forProvider(kind) {
                                     Image(brand.asset).renderingMode(.template)
@@ -66,7 +66,7 @@ struct SettingsView: View {
                         Text("Max").tag("max")
                     }
                     Picker("Approvals", selection: $settings.approvalPolicy) {
-                        ForEach(ApprovalPolicy.allCases) { Text($0.title).tag($0) }
+                        ForEach(ApprovalPolicy.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
                     }
                 } header: {
                     Text("Agent")
@@ -76,7 +76,7 @@ struct SettingsView: View {
 
                 Section {
                     Picker("Access", selection: $settings.cliAccess) {
-                        ForEach(CLIAccess.allCases) { Text($0.title).tag($0) }
+                        ForEach(CLIAccess.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
                     }
                 } header: {
                     Text("Codex & Claude Code on the server")

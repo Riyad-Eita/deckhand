@@ -1,0 +1,36 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSFaceIDUsageDescription": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand nutzt Face ID, um deine Server-Schlüssel zu entsperren."
+          }
+        }
+      }
+    },
+    "NSLocalNetworkUsageDescription": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand verbindet sich per SSH mit Servern in deinem lokalen Netzwerk."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand nimmt deine Stimme auf, um sie auf diesem iPhone in Text umzuwandeln. Die Aufnahme verlässt das Gerät nicht."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

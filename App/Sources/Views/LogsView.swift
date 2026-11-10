@@ -113,7 +113,7 @@ struct LogViewer: View {
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 10) {
                 Picker("Filter", selection: $filter) {
-                    ForEach(Filter.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(Filter.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.segmented)
                 Button {

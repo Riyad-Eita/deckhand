@@ -69,9 +69,9 @@ enum Engine: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .ownKey: "Your model key"
-        case .codex: "Codex on the server"
-        case .claudeCode: "Claude Code on the server"
+        case .ownKey: String(localized: "Your model key")
+        case .codex: String(localized: "Codex on the server")
+        case .claudeCode: String(localized: "Claude Code on the server")
         }
     }
 

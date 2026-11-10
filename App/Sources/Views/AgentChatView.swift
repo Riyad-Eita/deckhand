@@ -136,17 +136,19 @@ private struct EmptyChatHint: View {
     let engine: Engine
     let pick: (String) -> Void
     private let ideas = [
-        "Check disk space, memory and failing services",
-        "Show me what changed in the last git commit here",
-        "Update the system packages and tell me what needs a reboot",
-        "Find why nginx returns 502",
+        String(localized: "Check disk space, memory and failing services"),
+        String(localized: "Show me what changed in the last git commit here"),
+        String(localized: "Update the system packages and tell me what needs a reboot"),
+        String(localized: "Find why nginx returns 502"),
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             BrandIcon(brand: engine.brand, size: 44)
             Text("What should happen on \(server.displayName)?").font(.title3.weight(.semibold))
-            Text("Working in \(workingDirectory). " + (engine == .ownKey ? "The agent asks before it changes anything." : "Runs with your \(engine.serverCLI?.displayName ?? "") subscription on the server."))
+            Text(engine == .ownKey
+                 ? "Working in \(workingDirectory). The agent asks before it changes anything."
+                 : "Working in \(workingDirectory). Runs with your \(engine.serverCLI?.displayName ?? "") subscription on the server.")
                 .font(.subheadline).foregroundStyle(.secondary)
             ForEach(ideas, id: \.self) { idea in
                 Button { pick(idea) } label: {
