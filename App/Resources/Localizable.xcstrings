@@ -1148,6 +1148,16 @@
         }
       }
     },
+    "Can be cleaned up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lässt sich aufräumen"
+          }
+        }
+      }
+    },
     "Can't open the file": {
       "localizations": {
         "de": {
@@ -1478,6 +1488,36 @@
         }
       }
     },
+    "Clean up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufräumen"
+          }
+        }
+      }
+    },
+    "Clean up “%@”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ aufräumen?"
+          }
+        }
+      }
+    },
+    "Cleaned up: %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgeräumt: %@."
+          }
+        }
+      }
+    },
     "Clear": {
       "localizations": {
         "de": {
@@ -1664,6 +1704,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compose-Stacks, gefunden mit docker compose ls."
+          }
+        }
+      }
+    },
+    "Compressed and numbered log files from earlier days.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komprimierte und nummerierte Logdateien von früheren Tagen."
           }
         }
       }
@@ -1949,6 +1999,16 @@
         }
       }
     },
+    "Crash dumps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absturzabbilder"
+          }
+        }
+      }
+    },
     "Create": {
       "localizations": {
         "de": {
@@ -2190,12 +2250,32 @@
         }
       }
     },
+    "Delete “%@” (%@)?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%1$@“ löschen (%2$@)?"
+          }
+        }
+      }
+    },
     "Delete “%@”?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "„%@“ löschen?"
+          }
+        }
+      }
+    },
+    "Deleted %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ gelöscht."
           }
         }
       }
@@ -2301,6 +2381,16 @@
         }
       }
     },
+    "Disk usage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicherplatz"
+          }
+        }
+      }
+    },
     "Disks": {
       "localizations": {
         "de": {
@@ -2398,6 +2488,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper laden (%@)"
+          }
+        }
+      }
+    },
+    "Downloaded npm packages.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heruntergeladene npm-Pakete."
+          }
+        }
+      }
+    },
+    "Downloaded packages": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heruntergeladene Pakete"
           }
         }
       }
@@ -2751,6 +2861,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien, die jeder ändern kann"
+          }
+        }
+      }
+    },
+    "Files moved to the trash on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien, die auf dem Server im Papierkorb liegen."
           }
         }
       }
@@ -3167,6 +3287,16 @@
         }
       }
     },
+    "Include folders only root can read (sudo)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch Ordner einbeziehen, die nur root lesen darf (sudo)"
+          }
+        }
+      }
+    },
     "Incoming connections are blocked except SSH (port %@) and web (80, 443). Deckhand logs in again before keeping it.": {
       "localizations": {
         "de": {
@@ -3253,6 +3383,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Updates installieren"
+          }
+        }
+      }
+    },
+    "Installed packages stay; only the download cache goes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installierte Pakete bleiben; nur der Download-Cache wird gelöscht."
           }
         }
       }
@@ -3413,6 +3553,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uhr synchron halten"
+          }
+        }
+      }
+    },
+    "Keeps the last 100 MB of logs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behält die letzten 100 MB Logs."
           }
         }
       }
@@ -3757,6 +3907,16 @@
         }
       }
     },
+    "Measuring…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messe …"
+          }
+        }
+      }
+    },
     "Medium": {
       "localizations": {
         "de": {
@@ -3773,6 +3933,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitsspeicher"
+          }
+        }
+      }
+    },
+    "Memory dumps from crashed programs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicherabbilder abgestürzter Programme."
           }
         }
       }
@@ -4426,6 +4596,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline"
+          }
+        }
+      }
+    },
+    "Old rotated logs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alte rotierte Logs"
           }
         }
       }
@@ -6144,6 +6324,16 @@
         }
       }
     },
+    "Sizes on this disk only (mounted drives are skipped). Swipe to delete.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Größen auf diesem Laufwerk (eingehängte Laufwerke werden übersprungen). Wischen zum Löschen."
+          }
+        }
+      }
+    },
     "Skip": {
       "localizations": {
         "de": {
@@ -6355,6 +6545,16 @@
         }
       }
     },
+    "Stopped containers, unused networks, dangling images and build cache. Running containers and volumes stay.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestoppte Container, ungenutzte Netzwerke, verwaiste Images und Build-Cache. Laufende Container und Volumes bleiben."
+          }
+        }
+      }
+    },
     "Submit": {
       "localizations": {
         "de": {
@@ -6431,6 +6631,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "System"
+          }
+        }
+      }
+    },
+    "System journal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System-Journal"
           }
         }
       }
@@ -6875,6 +7085,16 @@
         }
       }
     },
+    "This folder doesn't exist anymore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Ordner gibt es nicht mehr."
+          }
+        }
+      }
+    },
     "This folder is empty.": {
       "localizations": {
         "de": {
@@ -7011,6 +7231,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Topic-URL"
+          }
+        }
+      }
+    },
+    "Trash": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papierkorb"
           }
         }
       }
@@ -7291,6 +7521,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle zurücknehmen"
+          }
+        }
+      }
+    },
+    "Unused Docker data": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungenutzte Docker-Daten"
           }
         }
       }
@@ -7626,6 +7866,16 @@
         }
       }
     },
+    "What takes the space, and what can go": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was Platz belegt – und was weg kann"
+          }
+        }
+      }
+    },
     "What uses CPU and memory; end stuck processes": {
       "localizations": {
         "de": {
@@ -7729,6 +7979,16 @@
         }
       }
     },
+    "Your cache folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Cache-Ordner"
+          }
+        }
+      }
+    },
     "Your code": {
       "localizations": {
         "de": {
@@ -7745,6 +8005,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine aktuelle Sitzung bleibt offen. Andere SSH-Clients und Skripte brauchen danach den neuen Port."
+          }
+        }
+      }
+    },
+    "Your home folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Home-Ordner"
           }
         }
       }
@@ -8005,6 +8275,16 @@
         }
       }
     },
+    "npm cache": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "npm-Cache"
+          }
+        }
+      }
+    },
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false
     },
@@ -8107,6 +8387,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "gestern"
+          }
+        }
+      }
+    },
+    "~/.cache — programs rebuild it when needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "~/.cache – Programme legen ihn bei Bedarf neu an."
           }
         }
       }
