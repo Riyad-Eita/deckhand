@@ -2,6 +2,16 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
+    "%@ %": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %"
+          }
+        }
+      }
+    },
     "%@ %@?": {
       "shouldTranslate": false
     },
@@ -238,6 +248,16 @@
         }
       }
     },
+    "%lld ms": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ms"
+          }
+        }
+      }
+    },
     "%lld of %lld": {
       "localizations": {
         "de": {
@@ -360,6 +380,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 Punkt zum Ansehen"
+          }
+        }
+      }
+    },
+    "15 minutes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 Minuten"
+          }
+        }
+      }
+    },
+    "5 minutes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Minuten"
           }
         }
       }
@@ -530,6 +570,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a check": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfung hinzufügen"
           }
         }
       }
@@ -1338,6 +1388,26 @@
         }
       }
     },
+    "Check now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt prüfen"
+          }
+        }
+      }
+    },
+    "Check sites and APIs every minute; push when one goes down": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Websites und APIs jede Minute prüfen; Push, wenn eine ausfällt"
+          }
+        }
+      }
+    },
     "Check that the iPhone is online and the address and port are right. Behind a VPN or firewall, make sure it lets you through.": {
       "localizations": {
         "de": {
@@ -1394,6 +1464,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Benutzername und Passwort oder Schlüssel in den Server-Einstellungen. Bei einem Schlüssel muss sein öffentlicher Teil in ~/.ssh/authorized_keys auf dem Server stehen."
+          }
+        }
+      }
+    },
+    "Checked by your server via cron. Response times of the last 24 hours.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Server prüft per cron. Antwortzeiten der letzten 24 Stunden."
           }
         }
       }
@@ -2835,6 +2915,16 @@
         }
       }
     },
+    "Every": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        }
+      }
+    },
     "Every SSH login from an address that isn't trusted sends a push with user, address, country and time — through your ntfy topic, straight from the server.": {
       "localizations": {
         "de": {
@@ -2891,6 +2981,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exit-Code %lld"
+          }
+        }
+      }
+    },
+    "Expected status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erwarteter Status"
+          }
+        }
+      }
+    },
+    "Expected status: a code like 200 or a range like 200-399.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erwarteter Status: ein Code wie 200 oder ein Bereich wie 200-399."
           }
         }
       }
@@ -3276,6 +3386,9 @@
           }
         }
       }
+    },
+    "HTTP %lld": {
+      "shouldTranslate": false
     },
     "Harden SSH logins": {
       "localizations": {
@@ -4407,6 +4520,16 @@
         }
       }
     },
+    "No answer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Antwort"
+          }
+        }
+      }
+    },
     "No answer from %@ on port %lld.": {
       "localizations": {
         "de": {
@@ -4443,6 +4566,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Änderungen"
+          }
+        }
+      }
+    },
+    "No checks yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Prüfungen."
           }
         }
       }
@@ -5020,6 +5153,16 @@
         }
       }
     },
+    "Page must contain (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite muss enthalten (optional)"
+          }
+        }
+      }
+    },
     "Passcode": {
       "localizations": {
         "de": {
@@ -5338,6 +5481,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Push vom Server (ntfy)"
+          }
+        }
+      }
+    },
+    "Pushes go through ntfy; a private topic is created for you (Settings → Notifications).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pushes laufen über ntfy; dafür wird ein privates Topic für dich angelegt (Einstellungen → Mitteilungen)."
+          }
+        }
+      }
+    },
+    "Pushes go to your ntfy topic from Settings → Notifications.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pushes gehen an dein ntfy-Topic aus Einstellungen → Mitteilungen."
           }
         }
       }
@@ -7445,6 +7608,16 @@
         }
       }
     },
+    "This server has no cron, so checks only run when you tap Check now.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server hat kein cron, deshalb laufen die Prüfungen nur, wenn du auf „Jetzt prüfen“ tippst."
+          }
+        }
+      }
+    },
     "This user can't use sudo on the server. Log in as root or as an admin user.": {
       "localizations": {
         "de": {
@@ -7681,6 +7854,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Firewall einschalten"
+          }
+        }
+      }
+    },
+    "Turn on uptime checks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreichbarkeitsprüfung einschalten"
           }
         }
       }
@@ -8369,6 +8552,16 @@
         }
       }
     },
+    "Your server checks your sites every minute — also while this iPhone is off — and sends a push when one goes down or comes back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Server prüft deine Websites jede Minute – auch wenn dieses iPhone aus ist – und schickt einen Push, wenn eine ausfällt oder wieder da ist."
+          }
+        }
+      }
+    },
     "Your server is set up.": {
       "localizations": {
         "de": {
@@ -8542,6 +8735,19 @@
     "git": {
       "shouldTranslate": false
     },
+    "hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stunde"
+          }
+        }
+      }
+    },
+    "https://example.com/health": {
+      "shouldTranslate": false
+    },
     "https://example.com/mcp": {
       "shouldTranslate": false
     },
@@ -8551,6 +8757,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel"
+          }
+        }
+      }
+    },
+    "minute": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minute"
           }
         }
       }
