@@ -96,6 +96,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.webApps")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            DeploysView(server: server)
+                        } label: {
+                            ManageRow(title: "Deploys", subtitle: "From Git to this server; auto-deploy, rollback, logs", symbol: "shippingbox.and.arrow.backward")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.deploys")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             DiskUsageView(server: server)
                         } label: {
                             ManageRow(title: "Disk usage", subtitle: "What takes the space, and what can go", symbol: "chart.pie")

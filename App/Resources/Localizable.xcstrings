@@ -1286,6 +1286,16 @@
         }
       }
     },
+    "App log": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Log"
+          }
+        }
+      }
+    },
     "App secrets": {
       "localizations": {
         "de": {
@@ -1678,6 +1688,16 @@
         }
       }
     },
+    "Branch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch"
+          }
+        }
+      }
+    },
     "Branches": {
       "localizations": {
         "de": {
@@ -1714,6 +1734,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bucket"
+          }
+        }
+      }
+    },
+    "Build and run": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bauen und starten"
+          }
+        }
+      }
+    },
+    "Build command (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Build-Befehl (optional)"
           }
         }
       }
@@ -2679,6 +2719,16 @@
         }
       }
     },
+    "Copy key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel kopieren"
+          }
+        }
+      }
+    },
     "Copy topic": {
       "localizations": {
         "de": {
@@ -3326,6 +3376,66 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ablehnen"
+          }
+        }
+      }
+    },
+    "Deploy": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deployen"
+          }
+        }
+      }
+    },
+    "Deploy an app from a Git repository: Deckhand fetches it, builds it, starts it, checks it answers, and keeps the last releases so you can roll back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deploye eine App aus einem Git-Repository: Deckhand holt sie, baut sie, startet sie, prüft ob sie antwortet und behält die letzten Releases für ein Rollback."
+          }
+        }
+      }
+    },
+    "Deploy now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt deployen"
+          }
+        }
+      }
+    },
+    "Deploy when I push": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei jedem Push deployen"
+          }
+        }
+      }
+    },
+    "Deploying …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deploye …"
+          }
+        }
+      }
+    },
+    "Deploys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deploys"
           }
         }
       }
@@ -4465,6 +4575,16 @@
         }
       }
     },
+    "For a private repository, add this server's key as a read-only deploy key (GitHub: repository → Settings → Deploy keys):": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für ein privates Repository füge den Schlüssel dieses Servers als Nur-Lesen-Deploy-Key hinzu (GitHub: Repository → Settings → Deploy keys):"
+          }
+        }
+      }
+    },
     "Force Quit": {
       "localizations": {
         "de": {
@@ -4481,6 +4601,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Von"
+          }
+        }
+      }
+    },
+    "From Git to this server; auto-deploy, rollback, logs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von Git auf diesen Server; Auto-Deploy, Rollback, Logs"
           }
         }
       }
@@ -4666,6 +4796,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sieh dir `%@` an: "
+          }
+        }
+      }
+    },
+    "Health URL, e.g. http://127.0.0.1:3000/": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health-URL, z. B. http://127.0.0.1:3000/"
           }
         }
       }
@@ -5240,6 +5380,16 @@
         }
       }
     },
+    "Keep %lld releases": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Releases behalten"
+          }
+        }
+      }
+    },
     "Keep %lld weekly": {
       "localizations": {
         "de": {
@@ -5486,6 +5636,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offene Ports"
+          }
+        }
+      }
+    },
+    "Live commit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live-Commit"
           }
         }
       }
@@ -6106,6 +6266,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neue Aufgabe hier"
+          }
+        }
+      }
+    },
+    "New app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue App"
           }
         }
       }
@@ -7423,6 +7593,16 @@
         }
       }
     },
+    "Private repository? Show this server's deploy key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privates Repository? Deploy-Key dieses Servers zeigen"
+          }
+        }
+      }
+    },
     "Problems": {
       "extractionState": "manual",
       "localizations": {
@@ -7816,6 +7996,16 @@
         }
       }
     },
+    "Releases": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Releases"
+          }
+        }
+      }
+    },
     "Reload": {
       "localizations": {
         "de": {
@@ -7846,6 +8036,16 @@
         }
       }
     },
+    "Remove %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entfernen?"
+          }
+        }
+      }
+    },
     "Remove Model": {
       "localizations": {
         "de": {
@@ -7862,6 +8062,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle Regeln entfernen"
+          }
+        }
+      }
+    },
+    "Remove app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App entfernen"
           }
         }
       }
@@ -7912,6 +8122,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„%1$@“ von %2$lld Servern entfernen?"
+          }
+        }
+      }
+    },
+    "Removed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt."
           }
         }
       }
@@ -8183,6 +8403,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zurücksetzen"
+          }
+        }
+      }
+    },
+    "Roll back to this release?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dieses Release zurückrollen?"
           }
         }
       }
@@ -9558,6 +9788,16 @@
         }
       }
     },
+    "Start command": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start-Befehl"
+          }
+        }
+      }
+    },
     "Start nightly dumps": {
       "localizations": {
         "de": {
@@ -9668,6 +9908,16 @@
         }
       }
     },
+    "Stop and remove": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stoppen und entfernen"
+          }
+        }
+      }
+    },
     "Stop backups": {
       "localizations": {
         "de": {
@@ -9764,6 +10014,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beenden entfernt den Zeitplan und die Einstellungen auf dem Server. Die Snapshots bleiben im Repository."
+          }
+        }
+      }
+    },
+    "Stops the app and deletes its releases and logs on the server. The repository is not touched.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stoppt die App und löscht ihre Releases und Logs auf dem Server. Das Repository bleibt unberührt."
           }
         }
       }
@@ -10248,6 +10508,16 @@
         }
       }
     },
+    "The last %lld releases are kept.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die letzten %lld Releases werden behalten."
+          }
+        }
+      }
+    },
     "The login check after closing the old port failed, so the server opens it again by itself within 5 minutes.": {
       "localizations": {
         "de": {
@@ -10334,6 +10604,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server verlangt dafür dein sudo-Passwort. Deckhand öffnet das Terminal mit dem Befehl, damit du es dort eingibst."
+          }
+        }
+      }
+    },
+    "The server checks the branch every minute — no webhook or open port needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server prüft den Branch jede Minute – kein Webhook und kein offener Port nötig."
           }
         }
       }
@@ -10434,6 +10714,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Website läuft über einfaches HTTP ohne Weiterleitung."
+          }
+        }
+      }
+    },
+    "The start command runs in the release folder and keeps running in the background. If the health URL doesn't answer within 30 seconds, the previous release comes back by itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Start-Befehl läuft im Release-Ordner und bleibt im Hintergrund aktiv. Antwortet die Health-URL nicht innerhalb von 30 Sekunden, kommt das vorherige Release von selbst zurück."
           }
         }
       }
@@ -10674,6 +10964,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diesem Server fehlt der Befehl diff, den der Verlauf braucht."
+          }
+        }
+      }
+    },
+    "This server has no git. Install it from Updates or the terminal.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server fehlt git. Installiere es unter Updates oder im Terminal."
           }
         }
       }
@@ -11305,6 +11605,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code verwenden"
+          }
+        }
+      }
+    },
+    "Use a preset": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorlage verwenden"
           }
         }
       }
@@ -12112,12 +12422,32 @@
         }
       }
     },
+    "failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fehlgeschlagen"
+          }
+        }
+      }
+    },
     "failed attempts": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Fehlversuche"
+          }
+        }
+      }
+    },
+    "failed the health check, rolled back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health-Check fehlgeschlagen, zurückgerollt"
           }
         }
       }
@@ -12211,6 +12541,16 @@
         }
       }
     },
+    "name (e.g. shop)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name (z. B. shop)"
+          }
+        }
+      }
+    },
     "never": {
       "localizations": {
         "de": {
@@ -12221,12 +12561,32 @@
         }
       }
     },
+    "no": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nein"
+          }
+        }
+      }
+    },
     "none found": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "keine gefunden"
+          }
+        }
+      }
+    },
+    "not deployed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nicht deployt"
           }
         }
       }
@@ -12280,6 +12640,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "schreibgeschützt"
+          }
+        }
+      }
+    },
+    "rolled back by you": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "von dir zurückgerollt"
           }
         }
       }
@@ -12373,6 +12743,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "unbekannter Dienst"
+          }
+        }
+      }
+    },
+    "went live": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ging live"
+          }
+        }
+      }
+    },
+    "yes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ja"
           }
         }
       }
