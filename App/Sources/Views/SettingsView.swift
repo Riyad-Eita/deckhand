@@ -120,6 +120,12 @@ struct SettingsView: View {
                         }
                     }
                     .accessibilityIdentifier("settings.keys")
+                    NavigationLink { AppBackupView() } label: {
+                        RowLabel(title: String(localized: "Move to a new iPhone"), subtitle: String(localized: "Encrypted backup of servers and settings")) {
+                            Image(systemName: "iphone.and.arrow.forward").foregroundStyle(Theme.accent).frame(width: 26)
+                        }
+                    }
+                    .accessibilityIdentifier("settings.appBackup")
                 }
 
                 Section {
