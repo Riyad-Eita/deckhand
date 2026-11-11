@@ -95,8 +95,26 @@ public enum Incident {
     }
 
     /// The approved second turn.
-    public static let applyPrompt =
-        "Apply the \(fixHeading.lowercased()) now. Then repeat the failing check and tell me in one line whether it is up again."
+    public static let applyPrompt = """
+        Apply the \(fixHeading.lowercased()) now. Then repeat the failing check and tell me in one line whether it is up again. \
+        Finally suggest one extra uptime check that would have caught this problem earlier (a URL whose answer shows it), \
+        as a ```check block with the lines `name:`, `url:`, `expect:` (status like 200 or 200-399) and optionally `keyword:`.
+        """
+
+    /// The regression check an agent proposed in a ```check block, if it is a valid uptime check.
+    public static func suggestedCheck(in text: String) -> Uptime.Check? {
+        guard let open = text.range(of: "```check\n"), let close = text[open.upperBound...].range(of: "```") else { return nil }
+        var f: [String: String] = [:]
+        for line in text[open.upperBound..<close.lowerBound].split(separator: "\n") {
+            guard let c = line.firstIndex(of: ":") else { continue }
+            f[line[..<c].trimmingCharacters(in: .whitespaces).lowercased()] = line[line.index(after: c)...]
+                .trimmingCharacters(in: .whitespaces).trimmingCharacters(in: CharacterSet(charactersIn: "\"'`"))
+        }
+        guard let url = f["url"] else { return nil }
+        let check = Uptime.Check(name: f["name"].flatMap { $0.isEmpty ? nil : $0 } ?? URL(string: url)?.host ?? url, url: url,
+                                 every: 5, expect: f["expect"].flatMap { $0.isEmpty ? nil : $0 } ?? "200-399", keyword: f["keyword"] ?? "")
+        return Uptime.isValid(check) ? check : nil
+    }
 
     /// The commands under "## Suggested fix" in an agent reply, if any.
     public static func suggestedFix(in text: String) -> String? {

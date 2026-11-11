@@ -12,6 +12,9 @@ struct AgentChatView: View {
     /// The fix the user applied in this chat; once it ran, offer to make it automatic.
     @State private var appliedFix: String?
     @State private var settingUpRemedy = false
+    /// The proposed regression check was added or waved away.
+    @State private var checkHandled: UUID?
+    @State private var checkAdded = false
     /// A house-rule block the user waved away.
     @State private var dismissedBlock: String?
     @State private var voice = VoiceInput.shared
@@ -75,6 +78,12 @@ struct AgentChatView: View {
                         model.send(Incident.applyPrompt, access: .full)
                     } dismiss: {
                         dismissedFix = fix.message
+                    }
+                } else if let offer = checkOffer {
+                    CheckOffer(check: offer.check, added: checkAdded) {
+                        Task { await addCheck(offer.check, message: offer.message) }
+                    } dismiss: {
+                        checkHandled = offer.message
                     }
                 } else if appliedFix != nil, !model.isRunning, model.error == nil, IncidentLinks.check(for: model.thread.id) != nil {
                     AutoFixOffer { settingUpRemedy = true } dismiss: { appliedFix = nil }
@@ -254,6 +263,28 @@ struct AgentChatView: View {
     }
 
     /// Uploads into the task's folder and puts a note into the message, so the agent uses the file right away.
+    /// A regression check the agent proposed after an applied fix (incident chats).
+    private var checkOffer: (message: UUID, check: Uptime.Check)? {
+        guard !model.isRunning, IncidentLinks.check(for: model.thread.id) != nil, let last = model.messages.last,
+              last.role == .assistant, last.id != checkHandled, let check = Incident.suggestedCheck(in: last.text) else { return nil }
+        return (last.id, check)
+    }
+
+    private func addCheck(_ check: Uptime.Check, message: UUID) async {
+        var c = check
+        c.name += String(localized: " (from an incident)")
+        do {
+            let conn = try await Connections.shared.connection(for: model.server)
+            _ = try await conn.run(Uptime.addCommand(c), timeout: .seconds(60))
+            checkAdded = true
+            try? await Task.sleep(for: .seconds(1.5))
+            checkHandled = message
+            checkAdded = false
+        } catch {
+            model.error = error.localizedDescription
+        }
+    }
+
     /// The last action of a server CLI that a house rule stopped (since the user's last message).
     private var ruleBlock: HouseRules.Block? {
         guard !model.isRunning, model.thread.engine.serverCLI != nil else { return nil }

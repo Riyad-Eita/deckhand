@@ -55,4 +55,22 @@ struct IncidentTests {
         #expect(e.first?.text.contains("HTTP 000") == true)
         #expect(e.contains { $0.title == "Load and memory" })
     }
+
+    @Test func findsSuggestedCheck() {
+        let reply = """
+        It's up again.
+
+        ```check
+        name: Shop database
+        url: https://shop.example.com/health/db
+        expect: 200
+        keyword: "ok"
+        ```
+        """
+        let c = Incident.suggestedCheck(in: reply)
+        #expect(c?.name == "Shop database" && c?.url == "https://shop.example.com/health/db" && c?.expect == "200" && c?.keyword == "ok")
+        #expect(Incident.suggestedCheck(in: "```check\nurl: ftp://x\n```") == nil)
+        #expect(Incident.suggestedCheck(in: "```check\nurl: https://a.example.com\n```")?.expect == "200-399")
+        #expect(Incident.applyPrompt.contains("```check"))
+    }
 }

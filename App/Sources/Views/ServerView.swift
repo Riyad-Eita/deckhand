@@ -209,10 +209,14 @@ struct ThreadListView: View {
         .task {
             // "markdown|": a finished chat with a reply that uses every Markdown block (UI tests, screenshots).
             let seed = DebugSeed.pendingRun?.engine
-            guard seed == "markdown" || seed == "secrets" || seed == "fix" else { return }
+            guard seed == "markdown" || seed == "secrets" || seed == "fix" || seed == "checkoffer" else { return }
             DebugSeed.pendingRun = nil
             let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: .codex)
-            if seed == "fix" {
+            if seed == "checkoffer" {
+                thread.title = "Why is Shop down?"
+                thread.messages = DebugSeed.checkOfferChat
+                IncidentLinks.set("seeded", for: thread.id)
+            } else if seed == "fix" {
                 thread.title = "Why is Shop down?"
                 thread.messages = DebugSeed.fixChat
             } else if seed == "secrets" {

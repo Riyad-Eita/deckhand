@@ -57,6 +57,21 @@ enum DebugSeed {
         """)]),
     ]
 
+    /// An applied incident fix whose reply proposes a regression check.
+    static let checkOfferChat: [Message] = [
+        .user("Apply the suggested fix now."),
+        Message(role: .assistant, blocks: [.text("""
+        Restarted `shop`; https://shop.example.com answers 200 again.
+
+        ```check
+        name: Shop database
+        url: https://example.com/
+        expect: 200
+        keyword: Example Domain
+        ```
+        """)]),
+    ]
+
     /// A finished chat whose tool output and reply contain made-up secrets (built at runtime, not real keys).
     static var secretsChat: [Message] {
         let token = "ghp_" + String(repeating: "dEmO", count: 9)

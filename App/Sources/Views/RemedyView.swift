@@ -146,3 +146,33 @@ struct AutoFixOffer: View {
         .padding(.horizontal, 16).padding(.top, 10)
     }
 }
+
+/// After a fix: the agent's proposal for a check that would have caught the problem earlier.
+struct CheckOffer: View {
+    let check: Uptime.Check
+    let added: Bool
+    let add: () -> Void
+    let dismiss: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "waveform.path.ecg").foregroundStyle(Theme.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Add a check that would have caught this?").font(.subheadline.weight(.semibold))
+                    Text("\(check.name): \(check.url)").font(.caption.monospaced()).foregroundStyle(.secondary).lineLimit(2)
+                }
+                Spacer(minLength: 4)
+                Button(action: dismiss) { Image(systemName: "xmark").font(.caption.weight(.bold)) }
+                    .buttonStyle(.borderless).foregroundStyle(.secondary).accessibilityLabel("Not now")
+            }
+            Button(action: add) {
+                Label(added ? String(localized: "Added to Uptime") : String(localized: "Add to Uptime"), systemImage: added ? "checkmark" : "plus")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent).tint(added ? .green : Theme.accent).disabled(added)
+            .accessibilityIdentifier("checkoffer.add")
+        }
+        .padding(.horizontal, 16).padding(.top, 10)
+    }
+}
