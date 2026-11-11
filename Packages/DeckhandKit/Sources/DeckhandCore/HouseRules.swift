@@ -17,6 +17,20 @@ public struct HouseRules: Codable, Sendable, Equatable {
     public var quietHours: QuietHours?
     /// Spending cap per task in USD, enforced by Claude Code (`--max-budget-usd`).
     public var maxSpendUSD: Double?
+    /// Ask on the phone's lock screen instead of just blocking (Claude Code and Codex runs).
+    public var ask: Ask?
+
+    /// Lock-screen approvals: a push with Allow / Deny (ntfy); risky commands open the app for Face ID.
+    public struct Ask: Codable, Sendable, Equatable {
+        /// The ntfy topic URL; answers come back on `<topic>-reply`.
+        public var topic: String
+        /// The app's id for this server (for the deep link).
+        public var server: String
+        /// How long a call waits for an answer before it is denied.
+        public var minutes: Int
+        public init(topic: String, server: String, minutes: Int = 10) { self.topic = topic; self.server = server; self.minutes = minutes }
+        public var replyTopic: String { topic.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + "-reply" }
+    }
 
     public struct QuietHours: Codable, Sendable, Equatable {
         /// "HH:mm"
@@ -37,8 +51,9 @@ public struct HouseRules: Codable, Sendable, Equatable {
 
     public init(
         readOnly: Bool = false, protectedPaths: [String] = [], forbiddenCommands: [String] = [], noOpenPorts: Bool = false,
-        quietHours: QuietHours? = nil, maxSpendUSD: Double? = nil
+        quietHours: QuietHours? = nil, maxSpendUSD: Double? = nil, ask: Ask? = nil
     ) {
+        self.ask = ask
         self.readOnly = readOnly
         self.protectedPaths = protectedPaths
         self.forbiddenCommands = forbiddenCommands
@@ -48,7 +63,7 @@ public struct HouseRules: Codable, Sendable, Equatable {
     }
 
     public var isEmpty: Bool {
-        !readOnly && protectedPaths.isEmpty && forbiddenCommands.isEmpty && !noOpenPorts && quietHours == nil && maxSpendUSD == nil
+        !readOnly && protectedPaths.isEmpty && forbiddenCommands.isEmpty && !noOpenPorts && quietHours == nil && maxSpendUSD == nil && ask == nil
     }
 
     /// Where databases usually keep their data — the "protect the database folder" preset.
@@ -162,6 +177,11 @@ public struct HouseRules: Codable, Sendable, Equatable {
         return Block(ruleID: String(parts[1]), title: title, fingerprint: String(parts[2]))
     }
 
+    /// The answer the app publishes after Face ID (`allow:<fingerprint>:<device>`).
+    public static func answer(_ allow: Bool, fingerprint: String, device: String) -> String {
+        "\(allow ? "allow" : "deny"):\(fingerprint):\(device.replacingOccurrences(of: ":", with: " "))"
+    }
+
     /// Lets exactly the blocked call through once (within 15 minutes).
     public static func allowOnceCommand(_ fingerprint: String, now: Date = Date()) -> String? {
         guard fingerprint.range(of: "^[0-9a-f]{12}$", options: .regularExpression) != nil else { return nil }
@@ -176,6 +196,7 @@ public struct HouseRules: Codable, Sendable, Equatable {
         let parts = block.ruleID.split(separator: ":")
         switch parts.first {
         case "readOnly": return String(localized: "Read-only mode: agents may look, not change")
+        case "risky": return String(localized: "A command that can't easily be undone")
         case "noOpenPorts": return String(localized: "Never open ports")
         case "quietHours":
             if let q = quietHours { return String(localized: "No restarts \(q.start)–\(q.end)") }

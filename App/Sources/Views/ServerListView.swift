@@ -77,6 +77,9 @@ struct ServerListView: View {
             for server in servers { await AgentStatus.shared.refresh(server) }
         }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        .sheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
+            ApproveSheet(link: link, server: servers.first { $0.id == link.server })
+        }
         .sheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
             // A tapped uptime push: the incident for that check, over whatever is on screen.
             if let server = servers.first(where: { $0.id == link.server }) {

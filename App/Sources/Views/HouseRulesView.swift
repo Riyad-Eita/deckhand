@@ -31,6 +31,8 @@ struct HouseRulesView: View {
     @State private var weekdaysOnly = true
     @State private var spendCap = false
     @State private var spend = 2.0
+    @State private var askOn = false
+    @State private var askMinutes = 10
 
     var body: some View {
         Form {
@@ -106,6 +108,14 @@ struct HouseRulesView: View {
                 Text("Claude Code stops a task that would cost more. Plans like Claude Max or ChatGPT have no per-task cost.")
             }
             Section {
+                Toggle("Ask on my lock screen", isOn: $askOn).accessibilityIdentifier("rules.ask")
+                if askOn {
+                    Stepper("Wait \(askMinutes) min for an answer", value: $askMinutes, in: 2...60, step: 2)
+                }
+            } footer: {
+                Text("Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.")
+            }
+            Section {
                 Button { Task { await save() } } label: {
                     HStack { Text("Save rules"); Spacer(); if busy { ProgressView() } }
                 }
@@ -156,6 +166,7 @@ struct HouseRulesView: View {
                 quiet = true; quietStart = Self.time(q.start); quietEnd = Self.time(q.end); weekdaysOnly = q.days.count == 5
             }
             if let s = rules.maxSpendUSD { spendCap = true; spend = s }
+            if let a = rules.ask { askOn = true; askMinutes = a.minutes }
             loaded = true
         } catch {
             self.error = error.localizedDescription
@@ -168,6 +179,13 @@ struct HouseRulesView: View {
         var r = rules
         r.quietHours = quiet ? .init(start: Self.hhmm(quietStart), end: Self.hhmm(quietEnd), days: weekdaysOnly ? [1, 2, 3, 4, 5] : Array(1...7)) : nil
         r.maxSpendUSD = spendCap ? spend : nil
+        if askOn {
+            let settings = AppSettings.shared
+            if settings.ntfyTopicURL.isEmpty { settings.ntfyTopicURL = TaskNotifier.newTopicURL() }
+            r.ask = .init(topic: settings.ntfyTopicURL, server: server.id.uuidString, minutes: askMinutes)
+        } else {
+            r.ask = nil
+        }
         do {
             let conn = try await connections.connection(for: server)
             if r.isEmpty {
@@ -192,7 +210,7 @@ struct HouseRulesView: View {
             let conn = try await connections.connection(for: server)
             _ = try await conn.run(HouseRules.uninstallCommand, timeout: .seconds(30))
             HouseRulesStore.set(nil, for: server)
-            rules = HouseRules(); quiet = false; spendCap = false; result = nil
+            rules = HouseRules(); quiet = false; spendCap = false; askOn = false; result = nil
         } catch {
             self.error = error.localizedDescription
         }

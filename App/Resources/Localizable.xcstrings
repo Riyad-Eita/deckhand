@@ -185,6 +185,16 @@
         }
       }
     },
+    "%@ wants to run this on %@:": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ möchte das auf %2$@ ausführen:"
+          }
+        }
+      }
+    },
     "%@ will work in %@": {
       "localizations": {
         "de": {
@@ -480,6 +490,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein Backup-Cron-Job"
+          }
+        }
+      }
+    },
+    "A command that can't easily be undone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Befehl, der sich nicht leicht rückgängig machen lässt"
           }
         }
       }
@@ -935,6 +955,16 @@
         }
       }
     },
+    "Allow a risky action": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine riskante Aktion erlauben"
+          }
+        }
+      }
+    },
     "Allow once": {
       "localizations": {
         "de": {
@@ -965,12 +995,32 @@
         }
       }
     },
+    "Allow with Face ID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Face ID erlauben"
+          }
+        }
+      }
+    },
     "Allowed": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Erlaubt"
+          }
+        }
+      }
+    },
+    "Allowed. The agent continues.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaubt. Der Agent macht weiter."
           }
         }
       }
@@ -991,6 +1041,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auch von außen erreichbar"
+          }
+        }
+      }
+    },
+    "An agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Agent"
           }
         }
       }
@@ -1124,6 +1184,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jedes Mal fragen"
+          }
+        }
+      }
+    },
+    "Ask on my lock screen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Sperrbildschirm fragen"
           }
         }
       }
@@ -2820,6 +2890,16 @@
         }
       }
     },
+    "Denied. The agent was told no.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgelehnt. Der Agent hat ein Nein bekommen."
+          }
+        }
+      }
+    },
     "Deny": {
       "localizations": {
         "de": {
@@ -4336,6 +4416,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installiert fail2ban bei Bedarf und sperrt Adressen für eine Stunde, die sich immer wieder falsch per SSH anmelden (und bei deiner Website, falls hier nginx oder Apache läuft)."
+          }
+        }
+      }
+    },
+    "Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Statt Claude Code oder Codex nur zu stoppen, schickt der Server einen Push mit Erlauben und Ablehnen – auch wenn die App geschlossen ist. Befehle, die sich nicht rückgängig machen lassen, öffnen Deckhand für Face ID. Keine Antwort heißt nein."
           }
         }
       }
@@ -8958,6 +9048,16 @@
         }
       }
     },
+    "This can't easily be undone. If you don't answer, the server says no by itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das lässt sich nicht leicht rückgängig machen. Wenn du nicht antwortest, sagt der Server von selbst nein."
+          }
+        }
+      }
+    },
     "This check isn't on the server anymore.": {
       "localizations": {
         "de": {
@@ -9765,6 +9865,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "FUNKTIONIERT MIT"
+          }
+        }
+      }
+    },
+    "Wait %lld min for an answer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Min. auf eine Antwort warten"
           }
         }
       }
@@ -10593,6 +10703,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "deinen Agenten mit eigenem Key"
+          }
+        }
+      }
+    },
+    "your server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "deinem Server"
           }
         }
       }
