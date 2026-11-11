@@ -45,12 +45,32 @@
         }
       }
     },
+    "%@ already uses port 80 or 443. Stop it or put this domain into its config instead.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ nutzt bereits Port 80 oder 443. Stoppe ihn oder trage diese Domain stattdessen in seine Konfiguration ein."
+          }
+        }
+      }
+    },
     "%@ didn't quit in time and was forced to.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ hat sich nicht rechtzeitig beendet und wurde beendet."
+          }
+        }
+      }
+    },
+    "%@ doesn't resolve yet. Add an A record for %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ löst noch nicht auf. Lege einen A-Eintrag für %2$@ an."
           }
         }
       }
@@ -181,6 +201,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ auf %2$@ nutzt dann dein Abo."
+          }
+        }
+      }
+    },
+    "%@ points at %@, not at this server (%@).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ zeigt auf %2$@, nicht auf diesen Server (%3$@)."
+          }
+        }
+      }
+    },
+    "%@ points at this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ zeigt auf diesen Server."
           }
         }
       }
@@ -780,6 +820,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine Prüfung hinzufügen, die das früher erkannt hätte?"
+          }
+        }
+      }
+    },
+    "Add a domain": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain hinzufügen"
           }
         }
       }
@@ -1798,6 +1848,26 @@
         }
       }
     },
+    "Caddy's own certificate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigenes Zertifikat von Caddy"
+          }
+        }
+      }
+    },
+    "Caddy: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caddy: %@"
+          }
+        }
+      }
+    },
     "Can be cleaned up": {
       "localizations": {
         "de": {
@@ -1844,6 +1914,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorsicht – das lässt sich nicht einfach rückgängig machen"
+          }
+        }
+      }
+    },
+    "Certificate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikat"
           }
         }
       }
@@ -1964,6 +2044,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfen"
+          }
+        }
+      }
+    },
+    "Check DNS and ports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS und Ports prüfen"
           }
         }
       }
@@ -2829,6 +2919,16 @@
         }
       }
     },
+    "Couldn't read the domains.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Domains konnten nicht gelesen werden."
+          }
+        }
+      }
+    },
     "Couldn't read the file.": {
       "localizations": {
         "de": {
@@ -3637,6 +3737,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Doku"
+          }
+        }
+      }
+    },
+    "Domains": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domains"
           }
         }
       }
@@ -5200,6 +5310,16 @@
         }
       }
     },
+    "Installs Caddy if needed and serves %@ from %@ with HTTPS.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert Caddy bei Bedarf und liefert %1$@ von %2$@ mit HTTPS aus."
+          }
+        }
+      }
+    },
     "Installs all waiting updates with the package manager. Services may restart briefly. This can't be rolled back.": {
       "localizations": {
         "de": {
@@ -5606,6 +5726,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lass diese Dateien in Ruhe. Backups, die diese Ordner kopieren, lösen sie ebenfalls aus."
+          }
+        }
+      }
+    },
+    "Let's Encrypt only issues a certificate when the domain points here and ports 80 and 443 are reachable.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let's Encrypt stellt nur ein Zertifikat aus, wenn die Domain hierher zeigt und die Ports 80 und 443 erreichbar sind."
           }
         }
       }
@@ -6486,6 +6616,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Backups gefunden"
+          }
+        }
+      }
+    },
+    "No certificate yet — Caddy keeps trying while DNS and ports 80/443 aren't reachable.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Zertifikat – Caddy versucht es weiter, solange DNS und die Ports 80/443 nicht erreichbar sind."
           }
         }
       }
@@ -7493,6 +7633,26 @@
         }
       }
     },
+    "Point a domain at a service on this server — Caddy gets the HTTPS certificate and renews it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lass eine Domain auf einen Dienst auf diesem Server zeigen – Caddy holt das HTTPS-Zertifikat und erneuert es."
+          }
+        }
+      }
+    },
+    "Point a domain at a service, with HTTPS": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Domain auf einen Dienst zeigen lassen, mit HTTPS"
+          }
+        }
+      }
+    },
     "Port": {
       "localizations": {
         "de": {
@@ -8132,6 +8292,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entfernt."
+          }
+        }
+      }
+    },
+    "Removes %@ from Caddy. The service behind it keeps running.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt %@ aus Caddy. Der Dienst dahinter läuft weiter."
           }
         }
       }
@@ -10708,6 +10878,16 @@
         }
       }
     },
+    "The service address on this server. Caddy's own certificate is for internal names and testing; browsers won't trust it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Adresse des Dienstes auf diesem Server. Caddys eigenes Zertifikat ist für interne Namen und Tests gedacht; Browser vertrauen ihm nicht."
+          }
+        }
+      }
+    },
     "The site is served over plain HTTP without a redirect.": {
       "localizations": {
         "de": {
@@ -12581,6 +12761,16 @@
         }
       }
     },
+    "not answering": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "antwortet nicht"
+          }
+        }
+      }
+    },
     "not deployed": {
       "localizations": {
         "de": {
@@ -12743,6 +12933,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "unbekannter Dienst"
+          }
+        }
+      }
+    },
+    "valid until": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gültig bis"
           }
         }
       }

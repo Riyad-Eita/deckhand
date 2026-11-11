@@ -104,6 +104,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.deploys")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            DomainsView(server: server)
+                        } label: {
+                            ManageRow(title: "Domains", subtitle: "Point a domain at a service, with HTTPS", symbol: "globe")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.domains")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             DiskUsageView(server: server)
                         } label: {
                             ManageRow(title: "Disk usage", subtitle: "What takes the space, and what can go", symbol: "chart.pie")
