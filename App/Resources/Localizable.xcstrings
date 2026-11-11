@@ -1308,6 +1308,26 @@
         }
       }
     },
+    "Changed since last healthy": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geändert seit es zuletzt lief"
+          }
+        }
+      }
+    },
+    "Changed with Deckhand": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Deckhand geändert"
+          }
+        }
+      }
+    },
     "Changes": {
       "localizations": {
         "de": {
@@ -1878,6 +1898,16 @@
         }
       }
     },
+    "Config files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konfigurationsdateien"
+          }
+        }
+      }
+    },
     "Connect": {
       "localizations": {
         "de": {
@@ -2239,6 +2269,16 @@
         }
       }
     },
+    "Cron jobs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cron-Jobs"
+          }
+        }
+      }
+    },
     "Custom (OpenAI-compatible)": {
       "extractionState": "manual",
       "localizations": {
@@ -2476,6 +2516,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„%@“ löschen?"
+          }
+        }
+      }
+    },
+    "Deleted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelöscht"
           }
         }
       }
@@ -2772,6 +2822,16 @@
         }
       }
     },
+    "During an agent task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Während einer Agenten-Aufgabe"
+          }
+        }
+      }
+    },
     "Easier: open a server's tools and tap Connect next to GitHub — that signs in with your GitHub account and fills this in. Or create a token at github.com → Settings → Developer settings → Personal access tokens.": {
       "localizations": {
         "de": {
@@ -2961,6 +3021,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle"
+          }
+        }
+      }
+    },
+    "Every 15 minutes your server notes its packages, services, open ports, containers, cron jobs, users and config files. When something breaks, you see exactly what changed — and who changed it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle 15 Minuten notiert dein Server Pakete, Dienste, offene Ports, Container, Cron-Jobs, Benutzer und Konfigurationsdateien. Wenn etwas kaputtgeht, siehst du genau, was sich geändert hat – und wer es war."
           }
         }
       }
@@ -3500,6 +3570,16 @@
         }
       }
     },
+    "History starts here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier beginnt der Verlauf"
+          }
+        }
+      }
+    },
     "Host key %@ was not trusted.": {
       "localizations": {
         "de": {
@@ -3556,6 +3636,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Image"
+          }
+        }
+      }
+    },
+    "Images": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Images"
           }
         }
       }
@@ -3926,6 +4016,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel, die sich anmelden können"
+          }
+        }
+      }
+    },
+    "Last 24 hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 24 Stunden"
+          }
+        }
+      }
+    },
+    "Last 7 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 7 Tage"
+          }
+        }
+      }
+    },
+    "Last hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Stunde"
           }
         }
       }
@@ -4500,6 +4620,16 @@
         }
       }
     },
+    "New file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Datei"
+          }
+        }
+      }
+    },
     "New key": {
       "localizations": {
         "de": {
@@ -4873,6 +5003,16 @@
         }
       }
     },
+    "Nothing changed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts geändert."
+          }
+        }
+      }
+    },
     "Nothing changed: SSH still runs on the old port.": {
       "localizations": {
         "de": {
@@ -5143,6 +5283,16 @@
         }
       }
     },
+    "Open ports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offene Ports"
+          }
+        }
+      }
+    },
     "Open the security check-up": {
       "localizations": {
         "de": {
@@ -5263,6 +5413,16 @@
         }
       }
     },
+    "Packages": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pakete"
+          }
+        }
+      }
+    },
     "Page must contain (optional)": {
       "localizations": {
         "de": {
@@ -5359,6 +5519,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wähle einen Port zwischen 1024 und 65535."
+          }
+        }
+      }
+    },
+    "Pick a time…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitpunkt wählen …"
           }
         }
       }
@@ -6657,6 +6827,16 @@
         }
       }
     },
+    "Show": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzeigen"
+          }
+        }
+      }
+    },
     "Show Hidden Files": {
       "localizations": {
         "de": {
@@ -6843,6 +7023,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Meldet die GitHub CLI auf dem Server ab, entfernt dort die GitHub-Zugangsdaten von git und die GitHub-Verbindung der Agenten."
+          }
+        }
+      }
+    },
+    "Since": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seit"
+          }
+        }
+      }
+    },
+    "Since %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seit %@"
           }
         }
       }
@@ -7044,6 +7244,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Status, Diffs, Commits, Branches, Pull und Push"
+          }
+        }
+      }
+    },
+    "Stays on your server in ~/.deckhand/history. Private keys and password files are left out.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bleibt auf deinem Server in ~/.deckhand/history. Private Schlüssel und Passwortdateien werden ausgelassen."
           }
         }
       }
@@ -7798,12 +8008,32 @@
         }
       }
     },
+    "This server has no cron, so a snapshot is only taken when you open this screen.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server hat kein cron, deshalb wird nur ein Schnappschuss gemacht, wenn du diese Ansicht öffnest."
+          }
+        }
+      }
+    },
     "This server has no cron, so checks only run when you tap Check now.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Server hat kein cron, deshalb laufen die Prüfungen nur, wenn du auf „Jetzt prüfen“ tippst."
+          }
+        }
+      }
+    },
+    "This server has no diff command, which the history needs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesem Server fehlt der Befehl diff, den der Verlauf braucht."
           }
         }
       }
@@ -8024,6 +8254,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatische Sicherheitsupdates einschalten"
+          }
+        }
+      }
+    },
+    "Turn on change history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungsverlauf einschalten"
           }
         }
       }
@@ -8389,6 +8629,16 @@
         }
       }
     },
+    "Users": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzer"
+          }
+        }
+      }
+    },
     "Uses a password": {
       "localizations": {
         "de": {
@@ -8495,6 +8745,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gut geschützt"
+          }
+        }
+      }
+    },
+    "What changed on the server, and who changed it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sich auf dem Server geändert hat und wer es war"
+          }
+        }
+      }
+    },
+    "What changed since…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was hat sich geändert seit …"
           }
         }
       }

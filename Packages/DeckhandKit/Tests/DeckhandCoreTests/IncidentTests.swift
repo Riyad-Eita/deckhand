@@ -42,6 +42,12 @@ struct IncidentTests {
         #expect(Incident.suggestedFix(in: "## Suggested fix\nNone needed, the outage was upstream.") == nil)
     }
 
+    @Test func changesSectionBecomesReadable() {
+        let out = "@@section Changed since last healthy\n@@c 1794390732 1794390732 snapshot|pkg apt-get upgrade\nM\tpackages.txt\ndiff -rN -U0 state/packages.txt next/packages.txt\n-nginx 1.24\n+nginx 1.26\n"
+        let e = Incident.parse(out)
+        #expect(e.first?.text == "packages: nginx 1.24 → 1.26")
+    }
+
     @Test func evidenceProbeRunsLocally() async throws {
         let r = try await LocalShell().run(Incident.evidenceCommand(url: "http://127.0.0.1:9/"), timeout: .seconds(60))
         let e = Incident.parse(r.stdout)
