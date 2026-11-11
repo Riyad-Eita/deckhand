@@ -101,6 +101,9 @@ final class ChatThread {
     /// Model and effort for Claude Code / Codex in this task; nil = the default from Settings.
     var cliModel: String?
     var cliEffort: String?
+    /// Long own-key tasks: messages before this index were summarized into `historySummary` and aren't sent again.
+    var historyStart: Int = 0
+    var historySummary: String?
     var server: Server?
 
     init(server: Server, workingDirectory: String, engine: Engine = .ownKey) {

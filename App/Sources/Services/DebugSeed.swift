@@ -72,6 +72,14 @@ enum DebugSeed {
         """)]),
     ]
 
+    /// A long task whose first steps were summarized.
+    static let compactedChat: [Message] = [
+        .user("Upgrade the shop to Node 22."),
+        Message(role: .assistant, blocks: [.text("Installed Node 22 and rebuilt the app.")]),
+        .user("Restart it."),
+        Message(role: .assistant, blocks: [.text("Restarted `shop`; it answers again.")]),
+    ]
+
     /// A finished chat whose tool output and reply contain made-up secrets (built at runtime, not real keys).
     static var secretsChat: [Message] {
         let token = "ghp_" + String(repeating: "dEmO", count: 9)

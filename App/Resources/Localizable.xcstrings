@@ -1998,6 +1998,26 @@
         }
       }
     },
+    "Changed and deleted files come back as they were; new files are removed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geänderte und gelöschte Dateien kommen in ihren alten Zustand zurück; neue Dateien werden entfernt."
+          }
+        }
+      }
+    },
+    "Changed files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geänderte Dateien"
+          }
+        }
+      }
+    },
     "Changed since last healthy": {
       "localizations": {
         "de": {
@@ -2594,6 +2614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Commit-Nachricht"
+          }
+        }
+      }
+    },
+    "Compared with %@ when this task began. Swipe a file to undo just that one.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verglichen mit %@ zu Beginn dieser Aufgabe. Wische über eine Datei, um nur sie zurückzusetzen."
           }
         }
       }
@@ -3908,6 +3938,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Während einer Agenten-Aufgabe"
+          }
+        }
+      }
+    },
+    "Earlier steps summarized": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühere Schritte zusammengefasst"
           }
         }
       }
@@ -6969,6 +7009,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf Port %lld antwortet auf dem Server nichts."
+          }
+        }
+      }
+    },
+    "Nothing changed in %@ since this task began.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@ hat sich seit Beginn dieser Aufgabe nichts geändert."
           }
         }
       }
@@ -10568,6 +10618,16 @@
         }
       }
     },
+    "The agent keeps working from this summary instead of every earlier step, so long tasks fit and cost less.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Agent arbeitet mit dieser Zusammenfassung statt mit jedem früheren Schritt weiter – so passen lange Aufgaben in den Kontext und kosten weniger."
+          }
+        }
+      }
+    },
     "The agent looks into it and asks before it changes anything.": {
       "localizations": {
         "de": {
@@ -11524,6 +11584,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entsperren"
+          }
+        }
+      }
+    },
+    "Undo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückgängig"
+          }
+        }
+      }
+    },
+    "Undo all": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles rückgängig"
+          }
+        }
+      }
+    },
+    "Undo all changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Änderungen rückgängig machen"
+          }
+        }
+      }
+    },
+    "Undo every change of this task?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Änderung dieser Aufgabe rückgängig machen?"
           }
         }
       }
