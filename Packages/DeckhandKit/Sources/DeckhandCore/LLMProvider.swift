@@ -87,12 +87,12 @@ public enum LLMError: Error, Sendable, LocalizedError, Equatable {
         case .http(let status, let body):
             let detail = (try? JSONValue.parse(body))?["error"]?["message"]?.stringValue ?? body
             switch status {
-            case 401, 403: return "The provider rejected the API key (\(status)). \(detail)"
-            case 429: return "Rate limited by the provider. \(detail)"
-            default: return "Provider error \(status): \(detail)"
+            case 401, 403: return String(localized: "The provider rejected the API key (\(status)). \(detail)")
+            case 429: return String(localized: "Rate limited by the provider. \(detail)")
+            default: return String(localized: "Provider error \(status): \(detail)")
             }
-        case .badStream(let s): return "Unexpected response from the provider: \(s)"
-        case .missingAPIKey: return "Add an API key in Settings first."
+        case .badStream(let s): return String(localized: "Unexpected response from the provider: \(s)")
+        case .missingAPIKey: return String(localized: "Add an API key in Settings first.")
         }
     }
 }

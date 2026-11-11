@@ -26,8 +26,8 @@ public final class PortForward: @unchecked Sendable {
 
         public var errorDescription: String? {
             switch self {
-            case .notAllowed: "This server doesn't allow SSH port forwarding (AllowTcpForwarding no in sshd_config)."
-            case .nothingListening(let p): "Nothing answers on port \(p) on the server."
+            case .notAllowed: String(localized: "This server doesn't allow SSH port forwarding (AllowTcpForwarding no in sshd_config).")
+            case .nothingListening(let p): String(localized: "Nothing answers on port \(p) on the server.")
             case .other(let m): m
             }
         }

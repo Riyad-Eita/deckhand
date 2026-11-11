@@ -179,7 +179,7 @@ struct ServerDashboardView: View {
                             .font(.caption).foregroundStyle(.tertiary).frame(maxWidth: .infinity)
                     }
                 } else if let error {
-                    ContentUnavailableView("Can't read this server", systemImage: "exclamationmark.triangle", description: Text(error))
+                    ProblemView(message: error).frame(maxWidth: .infinity).padding(.top, 80)
                 } else {
                     ProgressView("Reading the server…").frame(maxWidth: .infinity).padding(.top, 80)
                 }

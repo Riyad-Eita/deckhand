@@ -28,43 +28,47 @@ public struct Problem: Sendable, Hashable {
         let m = text.lowercased()
         func has(_ words: String...) -> Bool { words.contains { m.contains($0) } }
 
-        if has("host key changed", "host key") && has("changed", "intercept") {
+        if has("host key changed", "host key", "host-schlüssel") && has("changed", "intercept", "geändert", "abfängt") {
             return Problem(kind: .hostKey, message: text, suggestion: String(localized:
                 "Only continue if you know the server was reinstalled. Otherwise ask whoever runs it — someone may be in between."))
         }
-        if has("refused the connection") {
+        if has("refused the connection", "verbindung auf port") && !has("keine antwort") {
             return Problem(kind: .network, message: text, suggestion: String(localized:
                 "Nothing answers SSH on that port. Check the port in the server's settings, or whether the SSH service runs."))
         }
-        if has("can't be found", "unknownhost", "could not resolve") {
+        if has("can't be found", "unknownhost", "could not resolve", "nicht gefunden") {
             return Problem(kind: .network, message: text, suggestion: String(localized:
                 "Check the spelling of the address. Tailscale names only work while Tailscale is on."))
         }
-        if has("no answer from", "internet connection appears to be offline", "not connected to the internet",
+        if has("no answer from", "keine antwort von", "internet connection appears to be offline", "not connected to the internet",
+               "internetverbindung", "offline zu sein",
                "network connection was lost", "network is unreachable", "connect timeout", "request timed out") {
             return Problem(kind: .network, message: text, suggestion: String(localized:
                 "Check that the iPhone is online and the address and port are right. Behind a VPN or firewall, make sure it lets you through."))
         }
-        if has("connection to the server was lost", "not connected to the server", "lost the connection") {
+        if has("connection to the server was lost", "not connected to the server", "lost the connection",
+               "verbindung zum server ist abgebrochen", "nicht mit dem server verbunden", "verbindung zum lauf ist abgebrochen") {
             return Problem(kind: .network, message: text, suggestion: String(localized:
                 "Pull down or try again. Tasks keep running on the server meanwhile."))
         }
-        if has("didn't accept the login", "permission denied (publickey", "no password or key saved") {
+        if has("didn't accept the login", "permission denied (publickey", "no password or key saved", "anmeldung für") && !has("cli") {
             return Problem(kind: .signIn, message: text, suggestion: String(localized:
                 "Check the user name and password or key in the server's settings. With a key, its public part must be in ~/.ssh/authorized_keys on the server."))
         }
-        if has("rejected the api key", "add an api key", "invalid api key", "invalid x-api-key", "incorrect api key") {
+        if has("rejected the api key", "add an api key", "invalid api key", "invalid x-api-key", "incorrect api key",
+               "api-key abgelehnt", "zuerst einen api-key") {
             return Problem(kind: .signIn, message: text, suggestion: String(localized: "Check the API key in Settings."))
         }
-        if has("not logged in", "please run /login", "login required", "not signed in") {
+        if has("not logged in", "please run /login", "login required", "not signed in", "nicht angemeldet") {
             return Problem(kind: .signIn, message: text, suggestion: String(localized:
                 "Sign in to the CLI on the server: Server Tools → Sign in."))
         }
-        if has("rate limited", "usage limit", "rate limit", "429", "quota") {
+        if has("rate limited", "usage limit", "rate limit", "429", "quota", "nutzungslimit", "ausgebremst") {
             return Problem(kind: .limit, message: text, suggestion: String(localized:
                 "Wait until the limit resets, or switch to another model."))
         }
-        if has("provider error 5", "overloaded", "unexpected response from the provider", "service unavailable") {
+        if has("provider error 5", "overloaded", "unexpected response from the provider", "service unavailable",
+               "fehler beim anbieter 5", "unerwartete antwort vom anbieter") {
             return Problem(kind: .provider, message: text, suggestion: String(localized:
                 "The model provider has a problem right now. Try again in a minute."))
         }
@@ -80,7 +84,7 @@ public struct Problem: Sendable, Hashable {
             return Problem(kind: .server, message: text, suggestion: String(localized:
                 "Your login may not do this. It may need sudo, or a file belongs to another user."))
         }
-        if has("did not finish within", "timed out after") {
+        if has("did not finish within", "timed out after", "nicht innerhalb von") {
             return Problem(kind: .server, message: text, suggestion: String(localized:
                 "The server took too long. It may be busy — check Processes, then try again."))
         }

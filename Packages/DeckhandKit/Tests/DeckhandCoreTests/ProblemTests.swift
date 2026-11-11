@@ -32,4 +32,12 @@ import Testing
     @Test func trimsTheMessage() {
         #expect(Problem.from("  The connection to the server was lost.\n").message == "The connection to the server was lost.")
     }
+
+    @Test func classifiesGermanMessages() {
+        #expect(Problem.from("Keine Antwort von example.com auf Port 1.").kind == .network)
+        #expect(Problem.from("example.com hat die Verbindung auf Port 22 abgelehnt.").kind == .network)
+        #expect(Problem.from("Der Server hat die Anmeldung für deploy nicht angenommen.").kind == .signIn)
+        #expect(Problem.from("Hinterlege zuerst einen API-Key in den Einstellungen.").kind == .signIn)
+        #expect(Problem.from("Der Befehl wurde nicht innerhalb von 30 s fertig.").kind == .server)
+    }
 }
