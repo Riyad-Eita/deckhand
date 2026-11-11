@@ -946,6 +946,16 @@
         }
       }
     },
+    "Apply fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lösung anwenden"
+          }
+        }
+      }
+    },
     "Approval needed": {
       "localizations": {
         "de": {
@@ -1778,6 +1788,16 @@
         }
       }
     },
+    "Collecting logs, services and recent changes …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sammle Logs, Dienste und letzte Änderungen …"
+          }
+        }
+      }
+    },
     "Command": {
       "localizations": {
         "de": {
@@ -2571,6 +2591,16 @@
         }
       }
     },
+    "Disk": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicherplatz"
+          }
+        }
+      }
+    },
     "Disk usage": {
       "localizations": {
         "de": {
@@ -2678,6 +2708,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorher %lld"
+          }
+        }
+      }
+    },
+    "Down since": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgefallen seit"
           }
         }
       }
@@ -3041,6 +3081,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagene SSH-Logins"
+          }
+        }
+      }
+    },
+    "Failed services": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgefallene Dienste"
           }
         }
       }
@@ -3530,6 +3580,16 @@
         }
       }
     },
+    "Incident": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorfall"
+          }
+        }
+      }
+    },
     "Include folders only root can read (sudo)": {
       "localizations": {
         "de": {
@@ -3880,6 +3940,16 @@
         }
       }
     },
+    "Last result": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letztes Ergebnis"
+          }
+        }
+      }
+    },
     "Later": {
       "localizations": {
         "de": {
@@ -3900,12 +3970,32 @@
         }
       }
     },
+    "Listening ports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offene Ports"
+          }
+        }
+      }
+    },
     "Load": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Last"
+          }
+        }
+      }
+    },
+    "Load and memory": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last und Arbeitsspeicher"
           }
         }
       }
@@ -4793,6 +4883,16 @@
         }
       }
     },
+    "Nothing collected.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts gesammelt."
+          }
+        }
+      }
+    },
     "Nothing listens on a port right now.": {
       "localizations": {
         "de": {
@@ -4929,6 +5029,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tippe auf der letzten Seite auf „Copy Code“."
+          }
+        }
+      }
+    },
+    "On the server right now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade auf dem Server"
           }
         }
       }
@@ -5586,6 +5696,26 @@
         }
       }
     },
+    "Recent changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Änderungen"
+          }
+        }
+      }
+    },
+    "Recent errors": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Fehler"
+          }
+        }
+      }
+    },
     "Recent logins": {
       "localizations": {
         "de": {
@@ -5732,6 +5862,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Umbenennen"
+          }
+        }
+      }
+    },
+    "Request": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfrage"
           }
         }
       }
@@ -6303,6 +6443,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Werkzeuge"
+          }
+        }
+      }
+    },
+    "Server not found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server nicht gefunden"
           }
         }
       }
@@ -6988,6 +7138,16 @@
         }
       }
     },
+    "Suggested fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lösungsvorschlag"
+          }
+        }
+      }
+    },
     "Swipe to remove a rule. The rule that lets Deckhand reach SSH can't be removed. Every change is checked with a fresh login and undone by itself if that fails.": {
       "localizations": {
         "de": {
@@ -7224,6 +7384,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Agent erledigt die Arbeit auf deinen Servern. Wähl einen Weg – den anderen kannst du später ergänzen."
+          }
+        }
+      }
+    },
+    "The agent gets these facts, looks further and suggests a fix without changing anything. You apply the fix with one tap.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Agent bekommt diese Fakten, sucht weiter und schlägt eine Lösung vor, ohne etwas zu ändern. Du wendest sie mit einem Tippen an."
           }
         }
       }
@@ -7498,6 +7668,16 @@
         }
       }
     },
+    "This alert is for a server that isn't in Deckhand anymore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Meldung gehört zu einem Server, der nicht mehr in Deckhand ist."
+          }
+        }
+      }
+    },
     "This can take whatever depends on %@ offline.": {
       "localizations": {
         "de": {
@@ -7514,6 +7694,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "This check isn't on the server anymore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Prüfung gibt es auf dem Server nicht mehr."
           }
         }
       }
@@ -8019,6 +8209,16 @@
         }
       }
     },
+    "Up, %lld ms": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreichbar, %lld ms"
+          }
+        }
+      }
+    },
     "Up-to-date library documentation for coding.": {
       "localizations": {
         "de": {
@@ -8358,6 +8558,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wer committet"
+          }
+        }
+      }
+    },
+    "Why is %@ down?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warum ist %@ ausgefallen?"
           }
         }
       }

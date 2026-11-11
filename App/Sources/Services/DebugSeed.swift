@@ -41,6 +41,22 @@ enum DebugSeed {
     > Nothing was changed yet — tell me which fix you want.
     """)])
 
+    /// A finished incident diagnosis with a suggested fix (the "Apply fix" bar).
+    static let fixChat: [Message] = [
+        .user("The uptime check \"Shop\" is failing: https://shop.example.com expects HTTP 200, last result: HTTP 502 after 14 ms."),
+        Message(role: .assistant, blocks: [.text("""
+        **nginx is up, but the app behind it isn't.** `shop.service` crashed at 10:02 after the last deploy: \
+        it can't read `DATABASE_URL`, because the new `.env` was copied without it.
+
+        ## Suggested fix
+        Restore the variable from the previous release and restart the app:
+        ```sh
+        grep DATABASE_URL /srv/shop/releases/previous/.env >> /srv/shop/current/.env
+        sudo systemctl restart shop
+        ```
+        """)]),
+    ]
+
     /// A finished chat whose tool output and reply contain made-up secrets (built at runtime, not real keys).
     static var secretsChat: [Message] {
         let token = "ghp_" + String(repeating: "dEmO", count: 9)

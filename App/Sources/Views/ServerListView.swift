@@ -77,6 +77,17 @@ struct ServerListView: View {
             for server in servers { await AgentStatus.shared.refresh(server) }
         }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        .sheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
+            // A tapped uptime push: the incident for that check, over whatever is on screen.
+            if let server = servers.first(where: { $0.id == link.server }) {
+                NavigationStack {
+                    IncidentView(server: server, checkID: link.check)
+                        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { AppRouter.shared.pendingIncident = nil } } }
+                }
+            } else {
+                ContentUnavailableView("Server not found", systemImage: "server.rack", description: Text("This alert is for a server that isn't in Deckhand anymore."))
+            }
+        }
         .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
             // A notification or link for a chat: open its server; the server screen opens the chat.
             guard let id, let thread = try? context.fetch(FetchDescriptor<ChatThread>(predicate: #Predicate { $0.id == id })).first,

@@ -7,6 +7,8 @@ import os
 struct AgentChatView: View {
     @State private var model: ChatModel
     @State private var draft = ""
+    /// The reply whose suggested fix the user waved away.
+    @State private var dismissedFix: UUID?
     @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
     @State private var browsing: BrowserTarget?
@@ -61,6 +63,13 @@ struct AgentChatView: View {
             VStack(spacing: 0) {
                 if let approval = model.pendingApproval {
                     ApprovalBar(approval: approval)
+                } else if let fix = suggestedFix {
+                    SuggestedFixBar(commands: fix.commands) {
+                        dismissedFix = fix.message
+                        model.send(Incident.applyPrompt, access: .full)
+                    } dismiss: {
+                        dismissedFix = fix.message
+                    }
                 }
                 if let upload {
                     HStack(spacing: 10) {
@@ -110,7 +119,7 @@ struct AgentChatView: View {
         .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }
         .task {
             model.resumeIfNeeded()
-            if let prompt = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(prompt) }
+            if let pending = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(pending.text, access: pending.access) }
             if let draft = PendingPrompt.takeDraft(for: model.thread.id) { self.draft = draft; composerFocused = true }
         }
         #if DEBUG
@@ -225,6 +234,13 @@ struct AgentChatView: View {
     }
 
     /// Uploads into the task's folder and puts a note into the message, so the agent uses the file right away.
+    /// The fix the last reply suggests, while nothing runs and the user hasn't applied or dismissed it.
+    private var suggestedFix: (message: UUID, commands: String)? {
+        guard !model.isRunning, let last = model.messages.last, last.role == .assistant, last.id != dismissedFix,
+              let commands = Incident.suggestedFix(in: last.text) else { return nil }
+        return (last.id, commands)
+    }
+
     private func send(_ data: Data, name: String) async {
         guard data.count < 500_000_000 else { uploadError = String(localized: "Files up to 500 MB."); return }
         uploadError = nil

@@ -50,7 +50,7 @@ public enum Uptime {
     #!/bin/sh
     # Deckhand uptime checks — run by cron every minute.
     D="$HOME/.deckhand/uptime"; [ -f "$D/checks.tsv" ] || exit 0
-    TOPIC=; [ -f "$D/config" ] && . "$D/config"
+    TOPIC=; SERVER=; [ -f "$D/config" ] && . "$D/config"
     now=$(date +%s); min=$((now / 60)); TAB=$(printf '\t')
     while IFS="$TAB" read -r id name url every expect keyword; do
       [ -n "$id" ] || continue
@@ -68,19 +68,21 @@ public enum Uptime {
       prev=$(cat "$D/$id.state" 2>/dev/null || echo 1); echo "$ok" > "$D/$id.state"
       if [ "$prev" != "$ok" ] && [ -n "$TOPIC" ]; then
         if [ "$ok" = 0 ]; then m="Down: $name ($code)"; t=rotating_light; else m="Back up: $name"; t=white_check_mark; fi
-        curl -fsS -m 10 -H "Title: Deckhand uptime" -H "Tags: $t" -d "$m" "$TOPIC" >/dev/null 2>&1
+        click=; [ -n "$SERVER" ] && click="deckhand://uptime/$SERVER/$id"
+        curl -fsS -m 10 -H "Title: Deckhand uptime" -H "Tags: $t" ${click:+-H "Click: $click"} -d "$m" "$TOPIC" >/dev/null 2>&1
       fi
     done < "$D/checks.tsv"
     rm -f "$D/.body"
     """#
 
-    /// Installs the runner and the cron line (idempotent) and stores the ntfy topic (empty: no pushes).
-    public static func installCommand(topic: String) -> String {
+    /// Installs the runner and the cron line (idempotent) and stores the ntfy topic (empty: no pushes). `server`
+    /// (the app's id for this server) makes a tapped push open the incident in the app.
+    public static func installCommand(topic: String, server: UUID? = nil) -> String {
         let t = topic.contains("'") ? "" : topic
         return """
         mkdir -p \(dir) && chmod 700 \(dir)
         printf '%s\\n' \(ShellQuote.quote(runner)) > \(dir)/run.sh && chmod 700 \(dir)/run.sh
-        printf 'TOPIC=%s\\n' \(ShellQuote.quote(ShellQuote.quote(t))) > \(dir)/config
+        printf 'TOPIC=%s\\nSERVER=%s\\n' \(ShellQuote.quote(ShellQuote.quote(t))) '\(server?.uuidString ?? "")' > \(dir)/config
         command -v crontab >/dev/null 2>&1 || { echo '@@nocron'; exit 0; }
         { crontab -l 2>/dev/null | grep -v 'deckhand/uptime/run.sh'; echo "* * * * * $HOME/.deckhand/uptime/run.sh >/dev/null 2>&1 \(cronTag)"; } | crontab -
         echo '@@ok'
@@ -151,15 +153,5 @@ public enum Uptime {
             }
         }
         return s
-    }
-
-    /// What to ask an agent when a check fails.
-    public static func investigatePrompt(_ c: Check) -> String {
-        let last = c.last.map { "Last result: HTTP \($0.status) after \($0.milliseconds) ms." } ?? ""
-        return """
-        The uptime check "\(c.name)" (\(c.url), expects HTTP \(c.expect)\(c.keyword.isEmpty ? "" : " and the text \"\(c.keyword)\"")) is failing. \(last) \
-        Find out why: check the service and web server status, their recent logs, recent deploys or changes, disk, memory \
-        and load. Then explain the cause in a few lines and suggest a fix. Don't change anything until I approve.
-        """
     }
 }
