@@ -120,7 +120,8 @@ final class ChatModel {
         return nil
     }
 
-    func send(_ text: String) {
+    /// `access` overrides the CLI access from Settings for this turn (read-only diagnosis, an approved fix).
+    func send(_ text: String, access accessOverride: CLIAccess? = nil) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, !isRunning else { return }
         let settings = AppSettings.shared
@@ -140,7 +141,7 @@ final class ChatModel {
         LiveTasks.shared.start(thread, server: server)
         let config = settings.providerConfig
         let policy = settings.approvalPolicy
-        let access = settings.cliAccess
+        let access = accessOverride ?? settings.cliAccess
         let hideSecrets = settings.hideSecrets
         task = Task {
             do {
@@ -265,8 +266,15 @@ final class ChatModel {
 @MainActor
 enum PendingPrompt {
     private static var prompts: [UUID: String] = [:]
-    static func set(_ prompt: String, for thread: UUID) { prompts[thread] = prompt }
-    static func take(for thread: UUID) -> String? { prompts.removeValue(forKey: thread) }
+    private static var access: [UUID: CLIAccess] = [:]
+    static func set(_ prompt: String, for thread: UUID, access level: CLIAccess? = nil) {
+        prompts[thread] = prompt
+        access[thread] = level
+    }
+    static func take(for thread: UUID) -> (text: String, access: CLIAccess?)? {
+        guard let text = prompts.removeValue(forKey: thread) else { return nil }
+        return (text, access.removeValue(forKey: thread))
+    }
 
     /// Text the composer of a new chat starts with, not sent (e.g. "Have a look at `app.py`: ").
     private static var drafts: [UUID: String] = [:]

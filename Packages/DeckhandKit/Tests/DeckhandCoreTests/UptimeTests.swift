@@ -39,13 +39,13 @@ import Testing
         import http.server, sys
         class H(http.server.BaseHTTPRequestHandler):
             def do_POST(self):
-                n = int(self.headers.get('Content-Length', 0)); open(sys.argv[2], 'a').write(self.rfile.read(n).decode() + '\\n')
+                n = int(self.headers.get('Content-Length', 0)); open(sys.argv[2], 'a').write(self.rfile.read(n).decode() + ' | ' + self.headers.get('Click', '-') + '\\n')
                 self.send_response(200); self.end_headers()
             def log_message(self, *a): pass
         http.server.HTTPServer(('127.0.0.1', int(sys.argv[1])), H).serve_forever()
         """
         try fake.write(toFile: home + "/fake.py", atomically: true, encoding: .utf8)
-        try "TOPIC='http://127.0.0.1:\(hook)/t'\n".write(toFile: d + "/config", atomically: true, encoding: .utf8)
+        try "TOPIC='http://127.0.0.1:\(hook)/t'\nSERVER=AB-12\n".write(toFile: d + "/config", atomically: true, encoding: .utf8)
         try "ok1\tSite\thttp://127.0.0.1:\(web)/index.html\t1\t200\thello\nbad1\tSite text\thttp://127.0.0.1:\(web)/index.html\t1\t200\tmissing\n"
             .write(toFile: d + "/checks.tsv", atomically: true, encoding: .utf8)
         let shell = LocalShell()
@@ -57,6 +57,6 @@ import Testing
         #expect(ok.split(separator: " ")[1] == "200" && ok.hasSuffix(" 1\n"))
         #expect(bad.hasSuffix(" 0\n"))
         for _ in 0..<30 where !FileManager.default.fileExists(atPath: home + "/pushes") { try await Task.sleep(for: .milliseconds(100)) }
-        #expect(try String(contentsOfFile: home + "/pushes", encoding: .utf8) == "Down: Site text (200)\n")
+        #expect(try String(contentsOfFile: home + "/pushes", encoding: .utf8) == "Down: Site text (200) | deckhand://uptime/AB-12/bad1\n")
     }
 }

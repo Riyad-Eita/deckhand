@@ -41,6 +41,15 @@ final class UptimeUITests: XCTestCase {
         sleep(1)
         shot(app, "checks")
 
+        // The incident: evidence from the server, then the agents to hand it to.
+        app.buttons["Investigate with an agent"].tap()
+        XCTAssertTrue(app.buttons["Request"].waitForExistence(timeout: 90))
+        XCTAssertTrue(app.buttons["incident.codex"].exists)
+        app.buttons["Request"].tap()
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'HTTP 000'")).firstMatch.waitForExistence(timeout: 5))
+        shot(app, "incident")
+        app.navigationBars.buttons.firstMatch.tap()
+
         for name in ["Local API", "Example"] {
             let text = app.staticTexts[name]
             text.swipeLeft()
@@ -48,6 +57,28 @@ final class UptimeUITests: XCTestCase {
             let gone = expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: text)
             wait(for: [gone], timeout: 30)
         }
+    }
+
+    func testSuggestedFixBar() throws {
+        let env = ProcessInfo.processInfo.environment
+        guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"] else {
+            throw XCTSkip("No uptime test server")
+        }
+        let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_HOST"] = host
+        app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_UPTIME_PORT"] ?? "22"
+        app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_UPTIME_USER"] ?? "me"
+        app.launchEnvironment["DECKHAND_SEED_PASSWORD"] = password
+        app.launchEnvironment["DECKHAND_SEED_NAME"] = "sandbox"
+        app.launchEnvironment["DECKHAND_SEED_TRUST"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_RUN"] = "fix|"
+        app.launch()
+        XCTAssertTrue(app.buttons["fix.apply"].waitForExistence(timeout: 30))
+        shot(app, "fix")
+        app.buttons["Not now"].tap()
+        let gone = expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: app.buttons["fix.apply"])
+        wait(for: [gone], timeout: 5)
     }
 
     private func addCheck(_ app: XCUIApplication, url: String, name: String) {

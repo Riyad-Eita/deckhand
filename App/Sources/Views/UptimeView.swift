@@ -10,7 +10,7 @@ struct UptimeView: View {
     @State private var error: String?
     @State private var adding = false
     @State private var busy = false
-    @State private var investigatePrompt: String?
+    @State private var incident: String?
 
     var body: some View {
         List {
@@ -34,7 +34,7 @@ struct UptimeView: View {
                     Section {
                         if status.checks.isEmpty { Text("No checks yet.").foregroundStyle(.secondary) }
                         ForEach(status.checks) { check in
-                            CheckRow(check: check) { investigatePrompt = Uptime.investigatePrompt(check) }
+                            CheckRow(check: check) { incident = check.id }
                                 .swipeActions {
                                     Button("Delete") { Task { await run(Uptime.removeCommand(id: check.id)) } }.tint(.red)
                                 }
@@ -62,9 +62,15 @@ struct UptimeView: View {
         }
         .task { await load() }
         .refreshable { await load() }
-        .investigate(on: server, prompt: $investigatePrompt)
+        .navigationDestination(item: $incident) { IncidentView(server: server, checkID: $0) }
         .sheet(isPresented: $adding) {
-            AddCheckSheet { check in Task { await run(Uptime.addCommand(check)) } }
+            AddCheckSheet { check in
+                Task {
+                    // Refreshes the runner too, so pushes carry the link back into the app.
+                    await run(Uptime.installCommand(topic: settings.ntfyTopicURL, server: server.id))
+                    await run(Uptime.addCommand(check))
+                }
+            }
         }
     }
 
@@ -80,7 +86,7 @@ struct UptimeView: View {
 
     private func install() async {
         if settings.ntfyTopicURL.isEmpty { settings.ntfyTopicURL = TaskNotifier.newTopicURL() }
-        await run(Uptime.installCommand(topic: settings.ntfyTopicURL))
+        await run(Uptime.installCommand(topic: settings.ntfyTopicURL, server: server.id))
     }
 
     private func run(_ command: String) async {
