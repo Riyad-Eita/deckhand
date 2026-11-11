@@ -148,6 +148,16 @@
         }
       }
     },
+    "%@ · runs in the app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · läuft in der App"
+          }
+        }
+      }
+    },
     "%@ — open it in the terminal or ask the agent about it.": {
       "localizations": {
         "de": {
@@ -5474,6 +5484,26 @@
         }
       }
     },
+    "Runs on this server with your ChatGPT plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft auf diesem Server mit deinem ChatGPT-Abo"
+          }
+        }
+      }
+    },
+    "Runs on this server with your Claude plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft auf diesem Server mit deinem Claude-Abo"
+          }
+        }
+      }
+    },
     "SSH already uses this port.": {
       "localizations": {
         "de": {
@@ -6191,6 +6221,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starten"
+          }
+        }
+      }
+    },
+    "Start a task with": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe starten mit"
           }
         }
       }
@@ -7745,6 +7785,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigener API-Schlüssel"
+          }
+        }
+      }
+    },
+    "Your own API key · runs in the app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigener API-Key · läuft in der App"
           }
         }
       }

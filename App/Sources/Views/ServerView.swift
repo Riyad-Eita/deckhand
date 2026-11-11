@@ -116,28 +116,22 @@ struct ThreadListView: View {
     var body: some View {
         List {
             Section {
-                HStack(spacing: 10) {
-                    ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
-                        Button {
-                            // Not ready yet: sign in (or add a key) first instead of starting a task that fails.
-                            if let cli = engine.serverCLI, AgentStatus.shared.isSignedIn(cli, on: server) == false {
-                                signingIn = cli
-                            } else if engine == .ownKey && !AppSettings.shared.isConfigured {
-                                showingSettings = true
-                            } else {
-                                pickingFolderFor = engine
-                            }
-                        } label: { EngineTile(engine: engine, ready: isReady(engine)) }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("engine.\(engine.rawValue)")
-                    }
+                ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
+                    Button {
+                        // Not ready yet: sign in (or add a key) first instead of starting a task that fails.
+                        if let cli = engine.serverCLI, AgentStatus.shared.isSignedIn(cli, on: server) == false {
+                            signingIn = cli
+                        } else if engine == .ownKey && !AppSettings.shared.isConfigured {
+                            showingSettings = true
+                        } else {
+                            pickingFolderFor = engine
+                        }
+                    } label: { EngineRow(engine: engine, ready: isReady(engine)) }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("engine.\(engine.rawValue)")
                 }
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
             } header: {
-                Text("New task")
-            } footer: {
-                Text("Claude Code and Codex run on your server with your own subscription. “Your key” uses the model you set up in Settings.")
+                Text("Start a task with")
             }
             if !threads.isEmpty {
                 Section("Recent") {
@@ -152,7 +146,7 @@ struct ThreadListView: View {
                                         Text("·")
                                         Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
                                         Text("·")
-                                        Text(thread.updatedAt, style: .relative)
+                                        Text(thread.updatedAt, format: .relative(presentation: .named))
                                     }
                                     .font(.caption).foregroundStyle(.secondary)
                                 }
@@ -266,6 +260,47 @@ struct EngineTile: View {
         case .ownKey: AppSettings.shared.providerKind.displayName.components(separatedBy: " (").first ?? ""
         case .codex: String(localized: "ChatGPT plan")
         case .claudeCode: String(localized: "Claude plan")
+        }
+    }
+}
+
+/// One way to run a task, as a full-width row: works on every screen size.
+struct EngineRow: View {
+    let engine: Engine
+    var ready = true
+
+    var body: some View {
+        HStack(spacing: 14) {
+            BrandIcon(brand: engine.brand, size: 40)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(engine.shortTitle).font(.body.weight(.semibold)).foregroundStyle(.primary)
+                Text(detail).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 8)
+            if ready {
+                Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+            } else {
+                Text(engine == .ownKey ? String(localized: "Add a key") : String(localized: "Sign in"))
+                    .font(.caption.weight(.semibold)).foregroundStyle(.white)
+                    .padding(.horizontal, 10).padding(.vertical, 5)
+                    .background(Theme.accent, in: Capsule())
+            }
+        }
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(ready ? Text("New task with \(engine.title)")
+                            : engine == .ownKey ? Text("Add a key for \(engine.title)") : Text("Sign in to \(engine.title)"))
+    }
+
+    private var detail: String {
+        switch engine {
+        case .claudeCode: String(localized: "Runs on this server with your Claude plan")
+        case .codex: String(localized: "Runs on this server with your ChatGPT plan")
+        case .ownKey:
+            AppSettings.shared.isConfigured
+                ? String(localized: "\(AppSettings.shared.providerKind.displayName.components(separatedBy: " (").first ?? "") · runs in the app")
+                : String(localized: "Your own API key · runs in the app")
         }
     }
 }
