@@ -28,6 +28,16 @@ public enum SSHError: Error, LocalizedError, Sendable {
     case hostKeyChanged(expected: String, got: String)
     case notConnected
     case timedOut(seconds: Int)
+    /// No answer from host:port within the connect timeout (offline, wrong address or port, firewall).
+    case unreachable(host: String, port: Int)
+    /// Actively refused: nothing listens on that port.
+    case refused(host: String, port: Int)
+    /// The name doesn't resolve.
+    case unknownHost(String)
+    /// The server answered but didn't accept the user / password / key.
+    case signInRejected(user: String)
+    /// The connection dropped while working.
+    case connectionLost
 
     public var errorDescription: String? {
         switch self {
@@ -35,9 +45,39 @@ public enum SSHError: Error, LocalizedError, Sendable {
         case .hostKeyRejected(let f): "Host key \(f) was not trusted."
         case .hostKeyChanged(let expected, let got):
             "The server's host key changed (expected \(expected), got \(got)). This can mean someone is intercepting the connection."
-        case .notConnected: "Not connected."
+        case .notConnected: "Not connected to the server."
         case .timedOut(let s): "The command did not finish within \(s) s."
+        case .unreachable(let h, let p): "No answer from \(h) on port \(p)."
+        case .refused(let h, let p): "\(h) refused the connection on port \(p)."
+        case .unknownHost(let h): "The address \(h) can't be found."
+        case .signInRejected(let u): "The server didn't accept the login for \(u)."
+        case .connectionLost: "The connection to the server was lost."
         }
+    }
+
+    /// Turns NIO / Citadel errors (whose own descriptions read "NIOCore.ChannelError error 0") into plain ones.
+    static func translate(_ error: Error, host: String, port: Int, user: String) -> Error {
+        if error is SSHError || error is CancellationError { return error }
+        let text = String(describing: error)
+        let lower = text.lowercased()
+        if lower.contains("allauthenticationoptionsfailed") || lower.contains("authentication failed") {
+            return SSHError.signInRejected(user: user)
+        }
+        if lower.contains("dns") || lower.contains("unknownhost") || lower.contains("nodename nor servname") || lower.contains("name or service not known") {
+            return SSHError.unknownHost(host)
+        }
+        if lower.contains("connection refused") || lower.contains("econnrefused") || lower.contains("errno: 61") || lower.contains("errno: 111") {
+            return SSHError.refused(host: host, port: port)
+        }
+        if lower.contains("connect timeout") || lower.contains("connecttimeout") || lower.contains("host is down")
+            || lower.contains("network is unreachable") || lower.contains("no route to host") || lower.contains("timed out") {
+            return SSHError.unreachable(host: host, port: port)
+        }
+        if lower.contains("ioonclosedchannel") || lower.contains("alreadyclosed") || lower.contains("connection reset")
+            || lower.contains("broken pipe") || lower.contains("eof") || lower.contains("channel closed") {
+            return SSHError.connectionLost
+        }
+        return error
     }
 }
 
@@ -152,7 +192,11 @@ public actor SSHConnection: StreamingShell {
                     ?? .passwordBased(username: username, password: "")
             }, hostKeyValidator: .custom(check))
         settings.connectTimeout = .seconds(15)
-        client = try await SSHClient.connect(to: settings)
+        do {
+            client = try await SSHClient.connect(to: settings)
+        } catch {
+            throw SSHError.translate(error, host: endpoint.host, port: endpoint.port, user: endpoint.username)
+        }
         hostKey = check.seen
     }
 
@@ -237,6 +281,8 @@ public actor SSHConnection: StreamingShell {
             }
         } catch let failed as SSHClient.CommandFailed {
             exitCode = Int32(truncatingIfNeeded: failed.exitCode)
+        } catch {
+            throw SSHError.translate(error, host: endpoint.host, port: endpoint.port, user: endpoint.username)
         }
         if exitCode == 124 { stderr.writeString("\n[timed out after \(seconds) s]") }
         return CommandResult(stdout: String(buffer: stdout), stderr: String(buffer: stderr), exitCode: exitCode)

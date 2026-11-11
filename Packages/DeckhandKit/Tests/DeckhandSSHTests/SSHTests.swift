@@ -718,3 +718,25 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+extension LiveSSHTests {
+    /// Real connection failures read as plain sentences and fall into the right kind of problem.
+    @Test func connectionErrorsInPlainWords() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let host = env["DECKHAND_TEST_HOST"]!, port = Int(env["DECKHAND_TEST_PORT"] ?? "22")!
+        func fail(_ h: String, _ p: Int, _ user: String, _ cred: SSHCredential) async -> String {
+            let c = SSHConnection(endpoint: SSHEndpoint(host: h, port: p, username: user), credential: cred)
+            do { try await c.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true }); return "connected" }
+            catch { return error.localizedDescription }
+        }
+        let dns = await fail("no-such-host.invalid", 22, "x", .password("x"))
+        #expect(dns == "The address no-such-host.invalid can't be found.")
+        #expect(Problem.from(dns).kind == .network)
+        let login = await fail(host, port, "nobody-deckhand", .password("wrong"))
+        #expect(login == "The server didn't accept the login for nobody-deckhand.")
+        #expect(Problem.from(login).kind == .signIn)
+        let closed = await fail(host, 1, "x", .password("x"))
+        #expect(closed.hasPrefix("No answer from") || closed.contains("refused the connection"), "\(closed)")
+        #expect(Problem.from(closed).kind == .network)
+    }
+}
