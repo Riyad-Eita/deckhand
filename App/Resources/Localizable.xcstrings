@@ -954,6 +954,16 @@
         }
       }
     },
+    "Alerts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarme"
+          }
+        }
+      }
+    },
     "All": {
       "extractionState": "manual",
       "localizations": {
@@ -1152,6 +1162,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alles, was %@ nutzt, wird unterbrochen."
+          }
+        }
+      }
+    },
+    "App secrets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Geheimnisse"
           }
         }
       }
@@ -2068,6 +2088,16 @@
         }
       }
     },
+    "Cloud keys (root)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloud-Schlüssel (root)"
+          }
+        }
+      }
+    },
     "Code from the page": {
       "localizations": {
         "de": {
@@ -2549,6 +2579,16 @@
         }
       }
     },
+    "Couldn't read the tripwires.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Stolperdrähte konnten nicht gelesen werden."
+          }
+        }
+      }
+    },
     "Couldn't save the fix.": {
       "localizations": {
         "de": {
@@ -2656,6 +2696,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigener Server (OpenAI-kompatibel)"
+          }
+        }
+      }
+    },
+    "Database backup": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbank-Backup"
           }
         }
       }
@@ -2826,6 +2876,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand meldet sich, wenn eine Aufgabe fertig ist oder deine Freigabe braucht. Ist die App geschlossen, lässt iOS sie nur ab und zu nachsehen – mit ntfy meldet sich dein Server sofort, wenn eine Aufgabe endet. Abonniere das Topic in der ntfy-App; gesendet wird nur der Titel der Aufgabe. Du kannst auch deinen eigenen ntfy-Server nutzen."
+          }
+        }
+      }
+    },
+    "Decoy files that tell you when someone snoops": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Köder-Dateien, die melden, wenn jemand herumschnüffelt"
           }
         }
       }
@@ -4720,6 +4780,16 @@
         }
       }
     },
+    "Leave these files alone. Backups that copy these folders will set them off too.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lass diese Dateien in Ruhe. Backups, die diese Ordner kopieren, lösen sie ebenfalls aus."
+          }
+        }
+      }
+    },
     "Listening but not reachable from here: %@ — the firewall keeps them private.": {
       "localizations": {
         "de": {
@@ -5670,6 +5740,16 @@
         }
       }
     },
+    "Nobody has touched them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niemand hat sie angefasst."
+          }
+        }
+      }
+    },
     "Nobody is banned right now.": {
       "localizations": {
         "de": {
@@ -5919,6 +5999,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline"
+          }
+        }
+      }
+    },
+    "Old SSH key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alter SSH-Schlüssel"
           }
         }
       }
@@ -6359,6 +6449,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wähle deinen Agenten"
+          }
+        }
+      }
+    },
+    "Plant tripwires": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stolperdrähte auslegen"
+          }
+        }
+      }
+    },
+    "Plants decoy files where intruders look first: fake cloud keys, fake app secrets, a fake database backup and an old fake SSH key. The moment one is opened, you get an urgent push with who did it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legt Köder-Dateien dort ab, wo Eindringlinge zuerst suchen: gefälschte Cloud-Schlüssel, gefälschte App-Geheimnisse, ein gefälschtes Datenbank-Backup und ein alter gefälschter SSH-Schlüssel. Sobald eine geöffnet wird, bekommst du einen dringenden Push mit dem Verursacher."
           }
         }
       }
@@ -6886,12 +6996,32 @@
         }
       }
     },
+    "Remove tripwires": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stolperdrähte entfernen"
+          }
+        }
+      }
+    },
     "Remove “%@” from %lld servers?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "„%1$@“ von %2$lld Servern entfernen?"
+          }
+        }
+      }
+    },
+    "Removes the decoy files and stops the watcher.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt die Köder-Dateien und stoppt den Wächter."
           }
         }
       }
@@ -8818,6 +8948,16 @@
         }
       }
     },
+    "The decoys hold nothing real and open nothing. Pushes go to your ntfy topic.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Köder enthalten nichts Echtes und öffnen nichts. Pushes gehen an dein ntfy-Topic."
+          }
+        }
+      }
+    },
     "The file is removed and Claude Code and Codex aren't pointed to it anymore.": {
       "localizations": {
         "de": {
@@ -9334,6 +9474,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Probiert übliche Ports aus dem Netz, in dem dieses iPhone ist. Im selben WLAN wie der Server siehst du mehr als das Internet – nutze mobile Daten für den echten Blick von außen."
+          }
+        }
+      }
+    },
+    "Tripwires": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stolperdrähte"
+          }
+        }
+      }
+    },
+    "Tripwires are armed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stolperdrähte sind scharf"
           }
         }
       }
@@ -10188,6 +10348,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeilen umbrechen"
+          }
+        }
+      }
+    },
+    "Writes four decoy files and starts a small watcher (python3) that pushes to %@ when one is opened.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreibt vier Köder-Dateien und startet einen kleinen Wächter (python3), der an %@ pusht, wenn eine geöffnet wird."
           }
         }
       }

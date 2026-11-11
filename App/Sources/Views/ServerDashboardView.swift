@@ -197,6 +197,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.panic")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                TripwireView(server: server)
+                            } label: {
+                                ManageRow(title: "Tripwires", subtitle: "Decoy files that tell you when someone snoops", symbol: "sensor.tag.radiowaves.forward")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.tripwires")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 Fail2banView(server: server)
                             } label: {
                                 ManageRow(title: "Blocked logins", subtitle: "fail2ban: who's banned and why", symbol: "hand.raised")
