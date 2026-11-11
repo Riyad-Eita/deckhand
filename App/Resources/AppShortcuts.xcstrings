@@ -1,0 +1,56 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Check my server with ${applicationName}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüf meinen Server mit ${applicationName}"
+          }
+        }
+      }
+    },
+    "Give ${applicationName} a task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib ${applicationName} eine Aufgabe"
+          }
+        }
+      }
+    },
+    "How is ${server} doing in ${applicationName}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie geht's ${server} in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Run a command with ${applicationName}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führe einen Befehl mit ${applicationName} aus"
+          }
+        }
+      }
+    },
+    "Start a task in ${applicationName}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte eine Aufgabe in ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

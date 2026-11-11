@@ -15,6 +15,16 @@
         }
       }
     },
+    "%@ Run it anyway?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Trotzdem ausführen?"
+          }
+        }
+      }
+    },
     "%@ didn't quit in time and was forced to.": {
       "localizations": {
         "de": {
@@ -164,6 +174,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ – öffne sie im Terminal oder frag den Agenten danach."
+          }
+        }
+      }
+    },
+    "%@: CPU %lld %%, memory %lld %%, disk %lld %%, up %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: CPU %2$lld %%, Speicher %3$lld %%, Platte %4$lld %%, läuft seit %5$@."
           }
         }
       }
@@ -1148,6 +1168,16 @@
         }
       }
     },
+    "CPU, memory, disk and uptime of one of your servers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, Speicher, Platte und Laufzeit eines deiner Server."
+          }
+        }
+      }
+    },
     "Can be cleaned up": {
       "localizations": {
         "de": {
@@ -1244,6 +1274,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfen"
+          }
+        }
+      }
+    },
+    "Check a server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server prüfen"
           }
         }
       }
@@ -1658,6 +1698,16 @@
         }
       }
     },
+    "Command": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Befehl"
+          }
+        }
+      }
+    },
     "Command on the server": {
       "localizations": {
         "de": {
@@ -2005,6 +2055,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das Foto ließ sich nicht lesen."
+          }
+        }
+      }
+    },
+    "Couldn't read the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server ließ sich nicht lesen."
           }
         }
       }
@@ -2501,6 +2561,16 @@
         }
       }
     },
+    "Done, no output.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig, keine Ausgabe."
+          }
+        }
+      }
+    },
     "Done: %@": {
       "localizations": {
         "de": {
@@ -2811,6 +2881,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses iPhones lassen sich hier nicht entfernen."
+          }
+        }
+      }
+    },
+    "Exit code %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit-Code %lld"
           }
         }
       }
@@ -4850,6 +4930,16 @@
         }
       }
     },
+    "Opens Deckhand and gives the agent a task on one of your servers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet Deckhand und gibt dem Agenten eine Aufgabe auf einem deiner Server."
+          }
+        }
+      }
+    },
     "Opens port %@/%@%@ in the firewall.": {
       "localizations": {
         "de": {
@@ -5704,6 +5794,26 @@
         }
       }
     },
+    "Run a command": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Befehl ausführen"
+          }
+        }
+      }
+    },
+    "Run a command on a server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Befehl auf einem Server ausführen"
+          }
+        }
+      }
+    },
     "Run in Terminal": {
       "localizations": {
         "de": {
@@ -5760,6 +5870,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Läuft auf diesem Server mit deinem Claude-Abo"
+          }
+        }
+      }
+    },
+    "Runs one shell command and gives back its output.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führt einen Shell-Befehl aus und gibt die Ausgabe zurück."
           }
         }
       }
@@ -6515,12 +6635,32 @@
         }
       }
     },
+    "Start a task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe starten"
+          }
+        }
+      }
+    },
     "Start a task with": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Aufgabe starten mit"
+          }
+        }
+      }
+    },
+    "Start an agent task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agenten-Aufgabe starten"
           }
         }
       }
@@ -6775,6 +6915,16 @@
         }
       }
     },
+    "Task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe"
+          }
+        }
+      }
+    },
     "Task done": {
       "localizations": {
         "de": {
@@ -6861,6 +7011,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieses Programm ist auf dem Server nicht installiert oder nicht im PATH deiner Anmeldung."
+          }
+        }
+      }
+    },
+    "That server isn't in Deckhand anymore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Server gibt es in Deckhand nicht mehr."
           }
         }
       }
@@ -8185,6 +8345,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigener API-Key · läuft in der App"
+          }
+        }
+      }
+    },
+    "Your own key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigener Key"
           }
         }
       }

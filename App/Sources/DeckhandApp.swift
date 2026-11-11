@@ -62,6 +62,12 @@ struct RootView: View {
         #if DEBUG
         .onAppear { DebugSeed.apply(context) }
         .task {
+            // DECKHAND_SEED_INTENT=status|run:<command>: run a Siri/Shortcuts intent on the first server and
+            // write its answer to tmp/intent-result.txt (checks the intents without Siri).
+            if let spec = ProcessInfo.processInfo.environment["DECKHAND_SEED_INTENT"] {
+                try? await Task.sleep(for: .seconds(2))
+                await DebugSeed.runIntent(spec)
+            }
             // DECKHAND_SEED_OPEN_URL=deckhand://thread/<id>: open it like a tapped notification.
             if let s = ProcessInfo.processInfo.environment["DECKHAND_SEED_OPEN_URL"], let url = URL(string: s) {
                 try? await Task.sleep(for: .seconds(1))
