@@ -49,7 +49,7 @@ import Testing
         try "ok1\tSite\thttp://127.0.0.1:\(web)/index.html\t1\t200\thello\nbad1\tSite text\thttp://127.0.0.1:\(web)/index.html\t1\t200\tmissing\n"
             .write(toFile: d + "/checks.tsv", atomically: true, encoding: .utf8)
         let shell = LocalShell()
-        _ = try await shell.run("cd '\(home)/site' && (python3 -m http.server \(web) --bind 127.0.0.1 >/dev/null 2>&1 &) ; (python3 '\(home)/fake.py' \(hook) '\(home)/pushes' >/dev/null 2>&1 &) ; sleep 1.5", timeout: .seconds(10))
+        _ = try await shell.run("cd '\(home)/site' && (python3 -m http.server \(web) --bind 127.0.0.1 >/dev/null 2>&1 &) ; (python3 '\(home)/fake.py' \(hook) '\(home)/pushes' >/dev/null 2>&1 &) ; \(waitForPorts(web, hook))", timeout: .seconds(30))
         defer { Task { _ = try? await shell.run("pkill -f 'http.server \(web) --bind'; pkill -f 'fake.py \(hook)'", timeout: .seconds(5)) } }
         _ = try await shell.run("HOME='\(home)' FORCE=1 sh '\(d)/run.sh'", timeout: .seconds(30))
         let ok = try String(contentsOfFile: d + "/ok1.log", encoding: .utf8)
@@ -86,7 +86,7 @@ import Testing
         let fail = Uptime.setRemedyCommand(checkID: "nofix", remedy: .init(commands: "exit 3", maxPerHour: 1))
         _ = try await shell.run("HOME='\(home)' sh -c \(ShellQuote.quote(heal + "\n" + fail))", timeout: .seconds(10))
         #expect(try String(contentsOfFile: d + "/heal.fix", encoding: .utf8).contains("sudo -n systemctl restart shop"))
-        _ = try await shell.run("cd '\(home)/site' && (python3 -m http.server \(web) --bind 127.0.0.1 >/dev/null 2>&1 &) ; (python3 '\(home)/fake.py' \(hook) '\(home)/pushes' >/dev/null 2>&1 &) ; sleep 1.5", timeout: .seconds(10))
+        _ = try await shell.run("cd '\(home)/site' && (python3 -m http.server \(web) --bind 127.0.0.1 >/dev/null 2>&1 &) ; (python3 '\(home)/fake.py' \(hook) '\(home)/pushes' >/dev/null 2>&1 &) ; \(waitForPorts(web, hook))", timeout: .seconds(30))
         defer { Task { _ = try? await shell.run("pkill -f 'http.server \(web) --bind'; pkill -f 'fake.py \(hook)'", timeout: .seconds(5)) } }
         // Two runs: the second may not run the failing fix again (limit 1 per hour).
         _ = try await shell.run("HOME='\(home)' FORCE=1 FIXWAIT=0 sh '\(d)/run.sh'; HOME='\(home)' FORCE=1 FIXWAIT=0 sh '\(d)/run.sh'", timeout: .seconds(60))
