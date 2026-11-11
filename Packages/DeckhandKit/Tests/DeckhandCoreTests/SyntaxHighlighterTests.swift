@@ -107,7 +107,9 @@ import Testing
         let start = Date()
         let t = H.highlight(lines, language: H.swift)
         #expect(t.count == 20_000)
-        #expect(Date().timeIntervalSince(start) < 2.0)
+        // Hosted CI runners are shared and run debug builds several times slower than a Mac.
+        let limit = ProcessInfo.processInfo.environment["CI"] == nil ? 2.0 : 10.0
+        #expect(Date().timeIntervalSince(start) < limit)
     }
 
     @Test func searchFindsAllMatchesCaseInsensitive() {
