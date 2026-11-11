@@ -15,8 +15,21 @@ public enum Incident {
     static let sectionLimit = 2_500
 
     /// Read-only probe: the failing request, load, memory, disk, failed services, recent errors, what changed lately.
-    public static func evidenceCommand(url: String) -> String {
+    /// Section title for what changed since the check last worked (needs the change history on the server).
+    public static let changesTitle = "Changed since last healthy"
+
+    /// `lastHealthy`: when the check last passed; adds what changed on the server since then.
+    public static func evidenceCommand(url: String, lastHealthy: Date? = nil) -> String {
         let u = ShellQuote.quote(url)
+        let changes = lastHealthy.map { date in
+            """
+            if [ -f "$HOME/.deckhand/history/snap.sh" ]; then
+              S \(ShellQuote.quote(changesTitle))
+              sh "$HOME/.deckhand/history/snap.sh"
+              (\(ChangeHistory.sinceCommand(date.addingTimeInterval(-15 * 60), limit: 60_000)))
+            fi
+            """
+        } ?? ""
         return """
         S() { printf '\\n@@section %s\\n' "$1"; }
         S "Request"
@@ -37,6 +50,7 @@ public enum Incident {
         S "Recent changes"
         tail -n 6 /var/log/apt/history.log 2>/dev/null | grep -E '^(Start-Date|Commandline)'
         find /etc /srv /var/www /opt "$HOME" -maxdepth 3 \\( -name .deckhand -o -name .cache -o -name .git -o -name .local -o -name node_modules \\) -prune -o -type f -mmin -180 -print 2>/dev/null | head -n 15
+        \(changes)
         true
         """
     }
@@ -50,8 +64,12 @@ public enum Incident {
                 out[out.count - 1].text += (out[out.count - 1].text.isEmpty ? "" : "\n") + line
             }
         }
-        return out.map { Evidence(title: $0.title, text: $0.text.trimmingCharacters(in: .whitespacesAndNewlines)) }
-            .filter { !$0.text.isEmpty }
+        return out.map { e in
+            // The raw diffs of the change history, as readable lines.
+            let text = e.title == changesTitle ? ChangeHistory.summary(ChangeHistory.parseDiff(e.text)) : e.text
+            return Evidence(title: e.title, text: text.trimmingCharacters(in: .whitespacesAndNewlines))
+        }
+        .filter { !$0.text.isEmpty }
     }
 
     /// The first-turn prompt: evidence included, diagnosis only, fix in a fixed shape the app can pick up.
@@ -92,6 +110,9 @@ public enum Incident {
 }
 
 extension Uptime.Check {
+    /// When the check last passed.
+    public var lastHealthy: Date? { results.last(where: \.ok)?.date }
+
     /// When the current outage began (first failed result after the last good one).
     public var downSince: Date? {
         guard isUp == false else { return nil }

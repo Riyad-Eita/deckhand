@@ -90,7 +90,7 @@ struct IncidentView: View {
                 return
             }
             check = found
-            evidence = Incident.parse(try await conn.run(Incident.evidenceCommand(url: found.url), timeout: .seconds(90)).stdout)
+            evidence = Incident.parse(try await conn.run(Incident.evidenceCommand(url: found.url, lastHealthy: found.lastHealthy), timeout: .seconds(90)).stdout)
         } catch {
             self.error = error.localizedDescription
             if check != nil && evidence == nil { evidence = [] }
