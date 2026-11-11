@@ -14,6 +14,17 @@ final class AppRouter {
     /// A failing uptime check to open (`deckhand://uptime/<server>/<check>`, the link in an uptime push).
     var pendingIncident: IncidentLink?
 
+    /// A risky action waiting for approval (`deckhand://approve/<server>/<fingerprint>?who=…&cmd=…`).
+    var pendingApproval: ApprovalLink?
+
+    struct ApprovalLink: Identifiable, Equatable {
+        let server: UUID
+        let fingerprint: String
+        let who: String
+        let command: String
+        var id: String { fingerprint }
+    }
+
     struct IncidentLink: Identifiable, Equatable {
         let server: UUID
         let check: String
@@ -26,6 +37,13 @@ final class AppRouter {
         switch url.host {
         case "thread":
             if let id = UUID(uuidString: url.lastPathComponent) { pendingThread = id }
+        case "approve":
+            let q = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            if parts.count == 2, let server = UUID(uuidString: parts[0]), parts[1].range(of: "^[0-9a-f]{12}$", options: .regularExpression) != nil {
+                pendingApproval = ApprovalLink(server: server, fingerprint: parts[1],
+                                               who: q.first { $0.name == "who" }?.value ?? "",
+                                               command: q.first { $0.name == "cmd" }?.value ?? "")
+            }
         case "uptime":
             if parts.count == 2, let server = UUID(uuidString: parts[0]) { pendingIncident = IncidentLink(server: server, check: parts[1]) }
         default:

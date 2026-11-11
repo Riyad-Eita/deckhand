@@ -10,11 +10,16 @@ extension HouseRules {
 #   hook.py claude|codex   PreToolUse hook: exit 2 + reason on stderr blocks the call
 #   hook.py deckhand       prints a JSON verdict (the app's own agent)
 #   hook.py install|uninstall
-import hashlib, json, os, re, shlex, shutil, sys, time
+import hashlib, json, os, re, shlex, shutil, sys, time, urllib.parse, urllib.request
 
 DIR = os.path.expanduser("~/.deckhand/rules")
 RULES = os.path.join(DIR, "rules.json")
 ALLOW = os.path.join(DIR, "allow")
+ANSWERS = os.path.join(DIR, "answers.log")
+# Commands that ask on the lock screen (with Face ID in the app) when lock-screen approvals are on.
+RISKY = re.compile(
+    r"\brm\s+-[a-zA-Z]*(r[a-zA-Z]*f|f[a-zA-Z]*r)|\b(drop|truncate)\s+(database|table|schema)\b|\bmkfs\b|\bdd\s+if="
+    r"|\bgit\s+push\b" + r"[^;&|\n]*" + r"(--force|\s-f\b)|\bchmod\s+-R\s+777\b|\b(userdel|deluser)\b|\bdocker\s+(system|volume)\s+prune\b", re.I)
 HOOK = os.path.join(DIR, "hook.py")
 MARK = ".deckhand/rules/hook.py"
 SEG = r"[^;&|\n]*"
@@ -195,6 +200,52 @@ def allowed_once(fp, now):
     return hit
 
 
+def post(url, body, headers):
+    req = urllib.request.Request(url, data=body.encode(), headers=headers, method="POST")
+    urllib.request.urlopen(req, timeout=10).read()
+
+
+def log_answer(fp, answer, who, device=""):
+    with open(ANSWERS, "a") as f:
+        f.write("%d %s %s %s %s\n" % (time.time(), fp, answer, who, device or "-"))
+
+
+def ask(cfg, who, title, subject, fp, risky):
+    """Asks on the phone's lock screen (ntfy) and waits for Allow or Deny. None when it can't ask or nobody answered."""
+    topic = (cfg.get("topic") or "").rstrip("/")
+    if not re.match(r"^https?://[^\s,;]+$", topic):
+        return None
+    reply = topic + "-reply"
+    if risky:
+        link = "deckhand://approve/%s/%s?who=%s&cmd=%s" % (cfg.get("server") or "-", fp, urllib.parse.quote(who), urllib.parse.quote(subject[:300], safe=""))
+        actions = ["view, Review in Deckhand, %s, clear=true" % link]
+    else:
+        actions = ["http, Allow, %s, method=POST, body=allow:%s, clear=true" % (reply, fp)]
+    actions.append("http, Deny, %s, method=POST, body=deny:%s, clear=true" % (reply, fp))
+    start = int(time.time()) - 1
+    host = os.uname().nodename
+    try:
+        post(topic, "%s on %s wants to:\n%s\n\n%s" % (who, host, subject[:500], title),
+             {"Title": "Allow this?", "Tags": "raised_hand", "Priority": "high", "Actions": "; ".join(actions)})
+    except Exception:
+        return None
+    minutes = cfg.get("minutes")
+    deadline = time.time() + 60 * float(10 if minutes is None else minutes)
+    while time.time() < deadline:
+        try:
+            with urllib.request.urlopen(reply + "/json?poll=1&since=%d" % start, timeout=15) as r:
+                for line in r.read().decode().splitlines():
+                    parts = (json.loads(line).get("message") or "").split(":")
+                    if len(parts) >= 2 and parts[1] == fp and parts[0] in ("allow", "deny"):
+                        log_answer(fp, parts[0], who, parts[2] if len(parts) > 2 else "")
+                        return parts[0]
+        except Exception:
+            pass
+        time.sleep(float(os.environ.get("DECKHAND_ASK_POLL") or 3))
+    log_answer(fp, "timeout", who)
+    return None
+
+
 def write_json(path, data):
     tmp = path + ".dh"
     with open(tmp, "w") as f:
@@ -216,7 +267,7 @@ def wire_claude(on):
     groups = [g for g in hooks.get("PreToolUse") or [] if not any(MARK in (h.get("command") or "") for h in g.get("hooks") or [])]
     if on:
         groups.append({"matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit",
-                       "hooks": [{"type": "command", "command": 'python3 "$HOME/.deckhand/rules/hook.py" claude'}]})
+                       "hooks": [{"type": "command", "command": 'python3 "$HOME/.deckhand/rules/hook.py" claude', "timeout": 1800}]})
     if groups:
         hooks["PreToolUse"] = groups
     else:
@@ -295,6 +346,12 @@ def main():
         return 0
     now = time.time()
     hit = check(rules, mode, data, now)
+    cfg = rules.get("ask") or {}
+    risky = False
+    if not hit and cfg and mode in ("claude", "codex"):
+        command = action(mode, data)[0]
+        if command and RISKY.search(command):
+            hit, risky = ("risky", "A command that can't easily be undone", command), True
     if mode == "deckhand":
         print(json.dumps({"blocked": False} if not hit else {"blocked": True, "rule": hit[0], "title": hit[1]}))
         return 0
@@ -304,6 +361,14 @@ def main():
     fp = hashlib.sha256((rid + "\n" + subject).encode()).hexdigest()[:12]
     if allowed_once(fp, now):
         return 0
+    if cfg:
+        who = {"claude": "Claude Code", "codex": "Codex"}.get(mode, "An agent")
+        answer = ask(cfg, who, title, subject, fp, risky or rid == "risky")
+        if answer == "allow":
+            return 0
+        if answer == "deny":
+            print("The user said no on their phone (%s). Don't try this again; tell them what you wanted to do. [deckhand-rule %s %s]" % (title, rid, fp), file=sys.stderr)
+            return 2
     print("Blocked by house rule: %s. The server owner set this rule in Deckhand; don't try to get around it. "
           "Tell the user what you wanted to do: they can allow it once in the app. [deckhand-rule %s %s]" % (title, rid, fp), file=sys.stderr)
     return 2

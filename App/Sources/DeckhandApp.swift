@@ -68,6 +68,8 @@ struct RootView: View {
                 try? await Task.sleep(for: .seconds(2))
                 await DebugSeed.runIntent(spec)
             }
+            // DECKHAND_SEED_NTFY=<topic URL>: the ntfy topic (lock-screen approvals, uptime pushes).
+            if let t = ProcessInfo.processInfo.environment["DECKHAND_SEED_NTFY"] { AppSettings.shared.ntfyTopicURL = t }
             // DECKHAND_SEED_OPEN_URL=deckhand://thread/<id>: open it like a tapped notification.
             if let s = ProcessInfo.processInfo.environment["DECKHAND_SEED_OPEN_URL"], let url = URL(string: s) {
                 try? await Task.sleep(for: .seconds(1))

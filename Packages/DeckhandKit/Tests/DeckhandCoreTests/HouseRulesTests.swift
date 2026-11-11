@@ -220,4 +220,54 @@ import Testing
         guard case .toolResult(let r) = provider.requests[1].messages[2].blocks[0] else { Issue.record("no result"); return }
         #expect(r.isError && r.content.hasPrefix("Blocked by house rule: Read-only mode."))
     }
+
+    /// A fake ntfy: records the push, then answers on <topic>-reply with `answer:<fingerprint>` (or never).
+    func fakeNtfy(_ dir: String, port: Int, answer: String) async throws {
+        let py = """
+        import http.server, json, re, sys
+        fp = [None]
+        class H(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                n = int(self.headers.get('Content-Length', 0)); body = self.rfile.read(n).decode()
+                acts = self.headers.get('Actions', '')
+                m = re.search(r'(allow|deny):([0-9a-f]{12})', acts); fp[0] = m.group(2) if m else None
+                open(sys.argv[2] + '/push.txt', 'a').write(json.dumps({'path': self.path, 'actions': acts, 'body': body, 'priority': self.headers.get('Priority')}) + '\\n')
+                self.send_response(200); self.end_headers()
+            def do_GET(self):
+                self.send_response(200); self.end_headers()
+                if fp[0] and sys.argv[3] != 'none' and '-reply/json' in self.path:
+                    self.wfile.write((json.dumps({'message': sys.argv[3] + ':' + fp[0] + ':test-phone'}) + '\\n').encode())
+            def log_message(self, *a): pass
+        http.server.HTTPServer(('127.0.0.1', int(sys.argv[1])), H).serve_forever()
+        """
+        try py.write(toFile: dir + "/ntfy.py", atomically: true, encoding: .utf8)
+        _ = try await LocalShell().run("(python3 '\(dir)/ntfy.py' \(port) '\(dir)' \(answer) >/dev/null 2>&1 &); sleep 1", timeout: .seconds(10))
+    }
+
+    @Test func asksOnTheLockScreen() async throws {
+        for (answer, command, expectExit, risky) in [("allow", "rm /srv/db/x", Int32(0), false), ("deny", "rm -rf /tmp/old", Int32(2), true), ("none", "rm /srv/db/y", Int32(2), false)] {
+            let port = Int.random(in: 47001...49000)
+            let ask = HouseRules.Ask(topic: "http://127.0.0.1:\(port)/t", server: "SERVER-ID", minutes: 0)
+            var rules = HouseRules(protectedPaths: ["/srv/db"], ask: ask)
+            rules.ask?.minutes = answer == "none" ? 0 : 1
+            let (h, result) = try await install(rules)
+            #expect(result.ok)
+            try await fakeNtfy(h.path, port: port, answer: answer)
+            defer { Task { _ = try? await LocalShell().run("pkill -f 'ntfy.py \(port)'", timeout: .seconds(5)) } }
+            let b64 = Data(bash(command).jsonString().utf8).base64EncodedString()
+            let r = try await h.sh("printf '%s' '\(b64)' | base64 -d | DECKHAND_ASK_POLL=0.2 python3 ~/.deckhand/rules/hook.py claude")
+            #expect(r.exitCode == expectExit, "\(answer): \(r.stderr)")
+            let push = try h.read("push.txt")
+            #expect(push.contains("\"path\": \"/t\"") && push.contains("\"priority\": \"high\""))
+            #expect(push.contains("deckhand://approve/SERVER-ID/") == risky)
+            if answer == "deny" { #expect(r.stderr.contains("said no")) }
+            if answer == "none" { #expect(r.stderr.contains("Blocked by house rule")) }
+            if answer != "none" { #expect(try h.read(".deckhand/rules/answers.log").contains("\(answer) Claude Code test-phone")) }
+        }
+    }
+
+    @Test func noAskWithoutTopic() async throws {
+        let (h, _) = try await install(HouseRules(protectedPaths: ["/srv/db"]))
+        #expect(try await blocked(h, bash("rm -rf /tmp/old")) == nil) // risky commands only ask when approvals are on
+    }
 }
