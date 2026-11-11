@@ -96,6 +96,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.webApps")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            DiskUsageView(server: server)
+                        } label: {
+                            ManageRow(title: "Disk usage", subtitle: "What takes the space, and what can go", symbol: "chart.pie")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.diskUsage")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")
