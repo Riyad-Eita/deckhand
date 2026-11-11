@@ -28,6 +28,8 @@ struct CLILoginView: View {
     @State private var manualCode = ""
     @State private var showManual = false
     @State private var submitted = false
+    @State private var web = WebSignIn()
+    @State private var codeCopied = false
 
     init(server: Server, cli: ServerCLI, onFinished: @escaping (Bool) -> Void = { _ in }) {
         self.server = server
@@ -43,13 +45,7 @@ struct CLILoginView: View {
                 case .starting:
                     progress("Starting \(cli.displayName) sign-in on \(server.displayName)…")
                 case .signIn(let url):
-                    VStack(spacing: 0) {
-                        if let deviceCode { DeviceCodeBanner(code: deviceCode) }
-                        LoginWebView(url: url) { callback in
-                            if cli == .claudeCode, let code = ClaudeOAuth.code(fromCallback: callback) { submit(code) }
-                        }
-                        fallbackBar(url)
-                    }
+                    signInSteps(url)
                 case .submitting:
                     progress("Finishing sign-in on the server…")
                 case .done:
@@ -96,6 +92,7 @@ struct CLILoginView: View {
             submit(text.trimmingCharacters(in: .whitespacesAndNewlines))
         }
         .onDisappear {
+            web.close()
             session?.close()
             onFinished(phase == .done)
         }
@@ -109,6 +106,74 @@ struct CLILoginView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    /// Three plain steps instead of an embedded page: Google refuses to sign in inside embedded web views.
+    @ViewBuilder private func signInSteps(_ url: URL) -> some View {
+        let account = cli == .claudeCode ? "Claude" : "ChatGPT"
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                HStack(spacing: 12) {
+                    BrandIcon(brand: cli.brand, size: 44)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Sign in with your \(account) account").font(.title3.weight(.semibold))
+                        Text("\(cli.displayName) on \(server.displayName) then uses your plan.").font(.subheadline).foregroundStyle(.secondary)
+                    }
+                }
+                if cli == .codex, let deviceCode {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Your code").font(.caption).foregroundStyle(.secondary)
+                        HStack {
+                            Text(deviceCode).font(.system(.title, design: .monospaced).weight(.semibold)).textSelection(.enabled)
+                                .accessibilityIdentifier("login.deviceCode")
+                            Spacer()
+                            Button(codeCopied ? "Copied" : "Copy") { UIPasteboard.general.string = deviceCode; codeCopied = true }
+                                .buttonStyle(.bordered)
+                        }
+                    }
+                    .padding(14)
+                    .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+                }
+                VStack(alignment: .leading, spacing: 12) {
+                    if cli == .claudeCode {
+                        step(1, "Tap Sign in and log in — with Google, Apple or your email.")
+                        step(2, "On the last page, tap Copy Code.")
+                        step(3, "Close the page. Deckhand fills in the code for you.")
+                    } else {
+                        step(1, "Tap Sign in and log in with your ChatGPT account.")
+                        step(2, "Enter the code above when the page asks for it (it's already copied).")
+                        step(3, "Deckhand notices when it's done and closes the page.")
+                    }
+                }
+                Button {
+                    if cli == .codex, let deviceCode { UIPasteboard.general.string = deviceCode; codeCopied = true }
+                    web.open(url) { pickUpCopiedCode() }
+                } label: {
+                    Text("Sign in with \(account)").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 6)
+                }
+                .buttonStyle(.borderedProminent)
+                .accessibilityIdentifier("login.open")
+                if cli == .claudeCode {
+                    Button("Paste the code myself") { showManual = true }.frame(maxWidth: .infinity)
+                }
+            }
+            .padding(24)
+        }
+    }
+
+    private func step(_ n: Int, _ text: LocalizedStringKey) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text("\(n)").font(.subheadline.weight(.bold)).foregroundStyle(.white)
+                .frame(width: 24, height: 24).background(Theme.accent, in: Circle())
+            Text(text).font(.subheadline)
+        }
+    }
+
+    /// After the sign-in sheet closes: a copied Claude code goes to the server right away.
+    private func pickUpCopiedCode() {
+        guard cli == .claudeCode, case .signIn = phase, UIPasteboard.general.hasStrings,
+              let text = UIPasteboard.general.string, ClaudeOAuth.looksLikeCode(text) else { return }
+        submit(text.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     @ViewBuilder private func fallbackBar(_ url: URL) -> some View {
@@ -151,7 +216,9 @@ struct CLILoginView: View {
         case .openURL(let url): phase = .signIn(url)
         case .deviceCode(let code): deviceCode = code
         case .waitingForCode: break
-        case .succeeded: await confirm()
+        case .succeeded:
+            web.close()
+            await confirm()
         case .failed(let why): phase = .failed("The server reported: \(why). Start again to get a fresh sign-in link.")
         }
     }
@@ -169,7 +236,9 @@ struct CLILoginView: View {
             phase = .failed("Couldn't check the result.")
             return
         }
-        let state = ServerInventory.parse(r.stdout).state(for: cli)
+        let inventory = ServerInventory.parse(r.stdout)
+        AgentStatus.shared.update(server, from: inventory)
+        let state = inventory.state(for: cli)
         phase = state.loggedIn ? .done : (phase == .submitting ? .failed("The code wasn't accepted. Start again for a fresh link.") : phase)
     }
 }

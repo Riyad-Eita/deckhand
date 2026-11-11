@@ -82,6 +82,9 @@ enum DebugSeed {
             }
             for c in (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? [] { context.delete(c) }
             try? context.save()
+            // The Keychain survives reinstalls: forget model keys and the home card choice too.
+            if env["DECKHAND_SEED_APIKEY"] == nil { AppSettings.shared.apiKey = "" }
+            UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")
         }
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
         // DECKHAND_SEED_CONNECTION="Name|https://url" adds an HTTP MCP connection once.

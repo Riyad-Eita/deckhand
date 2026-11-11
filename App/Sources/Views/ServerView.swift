@@ -1,3 +1,4 @@
+import DeckhandCore
 import SwiftData
 import SwiftUI
 
@@ -100,6 +101,13 @@ struct ThreadListView: View {
     @Environment(\.modelContext) private var context
     @State private var openThread: ChatThread?
     @State private var pickingFolderFor: Engine?
+    @State private var signingIn: ServerCLI?
+    @State private var showingSettings = false
+
+    private func isReady(_ engine: Engine) -> Bool {
+        if let cli = engine.serverCLI { return AgentStatus.shared.isSignedIn(cli, on: server) != false }
+        return AppSettings.shared.isConfigured
+    }
 
     private var threads: [ChatThread] {
         (server.threads ?? []).sorted { $0.updatedAt > $1.updatedAt }
@@ -110,8 +118,18 @@ struct ThreadListView: View {
             Section {
                 HStack(spacing: 10) {
                     ForEach([Engine.claudeCode, .codex, .ownKey]) { engine in
-                        Button { pickingFolderFor = engine } label: { EngineTile(engine: engine) }
+                        Button {
+                            // Not ready yet: sign in (or add a key) first instead of starting a task that fails.
+                            if let cli = engine.serverCLI, AgentStatus.shared.isSignedIn(cli, on: server) == false {
+                                signingIn = cli
+                            } else if engine == .ownKey && !AppSettings.shared.isConfigured {
+                                showingSettings = true
+                            } else {
+                                pickingFolderFor = engine
+                            }
+                        } label: { EngineTile(engine: engine, ready: isReady(engine)) }
                             .buttonStyle(.plain)
+                            .accessibilityIdentifier("engine.\(engine.rawValue)")
                     }
                 }
                 .listRowInsets(EdgeInsets())
@@ -157,6 +175,9 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        .task { await AgentStatus.shared.refresh(server) }
+        .sheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
+        .sheet(isPresented: $showingSettings) { SettingsView() }
         .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
             guard let id, let thread = threads.first(where: { $0.id == id }) else { return }
             AppRouter.shared.pendingThread = nil
@@ -214,13 +235,20 @@ struct ThreadListView: View {
 /// One engine as a tappable tile: logo, name, what it uses.
 struct EngineTile: View {
     let engine: Engine
+    /// false: needs a sign-in (CLI) or a key (own model) first.
+    var ready = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             BrandIcon(brand: engine.brand, size: 36)
             VStack(alignment: .leading, spacing: 2) {
                 Text(engine.shortTitle).font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
-                Text(subtitle).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                if ready {
+                    Text(subtitle).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                } else {
+                    Text(engine == .ownKey ? String(localized: "Add a key") : String(localized: "Sign in"))
+                        .font(.caption.weight(.semibold)).foregroundStyle(Theme.accent).lineLimit(1)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -229,7 +257,8 @@ struct EngineTile: View {
         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
         .contentShape(RoundedRectangle(cornerRadius: Theme.corner))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("New task with \(engine.title)")
+        .accessibilityLabel(ready ? Text("New task with \(engine.title)")
+                            : engine == .ownKey ? Text("Add a key for \(engine.title)") : Text("Sign in to \(engine.title)"))
     }
 
     private var subtitle: String {

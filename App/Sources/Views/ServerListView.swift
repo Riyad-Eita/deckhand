@@ -11,12 +11,18 @@ struct ServerListView: View {
     @State private var showingSettings = false
     @State private var autoOpen: Server?
     @State private var showingConnections = false
+    @State private var agentSetupServer: Server?
+    @AppStorage("home.agentCardDismissed") private var agentCardDismissed = false
 
     var body: some View {
         List {
-            if !settings.isConfigured && !servers.isEmpty {
+            if !settings.isConfigured && !AgentStatus.shared.anySignedIn(on: servers) && !agentCardDismissed, let first = servers.first {
                 Section {
-                    WorksWithCard { showingSettings = true }
+                    AgentSetupCard(
+                        serverName: first.displayName,
+                        usePlan: { agentSetupServer = first },
+                        useKey: { showingSettings = true },
+                        dismiss: { agentCardDismissed = true })
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
                 }
@@ -65,6 +71,11 @@ struct ServerListView: View {
             }
         }
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
+        .sheet(item: $agentSetupServer) { ServerToolsView(server: $0) { _ in } }
+        .task {
+            // Learn which agents are ready on each server (quietly, for the home screen).
+            for server in servers { await AgentStatus.shared.refresh(server) }
+        }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
         .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
             // A notification or link for a chat: open its server; the server screen opens the chat.
@@ -121,7 +132,11 @@ struct ServerRow: View {
                     LinearGradient(colors: [Color(white: 0.28), Color(white: 0.14)], startPoint: .top, endPoint: .bottom),
                     in: RoundedRectangle(cornerRadius: 9, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
-                Text(server.displayName).font(.body.weight(.semibold))
+                HStack(spacing: 6) {
+                    Text(server.displayName).font(.body.weight(.semibold))
+                    // Agents signed in on this server.
+                    ForEach(AgentStatus.shared.clis(for: server), id: \.self) { BrandIcon(brand: $0.brand, size: 18) }
+                }
                 Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
             }
             Spacer(minLength: 8)
@@ -177,5 +192,65 @@ struct WorksWithCard: View {
         .padding(16)
         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous).stroke(Theme.hairline))
+    }
+}
+
+/// Shown until an agent is ready somewhere: the two ways to get one, in plain words.
+struct AgentSetupCard: View {
+    let serverName: String
+    let usePlan: () -> Void
+    let useKey: () -> Void
+    let dismiss: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Set up your agent").font(.headline)
+                    Text("The agent does the work on your servers. Pick one way — you can add the other later.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Button(action: dismiss) { Image(systemName: "xmark").font(.caption.weight(.bold)).foregroundStyle(.tertiary) }
+                    .buttonStyle(.plain).accessibilityLabel("Not now")
+            }
+            option(icons: [.claude, .codex], title: "Your Claude or ChatGPT plan",
+                   detail: "Claude Code or Codex runs on \(serverName). Sign in once — no API key needed.",
+                   action: usePlan, id: "agentCard.plan")
+            option(icons: [], symbol: "key.fill", title: "Your own API key",
+                   detail: "Anthropic, OpenAI, OpenRouter or a local model. The agent runs in the app.",
+                   action: useKey, id: "agentCard.key")
+        }
+        .padding(16)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Theme.corner + 4, style: .continuous).stroke(Theme.hairline))
+    }
+
+    private func option(icons: [Brand], symbol: String? = nil, title: LocalizedStringKey, detail: LocalizedStringKey,
+                        action: @escaping () -> Void, id: String) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                ZStack {
+                    if let symbol {
+                        Image(systemName: symbol).font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.accent)
+                            .frame(width: 40, height: 40).background(Theme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    } else {
+                        HStack(spacing: -10) { ForEach(icons, id: \.self) { BrandIcon(brand: $0, size: 30) } }.frame(width: 40, height: 40)
+                    }
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+                    Text(detail).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+            }
+            .padding(12)
+            .background(Color(uiColor: .systemBackground).opacity(0.6), in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(id)
     }
 }

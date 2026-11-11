@@ -105,6 +105,16 @@
         }
       }
     },
+    "%@ on %@ then uses your plan.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ auf %2$@ nutzt dann dein Abo."
+          }
+        }
+      }
+    },
     "%@ refused the connection on port %lld.": {
       "localizations": {
         "de": {
@@ -494,6 +504,26 @@
         }
       }
     },
+    "Add a key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a key for %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key für %@ hinzufügen"
+          }
+        }
+      }
+    },
     "Add a model key in Settings, or sign in to Claude Code or Codex on this server, to get suggestions.": {
       "localizations": {
         "de": {
@@ -762,6 +792,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anthropic (Claude)"
+          }
+        }
+      }
+    },
+    "Anthropic, OpenAI, OpenRouter or a local model. The agent runs in the app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic, OpenAI, OpenRouter oder ein lokales Modell. Der Agent läuft in der App."
           }
         }
       }
@@ -1378,6 +1418,16 @@
         }
       }
     },
+    "Claude Code or Codex runs on %@. Sign in once — no API key needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code oder Codex läuft auf %@. Einmal anmelden – kein API-Key nötig."
+          }
+        }
+      }
+    },
     "Claude Code stopped without a result. Is it installed and logged in on the server?": {
       "localizations": {
         "de": {
@@ -1454,6 +1504,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port %@ schließen"
+          }
+        }
+      }
+    },
+    "Close the page. Deckhand fills in the code for you.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließ die Seite. Deckhand trägt den Code für dich ein."
           }
         }
       }
@@ -2060,6 +2120,16 @@
         }
       }
     },
+    "Deckhand notices when it's done and closes the page.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand merkt, wenn es fertig ist, und schließt die Seite."
+          }
+        }
+      }
+    },
     "Deckhand opens the new port next to the old one, logs in on it, and only then closes the old one. If anything goes wrong, the server switches back by itself after 5 minutes.": {
       "localizations": {
         "de": {
@@ -2490,6 +2560,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gib eine Zahl ein."
+          }
+        }
+      }
+    },
+    "Enter the code above when the page asks for it (it's already copied).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib den Code oben ein, wenn die Seite danach fragt (er ist schon kopiert)."
           }
         }
       }
@@ -4190,6 +4270,16 @@
         }
       }
     },
+    "Not now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht jetzt"
+          }
+        }
+      }
+    },
     "Note (optional)": {
       "localizations": {
         "de": {
@@ -4346,6 +4436,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf %@"
+          }
+        }
+      }
+    },
+    "On the last page, tap Copy Code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf der letzten Seite auf „Copy Code“."
           }
         }
       }
@@ -4616,6 +4716,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code einfügen"
+          }
+        }
+      }
+    },
+    "Paste the code myself": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code selbst einfügen"
           }
         }
       }
@@ -5744,6 +5854,16 @@
         }
       }
     },
+    "Set up your agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richte deinen Agenten ein"
+          }
+        }
+      }
+    },
     "Set up — %lld steps need a look.": {
       "localizations": {
         "de": {
@@ -5864,6 +5984,16 @@
         }
       }
     },
+    "Sign in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden"
+          }
+        }
+      }
+    },
     "Sign in to %@": {
       "localizations": {
         "de": {
@@ -5890,6 +6020,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anmelden mit"
+          }
+        }
+      }
+    },
+    "Sign in with %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ anmelden"
+          }
+        }
+      }
+    },
+    "Sign in with your %@ account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deinem %@-Konto anmelden"
           }
         }
       }
@@ -6255,6 +6405,26 @@
         }
       }
     },
+    "Tap Sign in and log in with your ChatGPT account.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf „Anmelden“ und melde dich mit deinem ChatGPT-Konto an."
+          }
+        }
+      }
+    },
+    "Tap Sign in and log in — with Google, Apple or your email.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf „Anmelden“ und melde dich an – mit Google, Apple oder deiner E-Mail."
+          }
+        }
+      }
+    },
     "Task done": {
       "localizations": {
         "de": {
@@ -6371,6 +6541,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Adresse %@ wurde nicht gefunden."
+          }
+        }
+      }
+    },
+    "The agent does the work on your servers. Pick one way — you can add the other later.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Agent erledigt die Arbeit auf deinen Servern. Wähl einen Weg – den anderen kannst du später ergänzen."
           }
         }
       }
@@ -7489,12 +7669,32 @@
         }
       }
     },
+    "Your Claude or ChatGPT plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Claude- oder ChatGPT-Abo"
+          }
+        }
+      }
+    },
     "Your branch and the remote have both moved on. Ask an agent to merge or rebase them.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dein Branch und das Remote haben sich beide weiterentwickelt. Lass einen Agenten mergen oder rebasen."
+          }
+        }
+      }
+    },
+    "Your code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Code"
           }
         }
       }
