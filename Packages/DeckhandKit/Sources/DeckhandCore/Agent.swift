@@ -43,6 +43,15 @@ public struct ApprovalRequest: Sendable, Hashable {
     public var readOnly: Bool
     /// Set when the call looks destructive; the UI should warn loudly.
     public var danger: String?
+    /// Set when the call breaks one of the server's house rules: allowing it overrides the rule once.
+    public var rule: HouseRules.Block?
+
+    public init(call: ToolCall, readOnly: Bool, danger: String? = nil, rule: HouseRules.Block? = nil) {
+        self.call = call
+        self.readOnly = readOnly
+        self.danger = danger
+        self.rule = rule
+    }
 }
 
 public enum ApprovalDecision: Sendable, Hashable {
@@ -61,6 +70,8 @@ public struct Agent: Sendable {
     /// Tool output goes to the model with tokens, keys and passwords replaced by `[REDACTED: …]`.
     /// The app still gets the original output for the user (masked on screen until tapped).
     public var redactSecrets: Bool
+    /// Asks the server's house rules about a call before it runs (nil: no rules).
+    public var ruleCheck: (@Sendable (ToolCall) async -> HouseRules.Block?)?
     public var approve: @Sendable (ApprovalRequest) async -> ApprovalDecision
 
     public init(
@@ -71,9 +82,11 @@ public struct Agent: Sendable {
         system: String,
         maxTurns: Int = 60,
         redactSecrets: Bool = true,
+        ruleCheck: (@Sendable (ToolCall) async -> HouseRules.Block?)? = nil,
         approve: @escaping @Sendable (ApprovalRequest) async -> ApprovalDecision
     ) {
         self.redactSecrets = redactSecrets
+        self.ruleCheck = ruleCheck
         self.provider = provider
         self.shell = shell
         self.tools = tools
@@ -181,7 +194,9 @@ public struct Agent: Sendable {
             return ToolResult(toolUseID: call.id, content: "{\"INVALID_JSON\": \(JSONValue.string(raw).jsonString())}", isError: true)
         }
         let danger = DangerCheck.assess(call)
-        let needsApproval = danger != nil || {
+        // House rules can't be switched off by the approval policy: a call that breaks one always waits for the user.
+        let rule = await ruleCheck?(call)
+        let needsApproval = danger != nil || rule != nil || {
             switch policy {
             case .ask: true
             case .autoRead: !tool.isReadOnly
@@ -189,8 +204,10 @@ public struct Agent: Sendable {
             }
         }()
         if needsApproval {
-            switch await approve(ApprovalRequest(call: call, readOnly: tool.isReadOnly, danger: danger)) {
+            switch await approve(ApprovalRequest(call: call, readOnly: tool.isReadOnly, danger: danger, rule: rule)) {
             case .allow: break
+            case .deny where rule != nil:
+                return ToolResult(toolUseID: call.id, content: HouseRules.blockedMessage(rule!), isError: true)
             case .deny(let reason):
                 let why = reason.map { " Reason: \($0)" } ?? ""
                 return ToolResult(toolUseID: call.id, content: "The user declined this tool call.\(why)", isError: true)

@@ -4,9 +4,12 @@ import Foundation
 public struct CLIOptions: Sendable, Hashable {
     public var model: String?
     public var effort: String?
-    public init(model: String? = nil, effort: String? = nil) {
+    /// Spending cap for one Claude Code run (house rule). Codex runs on a subscription and has no such cap.
+    public var maxBudgetUSD: Double?
+    public init(model: String? = nil, effort: String? = nil, maxBudgetUSD: Double? = nil) {
         self.model = model.flatMap { $0.isEmpty ? nil : $0 }
         self.effort = effort.flatMap { $0.isEmpty ? nil : $0 }
+        self.maxBudgetUSD = maxBudgetUSD.flatMap { $0 > 0 ? $0 : nil }
     }
 }
 
@@ -63,6 +66,7 @@ public enum CLIModels {
         case .claudeCode:
             if let m = options.model { out += " --model \(ShellQuote.quote(m))" }
             if let e = options.effort { out += " --effort \(ShellQuote.quote(e))" }
+            if let b = options.maxBudgetUSD { out += " --max-budget-usd \(String(format: "%.2f", locale: Locale(identifier: "en_US_POSIX"), b))" }
         }
         return out
     }

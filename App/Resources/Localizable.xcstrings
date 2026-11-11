@@ -624,6 +624,16 @@
         }
       }
     },
+    "Active for %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv für %@."
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "de": {
@@ -864,6 +874,16 @@
         }
       }
     },
+    "Agents may look around but can't change files or run commands that change things.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agenten dürfen sich umsehen, aber keine Dateien ändern und keine Befehle ausführen, die etwas ändern."
+          }
+        }
+      }
+    },
     "Agents on your server": {
       "localizations": {
         "de": {
@@ -901,6 +921,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port erlauben"
+          }
+        }
+      }
+    },
+    "Allow once": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal erlauben"
+          }
+        }
+      }
+    },
+    "Allow once and continue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal erlauben und weitermachen"
           }
         }
       }
@@ -1764,6 +1804,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude Code hat ohne Ergebnis aufgehört. Ist es auf dem Server installiert und angemeldet?"
+          }
+        }
+      }
+    },
+    "Claude Code stops a task that would cost more. Plans like Claude Max or ChatGPT have no per-task cost.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code stoppt eine Aufgabe, die mehr kosten würde. Abos wie Claude Max oder ChatGPT haben keine Kosten pro Aufgabe."
           }
         }
       }
@@ -3635,6 +3685,16 @@
         }
       }
     },
+    "From": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von"
+          }
+        }
+      }
+    },
     "Full access": {
       "extractionState": "manual",
       "localizations": {
@@ -3780,6 +3840,26 @@
     "HTTP %lld": {
       "shouldTranslate": false
     },
+    "Hands off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finger weg"
+          }
+        }
+      }
+    },
+    "Hands off %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finger weg von %@"
+          }
+        }
+      }
+    },
     "Harden SSH logins": {
       "localizations": {
         "de": {
@@ -3880,12 +3960,42 @@
         }
       }
     },
+    "House rules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausregeln"
+          }
+        }
+      }
+    },
+    "House rules for agents": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausregeln für Agenten"
+          }
+        }
+      }
+    },
     "How requests flow": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Wie Anfragen laufen"
+          }
+        }
+      }
+    },
+    "I allowed that once. Go ahead and do it now.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich habe das einmal erlaubt. Mach es jetzt."
           }
         }
       }
@@ -4900,6 +5010,36 @@
         }
       }
     },
+    "Never open ports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie Ports öffnen"
+          }
+        }
+      }
+    },
+    "Never run": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie ausführen"
+          }
+        }
+      }
+    },
+    "Never run %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie %@ ausführen"
+          }
+        }
+      }
+    },
     "New Folder": {
       "localizations": {
         "de": {
@@ -5140,6 +5280,16 @@
         }
       }
     },
+    "No edits, and no commands that touch these folders or files.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Änderungen und keine Befehle, die diese Ordner oder Dateien anfassen."
+          }
+        }
+      }
+    },
     "No lines": {
       "localizations": {
         "de": {
@@ -5196,6 +5346,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Repositories gefunden"
+          }
+        }
+      }
+    },
+    "No restarts %@–%@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Neustarts %1$@–%2$@"
+          }
+        }
+      }
+    },
+    "No restarts, stops or reboots in this window (%@).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Neustarts, Stopps oder Reboots in diesem Zeitraum (%@)."
           }
         }
       }
@@ -6034,6 +6204,16 @@
         }
       }
     },
+    "Protect the database folders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbank-Ordner schützen"
+          }
+        }
+      }
+    },
     "Protocol": {
       "localizations": {
         "de": {
@@ -6145,6 +6325,16 @@
         }
       }
     },
+    "Quiet hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruhezeiten"
+          }
+        }
+      }
+    },
     "Rate limited by the provider. %@": {
       "localizations": {
         "de": {
@@ -6162,6 +6352,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur lesen"
+          }
+        }
+      }
+    },
+    "Read-only mode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur-Lesen-Modus"
+          }
+        }
+      }
+    },
+    "Read-only mode: agents may look, not change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur-Lesen-Modus: Agenten dürfen schauen, nicht ändern"
           }
         }
       }
@@ -6332,6 +6542,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modell entfernen"
+          }
+        }
+      }
+    },
+    "Remove all rules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Regeln entfernen"
           }
         }
       }
@@ -6803,6 +7023,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sichern"
+          }
+        }
+      }
+    },
+    "Save rules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regeln sichern"
           }
         }
       }
@@ -7587,6 +7817,16 @@
         }
       }
     },
+    "Spending cap per task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kostenlimit pro Aufgabe"
+          }
+        }
+      }
+    },
     "Stage": {
       "localizations": {
         "de": {
@@ -7798,12 +8038,32 @@
         }
       }
     },
+    "Stopped by a house rule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von einer Hausregel gestoppt"
+          }
+        }
+      }
+    },
     "Stopped containers, unused networks, dangling images and build cache. Running containers and volumes stay.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Gestoppte Container, ungenutzte Netzwerke, verwaiste Images und Build-Cache. Laufende Container und Volumes bleiben."
+          }
+        }
+      }
+    },
+    "Stored on the server in ~/.deckhand/rules and checked there before every agent action — also for tasks you start from a laptop. A blocked action can be allowed once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liegt auf dem Server in ~/.deckhand/rules und wird dort vor jeder Agenten-Aktion geprüft – auch bei Aufgaben, die du vom Laptop startest. Eine blockierte Aktion kann einmal erlaubt werden."
           }
         }
       }
@@ -8398,6 +8658,16 @@
         }
       }
     },
+    "This breaks a house rule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das bricht eine Hausregel"
+          }
+        }
+      }
+    },
     "This can take whatever depends on %@ offline.": {
       "localizations": {
         "de": {
@@ -8548,6 +8818,16 @@
         }
       }
     },
+    "This server has no python3, which the rules need. Install it from Updates or the terminal.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesem Server fehlt python3, das die Regeln brauchen. Installiere es unter Updates oder im Terminal."
+          }
+        }
+      }
+    },
     "This user can't use sudo on the server. Log in as root or as an admin user.": {
       "localizations": {
         "de": {
@@ -8584,6 +8864,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Änderungen an %@ verwerfen?"
+          }
+        }
+      }
+    },
+    "To": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis"
           }
         }
       }
@@ -9249,12 +9539,32 @@
         }
       }
     },
+    "Weekdays only": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur werktags"
+          }
+        }
+      }
+    },
     "Well protected": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Gut geschützt"
+          }
+        }
+      }
+    },
+    "What Claude Code, Codex and your agent must never do": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was Claude Code, Codex und dein Agent nie tun dürfen"
           }
         }
       }
@@ -9967,6 +10277,16 @@
         }
       }
     },
+    "your own-key agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "deinen Agenten mit eigenem Key"
+          }
+        }
+      }
+    },
     "~/.cache — programs rebuild it when needed.": {
       "localizations": {
         "de": {
@@ -10006,6 +10326,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„Beenden“ bittet ihn, sich zu beenden, und erzwingt es nach 5 Sekunden. Nicht gespeicherte Arbeit darin geht verloren."
+          }
+        }
+      }
+    },
+    "“Never open ports” stops firewall openings and published Docker ports.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Nie Ports öffnen“ verhindert Firewall-Freigaben und veröffentlichte Docker-Ports."
           }
         }
       }
