@@ -14,6 +14,7 @@ public enum DatabaseDumps {
         public var location: String
         public var name: String
         public var id: String { "\(engine.rawValue)|\(location)|\(name)" }
+        public init(engine: Engine, location: String, name: String) { self.engine = engine; self.location = location; self.name = name }
         public var container: String? { location.hasPrefix("docker:") ? String(location.dropFirst(7)) : nil }
         public var label: String {
             switch engine {

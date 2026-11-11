@@ -1075,6 +1075,26 @@
         }
       }
     },
+    "Allow changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen erlauben"
+          }
+        }
+      }
+    },
+    "Allow changes?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen erlauben?"
+          }
+        }
+      }
+    },
     "Allow once": {
       "localizations": {
         "de": {
@@ -1788,12 +1808,32 @@
         }
       }
     },
+    "Change it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ändern"
+          }
+        }
+      }
+    },
     "Change the SSH port": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Port ändern"
+          }
+        }
+      }
+    },
+    "Change this value in the live database?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Wert in der laufenden Datenbank ändern?"
           }
         }
       }
@@ -2324,6 +2364,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sammle Logs, Dienste und letzte Änderungen …"
+          }
+        }
+      }
+    },
+    "Column": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spalte"
           }
         }
       }
@@ -3401,6 +3451,16 @@
         }
       }
     },
+    "Done.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigt."
+          }
+        }
+      }
+    },
     "Done: %@": {
       "localizations": {
         "de": {
@@ -3569,6 +3629,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert bearbeiten"
           }
         }
       }
@@ -3925,6 +3995,16 @@
         }
       }
     },
+    "Expires": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft ab"
+          }
+        }
+      }
+    },
     "Explain": {
       "localizations": {
         "de": {
@@ -4081,6 +4161,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Filter"
+          }
+        }
+      }
+    },
+    "Filter by": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtern nach"
           }
         }
       }
@@ -6150,6 +6240,16 @@
         }
       }
     },
+    "No keys.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Schlüssel."
+          }
+        }
+      }
+    },
     "No lines": {
       "localizations": {
         "de": {
@@ -6240,6 +6340,16 @@
         }
       }
     },
+    "No rows.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Zeilen."
+          }
+        }
+      }
+    },
     "No snapshots yet.": {
       "localizations": {
         "de": {
@@ -6256,6 +6366,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Unterordner"
+          }
+        }
+      }
+    },
+    "No tables.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Tabellen."
           }
         }
       }
@@ -6963,6 +7083,16 @@
         }
       }
     },
+    "Pattern, e.g. session:*": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muster, z. B. session:*"
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "de": {
@@ -7281,6 +7411,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stellt die Dateien wie vor dieser Änderung wieder her und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Queries then run for real against %@. Without this they run in a read-only transaction.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abfragen laufen dann echt gegen %@. Ohne das laufen sie in einer Nur-Lesen-Transaktion."
           }
         }
       }
@@ -7937,12 +8077,32 @@
         }
       }
     },
+    "Rows %lld–%lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeilen %1$lld–%2$lld"
+          }
+        }
+      }
+    },
     "Rules, presets and a check from outside": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Regeln, Vorlagen und ein Check von außen"
+          }
+        }
+      }
+    },
+    "Run": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausführen"
           }
         }
       }
@@ -8053,6 +8213,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "S3-kompatibler Speicher"
+          }
+        }
+      }
+    },
+    "SQL": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SQL"
           }
         }
       }
@@ -9438,6 +9608,16 @@
         }
       }
     },
+    "Tables, rows and SQL; Redis keys — over SSH": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabellen, Zeilen und SQL; Redis-Schlüssel – über SSH"
+          }
+        }
+      }
+    },
     "Tailscale names and IPs work too.": {
       "localizations": {
         "de": {
@@ -10168,6 +10348,16 @@
         }
       }
     },
+    "This runs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das wird ausgeführt"
+          }
+        }
+      }
+    },
     "This server doesn't allow SSH port forwarding (AllowTcpForwarding no in sshd_config).": {
       "localizations": {
         "de": {
@@ -10254,6 +10444,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gedanken"
+          }
+        }
+      }
+    },
+    "Through SSH with the database tools on the server — no database port has to be open.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über SSH mit den Datenbank-Werkzeugen auf dem Server – kein Datenbank-Port muss offen sein."
           }
         }
       }
@@ -10538,6 +10738,16 @@
         }
       }
     },
+    "Type": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ"
+          }
+        }
+      }
+    },
     "Ultra": {
       "localizations": {
         "de": {
@@ -10665,6 +10875,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorher %lld"
+          }
+        }
+      }
+    },
+    "Up to 300 keys.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis zu 300 Schlüssel."
           }
         }
       }
@@ -10885,6 +11105,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nutzt ein Passwort"
+          }
+        }
+      }
+    },
+    "Value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert"
           }
         }
       }
@@ -11502,6 +11732,16 @@
         }
       }
     },
+    "contains …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "enthält …"
+          }
+        }
+      }
+    },
     "fail2ban bans addresses that keep failing to log in, which stops password guessing and keeps logs readable.": {
       "localizations": {
         "de": {
@@ -11631,6 +11871,16 @@
     "https://example.com/mcp": {
       "shouldTranslate": false
     },
+    "in %@ s": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %@ s"
+          }
+        }
+      }
+    },
     "key": {
       "localizations": {
         "de": {
@@ -11647,6 +11897,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Minute"
+          }
+        }
+      }
+    },
+    "never": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nie"
           }
         }
       }

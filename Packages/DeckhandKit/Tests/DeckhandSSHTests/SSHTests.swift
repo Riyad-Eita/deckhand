@@ -810,3 +810,43 @@ struct LiveDatabaseDumpTests {
         #expect(try await conn.run("crontab -l 2>/dev/null | grep -c deckhand/db; true", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "0")
     }
 }
+
+/// The database browser on a disposable server (Postgres `shop`, SQLite file, Redis). Opt-in like LiveDatabaseDumpTests.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_DB_TEST"] != nil))
+struct LiveDatabaseBrowserTests {
+    @Test func browseQueryEditRedis() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func grid(_ db: DatabaseBrowser.Database, _ sql: String, writes: Bool = false) async throws -> Result<DatabaseBrowser.Grid, DatabaseBrowser.BrowserError> {
+            DatabaseBrowser.parse(db, try await conn.run(DatabaseBrowser.sqlCommand(db, sql, allowWrites: writes), timeout: .seconds(30)).stdout)
+        }
+        let pg = DatabaseBrowser.Database(engine: .postgres, location: "local", name: "shop")
+        let tables = try await grid(pg, DatabaseBrowser.tablesSQL(pg)).get()
+        #expect(tables.rows.map { $0[0] } == ["public.customers", "public.orders"])
+        #expect(try await grid(pg, DatabaseBrowser.primaryKeySQL(pg, table: "public.orders")).get().rows.first?.first == "id")
+        let rows = try await grid(pg, DatabaseBrowser.rowsSQL(pg, table: "public.orders", filter: ("total", "42"))).get()
+        #expect(rows.columns == ["id", "total"] && rows.rows.count == 1)
+        // Read-only by default: a write fails and changes nothing.
+        if case .success = try await grid(pg, "update orders set total = 0") { Issue.record("write should fail read-only") }
+        let id = try #require(rows.rows.first?.first ?? nil)
+        let update = try #require(DatabaseBrowser.updateSQL(pg, table: "public.orders", key: [("id", id)], column: "total", newValue: "43"))
+        _ = try await grid(pg, update, writes: true).get()
+        #expect(try await grid(pg, "select total from orders where id = \(id)").get().rows.first?.first == "43")
+        _ = try await grid(pg, "update orders set total = 42 where id = \(id)", writes: true).get()
+
+        let lite = DatabaseBrowser.Database(engine: .sqlite, location: "/home/\(env["DECKHAND_BACKUP_USER"]!)/app/data.db", name: "data.db")
+        #expect(try await grid(lite, DatabaseBrowser.tablesSQL(lite)).get().rows.first?.first == "notes")
+        if case .success = try await grid(lite, "delete from notes") { Issue.record("sqlite read-only should refuse") }
+
+        let redis = try #require(DatabaseBrowser.parseRedisDiscovery(try await conn.run(DatabaseBrowser.redisDiscoverCommand, timeout: .seconds(20)).stdout).first)
+        let keysRun = try await conn.run(DatabaseBrowser.redisKeysCommand(redis, pattern: "*"), timeout: .seconds(20))
+        let keys = DatabaseBrowser.parseRedisKeys(keysRun.stdout)
+        #expect(keys.contains { $0.key == "user:7" && $0.type == "hash" }, "\(keysRun.stdout) | \(keysRun.stderr) | \(redis.location)")
+        let value = try await conn.run(DatabaseBrowser.redisValueCommand(redis, key: "user:7", type: "hash"), timeout: .seconds(20)).stdout
+        #expect(value.contains("@@ttl -1") && value.contains("Ann"))
+    }
+}
