@@ -32,7 +32,8 @@ struct BackupsView: View {
 
     var body: some View {
         List {
-            if let error { ProblemView(message: error, compact: true) }
+            // In the wizard the error shows next to the set-up button, where the user just tapped.
+            if let error, status?.configured != false { ProblemView(message: error, compact: true) }
             if let status {
                 if status.configured { overview(status) } else { wizard }
             } else if error == nil {
@@ -108,6 +109,7 @@ struct BackupsView: View {
             Text("Server time. Older snapshots are removed by these rules; a failed backup sends a push.")
         }
         Section {
+            if let error { ProblemView(message: error, compact: true).accessibilityIdentifier("backup.error") }
             Button { Task { await setUp() } } label: {
                 HStack { Text("Set up backups").font(.headline); Spacer(); if busy { ProgressView() } }
             }

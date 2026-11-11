@@ -29,7 +29,11 @@ final class ChangeHistoryUITests: XCTestCase {
     func testTurnOn() throws {
         let app = try launch()
         let install = app.buttons["history.install"]
-        XCTAssertTrue(install.waitForExistence(timeout: 60))
+        let on = app.buttons["history.since"]
+        var t = 0
+        while !install.exists && !on.exists && t < 60 { sleep(1); t += 1 }
+        if on.exists && !install.exists { throw XCTSkip("History is already on for this server") }
+        XCTAssertTrue(install.exists)
         shot(app, "off")
         install.tap()
         XCTAssertTrue(app.staticTexts["History starts here"].waitForExistence(timeout: 90))
