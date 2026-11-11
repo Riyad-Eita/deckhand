@@ -117,6 +117,7 @@ struct ServerToolsView: View {
             let conn = try await connections.connection(for: server)
             let r = try await conn.run(ServerInventory.probeCommand, timeout: .seconds(60))
             inventory = ServerInventory.parse(r.stdout)
+            if let inventory { AgentStatus.shared.update(server, from: inventory) }
         } catch {
             self.error = error.localizedDescription
         }
