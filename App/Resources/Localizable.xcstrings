@@ -115,6 +115,16 @@
         }
       }
     },
+    "%@ is back to %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ist auf dem Stand von %2$@."
+          }
+        }
+      }
+    },
     "%@ is published on all interfaces. Docker bypasses ufw, so this port is reachable from the internet even if your firewall blocks it. Bind it to 127.0.0.1 in the compose file if it should stay private.": {
       "localizations": {
         "de": {
@@ -1718,6 +1728,16 @@
         }
       }
     },
+    "Change databases": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbanken ändern"
+          }
+        }
+      }
+    },
     "Change history": {
       "localizations": {
         "de": {
@@ -2800,6 +2820,16 @@
         }
       }
     },
+    "Database dumps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbank-Dumps"
+          }
+        }
+      }
+    },
     "Databases": {
       "localizations": {
         "de": {
@@ -2816,6 +2846,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Datenbanken und Admin-APIs sollten nur auf localhost oder einem privaten Netz lauschen. Offen sind sie nur ein schwaches Passwort von einem Datenleck entfernt."
+          }
+        }
+      }
+    },
+    "Databases on this server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbanken auf diesem Server"
           }
         }
       }
@@ -3251,6 +3291,16 @@
         }
       }
     },
+    "Docker %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker %@"
+          }
+        }
+      }
+    },
     "Docker isn't installed": {
       "localizations": {
         "de": {
@@ -3388,6 +3438,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lädt die neuesten Paketlisten. Es wird nichts installiert."
+          }
+        }
+      }
+    },
+    "Dump now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt dumpen"
+          }
+        }
+      }
+    },
+    "Dumps are on, and your backups now include them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dumps sind aktiv, und deine Backups enthalten sie jetzt."
+          }
+        }
+      }
+    },
+    "Dumps go to ~/.deckhand/db/dumps. If Backups are set up, they upload them with everything else.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dumps landen in ~/.deckhand/db/dumps. Wenn Backups eingerichtet sind, laden sie sie mit allem anderen hoch."
           }
         }
       }
@@ -3711,6 +3791,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jede Nacht um %@"
+          }
+        }
+      }
+    },
+    "Everything changed since %@ is lost. Type the database name to confirm. Run a test restore first if you haven't.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles, was sich seit %@ geändert hat, geht verloren. Tippe den Datenbanknamen zur Bestätigung. Mach vorher eine Test-Wiederherstellung, falls noch nicht geschehen."
           }
         }
       }
@@ -4820,6 +4910,16 @@
         }
       }
     },
+    "Keep %lld days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tage behalten"
+          }
+        }
+      }
+    },
     "Keep %lld monthly": {
       "localizations": {
         "de": {
@@ -4866,6 +4966,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Behält die letzten 100 MB Logs."
+          }
+        }
+      }
+    },
+    "Kept for %lld days. Swipe a dump to test it or restore it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird %lld Tage aufbewahrt. Wische über einen Dump, um ihn zu testen oder wiederherzustellen."
           }
         }
       }
@@ -4966,6 +5076,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Letztes Backup hat geklappt"
+          }
+        }
+      }
+    },
+    "Last dump failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Dump ist fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Last dump worked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Dump hat geklappt"
           }
         }
       }
@@ -5740,6 +5870,16 @@
         }
       }
     },
+    "Nightly dumps with a test restore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächtliche Dumps mit Test-Wiederherstellung"
+          }
+        }
+      }
+    },
     "No account, no tracking. Keys stay in your iPhone's Keychain.": {
       "localizations": {
         "de": {
@@ -5856,6 +5996,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kein üblicher Port hat geantwortet."
+          }
+        }
+      }
+    },
+    "No databases found that your login user can reach. Postgres needs a role for this user, MySQL a ~/.my.cnf; Docker containers need access to Docker.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Datenbanken gefunden, die dein Login-Benutzer erreicht. Postgres braucht eine Rolle für diesen Benutzer, MySQL eine ~/.my.cnf; für Docker-Container braucht er Zugriff auf Docker."
+          }
+        }
+      }
+    },
+    "No dumps yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Dumps."
           }
         }
       }
@@ -7437,6 +7597,16 @@
         }
       }
     },
+    "Restore over the live database?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über die laufende Datenbank wiederherstellen?"
+          }
+        }
+      }
+    },
     "Restore the backed-up files": {
       "localizations": {
         "de": {
@@ -7473,6 +7643,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stellt die Dateien aus dem Backup vor „%@“ wieder her, prüft die Konfiguration und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Restore…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederherstellen …"
           }
         }
       }
@@ -8788,6 +8968,16 @@
         }
       }
     },
+    "Start nightly dumps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächtliche Dumps starten"
+          }
+        }
+      }
+    },
     "Started by": {
       "localizations": {
         "de": {
@@ -8894,6 +9084,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Backups beenden"
+          }
+        }
+      }
+    },
+    "Stop database dumps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbank-Dumps beenden"
           }
         }
       }
@@ -9188,12 +9388,52 @@
         }
       }
     },
+    "Test": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Testen"
+          }
+        }
+      }
+    },
     "Test Connection": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Verbindung testen"
+          }
+        }
+      }
+    },
+    "Test restore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test-Wiederherstellung"
+          }
+        }
+      }
+    },
+    "Test restore failed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test-Wiederherstellung fehlgeschlagen: %@"
+          }
+        }
+      }
+    },
+    "Test restore worked: %lld tables came back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test-Wiederherstellung hat geklappt: %lld Tabellen kamen zurück."
           }
         }
       }
@@ -9364,6 +9604,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Köder enthalten nichts Echtes und öffnen nichts. Pushes gehen an dein ntfy-Topic."
+          }
+        }
+      }
+    },
+    "The dumps already made stay in ~/.deckhand/db/dumps until you delete them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die bisherigen Dumps bleiben in ~/.deckhand/db/dumps, bis du sie löschst."
           }
         }
       }

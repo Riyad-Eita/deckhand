@@ -776,3 +776,37 @@ struct LiveBackupTests {
         _ = try await conn.run("rm -rf ~/dh-backup-src ~/dh-backup-repo '\(dir)'", timeout: .seconds(20))
     }
 }
+
+/// Database dumps on a disposable server with Postgres (role for the login user) and a SQLite file.
+/// Opt-in: DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY plus DECKHAND_DB_TEST=1.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_DB_TEST"] != nil))
+struct LiveDatabaseDumpTests {
+    @Test func dumpTestRestoreRestore() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let dbs = DatabaseDumps.parseDiscovery(try await conn.run(DatabaseDumps.discoverCommand, timeout: .seconds(60)).stdout)
+        let pg = try #require(dbs.first { $0.engine == .postgres && $0.name == "shop" })
+        let lite = try #require(dbs.first { $0.engine == .sqlite && $0.name == "data.db" })
+        let jobs = [(id: "pgshop", db: pg, keep: 7), (id: "lite", db: lite, keep: 7)]
+        let saved = try await conn.run(DatabaseDumps.saveCommand(jobs, hour: 2, topic: ""), timeout: .seconds(120))
+        #expect(saved.stdout.contains("@@ok"), "\(saved.stdout) \(saved.stderr)")
+        let status = DatabaseDumps.parseStatus(try await conn.run(DatabaseDumps.statusCommand, timeout: .seconds(30)).stdout)
+        #expect(status.schedule?.hour == 2 && status.jobs.count == 2)
+        let pgDump = try #require(status.jobs.first { $0.id == "pgshop" }?.dumps.first)
+        let liteDump = try #require(status.jobs.first { $0.id == "lite" }?.dumps.first)
+        #expect(status.jobs.allSatisfy { $0.lastRun?.ok == true })
+        let test = try await conn.run(DatabaseDumps.testRestoreCommand(pg, dump: pgDump.file), timeout: .seconds(120)).stdout
+        #expect(test.contains("@@tables 2"), "\(test)")
+        #expect(try await conn.run(DatabaseDumps.testRestoreCommand(lite, dump: liteDump.file), timeout: .seconds(60)).stdout.contains("@@integrity ok"))
+        // Lose a table, then restore the dump over the live database.
+        _ = try await conn.run("psql -d shop -qc 'drop table orders'", timeout: .seconds(20))
+        #expect(try await conn.run(DatabaseDumps.restoreCommand(pg, dump: pgDump.file), timeout: .seconds(120)).stdout.contains("@@restored"))
+        #expect(try await conn.run("psql -d shop -tAc 'select count(*) from orders'", timeout: .seconds(20)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "2")
+        _ = try await conn.run(DatabaseDumps.saveCommand([], hour: 2, topic: "") + "\nrm -rf ~/.deckhand/db", timeout: .seconds(60))
+        #expect(try await conn.run("crontab -l 2>/dev/null | grep -c deckhand/db; true", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "0")
+    }
+}
