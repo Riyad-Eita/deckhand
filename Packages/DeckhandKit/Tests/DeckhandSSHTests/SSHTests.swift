@@ -850,3 +850,55 @@ struct LiveDatabaseBrowserTests {
         #expect(value.contains("@@ttl -1") && value.contains("Ann"))
     }
 }
+
+/// Deploys on a disposable server with git and a bare repo ~/src/app.git (a Python server that prints VERSION).
+/// Opt-in: DECKHAND_DEPLOY_TEST=1 plus DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_DEPLOY_TEST"] != nil))
+struct LiveDeployTests {
+    @Test func deployAutoDeployRollBack() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String, _ t: Int = 120) async throws -> String { try await conn.run(c, timeout: .seconds(t)).stdout }
+        func page() async throws -> String { try await sh("curl -s -m 5 http://127.0.0.1:8088/").trimmingCharacters(in: .whitespacesAndNewlines) }
+        func push(_ version: String, broken: Bool = false) async throws {
+            _ = try await sh("cd ~/src/work && echo \(version) > VERSION \(broken ? "&& echo 'syntax error(' >> server.py" : "") && git commit -qam '\(version)' && git push -q origin main")
+        }
+        let home = try await sh("printf '%s' \"$HOME\"")
+        let app = Deploys.App(name: "demo", repo: "\(home)/src/app.git", start: "python3 server.py", health: "http://127.0.0.1:8088/", keep: 3, autoDeploy: true)
+        #expect(try await sh(Deploys.saveCommand(app, topic: "")).contains("@@ok"))
+        _ = try await sh("bash ~/.deckhand/apps/demo/deploy.sh; true")
+        #expect(try await page() == "v1")
+        var st = try #require(Deploys.parseStatus(try await sh(Deploys.statusCommand)).first)
+        #expect(st.running && st.app.autoDeploy && st.deploys.first?.state == "live")
+        let v1 = try #require(st.current)
+
+        try await push("v2")
+        _ = try await sh("bash ~/.deckhand/apps/demo/deploy.sh --if-changed; true")
+        #expect(try await page() == "v2")
+        _ = try await sh("bash ~/.deckhand/apps/demo/deploy.sh --if-changed; true")   // unchanged: no new deploy
+        st = try #require(Deploys.parseStatus(try await sh(Deploys.statusCommand)).first)
+        #expect(st.deploys.count == 2)
+
+        try await push("v3", broken: true)
+        _ = try await sh("bash ~/.deckhand/apps/demo/deploy.sh; true", 180)
+        #expect(try await page() == "v2")                                               // rolled back by the health check
+        st = try #require(Deploys.parseStatus(try await sh(Deploys.statusCommand)).first)
+        #expect(st.deploys.first?.state == "rolledback")
+        let log = try await sh(Deploys.logCommand("demo", stamp: st.deploys.first!.stamp))
+        #expect(log.contains("@@failed health check"))
+
+        #expect(try await sh(Deploys.rollbackCommand("demo", release: v1)).contains("@@ok"))
+        try await Task.sleep(for: .seconds(2))
+        #expect(try await page() == "v1")
+        #expect(try await sh(Deploys.removeCommand("demo")).contains("@@ok"))
+        try await Task.sleep(for: .seconds(2))
+        #expect(try await page() == "")
+        #expect(try await sh("crontab -l 2>/dev/null | grep -c deckhand-deploy; true").trimmingCharacters(in: .whitespacesAndNewlines) == "0")
+        // Leave the test repo at its first commit for the next run.
+        _ = try await sh("cd ~/src/work && rm -rf __pycache__ && git reset -q --hard $(git rev-list --max-parents=0 HEAD) && git push -qf origin main; true")
+    }
+}
