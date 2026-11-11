@@ -45,9 +45,7 @@ struct AgentChatView: View {
                         Label(notice, systemImage: "info.circle").font(.footnote).foregroundStyle(.secondary)
                     }
                     if let error = model.error {
-                        Label(error, systemImage: "exclamationmark.triangle")
-                            .font(.footnote)
-                            .foregroundStyle(.red)
+                        ProblemView(message: error, compact: true)
                     }
                     Color.clear.frame(height: 1).id("bottom")
                 }

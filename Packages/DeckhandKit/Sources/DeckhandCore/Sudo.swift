@@ -23,8 +23,8 @@ public enum SudoError: Error, LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .wrongPassword: "That sudo password didn't work."
-        case .unavailable: "This user can't use sudo on the server. Log in as root or as an admin user."
+        case .wrongPassword: String(localized: "That sudo password didn't work.")
+        case .unavailable: String(localized: "This user can't use sudo on the server. Log in as root or as an admin user.")
         }
     }
 }

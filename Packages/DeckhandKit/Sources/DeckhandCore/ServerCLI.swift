@@ -159,7 +159,8 @@ public enum ServerCLIRun {
 public struct CLIError: Error, LocalizedError, Sendable, Equatable {
     public var message: String
     public init(_ message: String) { self.message = message }
-    public var errorDescription: String? { message }
+    /// Looked up in the app's string catalog by its English text (falls back to it).
+    public var errorDescription: String? { String(localized: String.LocalizationValue(message)) }
 }
 
 /// Lines the limit-aware wrapper adds to the CLI's output (see `LimitAwareRun`).

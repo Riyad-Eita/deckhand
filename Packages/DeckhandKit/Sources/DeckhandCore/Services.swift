@@ -31,7 +31,7 @@ public enum ServiceError: Error, LocalizedError, Sendable, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .needsPassword: "This needs your sudo password. Run it in the terminal to enter it."
+        case .needsPassword: String(localized: "This needs your sudo password. Run it in the terminal to enter it.")
         case .failed(let s): s
         }
     }

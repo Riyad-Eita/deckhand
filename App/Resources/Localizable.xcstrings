@@ -105,6 +105,16 @@
         }
       }
     },
+    "%@ refused the connection on port %lld.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hat die Verbindung auf Port %2$lld abgelehnt."
+          }
+        }
+      }
+    },
     "%@ will work in %@": {
       "localizations": {
         "de": {
@@ -230,24 +240,6 @@
     },
     "%lld secrets hidden · Show": {
       "localizations": {
-        "en": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%lld secret hidden · Show"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%lld secrets hidden · Show"
-                }
-              }
-            }
-          }
-        },
         "de": {
           "variations": {
             "plural": {
@@ -261,6 +253,24 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld Geheimnisse ausgeblendet · Zeigen"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld secret hidden · Show"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld secrets hidden · Show"
                 }
               }
             }
@@ -500,6 +510,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Regel hinzufügen"
+          }
+        }
+      }
+    },
+    "Add an API key in Settings first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinterlege zuerst einen API-Key in den Einstellungen."
           }
         }
       }
@@ -1218,6 +1238,26 @@
         }
       }
     },
+    "Check that the iPhone is online and the address and port are right. Behind a VPN or firewall, make sure it lets you through.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe, ob das iPhone online ist und Adresse und Port stimmen. Hinter einem VPN oder einer Firewall muss die Verbindung durchgelassen werden."
+          }
+        }
+      }
+    },
+    "Check the API key in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe den API-Key in den Einstellungen."
+          }
+        }
+      }
+    },
     "Check the configuration": {
       "localizations": {
         "de": {
@@ -1234,6 +1274,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Port und Adresse."
+          }
+        }
+      }
+    },
+    "Check the spelling of the address. Tailscale names only work while Tailscale is on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe die Schreibweise der Adresse. Tailscale-Namen funktionieren nur, solange Tailscale an ist."
+          }
+        }
+      }
+    },
+    "Check the user name and password or key in the server's settings. With a key, its public part must be in ~/.ssh/authorized_keys on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe Benutzername und Passwort oder Schlüssel in den Server-Einstellungen. Bei einem Schlüssel muss sein öffentlicher Teil in ~/.ssh/authorized_keys auf dem Server stehen."
           }
         }
       }
@@ -1304,6 +1364,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude Code auf dem Server"
+          }
+        }
+      }
+    },
+    "Claude Code on the server is not logged in. Log in from the server's CLI settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code ist auf dem Server nicht angemeldet. Melde dich in den CLI-Einstellungen des Servers an."
+          }
+        }
+      }
+    },
+    "Claude Code stopped without a result. Is it installed and logged in on the server?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code hat ohne Ergebnis aufgehört. Ist es auf dem Server installiert und angemeldet?"
           }
         }
       }
@@ -1434,6 +1514,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Codex auf dem Server"
+          }
+        }
+      }
+    },
+    "Codex on the server is too old for this model. Update it from the server's CLI settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codex auf dem Server ist für dieses Modell zu alt. Aktualisiere es in den CLI-Einstellungen des Servers."
           }
         }
       }
@@ -1695,6 +1785,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server konnte nicht gelesen werden"
+          }
+        }
+      }
+    },
+    "Couldn't confirm the change.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Änderung ließ sich nicht bestätigen."
           }
         }
       }
@@ -2374,6 +2474,16 @@
         }
       }
     },
+    "Enter a name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib einen Namen ein."
+          }
+        }
+      }
+    },
     "Enter a number.": {
       "localizations": {
         "de": {
@@ -2883,6 +2993,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verlauf"
+          }
+        }
+      }
+    },
+    "Host key %@ was not trusted.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dem Host-Schlüssel %@ wurde nicht vertraut."
           }
         }
       }
@@ -3437,6 +3557,16 @@
         }
       }
     },
+    "Lost the connection to the run.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung zum Lauf ist abgebrochen."
+          }
+        }
+      }
+    },
     "Low": {
       "localizations": {
         "de": {
@@ -3687,6 +3817,16 @@
         }
       }
     },
+    "Names can't contain “/”.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Namen dürfen kein „/“ enthalten."
+          }
+        }
+      }
+    },
     "Needs attention": {
       "localizations": {
         "de": {
@@ -3867,6 +4007,16 @@
         }
       }
     },
+    "No answer from %@ on port %lld.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Antwort von %1$@ auf Port %2$lld."
+          }
+        }
+      }
+    },
     "No apt or dnf": {
       "localizations": {
         "de": {
@@ -4030,12 +4180,32 @@
         }
       }
     },
+    "Not connected to the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mit dem Server verbunden."
+          }
+        }
+      }
+    },
     "Note (optional)": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Notiz (optional)"
+          }
+        }
+      }
+    },
+    "Nothing answers SSH on that port. Check the port in the server's settings, or whether the SSH service runs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Port antwortet kein SSH. Prüfe den Port in den Server-Einstellungen oder ob der SSH-Dienst läuft."
           }
         }
       }
@@ -4186,6 +4356,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Online"
+          }
+        }
+      }
+    },
+    "Only continue if you know the server was reinstalled. Otherwise ask whoever runs it — someone may be in between.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mach nur weiter, wenn du weißt, dass der Server neu aufgesetzt wurde. Sonst frag, wer ihn betreibt – es könnte jemand dazwischen sein."
           }
         }
       }
@@ -4631,12 +4811,32 @@
         }
       }
     },
+    "Provider error %lld: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler beim Anbieter %1$lld: %2$@"
+          }
+        }
+      }
+    },
     "Pull": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Pull"
+          }
+        }
+      }
+    },
+    "Pull down or try again. Tasks keep running on the server meanwhile.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zieh nach unten oder versuch es erneut. Aufgaben laufen solange auf dem Server weiter."
           }
         }
       }
@@ -4678,6 +4878,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stellt die Dateien wie vor dieser Änderung wieder her und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Rate limited by the provider. %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vom Anbieter ausgebremst (Rate Limit). %@"
           }
         }
       }
@@ -5664,6 +5874,16 @@
         }
       }
     },
+    "Sign in to the CLI on the server: Server Tools → Sign in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melde die CLI auf dem Server an: Server-Tools → Anmelden."
+          }
+        }
+      }
+    },
     "Sign in with": {
       "localizations": {
         "de": {
@@ -6105,6 +6325,26 @@
         }
       }
     },
+    "That name is too long.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Name ist zu lang."
+          }
+        }
+      }
+    },
+    "That program isn't installed on the server, or not in the PATH of your login.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Programm ist auf dem Server nicht installiert oder nicht im PATH deiner Anmeldung."
+          }
+        }
+      }
+    },
     "That sudo password didn't work.": {
       "localizations": {
         "de": {
@@ -6121,6 +6361,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Schritt „%@“ ist fehlgeschlagen. Deine vorherigen Dateien wurden zurückgelegt."
+          }
+        }
+      }
+    },
+    "The address %@ can't be found.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Adresse %@ wurde nicht gefunden."
           }
         }
       }
@@ -6145,12 +6395,42 @@
         }
       }
     },
+    "The command did not finish within %lld s.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Befehl wurde nicht innerhalb von %lld s fertig."
+          }
+        }
+      }
+    },
     "The command ended without a result.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der Befehl endete ohne Ergebnis."
+          }
+        }
+      }
+    },
+    "The connection closed before the command finished.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung wurde geschlossen, bevor der Befehl fertig war."
+          }
+        }
+      }
+    },
+    "The connection to the server was lost.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung zum Server ist abgebrochen."
           }
         }
       }
@@ -6195,6 +6475,16 @@
         }
       }
     },
+    "The model provider has a problem right now. Try again in a minute.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Modell-Anbieter hat gerade ein Problem. Versuch es in einer Minute erneut."
+          }
+        }
+      }
+    },
     "The new key didn't work — the old one stays": {
       "localizations": {
         "de": {
@@ -6221,6 +6511,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Paketlisten sind %lld Tage alt – such nach Updates, um den neuesten Stand zu sehen."
+          }
+        }
+      }
+    },
+    "The provider rejected the API key (%lld). %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Anbieter hat den API-Key abgelehnt (%1$lld). %2$@"
           }
         }
       }
@@ -6255,6 +6555,16 @@
         }
       }
     },
+    "The server didn't accept the login for %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat die Anmeldung für %@ nicht angenommen."
+          }
+        }
+      }
+    },
     "The server has no credentials for this remote. Connect GitHub in Connections, or add an SSH key for the server.": {
       "localizations": {
         "de": {
@@ -6271,6 +6581,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server startet in wenigen Sekunden neu und ist ein, zwei Minuten nicht erreichbar. Laufende Aufgaben, Terminals und Web-Apps stoppen; Dienste mit Autostart kommen zurück."
+          }
+        }
+      }
+    },
+    "The server took too long. It may be busy — check Processes, then try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat zu lange gebraucht. Vielleicht ist er ausgelastet – schau in die Prozesse und versuch es dann erneut."
+          }
+        }
+      }
+    },
+    "The server's disk is full. Free some space — old logs, Docker images, package caches.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Festplatte des Servers ist voll. Schaff etwas Platz – alte Logs, Docker-Images, Paket-Caches."
+          }
+        }
+      }
+    },
+    "The server's host key changed (expected %@, got %@). This can mean someone is intercepting the connection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Host-Schlüssel des Servers hat sich geändert (erwartet %1$@, erhalten %2$@). Das kann bedeuten, dass jemand die Verbindung abfängt."
           }
         }
       }
@@ -6335,12 +6675,42 @@
         }
       }
     },
+    "This needs your sudo password. Run it in the terminal to enter it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dafür braucht es dein Sudo-Passwort. Führe es im Terminal aus, um es einzugeben."
+          }
+        }
+      }
+    },
     "This port is commonly used by other services. Pick another one.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Port wird oft von anderen Diensten genutzt. Wähle einen anderen."
+          }
+        }
+      }
+    },
+    "This private key is not supported: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser private Schlüssel wird nicht unterstützt: %@"
+          }
+        }
+      }
+    },
+    "This run is no longer on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Lauf ist nicht mehr auf dem Server."
           }
         }
       }
@@ -6361,6 +6731,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Server bietet kein /proc – die Prozessliste funktioniert auf Linux-Servern."
+          }
+        }
+      }
+    },
+    "This user can't use sudo on the server. Log in as root or as an admin user.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Nutzer darf auf dem Server kein sudo verwenden. Melde dich als root oder als Admin-Nutzer an."
           }
         }
       }
@@ -6495,6 +6875,16 @@
         }
       }
     },
+    "Try again. If it keeps happening, the details help.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versuch es erneut. Wenn es immer wieder passiert, helfen die Details."
+          }
+        }
+      }
+    },
     "Turn off": {
       "localizations": {
         "de": {
@@ -6621,6 +7011,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatisch zurückgenommen (%@)."
+          }
+        }
+      }
+    },
+    "Unexpected response from the provider: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unerwartete Antwort vom Anbieter: %@"
           }
         }
       }
@@ -6916,6 +7316,16 @@
         }
       }
     },
+    "Wait until the limit resets, or switch to another model.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warte, bis das Limit zurückgesetzt ist, oder wechsle zu einem anderen Modell."
+          }
+        }
+      }
+    },
     "Waiting for confirmation": {
       "localizations": {
         "de": {
@@ -7105,6 +7515,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Key"
+          }
+        }
+      }
+    },
+    "Your login may not do this. It may need sudo, or a file belongs to another user.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Anmeldung darf das nicht. Vielleicht braucht es sudo, oder eine Datei gehört einem anderen Nutzer."
           }
         }
       }
@@ -7443,6 +7863,16 @@
     },
     "·": {
       "shouldTranslate": false
+    },
+    "“.” and “..” can't be used as names.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„.“ und „..“ sind als Namen nicht erlaubt."
+          }
+        }
+      }
     },
     "“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model.": {
       "localizations": {

@@ -194,10 +194,10 @@ public enum RemoteFiles {
 extension RemoteFiles.NameProblem: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .empty: "Enter a name."
-        case .dots: "“.” and “..” can't be used as names."
-        case .slash: "Names can't contain “/”."
-        case .tooLong: "That name is too long."
+        case .empty: String(localized: "Enter a name.")
+        case .dots: String(localized: "“.” and “..” can't be used as names.")
+        case .slash: String(localized: "Names can't contain “/”.")
+        case .tooLong: String(localized: "That name is too long.")
         }
     }
 }

@@ -93,7 +93,7 @@ struct ServerEditorView: View {
                         Text(info).font(Theme.monoSmall).foregroundStyle(.secondary)
                     }
                     if case .failed(let error) = testState {
-                        Text(error).font(.footnote).foregroundStyle(.red)
+                        ProblemView(message: error, compact: true)
                     }
                 }
             }

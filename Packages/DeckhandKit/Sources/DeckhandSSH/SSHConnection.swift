@@ -41,17 +41,17 @@ public enum SSHError: Error, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .unsupportedKey(let s): "This private key is not supported: \(s)"
-        case .hostKeyRejected(let f): "Host key \(f) was not trusted."
+        case .unsupportedKey(let s): String(localized: "This private key is not supported: \(s)")
+        case .hostKeyRejected(let f): String(localized: "Host key \(f) was not trusted.")
         case .hostKeyChanged(let expected, let got):
-            "The server's host key changed (expected \(expected), got \(got)). This can mean someone is intercepting the connection."
-        case .notConnected: "Not connected to the server."
-        case .timedOut(let s): "The command did not finish within \(s) s."
-        case .unreachable(let h, let p): "No answer from \(h) on port \(p)."
-        case .refused(let h, let p): "\(h) refused the connection on port \(p)."
-        case .unknownHost(let h): "The address \(h) can't be found."
-        case .signInRejected(let u): "The server didn't accept the login for \(u)."
-        case .connectionLost: "The connection to the server was lost."
+            String(localized: "The server's host key changed (expected \(expected), got \(got)). This can mean someone is intercepting the connection.")
+        case .notConnected: String(localized: "Not connected to the server.")
+        case .timedOut(let s): String(localized: "The command did not finish within \(s) s.")
+        case .unreachable(let h, let p): String(localized: "No answer from \(h) on port \(p).")
+        case .refused(let h, let p): String(localized: "\(h) refused the connection on port \(p).")
+        case .unknownHost(let h): String(localized: "The address \(h) can't be found.")
+        case .signInRejected(let u): String(localized: "The server didn't accept the login for \(u).")
+        case .connectionLost: String(localized: "The connection to the server was lost.")
         }
     }
 

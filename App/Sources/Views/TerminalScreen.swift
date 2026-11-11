@@ -23,14 +23,11 @@ struct TerminalScreen: View {
                     .id(sessionID)
                     .ignoresSafeArea(.container, edges: .bottom)
             } else if let error {
-                ContentUnavailableView {
-                    Label("Could not connect", systemImage: "bolt.horizontal.circle")
-                } description: {
-                    Text(error)
-                } actions: {
-                    Button("Try Again") { reconnect() }
+                VStack(spacing: 16) {
+                    ProblemView(message: error).foregroundStyle(.white)
+                    Button("Try Again") { reconnect() }.buttonStyle(.borderedProminent)
                 }
-                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ProgressView().tint(.white).frame(maxHeight: .infinity)
             }
