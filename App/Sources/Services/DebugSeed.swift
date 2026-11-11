@@ -119,5 +119,26 @@ enum DebugSeed {
         Keychain.set(key, for: server.secretAccount)
         try? context.save()
     }
+
+    @MainActor
+    static func runIntent(_ spec: String) async {
+        let out = FileManager.default.temporaryDirectory.appending(path: "intent-result.txt")
+        do {
+            guard let entity = try ServerQuery().allEntities().first else { throw IntentError.serverGone }
+            var text = ""
+            if spec == "status" {
+                var intent = ServerStatusIntent(); intent.server = entity
+                let r = try await intent.perform()
+                text = r.value ?? ""
+            } else if spec.hasPrefix("run:") {
+                var intent = RunCommandIntent(); intent.server = entity; intent.command = String(spec.dropFirst(4))
+                let r = try await intent.perform()
+                text = r.value ?? ""
+            }
+            try ("OK " + text).write(to: out, atomically: true, encoding: .utf8)
+        } catch {
+            try? ("ERROR \(error)").write(to: out, atomically: true, encoding: .utf8)
+        }
+    }
 }
 #endif
