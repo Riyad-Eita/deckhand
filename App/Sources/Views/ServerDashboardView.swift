@@ -104,6 +104,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.diskUsage")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            UptimeView(server: server)
+                        } label: {
+                            ManageRow(title: "Uptime", subtitle: "Check sites and APIs every minute; push when one goes down", symbol: "waveform.path.ecg")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.uptime")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")
