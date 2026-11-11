@@ -1528,6 +1528,16 @@
         }
       }
     },
+    "Clear all notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Notizen leeren"
+          }
+        }
+      }
+    },
     "Clock sync": {
       "localizations": {
         "de": {
@@ -1979,12 +1989,32 @@
         }
       }
     },
+    "Couldn't read the notes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Notizen ließen sich nicht lesen."
+          }
+        }
+      }
+    },
     "Couldn't read the photo.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Das Foto ließ sich nicht lesen."
+          }
+        }
+      }
+    },
+    "Couldn't save the notes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Notizen ließen sich nicht speichern."
           }
         }
       }
@@ -2246,6 +2276,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delete notes and stop using them": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen löschen und nicht mehr verwenden"
+          }
+        }
+      }
+    },
+    "Delete the notes?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen löschen?"
           }
         }
       }
@@ -3567,6 +3617,16 @@
         }
       }
     },
+    "Kept on the server in %@. Your own-key agent reads it every time and can add to it; Claude Code and Codex are pointed to it as well. Never put secrets here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liegt auf dem Server in %@. Dein Agent mit eigenem Key liest es jedes Mal und kann ergänzen; Claude Code und Codex werden ebenfalls darauf hingewiesen. Leg hier nie Geheimnisse ab."
+          }
+        }
+      }
+    },
     "Kernel and library updates only protect you after a restart.": {
       "localizations": {
         "de": {
@@ -4357,6 +4417,16 @@
         }
       }
     },
+    "No notes yet. Agents add what they learn about this server here — or write your own.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Notizen. Agenten tragen hier ein, was sie über diesen Server lernen – oder du schreibst selbst etwas."
+          }
+        }
+      }
+    },
     "No repositories found": {
       "localizations": {
         "de": {
@@ -4466,6 +4536,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notiz (optional)"
+          }
+        }
+      }
+    },
+    "Notes deleted.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen gelöscht."
           }
         }
       }
@@ -5764,6 +5844,16 @@
         }
       }
     },
+    "Saved.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gespeichert."
+          }
+        }
+      }
+    },
     "Scanning the website for weak spots": {
       "localizations": {
         "de": {
@@ -5930,6 +6020,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Werkzeuge"
+          }
+        }
+      }
+    },
+    "Server notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server-Notizen"
           }
         }
       }
@@ -6871,6 +6971,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Container wird gelöscht. Volumes bleiben erhalten."
+          }
+        }
+      }
+    },
+    "The file is removed and Claude Code and Codex aren't pointed to it anymore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei wird entfernt, und Claude Code und Codex werden nicht mehr darauf hingewiesen."
           }
         }
       }
@@ -7872,6 +7982,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Was Platz belegt – und was weg kann"
+          }
+        }
+      }
+    },
+    "What the agents remember about this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sich die Agenten über diesen Server merken."
           }
         }
       }

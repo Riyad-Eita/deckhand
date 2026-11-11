@@ -43,6 +43,7 @@ public enum ServerTools {
             EditFileTool(cwd: workingDirectory),
             ListDirectoryTool(cwd: workingDirectory),
             SearchTool(cwd: workingDirectory),
+            RememberTool(),
         ]
     }
 
