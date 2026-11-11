@@ -65,12 +65,32 @@
         }
       }
     },
+    "%@ forwards to %@, but nothing listens there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ leitet an %2$@ weiter, aber dort lauscht nichts."
+          }
+        }
+      }
+    },
     "%@ free of %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ von %2$@ frei"
+          }
+        }
+      }
+    },
+    "%@ has no HTTPS": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ hat kein HTTPS"
           }
         }
       }
@@ -91,6 +111,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ ist auf allen Schnittstellen veröffentlicht. Docker umgeht ufw, daher ist dieser Port aus dem Internet erreichbar, auch wenn deine Firewall ihn blockiert. Binde ihn in der Compose-Datei an 127.0.0.1, wenn er privat bleiben soll."
+          }
+        }
+      }
+    },
+    "%@ is reachable from outside": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist von außen erreichbar"
           }
         }
       }
@@ -131,6 +161,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ auf %2$@ nutzt dann dein Abo."
+          }
+        }
+      }
+    },
+    "%@ points to nothing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ zeigt ins Leere"
           }
         }
       }
@@ -194,6 +234,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@: CPU %2$lld %%, Speicher %3$lld %%, Platte %4$lld %%, läuft seit %5$@."
+          }
+        }
+      }
+    },
+    "%lld CPU · %@ memory": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld CPU · %2$@ Arbeitsspeicher"
           }
         }
       }
@@ -338,6 +388,16 @@
         }
       }
     },
+    "%lld stopped containers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gestoppte Container"
+          }
+        }
+      }
+    },
     "%lld things to look at": {
       "localizations": {
         "de": {
@@ -354,6 +414,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Updates warten"
+          }
+        }
+      }
+    },
+    "%lld updates waiting, %lld for security": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Updates ausstehend, %2$lld für Sicherheit"
           }
         }
       }
@@ -400,6 +470,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "5 Minuten"
+          }
+        }
+      }
+    },
+    "A backup cron job": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Backup-Cron-Job"
           }
         }
       }
@@ -1068,6 +1148,16 @@
         }
       }
     },
+    "Automatic renewal usually starts 30 days before; keep an eye on it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die automatische Erneuerung startet meist 30 Tage vorher; behalte es im Blick."
+          }
+        }
+      }
+    },
     "Automatic security updates": {
       "localizations": {
         "de": {
@@ -1104,6 +1194,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hintergrundaufgaben"
+          }
+        }
+      }
+    },
+    "Backups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backups"
           }
         }
       }
@@ -1324,6 +1424,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorsicht – das lässt sich nicht einfach rückgängig machen"
+          }
+        }
+      }
+    },
+    "Certificate for %@ expires in %lld days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikat für %1$@ läuft in %2$lld Tagen ab"
+          }
+        }
+      }
+    },
+    "Certificates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikate"
           }
         }
       }
@@ -2340,6 +2460,16 @@
         }
       }
     },
+    "Databases": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbanken"
+          }
+        }
+      }
+    },
     "Databases and admin APIs should only listen on localhost or a private network. Exposed, they are one weak password away from a data leak.": {
       "localizations": {
         "de": {
@@ -2516,6 +2646,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Standard (Servereinstellung)"
+          }
+        }
+      }
+    },
+    "Default site": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard-Website"
           }
         }
       }
@@ -2707,6 +2847,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Speicherplatz"
+          }
+        }
+      }
+    },
+    "Disk is %lld %% full": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicher ist zu %lld %% voll"
           }
         }
       }
@@ -3325,6 +3475,16 @@
         }
       }
     },
+    "Find out what runs on this server: sites and domains, how requests reach the apps, databases, containers, cron jobs, backups and certificates. Read-only, nothing changes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finde heraus, was auf diesem Server läuft: Websites und Domains, wie Anfragen zu den Apps kommen, Datenbanken, Container, Cron-Jobs, Backups und Zertifikate. Nur lesend, nichts wird geändert."
+          }
+        }
+      }
+    },
     "Find why nginx returns 502": {
       "localizations": {
         "de": {
@@ -3607,6 +3767,16 @@
         }
       }
     },
+    "Go through the risks with an agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risiken mit einem Agenten durchgehen"
+          }
+        }
+      }
+    },
     "HTTP %lld": {
       "shouldTranslate": false
     },
@@ -3706,6 +3876,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host, Benutzer und Passwort reichen – Deckhand ersetzt das Passwort durch einen sicheren Schlüssel, den es auf diesem iPhone erzeugt."
+          }
+        }
+      }
+    },
+    "How requests flow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie Anfragen laufen"
           }
         }
       }
@@ -3870,6 +4050,16 @@
         }
       }
     },
+    "Install them from Updates in the Server tab.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere sie unter Updates im Server-Tab."
+          }
+        }
+      }
+    },
     "Install updates": {
       "localizations": {
         "de": {
@@ -4006,6 +4196,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Es wird auf dem Server gelöscht. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "It listens on %@:%lld. Bind it to 127.0.0.1 or close the port in the firewall.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es lauscht auf %1$@:%2$lld. Binde es an 127.0.0.1 oder schließe den Port in der Firewall."
           }
         }
       }
@@ -4346,6 +4546,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Logs, Zertifikate und Zwei-Faktor-Codes brauchen eine richtige Uhr."
+          }
+        }
+      }
+    },
+    "Look at Disk usage in the Server tab for what can go.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter Speicherplatz im Server-Tab siehst du, was weg kann."
           }
         }
       }
@@ -4880,6 +5090,26 @@
         }
       }
     },
+    "No backup tool and no backup cron job. If the disk dies, the data is gone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Backup-Werkzeug und kein Backup-Cron-Job. Wenn die Platte stirbt, sind die Daten weg."
+          }
+        }
+      }
+    },
+    "No backups found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Backups gefunden"
+          }
+        }
+      }
+    },
     "No changes yet": {
       "localizations": {
         "de": {
@@ -4970,6 +5200,16 @@
         }
       }
     },
+    "No risks found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Risiken gefunden"
+          }
+        }
+      }
+    },
     "No sub-folders": {
       "localizations": {
         "de": {
@@ -5002,6 +5242,16 @@
     },
     "Node.js": {
       "shouldTranslate": false
+    },
+    "None found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine gefunden"
+          }
+        }
+      }
     },
     "None installed": {
       "localizations": {
@@ -6146,6 +6396,16 @@
         }
       }
     },
+    "Renew it, or check why automatic renewal isn't working.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneuere es oder prüfe, warum die automatische Erneuerung nicht klappt."
+          }
+        }
+      }
+    },
     "Request": {
       "localizations": {
         "de": {
@@ -6233,6 +6493,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stellt die Dateien aus dem Backup vor „%@“ wieder her, prüft die Konfiguration und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Risks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risiken"
           }
         }
       }
@@ -6537,12 +6807,32 @@
         }
       }
     },
+    "Save to server notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Server-Notizen sichern"
+          }
+        }
+      }
+    },
     "Saved in this repository's Git settings on the server and shown on your commits.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Wird in den Git-Einstellungen dieses Repositorys auf dem Server gespeichert und an deinen Commits angezeigt."
+          }
+        }
+      }
+    },
+    "Saved to server notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Server-Notizen gesichert"
           }
         }
       }
@@ -6557,12 +6847,52 @@
         }
       }
     },
+    "Scan again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut scannen"
+          }
+        }
+      }
+    },
+    "Scan this server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Server scannen"
+          }
+        }
+      }
+    },
+    "Scanned %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gescannt %@"
+          }
+        }
+      }
+    },
     "Scanning the website for weak spots": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Sucht die Website nach Schwachstellen ab"
+          }
+        }
+      }
+    },
+    "Scanning …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne …"
           }
         }
       }
@@ -6727,6 +7057,16 @@
         }
       }
     },
+    "Server X-ray": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server-Röntgen"
+          }
+        }
+      }
+    },
     "Server not found": {
       "localizations": {
         "de": {
@@ -6743,6 +7083,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Notizen"
+          }
+        }
+      }
+    },
+    "Server notes are what Claude Code, Codex and your own-key agent read about this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Server-Notizen lesen Claude Code, Codex und dein Agent mit eigenem Key über diesen Server."
           }
         }
       }
@@ -6923,6 +7273,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel teilen"
+          }
+        }
+      }
+    },
+    "Share handover document": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übergabe-Dokument teilen"
           }
         }
       }
@@ -7153,6 +7513,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seit %@"
+          }
+        }
+      }
+    },
+    "Since the last scan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seit dem letzten Scan"
           }
         }
       }
@@ -7984,6 +8354,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Host-Schlüssel des Servers hat sich geändert (erwartet %1$@, erhalten %2$@). Das kann bedeuten, dass jemand die Verbindung abfängt."
+          }
+        }
+      }
+    },
+    "The site is served over plain HTTP without a redirect.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Website läuft über einfaches HTTP ohne Weiterleitung."
           }
         }
       }
@@ -8909,6 +9289,16 @@
         }
       }
     },
+    "What runs here, how it fits together, and what's risky": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was hier läuft, wie es zusammenhängt und was riskant ist"
+          }
+        }
+      }
+    },
     "What should happen on %@?": {
       "localizations": {
         "de": {
@@ -9252,6 +9642,16 @@
         }
       }
     },
+    "container": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Container"
+          }
+        }
+      }
+    },
     "fail2ban bans addresses that keep failing to log in, which stops password guessing and keeps logs readable.": {
       "localizations": {
         "de": {
@@ -9434,6 +9834,16 @@
         }
       }
     },
+    "port": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port"
+          }
+        }
+      }
+    },
     "public": {
       "localizations": {
         "de": {
@@ -9454,12 +9864,32 @@
         }
       }
     },
+    "service": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dienst"
+          }
+        }
+      }
+    },
     "since last boot": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "seit dem letzten Start"
+          }
+        }
+      }
+    },
+    "site": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Website"
           }
         }
       }

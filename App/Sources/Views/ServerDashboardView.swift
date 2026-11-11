@@ -120,6 +120,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.history")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            ServerXrayView(server: server)
+                        } label: {
+                            ManageRow(title: "Server X-ray", subtitle: "What runs here, how it fits together, and what's risky", symbol: "rectangle.and.text.magnifyingglass")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.xray")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")
