@@ -104,6 +104,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.diskUsage")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            BackupsView(server: server)
+                        } label: {
+                            ManageRow(title: "Backups", subtitle: "Encrypted nightly backups with restic; browse and restore", symbol: "externaldrive.badge.timemachine")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.backups")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             UptimeView(server: server)
                         } label: {
                             ManageRow(title: "Uptime", subtitle: "Check sites and APIs every minute; push when one goes down", symbol: "waveform.path.ecg")

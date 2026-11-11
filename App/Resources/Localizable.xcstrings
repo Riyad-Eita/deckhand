@@ -278,6 +278,16 @@
         }
       }
     },
+    "%lld daily, %lld weekly, %lld monthly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld täglich, %2$lld wöchentlich, %3$lld monatlich"
+          }
+        }
+      }
+    },
     "%lld days ago": {
       "localizations": {
         "de": {
@@ -524,6 +534,16 @@
         }
       }
     },
+    "A folder on this server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Ordner auf diesem Server"
+          }
+        }
+      }
+    },
     "A fresh login didn't work (%@), so the change was rolled back right away.": {
       "localizations": {
         "de": {
@@ -620,6 +640,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zugriff"
+          }
+        }
+      }
+    },
+    "Access key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access Key"
           }
         }
       }
@@ -1105,6 +1135,16 @@
         }
       }
     },
+    "Another server (SFTP)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein anderer Server (SFTP)"
+          }
+        }
+      }
+    },
     "Anthropic (Claude)": {
       "extractionState": "manual",
       "localizations": {
@@ -1358,6 +1398,16 @@
         }
       }
     },
+    "Back up now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt sichern"
+          }
+        }
+      }
+    },
     "Back up the files": {
       "localizations": {
         "de": {
@@ -1384,6 +1434,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hintergrundaufgaben"
+          }
+        }
+      }
+    },
+    "Backing up …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichere …"
+          }
+        }
+      }
+    },
+    "Backup password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Passwort"
           }
         }
       }
@@ -1534,6 +1604,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Durchsuchen, umbenennen, löschen; Ordner an den Agenten geben"
+          }
+        }
+      }
+    },
+    "Bucket": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bucket"
           }
         }
       }
@@ -2569,6 +2649,16 @@
         }
       }
     },
+    "Couldn't read the repository.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Repository konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
     "Couldn't read the server.": {
       "localizations": {
         "de": {
@@ -3383,6 +3473,16 @@
         }
       }
     },
+    "Empty folder.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leerer Ordner."
+          }
+        }
+      }
+    },
     "Enable": {
       "extractionState": "manual",
       "localizations": {
@@ -3390,6 +3490,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aktivieren"
+          }
+        }
+      }
+    },
+    "Encrypted nightly backups with restic; browse and restore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsselte nächtliche Backups mit restic; durchsuchen und wiederherstellen"
           }
         }
       }
@@ -3450,6 +3560,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Endpunkt"
+          }
+        }
+      }
+    },
+    "Endpoint (https://…)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endpunkt (https://…)"
           }
         }
       }
@@ -3571,6 +3691,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses iPhones lassen sich hier nicht entfernen."
+          }
+        }
+      }
+    },
+    "Every night": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Nacht"
+          }
+        }
+      }
+    },
+    "Every night at %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Nacht um %@"
           }
         }
       }
@@ -3945,6 +4085,16 @@
         }
       }
     },
+    "Folders your login user can read. Databases are best backed up as dumps into one of these folders.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner, die dein Login-Benutzer lesen kann. Datenbanken sicherst du am besten als Dump in einen dieser Ordner."
+          }
+        }
+      }
+    },
     "Follow": {
       "localizations": {
         "de": {
@@ -4290,6 +4440,16 @@
         }
       }
     },
+    "I've saved it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich hab's gesichert"
+          }
+        }
+      }
+    },
     "If a task hits your plan's usage limit, it waits on the server until the limit resets and then continues by itself.": {
       "localizations": {
         "de": {
@@ -4520,6 +4680,16 @@
         }
       }
     },
+    "Installs restic if needed (no root), creates an encrypted repository and schedules the nightly run.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert restic bei Bedarf (ohne root), legt ein verschlüsseltes Repository an und plant den nächtlichen Lauf."
+          }
+        }
+      }
+    },
     "Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.": {
       "localizations": {
         "de": {
@@ -4630,6 +4800,46 @@
         }
       }
     },
+    "Keep": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalten"
+          }
+        }
+      }
+    },
+    "Keep %lld daily": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tägliche behalten"
+          }
+        }
+      }
+    },
+    "Keep %lld monthly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld monatliche behalten"
+          }
+        }
+      }
+    },
+    "Keep %lld weekly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld wöchentliche behalten"
+          }
+        }
+      }
+    },
     "Keep terminal sessions": {
       "localizations": {
         "de": {
@@ -4736,6 +4946,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Letzte 7 Tage"
+          }
+        }
+      }
+    },
+    "Last backup failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letztes Backup ist fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Last backup worked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letztes Backup hat geklappt"
           }
         }
       }
@@ -5570,6 +5800,16 @@
         }
       }
     },
+    "No backup has run yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Backup gelaufen."
+          }
+        }
+      }
+    },
     "No backup tool and no backup cron job. If the disk dies, the data is gone.": {
       "localizations": {
         "de": {
@@ -5716,6 +5956,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Risiken gefunden"
+          }
+        }
+      }
+    },
+    "No snapshots yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Snapshots."
           }
         }
       }
@@ -6099,6 +6349,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur auf dem Server"
+          }
+        }
+      }
+    },
+    "Only protects against mistakes, not against a dead disk — unless it's another disk.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schützt nur vor Fehlern, nicht vor einer kaputten Platte – außer es ist eine andere Platte."
           }
         }
       }
@@ -7066,6 +7326,16 @@
         }
       }
     },
+    "Repository": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repository"
+          }
+        }
+      }
+    },
     "Request": {
       "localizations": {
         "de": {
@@ -7137,12 +7407,52 @@
         }
       }
     },
+    "Restore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restore all": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restore failed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederherstellen fehlgeschlagen."
+          }
+        }
+      }
+    },
     "Restore the backed-up files": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Gesicherte Dateien wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restored to %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederhergestellt nach %@"
           }
         }
       }
@@ -7417,6 +7727,16 @@
         }
       }
     },
+    "S3-compatible storage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S3-kompatibler Speicher"
+          }
+        }
+      }
+    },
     "SSH already uses this port.": {
       "localizations": {
         "de": {
@@ -7627,6 +7947,16 @@
         }
       }
     },
+    "Schedule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitplan"
+          }
+        }
+      }
+    },
     "Score %lld of 100": {
       "localizations": {
         "de": {
@@ -7673,6 +8003,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suche nach %@"
+          }
+        }
+      }
+    },
+    "Secret key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Secret Key"
           }
         }
       }
@@ -7847,6 +8187,16 @@
         }
       }
     },
+    "Server time. Older snapshots are removed by these rules; a failed backup sends a push.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serverzeit. Ältere Snapshots werden nach diesen Regeln entfernt; ein fehlgeschlagenes Backup schickt einen Push."
+          }
+        }
+      }
+    },
     "Servers": {
       "localizations": {
         "de": {
@@ -7937,6 +8287,16 @@
         }
       }
     },
+    "Set up backups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backups einrichten"
+          }
+        }
+      }
+    },
     "Set up fail2ban": {
       "localizations": {
         "de": {
@@ -7983,6 +8343,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eingerichtet – 1 Schritt braucht einen Blick."
+          }
+        }
+      }
+    },
+    "Setting up backups didn't finish.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einrichtung der Backups wurde nicht abgeschlossen."
           }
         }
       }
@@ -8083,6 +8453,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unterschied zu jetzt zeigen"
+          }
+        }
+      }
+    },
+    "Show the repository password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repository-Passwort anzeigen"
           }
         }
       }
@@ -8283,6 +8663,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Überspringen"
+          }
+        }
+      }
+    },
+    "Snapshots": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snapshots"
           }
         }
       }
@@ -8498,6 +8888,16 @@
         }
       }
     },
+    "Stop backups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backups beenden"
+          }
+        }
+      }
+    },
     "Stop fixing automatically": {
       "localizations": {
         "de": {
@@ -8564,6 +8964,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestoppte Container, ungenutzte Netzwerke, verwaiste Images und Build-Cache. Laufende Container und Volumes bleiben."
+          }
+        }
+      }
+    },
+    "Stopping removes the schedule and the settings on the server. The snapshots stay in the repository.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beenden entfernt den Zeitplan und die Einstellungen auf dem Server. Die Snapshots bleiben im Repository."
           }
         }
       }
@@ -9094,6 +9504,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server hat keine Zugangsdaten für dieses Remote. Verbinde GitHub unter Verbindungen oder hinterlege einen SSH-Schlüssel für den Server."
+          }
+        }
+      }
+    },
+    "The server logs in there with its own SSH key; add it to the other machine first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server meldet sich dort mit seinem eigenen SSH-Schlüssel an; hinterlege ihn vorher auf dem anderen Rechner."
           }
         }
       }
@@ -10249,6 +10669,16 @@
         }
       }
     },
+    "What to back up": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was gesichert wird"
+          }
+        }
+      }
+    },
     "What uses CPU and memory; end stuck processes": {
       "localizations": {
         "de": {
@@ -10265,6 +10695,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wenn „%@“ ausfällt"
+          }
+        }
+      }
+    },
+    "Where": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohin"
+          }
+        }
+      }
+    },
+    "Where to": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohin"
           }
         }
       }
@@ -10298,6 +10748,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mit automatischen Sicherheitsupdates patcht sich der Server jeden Tag selbst, auch wenn du nicht hinschaust."
+          }
+        }
+      }
+    },
+    "Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this iPhone's keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne dieses Passwort kann niemand die Backups lesen – auch du nicht. Bewahre es in deinem Passwort-Manager auf. Deckhand speichert es zusätzlich im Schlüsselbund dieses iPhones."
           }
         }
       }
@@ -10338,6 +10798,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet in %@"
+          }
+        }
+      }
+    },
+    "Works with Backblaze B2, Cloudflare R2, Wasabi, Hetzner, AWS S3 and others.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funktioniert mit Backblaze B2, Cloudflare R2, Wasabi, Hetzner, AWS S3 und anderen."
           }
         }
       }
