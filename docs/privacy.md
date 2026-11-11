@@ -17,6 +17,13 @@ Deckhand does not collect any data. There is no Deckhand account, no Deckhand se
   your own key: your messages and the output of the tools the agent runs are sent to that provider under its terms.
 - To **the services you connect** (MCP servers such as GitHub), directly from your device or your server.
 - When you use Codex or Claude Code, they run **on your server** under your own account with OpenAI or Anthropic.
+- **Push notifications (optional, off by default)**: if you turn on *Push from the server*, your server sends the
+  title of a finished task — and, with login alerts, the user name and address of an SSH login — to the ntfy topic you
+  chose (ntfy.sh or your own ntfy server).
+- **Country lookups**: to show where blocked or unexpected logins come from, the *addresses of those logins* (not
+  yours) are looked up at ipwho.is.
+- **Sign-in pages** for Claude Code, Codex and GitHub open in Apple's secure sign-in sheet; Deckhand never sees your
+  password there.
 
 **Children** — Deckhand is a developer tool and is not directed at children.
 
