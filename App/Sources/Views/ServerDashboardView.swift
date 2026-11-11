@@ -120,6 +120,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.dbdumps")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            DatabaseBrowserView(server: server)
+                        } label: {
+                            ManageRow(title: "Databases", subtitle: "Tables, rows and SQL; Redis keys — over SSH", symbol: "tablecells")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.databases")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             UptimeView(server: server)
                         } label: {
                             ManageRow(title: "Uptime", subtitle: "Check sites and APIs every minute; push when one goes down", symbol: "waveform.path.ecg")
