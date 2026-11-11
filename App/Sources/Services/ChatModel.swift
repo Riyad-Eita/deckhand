@@ -164,7 +164,9 @@ final class ChatModel {
                     shell: shell,
                     tools: ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
                     policy: policy,
-                    system: Agent.systemPrompt(host: server.host, user: server.username, workingDirectory: thread.workingDirectory),
+                    system: Agent.systemPrompt(
+                        host: server.host, user: server.username, workingDirectory: thread.workingDirectory,
+                        extra: ServerMemory.promptSection((try? await shell.run(ServerMemory.readCommand, timeout: .seconds(10)).stdout) ?? "")),
                     redactSecrets: hideSecrets,
                     approve: { [weak self] request in
                         await self?.requestApproval(request) ?? .deny(reason: nil)

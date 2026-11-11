@@ -133,6 +133,14 @@ struct ThreadListView: View {
             } header: {
                 Text("Start a task with")
             }
+            Section {
+                NavigationLink { ServerMemoryView(server: server) } label: {
+                    Label("Server notes", systemImage: "note.text")
+                }
+                .accessibilityIdentifier("agent.memory")
+            } footer: {
+                Text("What the agents remember about this server.")
+            }
             if !threads.isEmpty {
                 Section("Recent") {
                     ForEach(threads) { thread in
