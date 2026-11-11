@@ -428,6 +428,16 @@
         }
       }
     },
+    "%lld servers and %lld connections, encrypted with your passphrase (at least 8 characters). Without the passphrase the file can't be opened. Secrets are only included if you switch it on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Server und %2$lld Verbindungen, verschlüsselt mit deiner Passphrase (mindestens 8 Zeichen). Ohne die Passphrase lässt sich die Datei nicht öffnen. Geheimnisse sind nur dabei, wenn du es einschaltest."
+          }
+        }
+      }
+    },
     "%lld stopped containers": {
       "localizations": {
         "de": {
@@ -880,6 +890,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fügt einen kleinen Login-Hook (PAM) hinzu, der an dein ntfy-Topic pusht. Er kann keinen Login blockieren. Abonniere das Topic in der ntfy-App: %@"
+          }
+        }
+      }
+    },
+    "Adds the servers and connections that aren't here yet and takes over the settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügt die Server und Verbindungen hinzu, die noch fehlen, und übernimmt die Einstellungen."
           }
         }
       }
@@ -1454,6 +1474,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sichere …"
+          }
+        }
+      }
+    },
+    "Backup file ready, with secrets.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Datei fertig, mit Geheimnissen."
+          }
+        }
+      }
+    },
+    "Backup file ready, without secrets.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Datei fertig, ohne Geheimnisse."
           }
         }
       }
@@ -2789,6 +2829,16 @@
         }
       }
     },
+    "Create backup file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Datei erstellen"
+          }
+        }
+      }
+    },
     "Cron jobs": {
       "localizations": {
         "de": {
@@ -3574,6 +3624,16 @@
         }
       }
     },
+    "Encrypted backup of servers and settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsseltes Backup von Servern und Einstellungen"
+          }
+        }
+      }
+    },
     "Encrypted nightly backups with restic; browse and restore": {
       "localizations": {
         "de": {
@@ -3871,6 +3931,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erklären"
+          }
+        }
+      }
+    },
+    "Export": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export"
           }
         }
       }
@@ -4580,12 +4650,42 @@
         }
       }
     },
+    "Import": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import"
+          }
+        }
+      }
+    },
     "Import Private Key…": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Privaten Schlüssel importieren …"
+          }
+        }
+      }
+    },
+    "Import a backup file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Datei importieren"
+          }
+        }
+      }
+    },
+    "Imported %lld servers. Restart Deckhand to load the settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Server importiert. Starte Deckhand neu, um die Einstellungen zu laden."
           }
         }
       }
@@ -4606,6 +4706,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auch Ordner einbeziehen, die nur root lesen darf (sudo)"
+          }
+        }
+      }
+    },
+    "Include passwords, keys and API keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter, Schlüssel und API-Keys einschließen"
           }
         }
       }
@@ -5626,6 +5736,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH auf Port %@ verlegen?"
+          }
+        }
+      }
+    },
+    "Move to a new iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf ein neues iPhone umziehen"
           }
         }
       }
@@ -6763,6 +6883,16 @@
         }
       }
     },
+    "Passphrase": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passphrase"
+          }
+        }
+      }
+    },
     "Password": {
       "localizations": {
         "de": {
@@ -7482,6 +7612,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erneuere es oder prüfe, warum die automatische Erneuerung nicht klappt."
+          }
+        }
+      }
+    },
+    "Repeat passphrase": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passphrase wiederholen"
           }
         }
       }
@@ -8563,6 +8703,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Übergabe-Dokument teilen"
+          }
+        }
+      }
+    },
+    "Share or save the file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei teilen oder sichern"
           }
         }
       }
@@ -9698,6 +9848,16 @@
         }
       }
     },
+    "The passphrase you chose when you made the backup.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Passphrase, die du beim Erstellen des Backups gewählt hast."
+          }
+        }
+      }
+    },
     "The provider rejected the API key (%lld). %@": {
       "localizations": {
         "de": {
@@ -9868,6 +10028,16 @@
         }
       }
     },
+    "This backup comes from a newer Deckhand. Update the app first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Backup stammt aus einer neueren Deckhand-Version. Aktualisiere zuerst die App."
+          }
+        }
+      }
+    },
     "This breaks a house rule": {
       "localizations": {
         "de": {
@@ -9944,6 +10114,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel dieses iPhones"
+          }
+        }
+      }
+    },
+    "This isn't a Deckhand backup file.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist keine Deckhand-Backup-Datei."
           }
         }
       }
@@ -11078,6 +11258,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schreibt vier Köder-Dateien und startet einen kleinen Wächter (python3), der an %@ pusht, wenn eine geöffnet wird."
+          }
+        }
+      }
+    },
+    "Wrong passphrase, or the file is damaged.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falsche Passphrase oder die Datei ist beschädigt."
           }
         }
       }
