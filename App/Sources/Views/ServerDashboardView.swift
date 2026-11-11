@@ -189,6 +189,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.rules")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                PanicView(server: server)
+                            } label: {
+                                ManageRow(title: "Panic button", subtitle: "Think someone's in? Save evidence and lock it down", symbol: "light.beacon.max")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.panic")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 Fail2banView(server: server)
                             } label: {
                                 ManageRow(title: "Blocked logins", subtitle: "fail2ban: who's banned and why", symbol: "hand.raised")
