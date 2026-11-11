@@ -740,3 +740,39 @@ extension LiveSSHTests {
         #expect(Problem.from(closed).kind == .network)
     }
 }
+
+/// Backups end to end on a disposable server: install restic, init a folder repository, back up, list, restore,
+/// remove. Opt-in: DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_BACKUP_HOST"] != nil))
+struct LiveBackupTests {
+    @Test func backupListRestore() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let home = try await conn.run("printf '%s' \"$HOME\"", timeout: .seconds(10)).stdout
+        _ = try await conn.run("mkdir -p ~/dh-backup-src/sub && echo hello > ~/dh-backup-src/sub/note.txt", timeout: .seconds(10))
+        var plan = Backups.Plan(paths: ["\(home)/dh-backup-src"], target: .folder("\(home)/dh-backup-repo"), password: Backups.newPassword())
+        plan.hour = 4
+        let setup = try await conn.run(Backups.setupCommand(plan), timeout: .seconds(180))
+        #expect(setup.stdout.contains("@@ok") && setup.stdout.contains("@@init"), "\(setup.stdout) \(setup.stderr)")
+        #expect(setup.stdout.contains("@@restic 0.17"))
+        // Run the nightly script in the foreground (runNow detaches).
+        _ = try await conn.run("sh ~/.deckhand/backup/run.sh", timeout: .seconds(180))
+        let status = Backups.parseStatus(try await conn.run(Backups.statusCommand, timeout: .seconds(60)).stdout)
+        #expect(status.configured && status.schedule?.hour == 4)
+        #expect(status.lastRun?.ok == true)
+        let snap = try #require(status.snapshots.first)
+        let list = Backups.parseList(try await conn.run(Backups.listCommand(snapshot: snap.id, path: "\(home)/dh-backup-src/sub"), timeout: .seconds(60)).stdout,
+                                     parent: "\(home)/dh-backup-src/sub")
+        #expect(list.map(\.name) == ["note.txt"])
+        let restored = try await conn.run(Backups.restoreCommand(snapshot: snap.id, path: "\(home)/dh-backup-src/sub/note.txt"), timeout: .seconds(60)).stdout
+        let dir = try #require(restored.split(separator: "\n").first { $0.hasPrefix("@@restored ") }).dropFirst(11)
+        #expect(try await conn.run("cat '\(dir)\(home)/dh-backup-src/sub/note.txt'", timeout: .seconds(10)).stdout == "hello\n")
+        #expect(try await conn.run(Backups.removeCommand, timeout: .seconds(20)).stdout.contains("@@ok"))
+        #expect(try await conn.run("crontab -l 2>/dev/null | grep -c deckhand/backup; true", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "0")
+        _ = try await conn.run("rm -rf ~/dh-backup-src ~/dh-backup-repo '\(dir)'", timeout: .seconds(20))
+    }
+}
