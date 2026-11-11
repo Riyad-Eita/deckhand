@@ -534,6 +534,16 @@
         }
       }
     },
+    "A browser the agent can drive.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Browser, den der Agent steuern kann."
+          }
+        }
+      }
+    },
     "A command that can't easily be undone": {
       "localizations": {
         "de": {
@@ -670,6 +680,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Access Key"
+          }
+        }
+      }
+    },
+    "Access token (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access Token (optional)"
           }
         }
       }
@@ -870,6 +890,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Füge deinen Server hinzu"
+          }
+        }
+      }
+    },
+    "Add · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen · %@"
           }
         }
       }
@@ -1688,6 +1718,16 @@
         }
       }
     },
+    "Business": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschäft"
+          }
+        }
+      }
+    },
     "CPU": {
       "localizations": {
         "de": {
@@ -2274,6 +2314,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cloud-Schlüssel (root)"
+          }
+        }
+      }
+    },
+    "Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code"
           }
         }
       }
@@ -2869,6 +2919,16 @@
         }
       }
     },
+    "Create a token": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token erstellen"
+          }
+        }
+      }
+    },
     "Create a token at github.com → Settings → Developer settings → Personal access tokens. One-tap GitHub sign-in is coming.": {
       "localizations": {
         "de": {
@@ -2899,6 +2959,16 @@
         }
       }
     },
+    "Current docs and examples for thousands of libraries, so code fits the version you use.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuelle Doku und Beispiele für Tausende Bibliotheken, damit der Code zur genutzten Version passt."
+          }
+        }
+      }
+    },
     "Custom (OpenAI-compatible)": {
       "extractionState": "manual",
       "localizations": {
@@ -2906,6 +2976,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigener Server (OpenAI-kompatibel)"
+          }
+        }
+      }
+    },
+    "Customers, payments, subscriptions and refunds.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden, Zahlungen, Abos und Erstattungen."
+          }
+        }
+      }
+    },
+    "Data": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daten"
           }
         }
       }
@@ -3427,6 +3517,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Docker-Ports an der Firewall vorbei"
+          }
+        }
+      }
+    },
+    "Docs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doku"
           }
         }
       }
@@ -4011,6 +4111,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erklären"
+          }
+        }
+      }
+    },
+    "Explains how a public project works, from its code and wiki.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erklärt anhand von Code und Wiki, wie ein öffentliches Projekt funktioniert."
           }
         }
       }
@@ -5350,6 +5460,16 @@
         }
       }
     },
+    "Lets the agent look at tables and run read-only queries. Replace the connection string at the end. Runs on your server and needs Node.js.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lässt den Agenten Tabellen ansehen und Nur-Lesen-Abfragen ausführen. Ersetze die Verbindungszeichenfolge am Ende. Läuft auf deinem Server und braucht Node.js."
+          }
+        }
+      }
+    },
     "Listening but not reachable from here: %@ — the firewall keeps them private.": {
       "localizations": {
         "de": {
@@ -5570,6 +5690,16 @@
         }
       }
     },
+    "Look up customers and payments and act on them. Use a restricted key with only the permissions you want the agent to have.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden und Zahlungen nachschlagen und bearbeiten. Nutze einen eingeschränkten Schlüssel mit genau den Rechten, die der Agent haben soll."
+          }
+        }
+      }
+    },
     "Looking around %@": {
       "localizations": {
         "de": {
@@ -5776,6 +5906,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modell-ID"
+          }
+        }
+      }
+    },
+    "Models, datasets, Spaces and papers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelle, Datensätze, Spaces und Paper."
           }
         }
       }
@@ -6643,6 +6783,16 @@
         }
       }
     },
+    "Official docs for Azure, .NET and Microsoft 365.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offizielle Doku zu Azure, .NET und Microsoft 365."
+          }
+        }
+      }
+    },
     "Offline": {
       "localizations": {
         "de": {
@@ -6763,6 +6913,16 @@
         }
       }
     },
+    "Only the folders at the end of the command are reachable. Mostly useful for the own-key agent; Claude Code and Codex can already work with files.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Ordner am Ende des Befehls sind erreichbar. Vor allem für den Agenten mit eigenem Key nützlich; Claude Code und Codex können schon mit Dateien arbeiten."
+          }
+        }
+      }
+    },
     "Only this server itself.": {
       "localizations": {
         "de": {
@@ -6869,6 +7029,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffnet Deckhand und gibt dem Agenten eine Aufgabe auf einem deiner Server."
+          }
+        }
+      }
+    },
+    "Opens pages, clicks, fills forms and takes snapshots — good for testing your own sites. Runs on your server and needs Node.js; the first start downloads a browser.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet Seiten, klickt, füllt Formulare aus und macht Snapshots – gut zum Testen eigener Websites. Läuft auf deinem Server und braucht Node.js; beim ersten Start wird ein Browser geladen."
           }
         }
       }
@@ -7445,6 +7615,26 @@
         }
       }
     },
+    "Read and open issues and pull requests, search code, look at Actions runs. Give the token only the repositories it needs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Issues und Pull Requests lesen und anlegen, Code durchsuchen, Actions-Läufe ansehen. Gib dem Token nur die Repositories, die es braucht."
+          }
+        }
+      }
+    },
+    "Read and write files in chosen folders.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien in ausgewählten Ordnern lesen und schreiben."
+          }
+        }
+      }
+    },
     "Read only": {
       "extractionState": "manual",
       "localizations": {
@@ -7452,6 +7642,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur lesen"
+          }
+        }
+      }
+    },
+    "Read-only SQL on one database.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur-Lesen-SQL auf einer Datenbank."
           }
         }
       }
@@ -7502,6 +7702,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server wird gelesen …"
+          }
+        }
+      }
+    },
+    "Reads web pages as clean text.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liest Webseiten als sauberen Text."
           }
         }
       }
@@ -7937,6 +8147,16 @@
         }
       }
     },
+    "Restricted key (rk_…)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeschränkter Schlüssel (rk_…)"
+          }
+        }
+      }
+    },
     "Review SSH keys": {
       "localizations": {
         "de": {
@@ -8193,6 +8413,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Läuft auf diesem Server mit deinem Claude-Abo"
+          }
+        }
+      }
+    },
+    "Runs on your server and needs uv (Python).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft auf deinem Server und braucht uv (Python)."
           }
         }
       }
@@ -8467,6 +8697,26 @@
         }
       }
     },
+    "Search and compare models and datasets. A read token raises the limits.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelle und Datensätze suchen und vergleichen. Ein Lese-Token erhöht die Limits."
+          }
+        }
+      }
+    },
+    "Search and read the AWS docs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die AWS-Doku durchsuchen und lesen."
+          }
+        }
+      }
+    },
     "Search command, user or PID": {
       "localizations": {
         "de": {
@@ -8483,6 +8733,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienste suchen"
+          }
+        }
+      }
+    },
+    "Searches Cloudflare's documentation. No account needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchsucht die Cloudflare-Dokumentation. Kein Konto nötig."
+          }
+        }
+      }
+    },
+    "Searches and reads Microsoft's documentation. No account needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchsucht und liest die Microsoft-Dokumentation. Kein Konto nötig."
           }
         }
       }
@@ -10738,6 +11008,16 @@
         }
       }
     },
+    "Turns a URL into Markdown for the agent. Runs on your server and needs uv (Python).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Macht aus einer URL Markdown für den Agenten. Läuft auf deinem Server und braucht uv (Python)."
+          }
+        }
+      }
+    },
     "Type": {
       "localizations": {
         "de": {
@@ -11199,6 +11479,16 @@
         }
       }
     },
+    "Web": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Web"
+          }
+        }
+      }
+    },
     "Web apps": {
       "localizations": {
         "de": {
@@ -11432,6 +11722,16 @@
         }
       }
     },
+    "Workers, DNS, Pages, R2 and the rest of Cloudflare.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workers, DNS, Pages, R2 und der Rest von Cloudflare."
+          }
+        }
+      }
+    },
     "Working in %@. Runs with your %@ subscription on the server.": {
       "localizations": {
         "de": {
@@ -11598,6 +11898,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Modell-Key"
+          }
+        }
+      }
+    },
+    "Your own": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigene"
           }
         }
       }
