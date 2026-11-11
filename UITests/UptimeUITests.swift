@@ -59,6 +59,61 @@ final class UptimeUITests: XCTestCase {
         }
     }
 
+    /// A check that is down, an automatic fix that starts the service, "Check now": the server heals it.
+    func testAutomaticFix() throws {
+        let env = ProcessInfo.processInfo.environment
+        guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"] else {
+            throw XCTSkip("No uptime test server")
+        }
+        let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_HOST"] = host
+        app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_UPTIME_PORT"] ?? "22"
+        app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_UPTIME_USER"] ?? "me"
+        app.launchEnvironment["DECKHAND_SEED_PASSWORD"] = password
+        app.launchEnvironment["DECKHAND_SEED_NAME"] = "sandbox"
+        app.launchEnvironment["DECKHAND_SEED_TRUST"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_RUN"] = "server|"
+        app.launch()
+        let row = app.buttons["dashboard.uptime"]
+        XCTAssertTrue(row.waitForExistence(timeout: 30))
+        var tries = 0
+        while !row.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
+        row.tap()
+        let install = app.buttons["uptime.install"]
+        if install.waitForExistence(timeout: 20) { install.tap() }
+        XCTAssertTrue(app.buttons["uptime.add"].waitForExistence(timeout: 60))
+        addCheck(app, url: "http://127.0.0.1:8099/", name: "Local API")
+        let name = app.staticTexts["Local API"]
+        XCTAssertTrue(name.waitForExistence(timeout: 60))
+        XCTAssertTrue(app.buttons["Investigate with an agent"].waitForExistence(timeout: 30))
+
+        name.swipeLeft()
+        app.buttons["Auto-fix"].firstMatch.tap()
+        let editor = app.textViews["remedy.commands"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 10))
+        editor.tap()
+        editor.typeText("setsid python3 -m http.server 8099 --bind 127.0.0.1 >/dev/null 2>&1 < /dev/null &")
+        app.buttons["remedy.save"].tap()
+        XCTAssertTrue(app.staticTexts["Fixes itself when it fails"].waitForExistence(timeout: 30))
+
+        app.buttons["Check now"].tap()
+        XCTAssertTrue(app.staticTexts["Fixed itself 1× today"].waitForExistence(timeout: 90))
+        sleep(1)
+        shot(app, "healed")
+        app.staticTexts["Local API"].swipeLeft()
+        app.buttons["Auto-fix"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["Fixed"].waitForExistence(timeout: 10))
+        shot(app, "remedy")
+        app.buttons["Stop fixing automatically"].tap()
+        XCTAssertTrue(app.staticTexts["Local API"].waitForExistence(timeout: 30))
+        XCTAssertFalse(app.staticTexts["Fixes itself when it fails"].waitForExistence(timeout: 5))
+        app.staticTexts["Local API"].swipeLeft()
+        app.buttons["Delete"].firstMatch.tap()
+        let gone = expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: app.staticTexts["Local API"])
+        wait(for: [gone], timeout: 30)
+    }
+
     func testSuggestedFixBar() throws {
         let env = ProcessInfo.processInfo.environment
         guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"] else {
