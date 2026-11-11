@@ -2,6 +2,16 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
+    " (from an incident)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (aus einem Vorfall)"
+          }
+        }
+      }
+    },
     "%@ %": {
       "localizations": {
         "de": {
@@ -694,6 +704,16 @@
         }
       }
     },
+    "Add a check that would have caught this?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Prüfung hinzufügen, die das früher erkannt hätte?"
+          }
+        }
+      }
+    },
     "Add a key": {
       "localizations": {
         "de": {
@@ -774,6 +794,16 @@
         }
       }
     },
+    "Add to Uptime": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zur Erreichbarkeit hinzufügen"
+          }
+        }
+      }
+    },
     "Add your first server": {
       "localizations": {
         "de": {
@@ -790,6 +820,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Füge deinen Server hinzu"
+          }
+        }
+      }
+    },
+    "Added to Uptime": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zur Erreichbarkeit hinzugefügt"
           }
         }
       }

@@ -114,6 +114,28 @@ final class UptimeUITests: XCTestCase {
         wait(for: [gone], timeout: 30)
     }
 
+    func testIncidentLeavesACheck() throws {
+        let env = ProcessInfo.processInfo.environment
+        guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"] else {
+            throw XCTSkip("No uptime test server")
+        }
+        let app = XCUIApplication()
+        app.launchEnvironment["DECKHAND_RESET"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_HOST"] = host
+        app.launchEnvironment["DECKHAND_SEED_PORT"] = env["DECKHAND_UPTIME_PORT"] ?? "22"
+        app.launchEnvironment["DECKHAND_SEED_USER"] = env["DECKHAND_UPTIME_USER"] ?? "me"
+        app.launchEnvironment["DECKHAND_SEED_PASSWORD"] = password
+        app.launchEnvironment["DECKHAND_SEED_NAME"] = "sandbox"
+        app.launchEnvironment["DECKHAND_SEED_TRUST"] = "1"
+        app.launchEnvironment["DECKHAND_SEED_RUN"] = "checkoffer|"
+        app.launch()
+        let add = app.buttons["checkoffer.add"]
+        XCTAssertTrue(add.waitForExistence(timeout: 30))
+        shot(app, "offer")
+        add.tap()
+        XCTAssertTrue(app.buttons["Added to Uptime"].waitForExistence(timeout: 60))
+    }
+
     func testSuggestedFixBar() throws {
         let env = ProcessInfo.processInfo.environment
         guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"] else {
