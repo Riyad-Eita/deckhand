@@ -104,6 +104,7 @@ struct IncidentView: View {
         let t = ChatThread(server: server, workingDirectory: server.recentDirectories.first ?? server.workingDirectory, engine: engine)
         t.title = String(localized: "Why is \(check.name) down?")
         context.insert(t)
+        IncidentLinks.set(check.id, for: t.id)
         // Diagnosis only: the CLIs can't change anything in this turn; the fix comes after the user's tap.
         PendingPrompt.set(Incident.prompt(check: check, evidence: evidence ?? []), for: t.id, access: .readOnly)
         thread = t

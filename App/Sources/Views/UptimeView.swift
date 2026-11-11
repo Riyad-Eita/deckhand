@@ -11,6 +11,7 @@ struct UptimeView: View {
     @State private var adding = false
     @State private var busy = false
     @State private var incident: String?
+    @State private var remedyFor: Uptime.Check?
 
     var body: some View {
         List {
@@ -37,6 +38,10 @@ struct UptimeView: View {
                             CheckRow(check: check) { incident = check.id }
                                 .swipeActions {
                                     Button("Delete") { Task { await run(Uptime.removeCommand(id: check.id)) } }.tint(.red)
+                                    Button("Auto-fix") { remedyFor = check }.tint(Theme.accent)
+                                }
+                                .contextMenu {
+                                    Button { remedyFor = check } label: { Label("Automatic fix…", systemImage: "wand.and.sparkles") }
                                 }
                         }
                         Button { adding = true } label: { Label("Add a check", systemImage: "plus") }
@@ -62,6 +67,9 @@ struct UptimeView: View {
         }
         .task { await load() }
         .refreshable { await load() }
+        .sheet(item: $remedyFor) { check in
+            RemedySheet(server: server, checkID: check.id, checkName: check.name, existing: check.remedy) { Task { await load() } }
+        }
         .navigationDestination(item: $incident) { IncidentView(server: server, checkID: $0) }
         .sheet(isPresented: $adding) {
             AddCheckSheet { check in
@@ -124,6 +132,12 @@ private struct CheckRow: View {
                         Text("\((up * 100).formatted(.number.precision(.fractionLength(up == 1 || up == 0 ? 0 : 1)))) %").font(.caption).foregroundStyle(.secondary)
                     }
                 }
+            }
+            if let remedy = check.remedy {
+                let today = remedy.runsToday
+                Label(today.isEmpty ? String(localized: "Fixes itself when it fails")
+                      : String(localized: "Fixed itself \(today.filter(\.fixed).count)× today"), systemImage: "wand.and.sparkles")
+                    .font(.caption).foregroundStyle(Theme.accent)
             }
             if check.results.count > 1 { Sparkline(results: Array(check.results.suffix(60))).frame(height: 28) }
             if check.isUp == false {

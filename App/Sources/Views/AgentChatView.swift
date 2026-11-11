@@ -9,6 +9,9 @@ struct AgentChatView: View {
     @State private var draft = ""
     /// The reply whose suggested fix the user waved away.
     @State private var dismissedFix: UUID?
+    /// The fix the user applied in this chat; once it ran, offer to make it automatic.
+    @State private var appliedFix: String?
+    @State private var settingUpRemedy = false
     @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
     @State private var browsing: BrowserTarget?
@@ -66,10 +69,13 @@ struct AgentChatView: View {
                 } else if let fix = suggestedFix {
                     SuggestedFixBar(commands: fix.commands) {
                         dismissedFix = fix.message
+                        appliedFix = fix.commands
                         model.send(Incident.applyPrompt, access: .full)
                     } dismiss: {
                         dismissedFix = fix.message
                     }
+                } else if appliedFix != nil, !model.isRunning, model.error == nil, IncidentLinks.check(for: model.thread.id) != nil {
+                    AutoFixOffer { settingUpRemedy = true } dismiss: { appliedFix = nil }
                 }
                 if let upload {
                     HStack(spacing: 10) {
@@ -114,6 +120,11 @@ struct AgentChatView: View {
             browsing = BrowserTarget(port: port, path: url.path.isEmpty ? "/" : url.path + (url.query.map { "?" + $0 } ?? ""))
             return .handled
         })
+        .sheet(isPresented: $settingUpRemedy) {
+            if let check = IncidentLinks.check(for: model.thread.id), let commands = appliedFix {
+                RemedySheet(server: model.server, checkID: check, checkName: model.thread.title, initialCommands: commands) { appliedFix = nil }
+            }
+        }
         .sheet(item: $browsing) { BrowserSheet(server: model.server, port: $0.port, path: $0.path) }
         .onAppear { AppRouter.shared.visibleThread = model.thread.id }
         .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }

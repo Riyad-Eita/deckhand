@@ -1018,12 +1018,52 @@
         }
       }
     },
+    "At most %lld× an hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höchstens %lld× pro Stunde"
+          }
+        }
+      }
+    },
     "Attach a file": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Datei anhängen"
+          }
+        }
+      }
+    },
+    "Auto-fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-Fix"
+          }
+        }
+      }
+    },
+    "Automatic fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Lösung"
+          }
+        }
+      }
+    },
+    "Automatic fix…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Lösung …"
           }
         }
       }
@@ -2199,6 +2239,16 @@
         }
       }
     },
+    "Couldn't save the fix.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Lösung konnte nicht gesichert werden."
+          }
+        }
+      }
+    },
     "Couldn't save the notes.": {
       "localizations": {
         "de": {
@@ -2586,6 +2636,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht fertig geworden: %@"
+          }
+        }
+      }
+    },
+    "Didn't help": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hat nicht geholfen"
           }
         }
       }
@@ -3325,6 +3385,16 @@
         }
       }
     },
+    "Fix it automatically next time?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächstes Mal automatisch beheben?"
+          }
+        }
+      }
+    },
     "Fix with an agent": {
       "localizations": {
         "de": {
@@ -3335,12 +3405,42 @@
         }
       }
     },
+    "Fixed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behoben"
+          }
+        }
+      }
+    },
+    "Fixed itself %lld× today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute %lld× selbst behoben"
+          }
+        }
+      }
+    },
     "Fixes back up every file first and can be rolled back in the change history.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Fixes sichern vorher jede Datei und lassen sich im Änderungsverlauf zurücksetzen."
+          }
+        }
+      }
+    },
+    "Fixes itself when it fails": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behebt sich selbst bei Ausfall"
           }
         }
       }
@@ -5906,6 +6006,16 @@
         }
       }
     },
+    "Recent runs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Läufe"
+          }
+        }
+      }
+    },
     "Reconnect": {
       "localizations": {
         "de": {
@@ -7278,6 +7388,16 @@
         }
       }
     },
+    "Stop fixing automatically": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr automatisch beheben"
+          }
+        }
+      }
+    },
     "Stop recording": {
       "localizations": {
         "de": {
@@ -7824,6 +7944,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server startet in wenigen Sekunden neu und ist ein, zwei Minuten nicht erreichbar. Laufende Aufgaben, Terminals und Web-Apps stoppen; Dienste mit Autostart kommen zurück."
+          }
+        }
+      }
+    },
+    "The server runs this fix on its own when the check fails again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server führt diese Lösung selbst aus, wenn die Prüfung wieder fehlschlägt."
           }
         }
       }
@@ -8819,6 +8949,16 @@
         }
       }
     },
+    "When “%@” fails": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn „%@“ ausfällt"
+          }
+        }
+      }
+    },
     "Whisper large-v3": {
       "shouldTranslate": false
     },
@@ -9048,6 +9188,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Server ist eingerichtet."
+          }
+        }
+      }
+    },
+    "Your server runs these commands as %@ when the check fails, checks again and tells you whether it helped. If it doesn't, you get an urgent push.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Server führt diese Befehle als %@ aus, wenn die Prüfung fehlschlägt, prüft erneut und sagt dir, ob es geholfen hat. Wenn nicht, bekommst du einen dringenden Push."
           }
         }
       }
@@ -9310,6 +9460,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "seit dem letzten Start"
+          }
+        }
+      }
+    },
+    "sudo only works here if this user may run these commands without a password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sudo funktioniert hier nur, wenn dieser Benutzer diese Befehle ohne Passwort ausführen darf."
           }
         }
       }
