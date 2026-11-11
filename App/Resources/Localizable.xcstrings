@@ -905,6 +905,16 @@
         }
       }
     },
+    "All clear: undo the lockdown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entwarnung: Abriegelung aufheben"
+          }
+        }
+      }
+    },
     "Allow": {
       "localizations": {
         "de": {
@@ -1134,6 +1144,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Den Agenten fragen"
+          }
+        }
+      }
+    },
+    "Asks for Face ID, then your sudo password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fragt nach Face ID, dann nach deinem sudo-Passwort."
           }
         }
       }
@@ -2369,6 +2389,16 @@
         }
       }
     },
+    "Couldn't read the SSH setup.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die SSH-Einstellungen konnten nicht gelesen werden."
+          }
+        }
+      }
+    },
     "Couldn't read the file.": {
       "localizations": {
         "de": {
@@ -2425,6 +2455,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Notizen ließen sich nicht speichern."
+          }
+        }
+      }
+    },
+    "Couldn't undo the lockdown.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Abriegelung konnte nicht aufgehoben werden."
           }
         }
       }
@@ -3204,6 +3244,16 @@
         }
       }
     },
+    "End all other SSH sessions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle anderen SSH-Sitzungen beenden"
+          }
+        }
+      }
+    },
     "End “%@” (PID %@)?": {
       "localizations": {
         "de": {
@@ -3341,6 +3391,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses iPhones lassen sich hier nicht entfernen."
+          }
+        }
+      }
+    },
+    "Evidence files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beweisdateien"
+          }
+        }
+      }
+    },
+    "Evidence is in %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Beweise liegen in %@."
+          }
+        }
+      }
+    },
+    "Evidence: who is logged in, recent logins, processes, network connections, files changed today, SSH keys, cron jobs and the SSH log, in a folder only root can read.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beweise: wer angemeldet ist, letzte Logins, Prozesse, Netzwerkverbindungen, heute geänderte Dateien, SSH-Schlüssel, Cron-Jobs und das SSH-Log, in einem Ordner, den nur root lesen kann."
           }
         }
       }
@@ -3485,6 +3565,16 @@
         }
       }
     },
+    "Files changed in the last day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geänderte Dateien (24 h)"
+          }
+        }
+      }
+    },
     "Files moved to the trash on the server.": {
       "localizations": {
         "de": {
@@ -3541,6 +3631,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Finde heraus, warum nginx 502 liefert"
+          }
+        }
+      }
+    },
+    "Finding your address …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Adresse wird ermittelt …"
           }
         }
       }
@@ -4546,6 +4646,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sperren nach"
+          }
+        }
+      }
+    },
+    "Lock down": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abriegeln"
+          }
+        }
+      }
+    },
+    "Lock down %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ abriegeln"
+          }
+        }
+      }
+    },
+    "Lock down now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt abriegeln"
+          }
+        }
+      }
+    },
+    "Lock down this server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Server abriegeln"
           }
         }
       }
@@ -5913,6 +6053,16 @@
         }
       }
     },
+    "Other sessions ended": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Sitzungen beendet"
+          }
+        }
+      }
+    },
     "Other updates": {
       "localizations": {
         "de": {
@@ -5953,6 +6103,16 @@
         }
       }
     },
+    "Panic button": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panik-Knopf"
+          }
+        }
+      }
+    },
     "Passcode": {
       "localizations": {
         "de": {
@@ -5989,6 +6149,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passwort nötig"
+          }
+        }
+      }
+    },
+    "Passwords and root login off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter und Root-Login aus"
           }
         }
       }
@@ -6566,6 +6736,16 @@
         }
       }
     },
+    "Remove keys you don't recognise. Then look for anything you didn't change yourself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entferne Schlüssel, die du nicht kennst. Such dann nach allem, was du nicht selbst geändert hast."
+          }
+        }
+      }
+    },
     "Remove the Whisper model?": {
       "localizations": {
         "de": {
@@ -6707,12 +6887,32 @@
         }
       }
     },
+    "Restores SSH and the firewall and starts the stopped services again. The evidence stays.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stellt SSH und die Firewall wieder her und startet die gestoppten Dienste. Die Beweise bleiben."
+          }
+        }
+      }
+    },
     "Restores the files from the backup made before “%@”, checks the configuration and reloads the service.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Stellt die Dateien aus dem Backup vor „%@“ wieder her, prüft die Konfiguration und lädt den Dienst neu."
+          }
+        }
+      }
+    },
+    "Review SSH keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Schlüssel prüfen"
           }
         }
       }
@@ -6987,6 +7187,16 @@
         }
       }
     },
+    "SSH keys on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Schlüssel auf dem Server"
+          }
+        }
+      }
+    },
     "SSH limits": {
       "localizations": {
         "de": {
@@ -7003,6 +7213,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH läuft jetzt auf Port %@. Deckhand hat den neuen Port für diesen Server gespeichert."
+          }
+        }
+      }
+    },
+    "SSH only from this iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH nur von diesem iPhone"
           }
         }
       }
@@ -7033,6 +7253,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Regeln sichern"
+          }
+        }
+      }
+    },
+    "Save the evidence first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuerst die Beweise sichern"
           }
         }
       }
@@ -7073,6 +7303,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gespeichert."
+          }
+        }
+      }
+    },
+    "Saves the evidence first, then changes SSH and the firewall. If the app can't log in again within five minutes, everything is undone by itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichert zuerst die Beweise und ändert dann SSH und die Firewall. Wenn sich die App nicht innerhalb von fünf Minuten neu anmelden kann, wird alles von selbst rückgängig gemacht."
           }
         }
       }
@@ -8008,6 +8248,16 @@
         }
       }
     },
+    "Stop public services": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffentliche Dienste stoppen"
+          }
+        }
+      }
+    },
     "Stop recording": {
       "localizations": {
         "de": {
@@ -8174,6 +8424,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tailscale-Namen und IPs funktionieren auch."
+          }
+        }
+      }
+    },
+    "Takes websites and databases offline until you give the all clear.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nimmt Websites und Datenbanken offline, bis du Entwarnung gibst."
           }
         }
       }
@@ -8638,6 +8898,16 @@
         }
       }
     },
+    "Think someone's in? Save evidence and lock it down": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jemand drin? Beweise sichern und abriegeln"
+          }
+        }
+      }
+    },
     "Thinking…": {
       "localizations": {
         "de": {
@@ -8824,6 +9094,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diesem Server fehlt python3, das die Regeln brauchen. Installiere es unter Updates oder im Terminal."
+          }
+        }
+      }
+    },
+    "This server is locked down": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server ist abgeriegelt"
           }
         }
       }
@@ -9399,6 +9679,16 @@
         }
       }
     },
+    "Use this when you think someone else is on your server. Deckhand saves the evidence, then shuts the doors — and can open them again with one tap.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze das, wenn du glaubst, dass jemand anderes auf deinem Server ist. Deckhand sichert die Beweise, schließt dann die Türen – und öffnet sie mit einem Tippen wieder."
+          }
+        }
+      }
+    },
     "Use your Claude or ChatGPT plan through Claude Code and Codex on your server — or add an API key.": {
       "localizations": {
         "de": {
@@ -9579,6 +9869,16 @@
         }
       }
     },
+    "What changed recently": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sich zuletzt geändert hat"
+          }
+        }
+      }
+    },
     "What changed since…": {
       "localizations": {
         "de": {
@@ -9748,6 +10048,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Claude- oder ChatGPT-Abo"
+          }
+        }
+      }
+    },
+    "Your address: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Adresse: %@"
           }
         }
       }
