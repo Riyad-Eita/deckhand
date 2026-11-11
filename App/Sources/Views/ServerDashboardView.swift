@@ -181,6 +181,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.firewall")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                HouseRulesView(server: server)
+                            } label: {
+                                ManageRow(title: "House rules for agents", subtitle: "What Claude Code, Codex and your agent must never do", symbol: "hand.raised.square")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.rules")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 Fail2banView(server: server)
                             } label: {
                                 ManageRow(title: "Blocked logins", subtitle: "fail2ban: who's banned and why", symbol: "hand.raised")

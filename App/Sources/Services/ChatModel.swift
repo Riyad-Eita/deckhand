@@ -12,6 +12,8 @@ final class ChatModel {
         let id = UUID()
         let call: ToolCall
         let danger: String?
+        /// The house rule this call breaks (allowing it overrides the rule once).
+        var rule: String? = nil
         let respond: (ApprovalDecision) -> Void
     }
 
@@ -40,7 +42,7 @@ final class ChatModel {
         live[thread.id] ?? ChatModel(thread: thread, server: server)
     }
     private(set) var runStartedAt = Date()
-    private(set) var error: String?
+    var error: String?
     /// Non-fatal information for the current run (e.g. a connection that could not be opened).
     private(set) var notice: String?
     private(set) var usage = Usage()
@@ -65,6 +67,21 @@ final class ChatModel {
     }
 
     /// Reads a detached server run until it ends; reconnects and continues from the last line if the connection drops.
+    /// Asks the checker on the server about one own-key tool call.
+    nonisolated static func ruleChecker(shell: any RemoteShell, workingDirectory: String) -> @Sendable (ToolCall) async -> HouseRules.Block? {
+        { call in
+            guard let cmd = HouseRules.checkCommand(call, workingDirectory: workingDirectory) else { return nil }
+            return HouseRules.parseVerdict((try? await shell.run(cmd, timeout: .seconds(15)).stdout) ?? "")
+        }
+    }
+
+    /// Model and effort from Settings, the spending cap from the server's house rules.
+    private func cliOptions(_ cli: ServerCLI) -> CLIOptions {
+        var o = AppSettings.shared.cliOptions(for: cli, thread: thread)
+        o.maxBudgetUSD = HouseRulesStore.rules(for: server)?.maxSpendUSD
+        return o
+    }
+
     private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess) async {
         var delay: Double = 2
         var reconnecting = thread.cliRunLine > 1
@@ -79,7 +96,7 @@ final class ChatModel {
                 let shell = try await Connections.shared.connection(for: server)
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
-                    sessionID: thread.cliSessionID, access: access, options: AppSettings.shared.cliOptions(for: cli, thread: thread),
+                    sessionID: thread.cliSessionID, access: access, options: cliOptions(cli),
                     run: run, fromLine: thread.cliRunLine,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
                     notify: notify)
@@ -160,6 +177,10 @@ final class ChatModel {
                 if !mcp.failures.isEmpty {
                     notice = "Not available this time: " + mcp.failures.map { "\($0.name) (\($0.error))" }.joined(separator: ", ")
                 }
+                // House rules: the checker on the server sees every call; a broken rule always waits for the user.
+                let rules = HouseRules.decode((try? await shell.run(HouseRules.readCommand, timeout: .seconds(10)).stdout) ?? "")
+                HouseRulesStore.set(rules, for: server)
+                let ruleCheck = rules == nil ? nil : Self.ruleChecker(shell: shell, workingDirectory: thread.workingDirectory)
                 let agent = Agent(
                     provider: Providers.make(config),
                     shell: shell,
@@ -169,6 +190,7 @@ final class ChatModel {
                         host: server.host, user: server.username, workingDirectory: thread.workingDirectory,
                         extra: ServerMemory.promptSection((try? await shell.run(ServerMemory.readCommand, timeout: .seconds(10)).stdout) ?? "")),
                     redactSecrets: hideSecrets,
+                    ruleCheck: ruleCheck,
                     approve: { [weak self] request in
                         await self?.requestApproval(request) ?? .deny(reason: nil)
                     })
@@ -204,7 +226,8 @@ final class ChatModel {
         TaskNotifier.shared.approvalNeeded(thread, command: request.call.input["command"]?.stringValue ?? request.call.name)
         LiveTasks.shared.update(thread, phase: .approval, step: LiveTasks.step(for: request.call), force: true)
         return await withCheckedContinuation { continuation in
-            pendingApproval = PendingApproval(call: request.call, danger: request.danger) { [weak self] decision in
+            pendingApproval = PendingApproval(call: request.call, danger: request.danger,
+                                              rule: request.rule.map { HouseRulesStore.rules(for: server)?.title(for: $0) ?? $0.title }) { [weak self] decision in
                 self?.pendingApproval = nil
                 continuation.resume(returning: decision)
             }

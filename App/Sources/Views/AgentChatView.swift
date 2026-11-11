@@ -12,6 +12,8 @@ struct AgentChatView: View {
     /// The fix the user applied in this chat; once it ran, offer to make it automatic.
     @State private var appliedFix: String?
     @State private var settingUpRemedy = false
+    /// A house-rule block the user waved away.
+    @State private var dismissedBlock: String?
     @State private var voice = VoiceInput.shared
     @FocusState private var composerFocused: Bool
     @State private var browsing: BrowserTarget?
@@ -76,6 +78,13 @@ struct AgentChatView: View {
                     }
                 } else if appliedFix != nil, !model.isRunning, model.error == nil, IncidentLinks.check(for: model.thread.id) != nil {
                     AutoFixOffer { settingUpRemedy = true } dismiss: { appliedFix = nil }
+                } else if let block = ruleBlock {
+                    RuleBlockedBar(title: HouseRulesStore.rules(for: model.server)?.title(for: block) ?? block.title) {
+                        dismissedBlock = block.fingerprint
+                        Task { await allowOnce(block) }
+                    } dismiss: {
+                        dismissedBlock = block.fingerprint
+                    }
                 }
                 if let upload {
                     HStack(spacing: 10) {
@@ -245,6 +254,31 @@ struct AgentChatView: View {
     }
 
     /// Uploads into the task's folder and puts a note into the message, so the agent uses the file right away.
+    /// The last action of a server CLI that a house rule stopped (since the user's last message).
+    private var ruleBlock: HouseRules.Block? {
+        guard !model.isRunning, model.thread.engine.serverCLI != nil else { return nil }
+        for m in model.messages.reversed() {
+            if m.role == .user, !m.text.isEmpty { return nil }
+            for b in m.blocks.reversed() {
+                if case .toolResult(let r) = b, let block = HouseRules.block(in: r.content) {
+                    return block.fingerprint == dismissedBlock ? nil : block
+                }
+            }
+        }
+        return nil
+    }
+
+    private func allowOnce(_ block: HouseRules.Block) async {
+        guard let fp = block.fingerprint, let cmd = HouseRules.allowOnceCommand(fp) else { return }
+        do {
+            let conn = try await Connections.shared.connection(for: model.server)
+            _ = try await conn.run(cmd, timeout: .seconds(15))
+            model.send(String(localized: "I allowed that once. Go ahead and do it now."))
+        } catch {
+            model.error = error.localizedDescription
+        }
+    }
+
     /// The fix the last reply suggests, while nothing runs and the user hasn't applied or dismissed it.
     private var suggestedFix: (message: UUID, commands: String)? {
         guard !model.isRunning, let last = model.messages.last, last.role == .assistant, last.id != dismissedFix,
@@ -517,7 +551,17 @@ private struct ApprovalBar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if let danger = approval.danger {
+            if let rule = approval.rule {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("This breaks a house rule").font(.subheadline.weight(.semibold))
+                        Text(rule).font(.footnote)
+                    }
+                } icon: {
+                    Image(systemName: "hand.raised.fill")
+                }
+                .foregroundStyle(.orange)
+            } else if let danger = approval.danger {
                 Label {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Careful — this can't easily be undone").font(.subheadline.weight(.semibold))
@@ -540,7 +584,7 @@ private struct ApprovalBar: View {
                 }
                 .buttonStyle(.bordered)
                 Button { approval.respond(.allow) } label: {
-                    Text(approval.danger == nil ? "Allow" : "Run Anyway").frame(maxWidth: .infinity)
+                    Text(approval.rule != nil ? String(localized: "Allow once") : approval.danger == nil ? String(localized: "Allow") : String(localized: "Run Anyway")).frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(approval.danger == nil ? Theme.accent : .red)
