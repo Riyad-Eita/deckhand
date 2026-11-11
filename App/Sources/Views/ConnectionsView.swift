@@ -40,14 +40,17 @@ struct ConnectionsView: View {
                     Text("Your own-key agent uses enabled connections right away. For Codex and Claude Code, open a server's tools and tap Sync.")
                 }
             }
-            Section("Add") {
-                ForEach(ConnectionPreset.all) { preset in
-                    Button { adding = preset } label: {
-                        RowLabel(title: preset.name, subtitle: preset.blurb) {
-                            BrandIcon(brand: preset.brand, fallback: preset.symbol, size: 32)
+            ForEach(ConnectionPreset.Group.allCases, id: \.self) { group in
+                Section(LocalizedStringKey(group == .custom ? "Your own" : "Add · \(group.rawValue)")) {
+                    ForEach(ConnectionPreset.all.filter { $0.group == group }) { preset in
+                        Button { adding = preset } label: {
+                            RowLabel(title: preset.name, subtitle: preset.blurb) {
+                                BrandIcon(brand: preset.brand, fallback: preset.symbol, size: 32)
+                            }
                         }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("preset.\(preset.id)")
                     }
-                    .buttonStyle(.plain)
                 }
             }
         }
@@ -58,6 +61,7 @@ struct ConnectionsView: View {
 }
 
 struct ConnectionPreset: Identifiable, Hashable {
+    enum Group: String, CaseIterable { case code = "Code", docs = "Docs", web = "Web", data = "Data", business = "Business", custom = "Your own" }
     let id: String
     let name: String
     let blurb: String
@@ -67,11 +71,16 @@ struct ConnectionPreset: Identifiable, Hashable {
     let command: String
     let needsToken: Bool
     let tokenHint: String
+    var group: Group = .custom
+    /// What the agent can do with it, and what it needs.
+    var notes: String = ""
+    /// Where to create the token.
+    var tokenURL: String?
 
     var brand: Brand? {
         switch id {
         case "github": .github
-        case "deepwiki", "context7", "url": .mcp
+        case "deepwiki", "context7", "url", "mslearn", "cfdocs", "hf": .mcp
         default: nil
         }
     }
@@ -80,14 +89,63 @@ struct ConnectionPreset: Identifiable, Hashable {
         ConnectionPreset(
             id: "github", name: "GitHub", blurb: String(localized: "Issues, pull requests and code search for the agents."),
             symbol: "chevron.left.forwardslash.chevron.right", kind: "http", url: "https://api.githubcopilot.com/mcp/",
-            command: "", needsToken: true, tokenHint: String(localized: "GitHub personal access token")),
+            command: "", needsToken: true, tokenHint: String(localized: "GitHub personal access token"), group: .code,
+            notes: String(localized: "Read and open issues and pull requests, search code, look at Actions runs. Give the token only the repositories it needs."),
+            tokenURL: "https://github.com/settings/personal-access-tokens/new"),
+        ConnectionPreset(
+            id: "hf", name: "Hugging Face", blurb: String(localized: "Models, datasets, Spaces and papers."),
+            symbol: "face.smiling", kind: "http", url: "https://huggingface.co/mcp", command: "", needsToken: false,
+            tokenHint: String(localized: "Access token (optional)"), group: .code,
+            notes: String(localized: "Search and compare models and datasets. A read token raises the limits."),
+            tokenURL: "https://huggingface.co/settings/tokens"),
         ConnectionPreset(
             id: "deepwiki", name: "DeepWiki", blurb: String(localized: "Ask questions about any public GitHub repository. No account needed."),
-            symbol: "book", kind: "http", url: "https://mcp.deepwiki.com/mcp", command: "", needsToken: false, tokenHint: ""),
+            symbol: "book", kind: "http", url: "https://mcp.deepwiki.com/mcp", command: "", needsToken: false, tokenHint: "", group: .docs,
+            notes: String(localized: "Explains how a public project works, from its code and wiki.")),
         ConnectionPreset(
             id: "context7", name: "Context7", blurb: String(localized: "Up-to-date library documentation for coding."),
             symbol: "doc.text.magnifyingglass", kind: "http", url: "https://mcp.context7.com/mcp", command: "",
-            needsToken: false, tokenHint: String(localized: "API key (optional)")),
+            needsToken: false, tokenHint: String(localized: "API key (optional)"), group: .docs,
+            notes: String(localized: "Current docs and examples for thousands of libraries, so code fits the version you use.")),
+        ConnectionPreset(
+            id: "mslearn", name: "Microsoft Learn", blurb: String(localized: "Official docs for Azure, .NET and Microsoft 365."),
+            symbol: "books.vertical", kind: "http", url: "https://learn.microsoft.com/api/mcp", command: "", needsToken: false, tokenHint: "",
+            group: .docs, notes: String(localized: "Searches and reads Microsoft's documentation. No account needed.")),
+        ConnectionPreset(
+            id: "cfdocs", name: "Cloudflare Docs", blurb: String(localized: "Workers, DNS, Pages, R2 and the rest of Cloudflare."),
+            symbol: "cloud", kind: "http", url: "https://docs.mcp.cloudflare.com/mcp", command: "", needsToken: false, tokenHint: "",
+            group: .docs, notes: String(localized: "Searches Cloudflare's documentation. No account needed.")),
+        ConnectionPreset(
+            id: "awsdocs", name: "AWS Documentation", blurb: String(localized: "Search and read the AWS docs."),
+            symbol: "server.rack", kind: "stdio", url: "", command: "uvx awslabs.aws-documentation-mcp-server@latest",
+            needsToken: false, tokenHint: "", group: .docs,
+            notes: String(localized: "Runs on your server and needs uv (Python).")),
+        ConnectionPreset(
+            id: "playwright", name: "Playwright", blurb: String(localized: "A browser the agent can drive."),
+            symbol: "safari", kind: "stdio", url: "", command: "npx -y @playwright/mcp@latest --headless",
+            needsToken: false, tokenHint: "", group: .web,
+            notes: String(localized: "Opens pages, clicks, fills forms and takes snapshots — good for testing your own sites. Runs on your server and needs Node.js; the first start downloads a browser.")),
+        ConnectionPreset(
+            id: "fetch", name: "Fetch", blurb: String(localized: "Reads web pages as clean text."),
+            symbol: "arrow.down.doc", kind: "stdio", url: "", command: "uvx mcp-server-fetch",
+            needsToken: false, tokenHint: "", group: .web,
+            notes: String(localized: "Turns a URL into Markdown for the agent. Runs on your server and needs uv (Python).")),
+        ConnectionPreset(
+            id: "filesystem", name: String(localized: "Files"), blurb: String(localized: "Read and write files in chosen folders."),
+            symbol: "folder", kind: "stdio", url: "", command: "npx -y @modelcontextprotocol/server-filesystem /srv",
+            needsToken: false, tokenHint: "", group: .data,
+            notes: String(localized: "Only the folders at the end of the command are reachable. Mostly useful for the own-key agent; Claude Code and Codex can already work with files.")),
+        ConnectionPreset(
+            id: "postgres", name: "PostgreSQL", blurb: String(localized: "Read-only SQL on one database."),
+            symbol: "cylinder.split.1x2", kind: "stdio", url: "", command: "npx -y @modelcontextprotocol/server-postgres postgresql://localhost/mydb",
+            needsToken: false, tokenHint: "", group: .data,
+            notes: String(localized: "Lets the agent look at tables and run read-only queries. Replace the connection string at the end. Runs on your server and needs Node.js.")),
+        ConnectionPreset(
+            id: "stripe", name: "Stripe", blurb: String(localized: "Customers, payments, subscriptions and refunds."),
+            symbol: "creditcard", kind: "http", url: "https://mcp.stripe.com", command: "", needsToken: true,
+            tokenHint: String(localized: "Restricted key (rk_…)"), group: .business,
+            notes: String(localized: "Look up customers and payments and act on them. Use a restricted key with only the permissions you want the agent to have."),
+            tokenURL: "https://dashboard.stripe.com/apikeys"),
         ConnectionPreset(
             id: "url", name: String(localized: "Other server (URL)"), blurb: String(localized: "Any MCP server with a streamable HTTP endpoint."),
             symbol: "link", kind: "http", url: "", command: "", needsToken: false, tokenHint: String(localized: "Bearer token (optional)")),
@@ -131,7 +189,12 @@ struct ConnectionEditor: View {
                             .font(Theme.mono)
                     }
                 } footer: {
-                    if kind == "stdio" {
+                    if let notes = preset?.notes, !notes.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(notes)
+                            if let link = preset?.tokenURL.flatMap(URL.init(string:)) { Link("Create a token", destination: link) }
+                        }
+                    } else if kind == "stdio" {
                         Text("Runs on the server over SSH whenever an agent needs it.")
                     } else if preset?.id == "github" {
                         Text("Easier: open a server's tools and tap Connect next to GitHub — that signs in with your GitHub account and fills this in. Or create a token at github.com → Settings → Developer settings → Personal access tokens.")
