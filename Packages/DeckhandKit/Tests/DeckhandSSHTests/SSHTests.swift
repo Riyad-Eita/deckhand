@@ -1122,3 +1122,44 @@ struct LiveCronWatchTests {
         await conn.disconnect()
     }
 }
+
+/// Server-to-server copy on the disposable server (DECKHAND_BACKUP_*, DECKHAND_COPY_TEST=1): the server is source and
+/// target at once (it reaches itself through its public address). Copies a folder, checks the content, rejects a
+/// wrong host key, removes the transfer key. Cleans up its folders.
+struct LiveServerCopyTests {
+    @Test func copyBetweenServers() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_COPY_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let host = env["DECKHAND_BACKUP_HOST"]!, port = Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, user = env["DECKHAND_BACKUP_USER"]!
+        let conn = SSHConnection(endpoint: SSHEndpoint(host: host, port: port, username: user), credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(180)).stdout }
+        do {
+            let hostKey = try #require(await conn.hostKey)
+            // The container reaches its own sshd on 127.0.0.1:22 (same host key as through the public port).
+            let target = ServerCopy.Target(host: "127.0.0.1", port: 22, user: user, hostKey: hostKey)
+            let tag = ServerCopy.tag(UUID())
+            _ = try await sh("mkdir -p ~/dh-copy-src/sub && head -c 5242880 /dev/urandom > ~/dh-copy-src/big.bin && echo hi > ~/dh-copy-src/sub/a.txt")
+            let prep = try await sh(ServerCopy.prepareSourceCommand(target: target))
+            let pub = try #require(prep.split(separator: "\n").first { $0.hasPrefix("@@pub ") }.map { String($0.dropFirst(6)) })
+            #expect(try await sh(ServerCopy.authorizeCommand(publicKey: pub, tag: tag)).contains("@@ok"))
+            let rsync = prep.contains("@@tools rsync")
+            let out = try await sh(ServerCopy.copyCommand(source: "~/dh-copy-src", target: target, destination: "/home/\(user)/dh-copy-dst", useRsync: rsync) + "; echo \"@@exit $?\"")
+            #expect(out.contains("@@exit 0"), "\(out.suffix(400))")
+            if rsync { #expect(ServerCopy.progress(out)?.percent == 100) }
+            let sums = try await sh("cd ~ && md5sum dh-copy-src/big.bin dh-copy-dst/dh-copy-src/big.bin | awk '{print $1}' | uniq | wc -l; cat dh-copy-dst/dh-copy-src/sub/a.txt")
+            #expect(sums == "1\nhi\n", "\(sums)")
+            // A wrong pinned host key stops the copy.
+            let wrong = ServerCopy.Target(host: "127.0.0.1", port: 22, user: user, hostKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHdyb25na2V5d3JvbmdrZXl3cm9uZ2tleXdyb25nay")
+            _ = try await sh(ServerCopy.prepareSourceCommand(target: wrong))
+            let bad = try await sh(ServerCopy.copyCommand(source: "~/dh-copy-src", target: wrong, destination: "/home/\(user)/dh-copy-x", useRsync: rsync) + "; true")
+            #expect(ServerCopy.explain(bad)?.contains("host key") == true, "\(bad)")
+            #expect(try await sh("[ -e ~/dh-copy-x ] && echo exists || echo none").contains("none"))
+            _ = try await sh(ServerCopy.revokeCommand(tag: tag))
+            #expect(!(try await sh("cat ~/.ssh/authorized_keys")).contains(tag))
+        } catch { Issue.record(error) }
+        _ = try? await sh("rm -rf -- ~/dh-copy-src ~/dh-copy-dst ~/dh-copy-x")
+        await conn.disconnect()
+    }
+}
