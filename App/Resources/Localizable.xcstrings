@@ -1104,6 +1104,16 @@
         }
       }
     },
+    "Adjust": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anpassen"
+          }
+        }
+      }
+    },
     "Admin page": {
       "localizations": {
         "de": {
@@ -2334,6 +2344,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Port ändern"
+          }
+        }
+      }
+    },
+    "Change the plan: ": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ändere den Plan: "
           }
         }
       }
@@ -8603,6 +8623,46 @@
         }
       }
     },
+    "Plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "Plan first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erst planen"
+          }
+        }
+      }
+    },
+    "Plan first: the agent only looks and proposes a plan.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erst planen: Der Agent schaut sich nur um und schlägt einen Plan vor."
+          }
+        }
+      }
+    },
+    "Plan — tap a step to leave it out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan – tippe auf einen Schritt, um ihn wegzulassen"
+          }
+        }
+      }
+    },
     "Plant tripwires": {
       "localizations": {
         "de": {
@@ -9887,6 +9947,16 @@
         }
       }
     },
+    "Run %lld of %lld steps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld Schritten ausführen"
+          }
+        }
+      }
+    },
     "Run Anyway": {
       "localizations": {
         "de": {
@@ -9923,6 +9993,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Im Terminal ausführen"
+          }
+        }
+      }
+    },
+    "Run plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan ausführen"
           }
         }
       }
@@ -12724,6 +12804,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Login-Benachrichtigungen ausschalten"
+          }
+        }
+      }
+    },
+    "Turn off plan first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erst planen ausschalten"
           }
         }
       }

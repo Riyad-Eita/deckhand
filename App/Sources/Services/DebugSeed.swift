@@ -108,6 +108,22 @@ enum DebugSeed {
         return (Data(body.utf8), 200)
     }
 
+    /// A "Plan first" request answered with a plan.
+    static let planChat: [Message] = [
+        .user(PlanMode.wrap("Move the shop to port 8081")),
+        Message(role: .assistant, blocks: [.text("""
+        The shop runs behind nginx on port 8080; I'd switch the upstream and reload.
+
+        ```plan
+        - Back up /etc/nginx/sites-available/shop
+        - Change the upstream port from 8080 to 8081
+        - Restart the shop service on port 8081
+        - Test with nginx -t, then reload nginx
+        ```
+        Risk: a typo stops nginx from reloading; the backup makes it quick to undo.
+        """)]),
+    ]
+
     /// A long task whose first steps were summarized.
     static let compactedChat: [Message] = [
         .user("Upgrade the shop to Node 22."),

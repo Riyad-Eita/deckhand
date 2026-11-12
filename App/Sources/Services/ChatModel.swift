@@ -47,6 +47,14 @@ final class ChatModel {
     private(set) var notice: String?
     private(set) var usage = Usage()
     var pendingApproval: PendingApproval?
+    /// The plan in the last reply that is waiting to be run, adjusted or dropped, and the steps the user unticked.
+    var planHandled: UUID?
+    var planSkipped: Set<Int> = []
+    var planOffer: (message: UUID, steps: [String])? {
+        guard !isRunning, let last = messages.last, last.role == .assistant, last.id != planHandled,
+              let steps = PlanMode.steps(in: last.text) else { return nil }
+        return (last.id, steps)
+    }
     private var task: Task<Void, Never>?
     private var waitingForLimit = false
     private var waitingLine = 0
@@ -138,8 +146,11 @@ final class ChatModel {
     }
 
     /// `access` overrides the CLI access from Settings for this turn (read-only diagnosis, an approved fix).
-    func send(_ text: String, access accessOverride: CLIAccess? = nil) {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    /// `plan`: nil follows the thread's "Plan first" switch; false runs normally (e.g. carrying out a plan).
+    func send(_ text: String, access accessOverride: CLIAccess? = nil, plan: Bool? = nil) {
+        let planning = plan ?? thread.planFirst
+        let asked = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = planning && !asked.isEmpty ? PlanMode.wrap(asked) : asked
         guard !trimmed.isEmpty, !isRunning else { return }
         let settings = AppSettings.shared
         guard thread.engine != .ownKey || settings.isConfigured else {
@@ -152,14 +163,15 @@ final class ChatModel {
         let history = Self.history(messages, start: thread.historyStart, summary: thread.historySummary)
         let historyStart = thread.historyStart
         messages.append(user)
-        if history.isEmpty { thread.title = String(trimmed.prefix(60)) }
+        if history.isEmpty { thread.title = String(asked.prefix(60)) }
         persist()
         isRunning = true
         runStartedAt = Date()
         LiveTasks.shared.start(thread, server: server)
         let config = settings.providerConfig
-        let policy = settings.approvalPolicy
-        let access = accessOverride ?? settings.cliAccess
+        // A plan turn only looks: reading runs, anything else waits for the user (own key) or is read-only (CLIs).
+        let policy = planning && settings.approvalPolicy == .auto ? .autoRead : settings.approvalPolicy
+        let access = planning ? .readOnly : accessOverride ?? settings.cliAccess
         let hideSecrets = settings.hideSecrets
         task = Task {
             do {
@@ -187,7 +199,8 @@ final class ChatModel {
                 let agent = Agent(
                     provider: Providers.make(config),
                     shell: shell,
-                    tools: ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
+                    tools: planning ? PlanMode.tools(ServerTools.all(workingDirectory: thread.workingDirectory))
+                        : ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
                     policy: policy,
                     system: Agent.systemPrompt(
                         host: server.host, user: server.username, workingDirectory: thread.workingDirectory,

@@ -104,6 +104,8 @@ final class ChatThread {
     /// Long own-key tasks: messages before this index were summarized into `historySummary` and aren't sent again.
     var historyStart: Int = 0
     var historySummary: String?
+    /// "Plan first": the next requests run read-only and come back as a plan to run, adjust or drop.
+    var planFirst: Bool = false
     var server: Server?
 
     init(server: Server, workingDirectory: String, engine: Engine = .ownKey) {

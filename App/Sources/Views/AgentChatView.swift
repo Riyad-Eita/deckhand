@@ -74,6 +74,21 @@ struct AgentChatView: View {
             VStack(spacing: 0) {
                 if let approval = model.pendingApproval {
                     ApprovalBar(approval: approval)
+                } else if let plan = model.planOffer {
+                    PlanBar(total: plan.steps.count, skipped: model.planSkipped.count) {
+                        let kept = plan.steps.enumerated().filter { !model.planSkipped.contains($0.offset) }.map(\.element)
+                        model.planHandled = plan.message
+                        model.planSkipped = []
+                        model.send(PlanMode.runPrompt(kept), plan: false)
+                    } adjust: {
+                        model.planHandled = plan.message
+                        model.planSkipped = []
+                        draft = String(localized: "Change the plan: ")
+                        composerFocused = true
+                    } cancel: {
+                        model.planHandled = plan.message
+                        model.planSkipped = []
+                    }
                 } else if let fix = suggestedFix {
                     SuggestedFixBar(commands: fix.commands) {
                         dismissedFix = fix.message
@@ -200,10 +215,27 @@ struct AgentChatView: View {
     }
 
     private var composer: some View {
+        VStack(spacing: 6) {
+        if model.thread.planFirst {
+            HStack(spacing: 6) {
+                Image(systemName: "list.bullet.clipboard")
+                Text("Plan first: the agent only looks and proposes a plan.")
+                Spacer()
+                Button { model.thread.planFirst = false } label: { Image(systemName: "xmark.circle.fill") }
+                    .accessibilityLabel("Turn off plan first")
+            }
+            .font(.caption).foregroundStyle(.secondary)
+            .padding(.horizontal, 16).padding(.top, 6)
+            .accessibilityIdentifier("chat.planFirst")
+        }
         HStack(alignment: .bottom, spacing: 8) {
             Menu {
                 Button { choosingPhoto = true } label: { Label("Photo", systemImage: "photo") }
                 Button { choosingFile = true } label: { Label("File", systemImage: "doc") }
+                Divider()
+                Toggle(isOn: Binding(get: { model.thread.planFirst }, set: { model.thread.planFirst = $0 })) {
+                    Label("Plan first", systemImage: "list.bullet.clipboard")
+                }
             } label: {
                 Image(systemName: "paperclip").font(.system(size: 20, weight: .medium)).frame(width: 32, height: 36)
             }
@@ -251,6 +283,7 @@ struct AgentChatView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
+        }
     }
 
     // MARK: Uploads
@@ -384,6 +417,73 @@ private struct EmptyChatHint: View {
     }
 }
 
+/// A plan in a reply, as a checklist. While it waits to be run, steps can be ticked off to leave them out.
+private struct PlanChecklist: View {
+    let steps: [String]
+    let model: ChatModel
+    let active: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(active ? "Plan — tap a step to leave it out" : "Plan", systemImage: "list.bullet.clipboard")
+                .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+            ForEach(Array(steps.enumerated()), id: \.offset) { i, step in
+                let skipped = active && model.planSkipped.contains(i)
+                Button {
+                    if model.planSkipped.contains(i) { model.planSkipped.remove(i) } else { model.planSkipped.insert(i) }
+                } label: {
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        if active {
+                            Image(systemName: skipped ? "circle" : "checkmark.circle.fill")
+                                .foregroundStyle(skipped ? Color.secondary : Theme.accent)
+                        } else {
+                            Text("\(i + 1)").font(.caption.monospacedDigit().weight(.semibold)).foregroundStyle(Theme.accent)
+                                .frame(width: 18, alignment: .trailing)
+                        }
+                        Text(step).font(.subheadline).foregroundStyle(skipped ? .secondary : .primary)
+                            .strikethrough(skipped).multilineTextAlignment(.leading)
+                        Spacer(minLength: 0)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(!active)
+                .accessibilityIdentifier("plan.step.\(i)")
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Theme.hairline))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("chat.plan")
+    }
+}
+
+/// Run the plan (without the unticked steps), adjust it in words, or drop it.
+private struct PlanBar: View {
+    let total: Int
+    let skipped: Int
+    let run: () -> Void
+    let adjust: () -> Void
+    let cancel: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Button(action: run) {
+                Label(skipped == 0 ? String(localized: "Run plan") : String(localized: "Run \(total - skipped) of \(total) steps"),
+                      systemImage: "play.fill").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(skipped == total)
+            .accessibilityIdentifier("plan.run")
+            Button("Adjust", action: adjust).buttonStyle(.bordered).accessibilityIdentifier("plan.adjust")
+            Button("Cancel", role: .cancel, action: cancel).buttonStyle(.bordered).accessibilityIdentifier("plan.cancel")
+        }
+        .padding(.horizontal, 12).padding(.top, 8)
+    }
+}
+
 /// Where a long task was compacted: the steps above were summarized for the model (they stay visible here).
 private struct SummaryDivider: View {
     let summary: String
@@ -425,7 +525,7 @@ private struct MessageView: View {
             if !message.text.isEmpty {
                 HStack {
                     Spacer(minLength: 48)
-                    Text(message.text)
+                    (PlanMode.isPlanRequest(message.text) ? Text("\(Image(systemName: "list.bullet.clipboard"))  \(PlanMode.unwrap(message.text))") : Text(message.text))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14).padding(.vertical, 10)
                         .background(Theme.userBubble, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -438,7 +538,14 @@ private struct MessageView: View {
                 ForEach(Array(message.blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .text(let t) where !t.isEmpty:
-                        ReplyText(text: t)
+                        if let steps = PlanMode.steps(in: t) {
+                            let parts = PlanMode.around(t)
+                            if !parts.before.isEmpty { ReplyText(text: parts.before) }
+                            PlanChecklist(steps: steps, model: model, active: model.planOffer?.message == message.id)
+                            if !parts.after.isEmpty { ReplyText(text: parts.after) }
+                        } else {
+                            ReplyText(text: t)
+                        }
                     case .thinking(let t, _) where !t.isEmpty:
                         ThinkingView(text: t)
                     case .toolUse(let call):
