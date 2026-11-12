@@ -6,6 +6,8 @@ struct ServerListView: View {
     @Environment(Connections.self) private var connections
     @Environment(AppSettings.self) private var settings
     @Query(sort: \Server.createdAt) private var servers: [Server]
+    @Query(filter: #Predicate<ChatThread> { $0.server == nil }, sort: \ChatThread.updatedAt, order: .reverse) private var chats: [ChatThread]
+    @State private var openChat: ChatThread?
     @State private var editing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
@@ -38,6 +40,9 @@ struct ServerListView: View {
                     }
                 }
             }
+            if !servers.isEmpty || !chats.isEmpty {
+                ChatsSection(chats: chats) { newChat() } delete: { context.delete($0) }
+            }
             if !servers.isEmpty {
                 Section("Apps") {
                     NavigationLink { AppStoreView() } label: {
@@ -48,7 +53,7 @@ struct ServerListView: View {
             }
         }
         .overlay {
-            if servers.isEmpty {
+            if servers.isEmpty && chats.isEmpty {
                 VStack(spacing: 22) {
                     Image(systemName: "server.rack")
                         .font(.system(size: 40, weight: .light))
@@ -65,6 +70,9 @@ struct ServerListView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
+                    Button("Or just chat with a model") { newChat() }
+                        .font(.subheadline)
+                        .accessibilityIdentifier("home.justChat")
                     WorksWithStrip().padding(.top, 8)
                 }
                 .padding(32)
@@ -85,6 +93,7 @@ struct ServerListView: View {
             for server in servers { await AgentStatus.shared.refresh(server) }
         }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        .navigationDestination(item: $openChat) { PlainChatView(thread: $0) }
         .sheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
             ApproveSheet(link: link, server: servers.first { $0.id == link.server })
         }
@@ -130,6 +139,14 @@ struct ServerListView: View {
         .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
         .sheet(item: $editing) { ServerEditorView(server: $0) }
         .sheet(isPresented: $showingSettings) { SettingsView() }
+    }
+
+    /// A chat needs a model key first; without one, Settings opens.
+    private func newChat() {
+        guard !settings.chatProviders.isEmpty else { showingSettings = true; return }
+        let chat = ChatThread(chatWith: settings.chatProviders.contains(settings.providerKind) ? settings.providerKind : settings.chatProviders.first)
+        context.insert(chat)
+        openChat = chat
     }
 
     private func delete(_ server: Server) {
@@ -274,5 +291,32 @@ struct AgentSetupCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(id)
+    }
+}
+
+/// Plain chats on the home screen: the latest five and "New chat".
+private struct ChatsSection: View {
+    let chats: [ChatThread]
+    let new: () -> Void
+    let delete: (ChatThread) -> Void
+
+    var body: some View {
+        Section {
+            ForEach(chats.prefix(5)) { chat in
+                NavigationLink { PlainChatView(thread: chat) } label: {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(chat.title).lineLimit(1)
+                        Text(chat.updatedAt.formatted(.relative(presentation: .named))).font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                .swipeActions { Button("Delete", role: .destructive) { delete(chat) } }
+            }
+            Button(action: new) { Label("New chat", systemImage: "bubble.left.and.text.bubble.right") }
+                .accessibilityIdentifier("home.newChat")
+        } header: {
+            Text("Chats")
+        } footer: {
+            if chats.isEmpty { Text("Talk to any of your models directly — no server needed.") }
+        }
     }
 }

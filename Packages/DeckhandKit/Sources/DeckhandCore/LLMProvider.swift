@@ -29,7 +29,7 @@ public enum ProviderKind: String, Sendable, Codable, CaseIterable, Identifiable 
     /// Suggested models, best first. Users can type any model id.
     public var suggestedModels: [String] {
         switch self {
-        case .anthropic: ["claude-opus-5-5", "claude-sonnet-5-5", "claude-fable-5-1", "claude-haiku-5-5"]
+        case .anthropic: ["claude-opus-5-5", "claude-sonnet-5-5", "claude-fable-5-2", "claude-haiku-5-5"]
         case .openAI: ["gpt-5.1", "gpt-5.1-mini"]
         case .openRouter: ["anthropic/claude-opus-5-5", "openai/gpt-5.1"]
         case .custom: []
