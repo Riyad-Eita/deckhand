@@ -162,18 +162,24 @@ enum DebugSeed {
         return (String(raw[..<bar]), String(raw[raw.index(after: bar)...]))
     }()
 
+    /// When this launch started seeding: servers created after it are this launch's, not leftovers being deleted.
+    @MainActor static var seededAt = Date.distantPast
+
     @MainActor
     static func apply(_ context: ModelContext) {
+        seededAt = Date().addingTimeInterval(-1)
         let env = ProcessInfo.processInfo.environment
         // DECKHAND_RESET=1: start from an empty app (UI tests run one after another in the same simulator).
         if env["DECKHAND_RESET"] == "1" {
+            // Tasks and plain chats first, then servers: deleting a task twice (once by the server's cascade) made
+            // the save fail, and then nothing was reset.
+            for thread in (try? context.fetch(FetchDescriptor<ChatThread>())) ?? [] { context.delete(thread) }
             for server in (try? context.fetch(FetchDescriptor<Server>())) ?? [] {
                 Keychain.set(nil, for: server.secretAccount)
                 context.delete(server)
             }
             for c in (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? [] { context.delete(c) }
-            for chat in (try? context.fetch(FetchDescriptor<ChatThread>(predicate: #Predicate { $0.server == nil }))) ?? [] { context.delete(chat) }
-            try? context.save()
+            do { try context.save() } catch { NSLog("DECKHAND_RESET: save failed: \(error)") }
             // The Keychain survives reinstalls: forget model keys and the home card choice too.
             if env["DECKHAND_SEED_APIKEY"] == nil { AppSettings.shared.apiKey = "" }
             UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")

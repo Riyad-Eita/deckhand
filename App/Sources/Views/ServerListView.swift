@@ -118,11 +118,19 @@ struct ServerListView: View {
         .task {
             try? await Task.sleep(for: .milliseconds(500))
             // After DECKHAND_RESET the query can lag behind the seeded insert: wait for the server.
-            for _ in 0..<20 where DebugSeed.pendingRun != nil && servers.isEmpty {
+            // Only this launch's server: a leftover from an earlier run may still be listed while it is deleted.
+            let since = DebugSeed.seededAt
+            func seeded() -> Server? { servers.first { $0.createdAt >= since && $0.modelContext != nil } }
+            for _ in 0..<40 where DebugSeed.pendingRun != nil && seeded() == nil {
                 try? await Task.sleep(for: .milliseconds(250))
             }
-            if DebugSeed.pendingRun != nil { autoOpen = servers.first }
+            if DebugSeed.pendingRun != nil, let s = seeded() { autoOpen = s }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
+        }
+        .onChange(of: servers.count) {
+            // The seeded server arrived later than the wait above: open it now.
+            if DebugSeed.pendingRun != nil, autoOpen == nil,
+               let s = servers.first(where: { $0.createdAt >= DebugSeed.seededAt }) { autoOpen = s }
         }
         .sheet(isPresented: $showingConnections) { NavigationStack { ConnectionsView() } }
         #endif
