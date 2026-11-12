@@ -84,16 +84,23 @@ public struct OpenAIChatProvider: LLMProvider {
         case .user:
             var out: [JSONValue] = []
             var text = ""
+            var images: [JSONValue] = []
             for block in message.blocks {
                 switch block {
                 case .toolResult(let r):
                     let content = r.isError ? "ERROR: \(r.content)" : r.content
                     out.append(["role": "tool", "tool_call_id": .string(r.toolUseID), "content": .string(content)])
                 case .text(let t): text += t
+                case .image(let type, let data):
+                    images.append(["type": "image_url", "image_url": ["url": .string("data:\(type);base64,\(data.base64EncodedString())")]])
                 default: break
                 }
             }
-            if !text.isEmpty { out.append(["role": "user", "content": .string(text)]) }
+            if !images.isEmpty {
+                out.append(["role": "user", "content": .array((text.isEmpty ? [] : [["type": "text", "text": .string(text)]]) + images)])
+            } else if !text.isEmpty {
+                out.append(["role": "user", "content": .string(text)])
+            }
             return out
         }
     }

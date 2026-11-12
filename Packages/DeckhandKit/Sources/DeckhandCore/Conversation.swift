@@ -13,6 +13,8 @@ public enum ContentBlock: Sendable, Hashable, Codable {
     case toolUse(ToolCall)
     case toolResult(ToolResult)
     case opaque(provider: String, value: JSONValue)
+    /// A picture the user attached (JPEG or PNG), sent to models that can see.
+    case image(mediaType: String, data: Data)
 }
 
 public struct ToolCall: Sendable, Hashable, Codable, Identifiable {

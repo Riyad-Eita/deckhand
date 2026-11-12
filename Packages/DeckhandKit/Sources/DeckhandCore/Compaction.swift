@@ -13,6 +13,7 @@ public enum Compaction {
                 case .thinking(let t, _): s + t.count / 4
                 case .toolUse(let c): s + (c.input.jsonString().count + c.name.count) / 4
                 case .toolResult(let r): s + r.content.count / 4
+                case .image: s + 1_600
                 @unknown default: s
                 }
             } + 4
@@ -53,6 +54,7 @@ public enum Compaction {
                 case .thinking: ""
                 case .toolUse(let c): "Agent ran \(c.name): \(String(c.input.jsonString().prefix(800)))"
                 case .toolResult(let r): "Result\(r.isError ? " (error)" : ""): \(String(r.content.prefix(1500)))"
+                case .image: "\(m.role == .user ? "User" : "Agent") attached an image."
                 @unknown default: ""
                 }
             }.filter { !$0.isEmpty }.joined(separator: "\n")
