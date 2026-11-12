@@ -1948,6 +1948,16 @@
         }
       }
     },
+    "At minute %02d": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zur Minute %02d"
+          }
+        }
+      }
+    },
     "At most %lld× an hour": {
       "localizations": {
         "de": {
@@ -2564,6 +2574,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ändern"
+          }
+        }
+      }
+    },
+    "Change job": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Job ändern"
           }
         }
       }
@@ -3939,6 +3959,26 @@
         }
       }
     },
+    "Cron and timers in plain words; a push when one fails": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cron und Timer in Alltagssprache; eine Mitteilung, wenn etwas fehlschlägt"
+          }
+        }
+      }
+    },
+    "Cron expression": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cron-Ausdruck"
+          }
+        }
+      }
+    },
     "Cron jobs": {
       "localizations": {
         "de": {
@@ -5115,6 +5155,16 @@
         }
       }
     },
+    "Every %lld minutes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld Minuten"
+          }
+        }
+      }
+    },
     "Every 15 minutes your server notes its packages, services, open ports, containers, cron jobs, users and config files. When something breaks, you see exactly what changed — and who changed it.": {
       "localizations": {
         "de": {
@@ -5171,6 +5221,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeden Tag"
+          }
+        }
+      }
+    },
+    "Every few minutes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle paar Minuten"
           }
         }
       }
@@ -7880,6 +7940,16 @@
         }
       }
     },
+    "New job": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Job"
+          }
+        }
+      }
+    },
     "New key": {
       "localizations": {
         "de": {
@@ -8759,6 +8829,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf %@"
+          }
+        }
+      }
+    },
+    "On certain weekdays": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An bestimmten Wochentagen"
+          }
+        }
+      }
+    },
+    "On day %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am %lld."
           }
         }
       }
@@ -10887,6 +10977,16 @@
         }
       }
     },
+    "Runs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft"
+          }
+        }
+      }
+    },
     "Runs on the server over SSH whenever an agent needs it.": {
       "localizations": {
         "de": {
@@ -11183,6 +11283,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeitplan"
+          }
+        }
+      }
+    },
+    "Scheduled jobs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Aufgaben"
           }
         }
       }
@@ -12338,6 +12448,16 @@
         }
       }
     },
+    "Stop watching this job to change it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beende die Überwachung, um diesen Job zu ändern."
+          }
+        }
+      }
+    },
     "Stopped": {
       "localizations": {
         "de": {
@@ -12734,6 +12854,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Textdateien bis 300 KB."
+          }
+        }
+      }
+    },
+    "That isn't a valid cron expression.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist kein gültiger Cron-Ausdruck."
           }
         }
       }
@@ -13714,6 +13844,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Änderungen an %@ verwerfen?"
+          }
+        }
+      }
+    },
+    "Time": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit"
+          }
+        }
+      }
+    },
+    "Timers are managed by the system; Deckhand shows them read-only.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer werden vom System verwaltet; Deckhand zeigt sie nur an."
           }
         }
       }
@@ -14739,6 +14889,16 @@
         }
       }
     },
+    "What": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was"
+          }
+        }
+      }
+    },
     "What Claude Code, Codex and your agent must never do": {
       "localizations": {
         "de": {
@@ -14865,6 +15025,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Was CPU und Speicher braucht; hängende Prozesse beenden"
+          }
+        }
+      }
+    },
+    "When": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann"
           }
         }
       }
@@ -15551,6 +15721,16 @@
         }
       }
     },
+    "last %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "letzter %@"
+          }
+        }
+      }
+    },
     "minute": {
       "localizations": {
         "de": {
@@ -15587,6 +15767,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "nie"
+          }
+        }
+      }
+    },
+    "next %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nächster %@"
           }
         }
       }
@@ -15740,6 +15930,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "sudo ohne Passwort"
+          }
+        }
+      }
+    },
+    "systemd timers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "systemd-Timer"
           }
         }
       }
