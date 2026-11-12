@@ -209,10 +209,28 @@ struct ThreadListView: View {
         .task {
             // "markdown|": a finished chat with a reply that uses every Markdown block (UI tests, screenshots).
             let seed = DebugSeed.pendingRun?.engine
-            guard seed == "markdown" || seed == "secrets" || seed == "fix" || seed == "checkoffer" else { return }
+            guard seed == "markdown" || seed == "secrets" || seed == "fix" || seed == "checkoffer" || seed == "compacted" || seed == "checkpoint" else { return }
             DebugSeed.pendingRun = nil
             let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: .codex)
-            if seed == "checkoffer" {
+            if seed == "checkpoint" {
+                // A folder snapshotted at the start of the task, then changed the way an agent would.
+                thread.title = "Tidy the notes"
+                thread.workingDirectory = "~/dh-checkpoint-test"
+                thread.messages = [.user("Tidy the notes."), Message(role: .assistant, blocks: [.text("Done: edited a.txt, added new.txt, removed old.txt.")])]
+                if let conn = try? await Connections.shared.connection(for: server) {
+                    _ = try? await conn.run("rm -rf ~/dh-checkpoint-test && mkdir -p ~/dh-checkpoint-test && cd ~/dh-checkpoint-test && printf 'one\\ntwo\\n' > a.txt && echo keep > old.txt", timeout: .seconds(20))
+                    _ = try? await conn.run(Checkpoints.removeCommand(task: thread.id.uuidString), timeout: .seconds(20))
+                    _ = try? await conn.run(Checkpoints.createCommand(task: thread.id.uuidString, folder: thread.workingDirectory), timeout: .seconds(30))
+                    _ = try? await conn.run("cd ~/dh-checkpoint-test && printf 'one\\nTWO\\n' > a.txt && echo hi > new.txt && rm old.txt", timeout: .seconds(20))
+                }
+            }
+            if seed == "compacted" {
+                thread.title = "Upgrade the shop"
+                thread.engineRaw = Engine.ownKey.rawValue
+                thread.messages = DebugSeed.compactedChat
+                thread.historyStart = 2
+                thread.historySummary = "- Goal: upgrade the shop to Node 22\n- Installed Node 22, rebuilt the app\n- Open: restart the service"
+            } else if seed == "checkoffer" {
                 thread.title = "Why is Shop down?"
                 thread.messages = DebugSeed.checkOfferChat
                 IncidentLinks.set("seeded", for: thread.id)

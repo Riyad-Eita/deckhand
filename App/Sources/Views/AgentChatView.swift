@@ -47,7 +47,10 @@ struct AgentChatView: View {
                     if model.messages.isEmpty && !model.isRunning {
                         EmptyChatHint(server: model.server, workingDirectory: model.thread.workingDirectory, engine: model.thread.engine) { draft = $0; composerFocused = true }
                     }
-                    ForEach(model.messages) { message in
+                    ForEach(Array(model.messages.enumerated()), id: \.element.id) { i, message in
+                        if i == model.thread.historyStart, i > 0, let summary = model.thread.historySummary {
+                            SummaryDivider(summary: summary)
+                        }
                         MessageView(message: message, model: model)
                     }
                     if model.isRunning { LiveTurnView(model: model) }
@@ -130,6 +133,13 @@ struct AgentChatView: View {
                 ToolbarItem(placement: .primaryAction) {
                     CLIModelMenu(thread: model.thread, server: model.server, cli: cli)
                 }
+            }
+            ToolbarItem(placement: .primaryAction) {
+                NavigationLink { FilesChangedView(server: model.server, thread: model.thread) } label: {
+                    Image(systemName: "doc.badge.clock")
+                }
+                .accessibilityLabel("Changed files")
+                .accessibilityIdentifier("chat.changes")
             }
         }
         // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.
@@ -371,6 +381,37 @@ private struct EmptyChatHint: View {
             }
         }
         .padding(.top, 24)
+    }
+}
+
+/// Where a long task was compacted: the steps above were summarized for the model (they stay visible here).
+private struct SummaryDivider: View {
+    let summary: String
+    @State private var open = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Button { withAnimation { open.toggle() } } label: {
+                HStack(spacing: 8) {
+                    VStack { Divider() }
+                    Label("Earlier steps summarized", systemImage: "text.line.first.and.arrowtriangle.forward")
+                        .font(.caption).foregroundStyle(.secondary).fixedSize()
+                    Image(systemName: open ? "chevron.up" : "chevron.down").font(.caption2).foregroundStyle(.tertiary)
+                    VStack { Divider() }
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("chat.summary")
+            if open {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("The agent keeps working from this summary instead of every earlier step, so long tasks fit and cost less.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    MarkdownText(summary).font(.footnote)
+                }
+                .padding(12)
+                .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+        }
     }
 }
 

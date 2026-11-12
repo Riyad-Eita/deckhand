@@ -24,8 +24,8 @@ final class ServerXrayUITests: XCTestCase {
         let scan = app.buttons["xray.scan"]
         XCTAssertTrue(scan.waitForExistence(timeout: 20))
         scan.tap()
-        XCTAssertTrue(app.staticTexts["No backups found"].waitForExistence(timeout: 120))
-        XCTAssertTrue(app.staticTexts["\(site) points to nothing"].exists)
+        // The site's dead upstream is a risk; whether backups exist depends on what else ran on the test server.
+        XCTAssertTrue(app.staticTexts["\(site) points to nothing"].waitForExistence(timeout: 120))
         sleep(1)
         shot(app, "risks")
         var t = 0

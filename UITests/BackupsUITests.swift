@@ -5,9 +5,11 @@ import XCTest
 final class BackupsUITests: XCTestCase {
     func testSetUpBrowseRestore() throws {
         let env = ProcessInfo.processInfo.environment
-        guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"], let repo = env["DECKHAND_BACKUP_REPO"] else {
+        guard let host = env["DECKHAND_UPTIME_HOST"], let password = env["DECKHAND_UPTIME_PASSWORD"], let base = env["DECKHAND_BACKUP_REPO"] else {
             throw XCTSkip("No test server")
         }
+        // A new folder each run: a repository left by an earlier run has a password this run doesn't know.
+        let repo = base + "-" + String(Int(Date().timeIntervalSince1970))
         let app = XCUIApplication()
         app.launchEnvironment["DECKHAND_RESET"] = "1"
         app.launchEnvironment["DECKHAND_SEED_HOST"] = host
@@ -25,16 +27,24 @@ final class BackupsUITests: XCTestCase {
         row.tap()
 
         let kind = app.buttons["backup.kind"]
-        XCTAssertTrue(kind.waitForExistence(timeout: 30))
+        let leftover = app.buttons["Stop backups"]
+        var w = 0
+        while !kind.exists && !leftover.exists && w < 30 { sleep(1); w += 1 }
+        // A run that failed halfway left backups on: stop them first.
+        if leftover.exists && !kind.exists {
+            while !leftover.isHittable && w < 40 { app.swipeUp(); w += 1 }
+            leftover.tap()
+        }
+        XCTAssertTrue(kind.waitForExistence(timeout: 60))
         kind.tap()
         app.buttons["A folder on this server"].firstMatch.tap()
         let folder = app.textFields["backup.folder"]
         XCTAssertTrue(folder.waitForExistence(timeout: 5))
-        folder.tap(); folder.typeText(repo)
+        folder.tap(); folder.typeText(repo + "\n")
         shot(app, "wizard")
         let setup = app.buttons["backup.setup"]
         var t = 0
-        while !setup.isHittable && t < 6 { app.swipeUp(); t += 1 }
+        while (!setup.isHittable || setup.frame.maxY > app.frame.maxY - 80) && t < 6 { app.swipeUp(); t += 1 }
         setup.tap()
         XCTAssertTrue(app.staticTexts["backup.password"].waitForExistence(timeout: 240))
         app.buttons["I've saved it"].tap()
@@ -45,7 +55,7 @@ final class BackupsUITests: XCTestCase {
         XCTAssertTrue(snap.waitForExistence(timeout: 10))
         shot(app, "overview")
         snap.tap()
-        let file = app.staticTexts["dh-note.txt"]
+        let file = app.staticTexts[".profile"]
         XCTAssertTrue(file.waitForExistence(timeout: 60))
         file.swipeLeft()
         app.buttons["Restore"].firstMatch.tap()

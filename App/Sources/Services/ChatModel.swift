@@ -149,7 +149,8 @@ final class ChatModel {
         error = nil
         notice = nil
         let user = Message.user(trimmed)
-        let history = messages
+        let history = Self.history(messages, start: thread.historyStart, summary: thread.historySummary)
+        let historyStart = thread.historyStart
         messages.append(user)
         if history.isEmpty { thread.title = String(trimmed.prefix(60)) }
         persist()
@@ -163,6 +164,8 @@ final class ChatModel {
         task = Task {
             do {
                 let shell = try await Connections.shared.connection(for: server)
+                // Snapshot the folder before the agent touches it, so every change can be seen and undone.
+                _ = try? await shell.run(Checkpoints.createCommand(task: thread.id.uuidString, folder: thread.workingDirectory), timeout: .seconds(60))
                 if let cli = thread.engine.serverCLI {
                     let run = DetachedRun()
                     thread.cliRunID = run.id
@@ -195,6 +198,10 @@ final class ChatModel {
                         await self?.requestApproval(request) ?? .deny(reason: nil)
                     })
                 for try await event in agent.run(history: history, userMessage: user) {
+                    if case .compacted(let summary, let dropped) = event {
+                        thread.historySummary = summary
+                        thread.historyStart = min(historyStart + dropped, messages.count)
+                    }
                     handle(event)
                 }
             } catch {
@@ -262,6 +269,8 @@ final class ChatModel {
             notice = String(localized: "Usage limit reached. The task waits on the server and continues at \(time) by itself — you can close the app.")
         case .sessionStarted(let id):
             thread.cliSessionID = id
+        case .compacted:
+            persist()
         case .usage(let u):
             usage.inputTokens += u.inputTokens
             usage.outputTokens += u.outputTokens
@@ -272,6 +281,12 @@ final class ChatModel {
             default: break
             }
         }
+    }
+
+    /// What the model sees: the summary of the older steps (if any), then the messages after it.
+    static func history(_ all: [Message], start: Int, summary: String?) -> [Message] {
+        guard let summary, start > 0, start <= all.count else { return all }
+        return Compaction.prefix(summary) + all[start...]
     }
 
     private func clearLive() {

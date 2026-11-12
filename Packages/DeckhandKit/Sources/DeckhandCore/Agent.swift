@@ -35,6 +35,9 @@ public enum AgentEvent: Sendable, Hashable {
     /// A server run hit a usage limit and waits on the server until it resets, then continues by itself.
     case waitingForLimit(until: Date)
     case finished(StopReason)
+    /// Older steps were summarized to stay within the context: the first `dropped` messages of the history passed to
+    /// `run` (after any summary prefix) were replaced by `summary`.
+    case compacted(summary: String, dropped: Int)
 }
 
 /// What the user is asked to approve.
@@ -67,6 +70,8 @@ public struct Agent: Sendable {
     public var policy: ApprovalPolicy
     public var system: String
     public var maxTurns: Int
+    /// Rough context budget in tokens; above 80 % older steps are summarized.
+    public var contextBudget = 150_000
     /// Tool output goes to the model with tokens, keys and passwords replaced by `[REDACTED: …]`.
     /// The app still gets the original output for the user (masked on screen until tapped).
     public var redactSecrets: Bool
@@ -131,8 +136,17 @@ public struct Agent: Sendable {
     private func loop(history: [Message], userMessage: Message, emit: (AgentEvent) -> Void) async throws {
         var messages = history + [userMessage]
         let specs = tools.map(\.spec)
+        var prefix = Compaction.summaryPrefixCount(history)
+        var droppedSoFar = 0
         for _ in 0..<maxTurns {
             try Task.checkCancellation()
+            if Compaction.estimate(messages) > contextBudget * 8 / 10, let cut = Compaction.cutIndex(messages, prefix: prefix) {
+                let summary = try await Compaction.summarize(Array(messages[..<cut]), provider: provider)
+                droppedSoFar += cut - prefix
+                messages = Compaction.prefix(summary) + messages[cut...]
+                prefix = 2
+                emit(.compacted(summary: summary, dropped: droppedSoFar))
+            }
             var final: (Message, StopReason, Usage)?
             for try await event in provider.stream(ChatRequest(system: system, messages: messages, tools: specs)) {
                 switch event {

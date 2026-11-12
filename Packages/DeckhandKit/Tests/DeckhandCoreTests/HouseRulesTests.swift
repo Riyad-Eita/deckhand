@@ -241,7 +241,7 @@ import Testing
         http.server.HTTPServer(('127.0.0.1', int(sys.argv[1])), H).serve_forever()
         """
         try py.write(toFile: dir + "/ntfy.py", atomically: true, encoding: .utf8)
-        _ = try await LocalShell().run("(python3 '\(dir)/ntfy.py' \(port) '\(dir)' \(answer) >/dev/null 2>&1 &); sleep 1", timeout: .seconds(10))
+        _ = try await LocalShell().run("(python3 '\(dir)/ntfy.py' \(port) '\(dir)' \(answer) >/dev/null 2>&1 &); \(waitForPorts(port))", timeout: .seconds(30))
     }
 
     @Test func asksOnTheLockScreen() async throws {

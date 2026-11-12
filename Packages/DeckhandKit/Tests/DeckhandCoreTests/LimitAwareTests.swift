@@ -71,6 +71,19 @@ private struct FakeHomeShell: StreamingShell {
         #expect(try await shell.run(DetachedRun.listCommand, timeout: .seconds(10)).stdout.isEmpty)
     }
 
+    @Test func exactResetTimesDontRollToTomorrow() async throws {
+        func wait(_ text: String) async throws -> Int {
+            let script = LimitAwareRun.waitFunction + "\nDH_SLACK=0 dh_wait " + ShellQuote.quote(text)
+            return Int(try await LocalShell().run("bash -c " + ShellQuote.quote(script), timeout: .seconds(10)).stdout
+                .trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1
+        }
+        let now = Int(Date().timeIntervalSince1970)
+        #expect(try await wait("Claude AI usage limit reached|\(now - 5)") == 0)        // already reset: go on now
+        let ahead = try await wait("Claude AI usage limit reached|\(now + 120)")
+        #expect((115...120).contains(ahead))
+        #expect(try await wait("something else") == 1800)
+    }
+
     @Test func otherFailuresStillFail() async throws {
         let shell = FakeHomeShell(home: try fakeHome())
         // A CLI error that isn't a limit ends the run with the CLI's message.

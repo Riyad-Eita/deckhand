@@ -126,7 +126,9 @@ public enum Backups {
         . "$D/env"; export RESTIC_REPOSITORY RESTIC_PASSWORD_FILE AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
         case "$RESTIC_REPOSITORY" in /*) mkdir -p "$RESTIC_REPOSITORY" ;; esac
         if "$R" cat config >/dev/null 2>&1; then echo '@@exists'
-        else out=$("$R" init 2>&1) && echo '@@init' || { echo "@@failed $(printf '%s' "$out" | tail -n 1)"; exit 0; }; fi
+        else out=$("$R" init 2>&1) && echo '@@init' || {
+          case "$out" in *already*|*exist*) echo '@@failed This location already holds backups made with another password. Choose an empty folder or bucket path.' ;;
+          *) echo "@@failed $(printf '%s' "$out" | tail -n 1)" ;; esac; exit 0; }; fi
         command -v crontab >/dev/null 2>&1 || { echo '@@nocron'; echo '@@ok'; exit 0; }
         { crontab -l 2>/dev/null | grep -v 'deckhand/backup/run.sh'; echo "\(Int.random(in: 0...59)) \(hour) * * * $HOME/.deckhand/backup/run.sh >/dev/null 2>&1 \(cronTag)"; } | crontab -
         echo '@@ok'
