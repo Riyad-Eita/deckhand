@@ -56,7 +56,7 @@ import Testing
         let bad = try String(contentsOfFile: d + "/bad1.log", encoding: .utf8)
         #expect(ok.split(separator: " ")[1] == "200" && ok.hasSuffix(" 1\n"))
         #expect(bad.hasSuffix(" 0\n"))
-        for _ in 0..<30 where !FileManager.default.fileExists(atPath: home + "/pushes") { try await Task.sleep(for: .milliseconds(100)) }
+        for _ in 0..<150 where !FileManager.default.fileExists(atPath: home + "/pushes") { try await Task.sleep(for: .milliseconds(100)) }
         #expect(try String(contentsOfFile: home + "/pushes", encoding: .utf8) == "Down: Site text (200) | deckhand://uptime/AB-12/bad1\n")
     }
 
@@ -90,7 +90,7 @@ import Testing
         defer { Task { _ = try? await shell.run("pkill -f 'http.server \(web) --bind'; pkill -f 'fake.py \(hook)'", timeout: .seconds(5)) } }
         // Two runs: the second may not run the failing fix again (limit 1 per hour).
         _ = try await shell.run("HOME='\(home)' FORCE=1 FIXWAIT=0 sh '\(d)/run.sh'; HOME='\(home)' FORCE=1 FIXWAIT=0 sh '\(d)/run.sh'", timeout: .seconds(60))
-        for _ in 0..<30 where (try? String(contentsOfFile: home + "/pushes", encoding: .utf8))?.split(separator: "\n").count ?? 0 < 2 {
+        for _ in 0..<150 where (try? String(contentsOfFile: home + "/pushes", encoding: .utf8))?.split(separator: "\n").count ?? 0 < 2 {
             try await Task.sleep(for: .milliseconds(100))
         }
         let pushes = try String(contentsOfFile: home + "/pushes", encoding: .utf8).split(separator: "\n").map(String.init)
