@@ -63,7 +63,9 @@ public enum LimitAwareRun {
         esac
       fi
       if [ -z "$s" ]; then echo 1800; return; fi
-      while [ "$s" -le "$now" ]; do s=$((s + 86400)); done
+      # An exact time already past means the limit has reset; only a time of day ("resets 3am") rolls to tomorrow.
+      if [ -n "$e" ]; then [ "$s" -lt "$now" ] && s=$now
+      else while [ "$s" -le "$now" ]; do s=$((s + 86400)); done; fi
       d=$((s - now + ${DH_SLACK:-60})); [ "$d" -gt 691200 ] && d=691200
       echo "$d"
     }
