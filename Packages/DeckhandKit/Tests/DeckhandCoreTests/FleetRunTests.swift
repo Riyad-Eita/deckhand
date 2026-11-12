@@ -8,6 +8,9 @@ struct FleetRunTests {
         private let lock = NSLock(); private var items: [(UUID, FleetRun.State)] = []
         func add(_ i: UUID, _ s: FleetRun.State) { lock.withLock { items.append((i, s)) } }
         func last(_ i: UUID) -> FleetRun.State? { lock.withLock { items.last { $0.0 == i }?.1 } }
+        /// Index of the first event matching `match`.
+        func first(_ match: (FleetRun.State) -> Bool) -> Int? { lock.withLock { items.firstIndex { match($0.1) } } }
+        func count(_ match: (FleetRun.State) -> Bool) -> Int { lock.withLock { items.filter { match($0.1) }.count } }
     }
 
     @Test func allAtOnce() async {
@@ -18,9 +21,12 @@ struct FleetRunTests {
             FleetRun.Target(id: ids[2]) { throw Fails() },
         ]
         let log = Log()
-        let start = Date()
         await FleetRun.run("sleep 1; echo hi", on: targets, stopOnFailure: false) { log.add($0, $1) }
-        #expect(Date().timeIntervalSince(start) < 1.9)                       // in parallel
+        // In parallel: every server started before the first one finished (no wall-clock limit — CI runners vary).
+        let firstDone = log.first { if case .done = $0 { true } else { false } } ?? 0
+        #expect(log.count { $0 == .running } == 3)
+        #expect((log.first { $0 == .running } ?? 99) < firstDone)
+        #expect(log.count { $0 == .running } == 3 && firstDone >= 3)
         if case .done(let code, let out, _) = log.last(ids[0]) { #expect(code == 0 && out == "hi") } else { Issue.record("not done") }
         #expect(log.last(ids[2]) == .failed("connection refused"))
     }

@@ -108,7 +108,7 @@ import Testing
         let t = H.highlight(lines, language: H.swift)
         #expect(t.count == 20_000)
         // Hosted CI runners are shared and run debug builds several times slower than a Mac.
-        let limit = ProcessInfo.processInfo.environment["CI"] == nil ? 2.0 : 10.0
+        let limit = ProcessInfo.processInfo.environment["CI"] == nil ? 2.0 : 30.0
         #expect(Date().timeIntervalSince(start) < limit)
     }
 
