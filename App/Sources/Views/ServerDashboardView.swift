@@ -121,6 +121,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.expiry")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            CronWatchView(server: server)
+                        } label: {
+                            ManageRow(title: "Cron jobs", subtitle: "A push when a job fails or stops running", symbol: "clock.badge.checkmark")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.cron")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             NetworkToolsView(server: server)
                         } label: {
                             ManageRow(title: "Network tools", subtitle: "Ping, traceroute, DNS, ports, HTTP", symbol: "network")
