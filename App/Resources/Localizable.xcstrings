@@ -175,12 +175,42 @@
         }
       }
     },
+    "%@ is running.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ läuft."
+          }
+        }
+      }
+    },
     "%@ is signed in on %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ ist auf %2$@ angemeldet"
+          }
+        }
+      }
+    },
+    "%@ is still starting.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ startet noch."
+          }
+        }
+      }
+    },
+    "%@ needs HTTPS: point a domain at this server first. Caddy gets the certificate.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ braucht HTTPS: richte zuerst eine Domain auf diesen Server. Caddy holt das Zertifikat."
           }
         }
       }
@@ -394,6 +424,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld von %2$lld"
+          }
+        }
+      }
+    },
+    "%lld of %lld running": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld laufen"
           }
         }
       }
@@ -974,6 +1014,16 @@
         }
       }
     },
+    "Address on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse auf dem Server"
+          }
+        }
+      }
+    },
     "Adds a small login hook (PAM) that pushes to your ntfy topic. It can't block a login. Subscribe to the topic in the ntfy app: %@": {
       "localizations": {
         "de": {
@@ -990,6 +1040,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fügt die Server und Verbindungen hinzu, die noch fehlen, und übernimmt die Einstellungen."
+          }
+        }
+      }
+    },
+    "Admin page": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Seite"
+          }
+        }
+      }
+    },
+    "Admin password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Passwort"
+          }
+        }
+      }
+    },
+    "Admin token": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Token"
           }
         }
       }
@@ -1275,6 +1355,26 @@
         }
       }
     },
+    "An app named %@ is already installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine App namens %@ ist schon installiert."
+          }
+        }
+      }
+    },
+    "Analytics": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse"
+          }
+        }
+      }
+    },
     "Another server (SFTP)": {
       "localizations": {
         "de": {
@@ -1466,6 +1566,16 @@
         }
       }
     },
+    "Apps run with Docker Compose in ~/apps and listen on this server only. Open them through Deckhand, or give them a domain with HTTPS.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps laufen mit Docker Compose in ~/apps und lauschen nur auf diesem Server. Öffne sie über Deckhand oder gib ihnen eine Domain mit HTTPS."
+          }
+        }
+      }
+    },
     "Ask before changes": {
       "extractionState": "manual",
       "localizations": {
@@ -1594,6 +1704,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatische Sicherheitsupdates"
+          }
+        }
+      }
+    },
+    "Automation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisierung"
           }
         }
       }
@@ -2838,6 +2958,16 @@
         }
       }
     },
+    "Connection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung"
+          }
+        }
+      }
+    },
     "Connection lost — the run continues on the server. Reconnecting…": {
       "localizations": {
         "de": {
@@ -3239,6 +3369,46 @@
         }
       }
     },
+    "Create the admin account on the first visit.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege beim ersten Aufruf das Admin-Konto an."
+          }
+        }
+      }
+    },
+    "Create the owner account on the first visit.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege beim ersten Aufruf das Konto des Eigentümers an."
+          }
+        }
+      }
+    },
+    "Create your account in the web vault, then sign in with the Bitwarden apps using this server's address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege dein Konto im Web-Tresor an und melde dich dann in den Bitwarden-Apps mit der Adresse dieses Servers an."
+          }
+        }
+      }
+    },
+    "Credentials": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugangsdaten"
+          }
+        }
+      }
+    },
     "Cron jobs": {
       "localizations": {
         "de": {
@@ -3286,6 +3456,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Daten"
+          }
+        }
+      }
+    },
+    "Database": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbank"
           }
         }
       }
@@ -3700,6 +3880,16 @@
         }
       }
     },
+    "Development": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entwicklung"
+          }
+        }
+      }
+    },
     "Dictate": {
       "localizations": {
         "de": {
@@ -3901,6 +4091,26 @@
         }
       }
     },
+    "Domain (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain (optional)"
+          }
+        }
+      }
+    },
+    "Domain (required)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain (erforderlich)"
+          }
+        }
+      }
+    },
     "Domains": {
       "localizations": {
         "de": {
@@ -4018,6 +4228,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper wird geladen …"
+          }
+        }
+      }
+    },
+    "Downloading and starting %@. The first time this can take a few minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ wird heruntergeladen und gestartet. Beim ersten Mal kann das ein paar Minuten dauern."
           }
         }
       }
@@ -4625,6 +4845,16 @@
         }
       }
     },
+    "Fast key-value store for caches and queues.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schneller Key-Value-Speicher für Caches und Warteschlangen."
+          }
+        }
+      }
+    },
     "Fewer password tries per connection slow down guessing; X11 forwarding is rarely needed on a server and widens the attack surface.": {
       "localizations": {
         "de": {
@@ -4661,6 +4891,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien"
+          }
+        }
+      }
+    },
+    "Files and teams": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien und Teams"
           }
         }
       }
@@ -4871,6 +5111,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Behebt sich selbst bei Ausfall"
+          }
+        }
+      }
+    },
+    "Folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
           }
         }
       }
@@ -5440,6 +5690,16 @@
         }
       }
     },
+    "Install %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ installieren"
+          }
+        }
+      }
+    },
     "Install All Updates": {
       "localizations": {
         "de": {
@@ -5486,6 +5746,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicherheitsupdates installieren (%lld)"
+          }
+        }
+      }
+    },
+    "Install apps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps installieren"
           }
         }
       }
@@ -5736,6 +6006,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Es lauscht auf %1$@:%2$lld. Binde es an 127.0.0.1 oder schließe den Port in der Firewall."
+          }
+        }
+      }
+    },
+    "Its containers stop and are removed. A domain stays in Caddy until you remove it under Domains.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Container werden gestoppt und entfernt. Eine Domain bleibt in Caddy, bis du sie unter Domains entfernst."
           }
         }
       }
@@ -6060,6 +6340,16 @@
         }
       }
     },
+    "Lightweight Git hosting with issues and pull requests.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlankes Git-Hosting mit Issues und Pull-Requests."
+          }
+        }
+      }
+    },
     "Listening but not reachable from here: %@ — the firewall keeps them private.": {
       "localizations": {
         "de": {
@@ -6076,6 +6366,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offene Ports"
+          }
+        }
+      }
+    },
+    "Listens on 127.0.0.1 only; apps on this server connect with the connection string shown afterwards.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lauscht nur auf 127.0.0.1; Apps auf diesem Server verbinden sich mit der Verbindungsadresse, die danach angezeigt wird."
           }
         }
       }
@@ -6526,6 +6826,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modelle, Datensätze, Spaces und Paper."
+          }
+        }
+      }
+    },
+    "Monitoring": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überwachung"
           }
         }
       }
@@ -7733,6 +8043,16 @@
         }
       }
     },
+    "Open through Deckhand": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über Deckhand öffnen"
+          }
+        }
+      }
+    },
     "Open to the outside": {
       "localizations": {
         "de": {
@@ -7929,6 +8249,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passwort-Logins über SSH"
+          }
+        }
+      }
+    },
+    "Password manager compatible with Bitwarden apps.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwortmanager, der mit den Bitwarden-Apps funktioniert."
           }
         }
       }
@@ -8169,6 +8499,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Datenschutz"
+          }
+        }
+      }
+    },
+    "Privacy-friendly web analytics.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutzfreundliche Webanalyse."
           }
         }
       }
@@ -8636,6 +8976,16 @@
         }
       }
     },
+    "Register the first account on the first visit, then add your site and its snippet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registriere beim ersten Aufruf das erste Konto, füge dann deine Website und ihr Snippet hinzu."
+          }
+        }
+      }
+    },
     "Rejected": {
       "localizations": {
         "de": {
@@ -8766,12 +9116,32 @@
         }
       }
     },
+    "Remove with all its data": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit allen Daten entfernen"
+          }
+        }
+      }
+    },
     "Remove “%@” from %lld servers?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "„%1$@“ von %2$lld Servern entfernen?"
+          }
+        }
+      }
+    },
+    "Remove, keep the data": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen, Daten behalten"
           }
         }
       }
@@ -8832,6 +9202,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entfernt die Regel %1$@%2$@."
+          }
+        }
+      }
+    },
+    "Remove…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen …"
+          }
+        }
+      }
+    },
+    "Removing keeps the data unless you choose otherwise. Installing it again under the same name picks the data up again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Entfernen bleiben die Daten erhalten, wenn du nichts anderes wählst. Installierst du die App wieder unter demselben Namen, sind die Daten wieder da."
           }
         }
       }
@@ -9877,6 +10267,16 @@
         }
       }
     },
+    "Serves %@ from %@ with HTTPS (installs Caddy if needed).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liefert %1$@ aus %2$@ per HTTPS aus (installiert Caddy bei Bedarf)."
+          }
+        }
+      }
+    },
     "Services": {
       "localizations": {
         "de": {
@@ -10548,6 +10948,16 @@
         }
       }
     },
+    "Status pages and uptime monitoring.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Statusseiten und Erreichbarkeitsüberwachung."
+          }
+        }
+      }
+    },
     "Status, diffs, commits, branches, pull and push": {
       "localizations": {
         "de": {
@@ -10868,6 +11278,16 @@
         }
       }
     },
+    "Tap to copy (cleared from the clipboard after two minutes). They're also in the app's .env file on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen zum Kopieren (wird nach zwei Minuten aus der Zwischenablage gelöscht). Sie stehen auch in der .env-Datei der App auf dem Server."
+          }
+        }
+      }
+    },
     "Task": {
       "localizations": {
         "de": {
@@ -11178,6 +11598,16 @@
         }
       }
     },
+    "The database most apps want.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datenbank, die die meisten Apps brauchen."
+          }
+        }
+      }
+    },
     "The decoys hold nothing real and open nothing. Pushes go to your ntfy topic.": {
       "localizations": {
         "de": {
@@ -11218,12 +11648,32 @@
         }
       }
     },
+    "The first visit shows the installer; keep SQLite and create the admin account there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim ersten Aufruf erscheint der Installer; behalte SQLite und lege dort das Admin-Konto an."
+          }
+        }
+      }
+    },
     "The folder and everything in it is deleted on the server. This can't be undone.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der Ordner und alles darin wird auf dem Server gelöscht. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "The install didn't finish.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Installation ist nicht fertig geworden."
           }
         }
       }
@@ -12289,6 +12739,16 @@
         }
       }
     },
+    "Update to the newest images": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf die neuesten Images aktualisieren"
+          }
+        }
+      }
+    },
     "Update trusted login addresses": {
       "localizations": {
         "de": {
@@ -12812,6 +13272,16 @@
         }
       }
     },
+    "Without a domain the app is only reachable through Deckhand. With one, Caddy serves it with HTTPS.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Domain ist die App nur über Deckhand erreichbar. Mit Domain liefert Caddy sie per HTTPS aus."
+          }
+        }
+      }
+    },
     "Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this iPhone's keychain.": {
       "localizations": {
         "de": {
@@ -12838,6 +13308,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Workers, DNS, Pages, R2 und der Rest von Cloudflare."
+          }
+        }
+      }
+    },
+    "Workflow automation with hundreds of integrations.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workflow-Automatisierung mit Hunderten Integrationen."
           }
         }
       }
@@ -13038,6 +13518,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigener API-Key · läuft in der App"
+          }
+        }
+      }
+    },
+    "Your own cloud for files, calendars and contacts.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine eigene Cloud für Dateien, Kalender und Kontakte."
           }
         }
       }
@@ -13337,6 +13827,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Minute"
+          }
+        }
+      }
+    },
+    "n8n, Nextcloud, Uptime Kuma, Postgres … in one tap": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n8n, Nextcloud, Uptime Kuma, Postgres … mit einem Tipp"
           }
         }
       }

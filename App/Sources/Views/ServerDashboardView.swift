@@ -112,6 +112,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.domains")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            AppInstallsView(server: server)
+                        } label: {
+                            ManageRow(title: "Install apps", subtitle: "n8n, Nextcloud, Uptime Kuma, Postgres … in one tap", symbol: "square.grid.2x2")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.apps")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             DiskUsageView(server: server)
                         } label: {
                             ManageRow(title: "Disk usage", subtitle: "What takes the space, and what can go", symbol: "chart.pie")

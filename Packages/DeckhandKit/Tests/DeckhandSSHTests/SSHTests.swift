@@ -927,3 +927,44 @@ struct LiveEvidenceTests {
         #expect(e.contains { $0.title == "Load and memory" })
     }
 }
+
+/// One-tap app installs against a server with Docker (DECKHAND_TEST_* and DECKHAND_TEMPLATES_TEST=1): every compose
+/// file passes `docker compose config`; Redis and Uptime Kuma are installed under throwaway names, answer, and are
+/// removed again with their data.
+struct LiveAppTemplateTests {
+    @Test func installCheckRemove() async throws {
+        guard ProcessInfo.processInfo.environment["DECKHAND_TEMPLATES_TEST"] == "1" else { return }
+        let conn = try await LiveSSHTests().connection()
+        do {
+            for t in AppTemplates.catalog {
+                let vars = (["PORT=18000", "DOMAIN=example.com", "URL=https://example.com", "SCHEME=https", "SECURE=true"]
+                    + t.secrets.map { "\($0.key)=x" }).joined(separator: "\n")
+                let r = try await conn.run("""
+                    d=$(mktemp -d) && cd "$d" && printf '%s\\n' \(ShellQuote.quote(vars)) > .env && printf '%s\\n' \(ShellQuote.quote(t.compose)) > docker-compose.yml \
+                    && docker compose config -q && echo valid; cd / && rm -rf "$d"
+                    """, timeout: .seconds(30))
+                #expect(r.stdout.contains("valid"), "\(t.id): \(r.stderr)")
+            }
+            for id in ["redis", "uptime-kuma"] {
+                let name = "dh-test-\(id)-\(UUID().uuidString.prefix(4).lowercased())"
+                let plan = AppTemplates.Plan(template: AppTemplates.template(id)!, name: name)
+                let result = AppTemplates.parseInstall(try await conn.run(AppTemplates.installCommand(plan), timeout: .seconds(600)).stdout)
+                #expect(result.ok && !result.slow && result.failure == nil, "\(id): \(result)")
+                let app = AppTemplates.parseList(try await conn.run(AppTemplates.listCommand, timeout: .seconds(30)).stdout).first { $0.name == plan.name }
+                #expect(app?.running == app?.total && (app?.running ?? 0) >= 1, "\(id) not running")
+                if id == "redis", let pw = result.secrets["REDIS_PASSWORD"] {
+                    let ping = try await conn.run("docker compose -p \(plan.project) exec -T redis redis-cli -a \(ShellQuote.quote(pw)) --no-auth-warning ping", timeout: .seconds(30))
+                    #expect(ping.stdout.contains("PONG"))
+                } else if let port = result.port {
+                    let code = try await conn.run("curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:\(port)/", timeout: .seconds(30)).stdout
+                    #expect(["200", "302"].contains(code), "uptime-kuma answered \(code)")
+                }
+                let removed = try await conn.run(AppTemplates.actionCommand(.removeWithData, name: plan.name), timeout: .seconds(120))
+                #expect(removed.stdout.contains("@@ok"), "\(removed.stdout)")
+                #expect(try await conn.run("docker volume ls -q | grep -c '^\(plan.project)_' || true", timeout: .seconds(30)).stdout
+                    .trimmingCharacters(in: .whitespacesAndNewlines) == "0")
+            }
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}
