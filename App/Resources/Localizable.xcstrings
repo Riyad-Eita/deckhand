@@ -734,6 +734,16 @@
         }
       }
     },
+    "A plain chat with %@. No server, no tools — switch the model any time from the title.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein einfacher Chat mit %@. Kein Server, keine Werkzeuge – das Modell wechselst du jederzeit über den Titel."
+          }
+        }
+      }
+    },
     "A port other than 22 keeps most automated login attempts away. If your hosting provider has its own firewall (security groups, cloud firewall), allow the new port there first.": {
       "localizations": {
         "de": {
@@ -1686,6 +1696,16 @@
         }
       }
     },
+    "Ask anything": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frag, was du willst"
+          }
+        }
+      }
+    },
     "Ask before changes": {
       "extractionState": "manual",
       "localizations": {
@@ -1754,6 +1774,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Höchstens %lld× pro Stunde"
+          }
+        }
+      }
+    },
+    "Attach": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anhängen"
           }
         }
       }
@@ -2424,6 +2454,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "ChatGPT-Abo"
+          }
+        }
+      }
+    },
+    "Chats": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chats"
           }
         }
       }
@@ -6980,6 +7020,16 @@
         }
       }
     },
+    "Message": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachricht"
+          }
+        }
+      }
+    },
     "Metadata rejected": {
       "localizations": {
         "de": {
@@ -7266,6 +7316,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neuer Branch von hier"
+          }
+        }
+      }
+    },
+    "New chat": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Chat"
           }
         }
       }
@@ -8369,6 +8429,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffnet über deine SSH-Verbindung, sodass auch Apps funktionieren, die nur auf localhost des Servers lauschen (Dev-Server, Admin-Panels) – nichts wird ins Internet geöffnet."
+          }
+        }
+      }
+    },
+    "Or just chat with a model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oder einfach mit einem Modell chatten"
           }
         }
       }
@@ -11618,6 +11688,16 @@
         }
       }
     },
+    "Talk to any of your models directly — no server needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprich direkt mit deinen Modellen – ganz ohne Server."
+          }
+        }
+      }
+    },
     "Tap Sign in and log in with your ChatGPT account.": {
       "localizations": {
         "de": {
@@ -11784,6 +11864,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wird getestet …"
+          }
+        }
+      }
+    },
+    "Text file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Textdatei"
+          }
+        }
+      }
+    },
+    "Text files up to 300 KB.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Textdateien bis 300 KB."
           }
         }
       }

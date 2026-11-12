@@ -172,6 +172,7 @@ enum DebugSeed {
                 context.delete(server)
             }
             for c in (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? [] { context.delete(c) }
+            for chat in (try? context.fetch(FetchDescriptor<ChatThread>(predicate: #Predicate { $0.server == nil }))) ?? [] { context.delete(chat) }
             try? context.save()
             // The Keychain survives reinstalls: forget model keys and the home card choice too.
             if env["DECKHAND_SEED_APIKEY"] == nil { AppSettings.shared.apiKey = "" }

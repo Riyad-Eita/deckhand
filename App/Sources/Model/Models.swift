@@ -106,7 +106,19 @@ final class ChatThread {
     var historySummary: String?
     /// "Plan first": the next requests run read-only and come back as a plan to run, adjust or drop.
     var planFirst: Bool = false
+    /// Plain chats (no server): the provider and model this chat talks to; nil = the default from Settings.
+    var chatProviderRaw: String?
+    var chatModel: String?
     var server: Server?
+
+    /// A plain chat with a model, without a server.
+    init(chatWith provider: ProviderKind?) {
+        self.server = nil
+        self.chatProviderRaw = provider?.rawValue
+        self.title = String(localized: "New chat")
+    }
+
+    var isPlainChat: Bool { server == nil }
 
     init(server: Server, workingDirectory: String, engine: Engine = .ownKey) {
         self.server = server

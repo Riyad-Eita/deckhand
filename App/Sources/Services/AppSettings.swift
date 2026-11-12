@@ -81,6 +81,31 @@ final class AppSettings {
         !model.isEmpty && (!apiKey.isEmpty || providerKind == .custom)
     }
 
+    /// Providers a plain chat can use: those with a key (the custom one with an address).
+    var chatProviders: [ProviderKind] {
+        ProviderKind.allCases.filter { k in
+            if k == providerKind { return isConfigured }
+            if k == .custom { return defaults.string(forKey: "provider.custom.baseURL") != nil }
+            return !(Keychain.get("apikey.\(k.rawValue)") ?? "").isEmpty
+        }
+    }
+
+    /// The model chosen in Settings for a provider (or its first suggestion).
+    func defaultModel(for kind: ProviderKind) -> String {
+        defaults.string(forKey: "provider.\(kind.rawValue).model") ?? kind.suggestedModels.first ?? ""
+    }
+
+    /// A provider's settings with another model (plain chats switch models per chat).
+    func providerConfig(kind: ProviderKind, model: String?) -> ProviderConfig {
+        let k = kind.rawValue
+        return ProviderConfig(
+            kind: kind,
+            baseURL: URL(string: defaults.string(forKey: "provider.\(k).baseURL") ?? "") ?? kind.defaultBaseURL,
+            model: model ?? defaultModel(for: kind),
+            apiKey: kind == providerKind ? apiKey : Keychain.get("apikey.\(k)") ?? "",
+            effort: effort.isEmpty ? nil : effort)
+    }
+
     var providerConfig: ProviderConfig {
         ProviderConfig(
             kind: providerKind,
