@@ -97,6 +97,15 @@ enum DebugSeed {
             """#
         case path.hasSuffix("/betaGroups"):
             body = #"{"data":[{"type":"betaGroups","id":"g1","attributes":{"name":"Team","isInternalGroup":true,"publicLinkEnabled":null}},{"type":"betaGroups","id":"g2","attributes":{"name":"Early birds","isInternalGroup":false,"publicLinkEnabled":true}}]}"#
+        case path.hasSuffix("/customerReviews"):
+            body = #"""
+            {"data":[
+             {"type":"customerReviews","id":"rv1","attributes":{"rating":2,"title":"Syncs twice","body":"Since the last update every forecast shows up twice in the widget.","reviewerNickname":"rainy_day","createdDate":"2026-11-09T08:00:00Z","territory":"USA"},"relationships":{"response":{"data":null}}},
+             {"type":"customerReviews","id":"rv2","attributes":{"rating":5,"title":"Endlich genau","body":"Die Regenvorhersage stimmt auf die Minute. Danke!","reviewerNickname":"wetterfrosch","createdDate":"2026-11-05T08:00:00Z","territory":"DEU"},"relationships":{"response":{"data":{"type":"customerReviewResponses","id":"rs2"}}}}],
+             "included":[{"type":"customerReviewResponses","id":"rs2","attributes":{"responseBody":"Danke dir!","state":"PUBLISHED"}}]}
+            """#
+        case path.hasSuffix("/customerReviewResponses") || path.contains("/customerReviewResponses/"):
+            return (Data(), req.httpMethod == "DELETE" ? 204 : 201)
         case path.hasSuffix("/betaTesters"):
             body = path.contains("g1")
                 ? #"{"data":[{"type":"betaTesters","id":"t1","attributes":{"firstName":"Alex","lastName":"Morgan","email":"alex@example.com","state":"INSTALLED"}},{"type":"betaTesters","id":"t2","attributes":{"firstName":"Sam","lastName":"Lee","email":"sam@example.com","state":"INSTALLED"}}]}"#

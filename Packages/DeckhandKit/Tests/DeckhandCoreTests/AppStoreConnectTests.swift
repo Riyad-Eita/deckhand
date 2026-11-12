@@ -57,6 +57,33 @@ struct AppStoreConnectTests {
         #expect(seen.value.contains("/v1/betaGroups/g1/betaTesters"))
     }
 
+    @Test func reviewsAndReplies() async throws {
+        let list = #"""
+        {"data":[{"type":"customerReviews","id":"r1","attributes":{"rating":2,"title":"Crashes","body":"Stürzt beim Start ab","reviewerNickname":"kim","createdDate":"2026-11-01T10:00:00-07:00","territory":"DEU"},
+                  "relationships":{"response":{"data":{"type":"customerReviewResponses","id":"x1"}}}},
+                 {"type":"customerReviews","id":"r2","attributes":{"rating":5,"title":"Great","body":"Love it","reviewerNickname":"sam","territory":"USA"},"relationships":{"response":{"data":null}}}],
+         "included":[{"type":"customerReviewResponses","id":"x1","attributes":{"responseBody":"Thanks!","state":"PUBLISHED"}}]}
+        """#
+        let calls = Locked<[String]>([])
+        let bodies = Locked<[String]>([])
+        let client = AppStoreConnect.Client(creds) { req in
+            calls.set(calls.value + ["\(req.httpMethod ?? "GET") \(req.url!.path)"])
+            if let b = req.httpBody { bodies.set(bodies.value + [String(decoding: b, as: UTF8.self)]) }
+            return (req.httpMethod == "GET" ? Data(list.utf8) : Data(), req.httpMethod == "DELETE" ? 204 : req.httpMethod == "POST" ? 201 : 200)
+        }
+        let reviews = try await client.reviews(app: "42")
+        #expect(reviews.count == 2 && reviews[0].rating == 2 && reviews[0].territory == "DEU" && reviews[0].response?.body == "Thanks!")
+        #expect(reviews[1].response == nil && reviews[1].date == nil)
+        try await client.reply(to: reviews[0], body: "Danke, ist mit 1.3 behoben.")
+        #expect(calls.value.suffix(2) == ["DELETE /v1/customerReviewResponses/x1", "POST /v1/customerReviewResponses"])
+        #expect(bodies.value.last?.contains("\"responseBody\":\"Danke, ist mit 1.3 behoben.\"") == true)
+        #expect(bodies.value.last?.contains("\"id\":\"r1\"") == true)
+        try await client.reply(to: reviews[1], body: "Thank you!")
+        #expect(calls.value.last == "POST /v1/customerReviewResponses" && !calls.value.contains("DELETE /v1/customerReviewResponses/nil"))
+        let prompt = AppStoreConnect.replyPrompt(reviews[0], app: "Shop", notes: "Fixed in 1.3")
+        #expect(prompt.contains("Rating: 2 of 5 (store DEU)") && prompt.contains("Developer's notes: Fixed in 1.3"))
+    }
+
     @Test func errorsAreReadable() async {
         let client = AppStoreConnect.Client(creds) { _ in (Data(#"{"errors":[{"status":"401","detail":"x"}]}"#.utf8), 401) }
         await #expect(throws: AppStoreConnect.Failure.http(401, "x")) { try await client.apps() }
@@ -88,6 +115,8 @@ struct LiveAppStoreConnectTests {
         #expect(!apps.isEmpty)
         for app in apps {
             let o = try await client.overview(app: app.id)
+            let reviews = try await client.reviews(app: app.id)
+            print("\(app.name): \(reviews.count) reviews, \(reviews.filter { $0.response != nil }.count) answered")
             print("\(app.name): \(o.builds.count) builds, versions \(o.versions.map { "\($0.version) \($0.state)" }), \(o.groups.count) groups, \(o.groups.map(\.testers.count).reduce(0, +)) testers")
         }
     }

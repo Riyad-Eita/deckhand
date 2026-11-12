@@ -178,6 +178,10 @@ struct AppStoreAppView: View {
     var body: some View {
         List {
             if let error { ProblemView(message: error, compact: true) }
+            Section {
+                NavigationLink { ReviewsView(app: app) } label: { Label("Ratings and reviews", systemImage: "star.bubble") }
+                    .accessibilityIdentifier("asc.reviews")
+            }
             if let o = overview {
                 Section("App Store") {
                     if o.versions.isEmpty { Text("No versions yet.").foregroundStyle(.secondary) }
@@ -289,5 +293,164 @@ struct StateBadge: View {
             Text(LocalizedStringKey(AppStoreConnect.describe(state))).font(.caption.weight(.medium)).foregroundStyle(.secondary)
         }
         .fixedSize()
+    }
+}
+
+/// Ratings and reviews of one app: filter by stars, draft a reply in the review's language, edit, post.
+struct ReviewsView: View {
+    let app: AppStoreConnect.App
+    @State private var reviews: [AppStoreConnect.Review]?
+    @State private var filter = 0
+    @State private var error: String?
+    @State private var replying: AppStoreConnect.Review?
+
+    private var shown: [AppStoreConnect.Review] {
+        (reviews ?? []).filter {
+            switch filter { case 1: $0.rating <= 2; case 2: $0.rating == 3; case 3: $0.rating >= 4; default: true }
+        }
+    }
+
+    var body: some View {
+        List {
+            Section {
+                Picker("Rating", selection: $filter) {
+                    Text("All").tag(0); Text("1–2 ★").tag(1); Text("3 ★").tag(2); Text("4–5 ★").tag(3)
+                }
+                .pickerStyle(.segmented)
+                .accessibilityIdentifier("reviews.filter")
+            }
+            if let error { ProblemView(message: error, compact: true) }
+            if let reviews {
+                if shown.isEmpty { Text(reviews.isEmpty ? "No reviews yet." : "No reviews with this rating.").foregroundStyle(.secondary) }
+                ForEach(shown) { r in
+                    Button { replying = r } label: { ReviewRow(review: r) }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("review.\(r.id)")
+                }
+            } else if error == nil {
+                HStack { Spacer(); ProgressView(); Spacer() }.listRowBackground(Color.clear)
+            }
+        }
+        .navigationTitle("Ratings and reviews")
+        .navigationBarTitleDisplayMode(.inline)
+        .refreshable { await load() }
+        .task { await load() }
+        .sheet(item: $replying) { r in ReplySheet(app: app, review: r) { Task { await load() } } }
+    }
+
+    private func load() async {
+        guard let client = AppStoreAccount.shared.client else { return }
+        do { reviews = try await client.reviews(app: app.id); error = nil } catch { self.error = error.localizedDescription }
+    }
+}
+
+private struct ReviewRow: View {
+    let review: AppStoreConnect.Review
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            HStack {
+                Text(String(repeating: "★", count: review.rating) + String(repeating: "☆", count: max(0, 5 - review.rating)))
+                    .foregroundStyle(review.rating <= 2 ? .red : review.rating == 3 ? .orange : .yellow)
+                Spacer()
+                if let d = review.date { Text(d.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(.secondary) }
+            }
+            if !review.title.isEmpty { Text(review.title).font(.subheadline.weight(.semibold)) }
+            Text(review.body).font(.subheadline).lineLimit(4)
+            HStack(spacing: 6) {
+                Text("\(review.nickname) · \(review.territory)").font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                if review.response != nil { Label("Answered", systemImage: "arrowshape.turn.up.left.fill").font(.caption).foregroundStyle(.green) }
+            }
+        }
+        .contentShape(Rectangle())
+    }
+}
+
+/// Draft (on-device model or your key, in the review's language), edit, and post — replacing an earlier reply.
+private struct ReplySheet: View {
+    let app: AppStoreConnect.App
+    let review: AppStoreConnect.Review
+    let posted: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var text = ""
+    @State private var notes = ""
+    @State private var source: QuickAI.Source?
+    @State private var drafting = false
+    @State private var posting = false
+    @State private var confirm = false
+    @State private var error: String?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section { ReviewRow(review: review) }
+                if let r = review.response {
+                    Section("Your current reply") { Text(r.body).font(.subheadline).foregroundStyle(.secondary) }
+                }
+                Section {
+                    TextField("Notes for the draft (optional): fixed in 1.3, coming next month …", text: $notes, axis: .vertical)
+                        .lineLimit(1...3).font(.subheadline)
+                    Button { Task { await draft() } } label: {
+                        HStack { Label("Draft a reply", systemImage: "sparkles"); Spacer(); if drafting { ProgressView() } }
+                    }
+                    .disabled(drafting || !QuickAI.isAvailable)
+                    .accessibilityIdentifier("reply.draft")
+                } footer: {
+                    if !QuickAI.isAvailable { Text("Drafts need Apple Intelligence on this iPhone or a model key in Settings — or just write it yourself.") }
+                    else if let source {
+                        switch source {
+                        case .onDevice: Text("Drafted on this iPhone.")
+                        case .key(let model): Text("Drafted with your key (\(model)).")
+                        }
+                    }
+                }
+                Section {
+                    TextEditor(text: $text).frame(minHeight: 140).accessibilityIdentifier("reply.text")
+                } header: {
+                    Text("Reply")
+                } footer: {
+                    Text("\(text.count) / 5970 · Public on the App Store once Apple has published it.")
+                        .foregroundStyle(text.count > 5970 ? .red : .secondary)
+                }
+                if let error { ProblemView(message: error, compact: true) }
+            }
+            .navigationTitle(review.response == nil ? String(localized: "Reply") : String(localized: "Change reply"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Post") { confirm = true }
+                        .disabled(posting || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || text.count > 5970)
+                        .accessibilityIdentifier("reply.post")
+                }
+            }
+            .confirmationDialog("Post this reply publicly?", isPresented: $confirm, titleVisibility: .visible) {
+                Button("Post reply") { Task { await post() } }
+            } message: {
+                Text(review.response == nil ? "It appears under the review on the App Store." : "It replaces your current reply.")
+            }
+            .onAppear { if text.isEmpty { text = review.response?.body ?? "" } }
+        }
+    }
+
+    private func draft() async {
+        drafting = true
+        defer { drafting = false }
+        do {
+            if let r = try await QuickAI.run(AppStoreConnect.replyInstructions, AppStoreConnect.replyPrompt(review, app: app.name, notes: notes)) {
+                text = r.text.trimmingCharacters(in: .whitespacesAndNewlines); source = r.source; error = nil
+            }
+        } catch { self.error = error.localizedDescription }
+    }
+
+    private func post() async {
+        guard let client = AppStoreAccount.shared.client else { return }
+        posting = true
+        defer { posting = false }
+        do {
+            try await client.reply(to: review, body: text.trimmingCharacters(in: .whitespacesAndNewlines))
+            posted()
+            dismiss()
+        } catch { self.error = error.localizedDescription }
     }
 }
