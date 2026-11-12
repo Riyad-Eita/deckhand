@@ -33,6 +33,9 @@ public enum ShellQuote {
 public struct LocalShell: StreamingShell {
     public init() {}
 
+    /// How long `run` waits for stdout/stderr to close after the command exited.
+    static let drainGrace: Double = 1
+
     public func streamLines(_ command: String) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             Task {
@@ -50,24 +53,103 @@ public struct LocalShell: StreamingShell {
         }
     }
 
+    /// Behaves like the SSH shell: stdin is empty, the command is stopped after `timeout` (exit code 124, like
+    /// `timeout(1)`), and output is read while the command runs, so large output can't fill the pipe and block it.
+    /// A background child that keeps stdout open doesn't hold the result: after the command exits we wait at most
+    /// `drainGrace` for the pipes to close and return what arrived.
     public func run(_ command: String, timeout: Duration) async throws -> CommandResult {
         #if os(macOS)
-        try await withCheckedThrowingContinuation { continuation in
+        let state = LocalRunState()
+        return try await withCheckedThrowingContinuation { continuation in
+            state.continuation = continuation
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/bin/sh")
             process.arguments = ["-c", command]
+            process.standardInput = FileHandle.nullDevice
             let out = Pipe(), err = Pipe()
             process.standardOutput = out
             process.standardError = err
+            out.fileHandleForReading.readabilityHandler = { h in state.append(h.availableData, stderr: false, handle: h) }
+            err.fileHandleForReading.readabilityHandler = { h in state.append(h.availableData, stderr: true, handle: h) }
             process.terminationHandler = { p in
-                let stdout = String(decoding: out.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
-                let stderr = String(decoding: err.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
-                continuation.resume(returning: CommandResult(stdout: stdout, stderr: stderr, exitCode: p.terminationStatus))
+                state.exited(p.terminationStatus)
+                DispatchQueue.global().asyncAfter(deadline: .now() + LocalShell.drainGrace) { state.finish() }
             }
-            do { try process.run() } catch { continuation.resume(throwing: error) }
+            do { try process.run() } catch {
+                out.fileHandleForReading.readabilityHandler = nil
+                err.fileHandleForReading.readabilityHandler = nil
+                state.fail(error)
+                return
+            }
+            let pid = process.processIdentifier
+            let seconds = Double(timeout.components.seconds) + Double(timeout.components.attoseconds) / 1e18
+            DispatchQueue.global().asyncAfter(deadline: .now() + max(seconds, 0.1)) {
+                guard state.markTimedOut() else { return }
+                kill(pid, SIGTERM)
+                DispatchQueue.global().asyncAfter(deadline: .now() + 5) { if state.isRunning { kill(pid, SIGKILL) } }
+            }
         }
         #else
         throw CocoaError(.featureUnsupported)
         #endif
     }
 }
+
+#if os(macOS)
+/// Shared state of one `LocalShell.run`: collected output, exit status and the continuation, resumed exactly once.
+private final class LocalRunState: @unchecked Sendable {
+    private let lock = NSLock()
+    private var stdout = Data(), stderr = Data()
+    private var openPipes = 2
+    private var status: Int32?
+    private var timedOut = false
+    private var done = false
+    var continuation: CheckedContinuation<CommandResult, Error>?
+
+    var isRunning: Bool { lock.withLock { status == nil } }
+
+    func append(_ data: Data, stderr isErr: Bool, handle: FileHandle) {
+        if data.isEmpty {
+            handle.readabilityHandler = nil
+            let closed = lock.withLock { openPipes -= 1; return openPipes == 0 && status != nil }
+            if closed { finish() }
+            return
+        }
+        lock.withLock { if isErr { stderr.append(data) } else { stdout.append(data) } }
+    }
+
+    func exited(_ code: Int32) {
+        let closed = lock.withLock { status = code; return openPipes == 0 }
+        if closed { finish() }
+    }
+
+    /// True if the command was still running and is now marked as timed out.
+    func markTimedOut() -> Bool {
+        lock.withLock {
+            guard status == nil, !done else { return false }
+            timedOut = true
+            return true
+        }
+    }
+
+    func finish() {
+        let result: CommandResult? = lock.withLock {
+            guard !done, let status else { return nil }
+            done = true
+            return CommandResult(stdout: String(decoding: stdout, as: UTF8.self),
+                                 stderr: String(decoding: stderr, as: UTF8.self),
+                                 exitCode: timedOut ? 124 : status)
+        }
+        if let result { continuation?.resume(returning: result); continuation = nil }
+    }
+
+    func fail(_ error: Error) {
+        let first = lock.withLock { () -> Bool in
+            guard !done else { return false }
+            done = true
+            return true
+        }
+        if first { continuation?.resume(throwing: error); continuation = nil }
+    }
+}
+#endif

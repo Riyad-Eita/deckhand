@@ -1,5 +1,5 @@
 import Crypto
-import DeckhandCore
+@testable import DeckhandCore
 import Foundation
 import Testing
 @testable import DeckhandSSH
@@ -900,5 +900,30 @@ struct LiveDeployTests {
         #expect(try await sh("crontab -l 2>/dev/null | grep -c deckhand-deploy; true").trimmingCharacters(in: .whitespacesAndNewlines) == "0")
         // Leave the test repo at its first commit for the next run.
         _ = try await sh("cd ~/src/work && rm -rf __pycache__ && git reset -q --hard $(git rev-list --max-parents=0 HEAD) && git push -qf origin main; true")
+    }
+}
+
+/// Evidence scripts on a real Linux server (set DECKHAND_TEST_HOST/_PORT/_USER/_KEY).
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_TEST_HOST"] != nil))
+struct LiveEvidenceTests {
+    func connection() async throws -> SSHConnection { try await LiveSSHTests().connection() }
+
+    @Test func lockdownEvidence() async throws {
+        let conn = try await connection()
+        let dir = "/tmp/dh-ev-\(UUID().uuidString.prefix(6).lowercased())"
+        let r = try await conn.run(Lockdown.evidenceScript(dir), timeout: .seconds(120))
+        #expect(r.stdout.contains("@@evidence \(dir)"))
+        let files = try await conn.run("ls '\(dir)'", timeout: .seconds(10)).stdout
+        #expect(files.contains("processes.txt") && files.contains("connections.txt") && files.contains("changed-files.txt"))
+        _ = try await conn.run("rm -rf '\(dir)'", timeout: .seconds(10))
+    }
+
+    @Test func incidentEvidence() async throws {
+        let conn = try await connection()
+        let r = try await conn.run(Incident.evidenceCommand(url: "http://127.0.0.1:9/"), timeout: .seconds(60))
+        let e = Incident.parse(r.stdout)
+        #expect(e.first?.title == "Request")
+        #expect(e.first?.text.contains("HTTP 000") == true)
+        #expect(e.contains { $0.title == "Load and memory" })
     }
 }
