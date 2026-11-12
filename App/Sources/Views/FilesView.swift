@@ -23,6 +23,7 @@ struct FilesView: View {
     @State private var creatingFolder = false
     @State private var deleting: RemoteFile?
     @State private var task: FileTask?
+    @State private var copying: String?
 
     private var entries: [RemoteFile] {
         let all = RemoteFiles.sorted(folder?.entries ?? [], by: sort, showHidden: showHidden || query.hasPrefix("."))
@@ -120,6 +121,9 @@ struct FilesView: View {
             }
         }
         .fileTask($task, server: server)
+        .sheet(item: Binding(get: { copying.map { ExplainText(text: $0) } }, set: { copying = $0?.text })) { c in
+            ServerCopySheet(source: server, path: c.text)
+        }
         .task { await load() }
         .refreshable { await load() }
     }
@@ -158,6 +162,7 @@ struct FilesView: View {
                 }
             }
             Button { UIPasteboard.general.string = full } label: { Label("Copy Path", systemImage: "doc.on.doc") }
+            Button { copying = full } label: { Label("Copy to Another Server…", systemImage: "arrow.right.doc.on.clipboard") }
             if folder.writable {
                 Divider()
                 Button { newName = file.name; renaming = file } label: { Label("Rename", systemImage: "pencil") }

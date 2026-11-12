@@ -1114,6 +1114,16 @@
         }
       }
     },
+    "Add another server first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge zuerst einen weiteren Server hinzu."
+          }
+        }
+      }
+    },
     "Add connections": {
       "localizations": {
         "de": {
@@ -2928,6 +2938,16 @@
         }
       }
     },
+    "Choose": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswählen"
+          }
+        }
+      }
+    },
     "Choose the .p8 file": {
       "localizations": {
         "de": {
@@ -3529,6 +3549,16 @@
         }
       }
     },
+    "Copied to %@ on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach %1$@ auf %2$@ kopiert"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "de": {
@@ -3589,6 +3619,36 @@
         }
       }
     },
+    "Copy to %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach %@ kopieren"
+          }
+        }
+      }
+    },
+    "Copy to Another Server…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf einen anderen Server kopieren …"
+          }
+        }
+      }
+    },
+    "Copy to another server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf einen anderen Server kopieren"
+          }
+        }
+      }
+    },
     "Copy topic": {
       "localizations": {
         "de": {
@@ -3605,6 +3665,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kopiere deinen App-Store-Connect-Schlüssel (AuthKey_<ID>.p8) auf dem Mac nach ~/.appstoreconnect/private_keys."
+          }
+        }
+      }
+    },
+    "Copying…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird kopiert …"
           }
         }
       }
@@ -5841,6 +5911,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ordneraktionen"
+          }
+        }
+      }
+    },
+    "Folder on the target": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner auf dem Ziel"
           }
         }
       }
@@ -9033,6 +9113,16 @@
         }
       }
     },
+    "Open %@ once first, so Deckhand knows its host key.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne %@ zuerst einmal, damit Deckhand seinen Host-Schlüssel kennt."
+          }
+        }
+      }
+    },
     "Open apps running on the server, even localhost ones": {
       "localizations": {
         "de": {
@@ -10737,6 +10827,16 @@
         }
       }
     },
+    "Retry — picks up where it stopped": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen – macht dort weiter, wo es aufgehört hat"
+          }
+        }
+      }
+    },
     "Review SSH keys": {
       "localizations": {
         "de": {
@@ -11833,6 +11933,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Einrichtung der Backups wurde nicht abgeschlossen."
+          }
+        }
+      }
+    },
+    "Setting up the transfer…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übertragung wird vorbereitet …"
           }
         }
       }
@@ -13138,6 +13248,26 @@
         }
       }
     },
+    "The copy goes straight from server to server — nothing passes through this iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kopie geht direkt von Server zu Server – nichts läuft über dieses iPhone."
+          }
+        }
+      }
+    },
+    "The copy stopped (exit %lld).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kopie wurde abgebrochen (Exit %lld)."
+          }
+        }
+      }
+    },
     "The crontab changed in the meantime. Pull to refresh and try again.": {
       "localizations": {
         "de": {
@@ -13484,6 +13614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Website läuft über einfaches HTTP ohne Weiterleitung."
+          }
+        }
+      }
+    },
+    "The source server couldn't create a transfer key (ssh-keygen missing?).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Quellserver konnte keinen Übertragungsschlüssel erstellen (fehlt ssh-keygen?)."
           }
         }
       }
