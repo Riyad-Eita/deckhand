@@ -287,6 +287,12 @@ struct ServerDashboardView: View {
                     .padding(16)
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
+                    NavigationLink { MetricsHistoryView(server: server) } label: {
+                        Label("Trends over the last 7 days", systemImage: "chart.xyaxis.line")
+                            .font(.subheadline.weight(.medium)).frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .accessibilityIdentifier("dashboard.trends")
                     if let updated {
                         Text("Updated \(updated.formatted(date: .omitted, time: .standard))")
                             .font(.caption).foregroundStyle(.tertiary).frame(maxWidth: .infinity)

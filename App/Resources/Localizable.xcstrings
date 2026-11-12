@@ -618,6 +618,16 @@
         }
       }
     },
+    "%lld unusual spikes, last %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld ungewöhnliche Spitzen, zuletzt %2$@"
+          }
+        }
+      }
+    },
     "%lld updates waiting": {
       "localizations": {
         "de": {
@@ -684,12 +694,32 @@
         }
       }
     },
+    "24 hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24 Stunden"
+          }
+        }
+      }
+    },
     "5 minutes": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "5 Minuten"
+          }
+        }
+      }
+    },
+    "7 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage"
           }
         }
       }
@@ -1495,6 +1525,16 @@
         }
       }
     },
+    "An unusual spike %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine ungewöhnliche Spitze %@"
+          }
+        }
+      }
+    },
     "Analytics": {
       "localizations": {
         "de": {
@@ -1924,6 +1964,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Automatisierung"
+          }
+        }
+      }
+    },
+    "Average": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnitt"
           }
         }
       }
@@ -3094,6 +3144,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sammle Logs, Dienste und letzte Änderungen …"
+          }
+        }
+      }
+    },
+    "Collecting — the first points show up within ten minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird gesammelt – die ersten Punkte erscheinen innerhalb von zehn Minuten."
           }
         }
       }
@@ -7190,6 +7250,16 @@
         }
       }
     },
+    "Metric": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messwert"
+          }
+        }
+      }
+    },
     "Model": {
       "localizations": {
         "de": {
@@ -7366,6 +7436,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exportkonformität fehlt"
+          }
+        }
+      }
+    },
+    "Network": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netzwerk"
           }
         }
       }
@@ -8813,6 +8893,16 @@
         }
       }
     },
+    "Peak": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spitze"
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "de": {
@@ -9311,6 +9401,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ruhezeiten"
+          }
+        }
+      }
+    },
+    "Range": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitraum"
           }
         }
       }
@@ -10457,6 +10557,16 @@
         }
       }
     },
+    "Sampled by cron every 5 minutes; nothing leaves the server except when you open this screen.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle 5 Minuten per cron gemessen; nichts verlässt den Server, außer wenn du diese Ansicht öffnest."
+          }
+        }
+      }
+    },
     "Save": {
       "localizations": {
         "de": {
@@ -11518,6 +11628,16 @@
         }
       }
     },
+    "Start recording": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufzeichnung starten"
+          }
+        }
+      }
+    },
     "Started by": {
       "localizations": {
         "de": {
@@ -12558,6 +12678,16 @@
         }
       }
     },
+    "The server records CPU, memory, disk, network and load every five minutes and keeps seven days — so you see trends even when the app was closed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server zeichnet alle fünf Minuten CPU, Speicher, Festplatte, Netzwerk und Last auf und behält sieben Tage – so siehst du den Verlauf, auch wenn die App geschlossen war."
+          }
+        }
+      }
+    },
     "The server restarts in a few seconds and is unreachable for a minute or two. Running tasks, terminals and web apps stop; services set to start at boot come back.": {
       "localizations": {
         "de": {
@@ -12878,6 +13008,16 @@
         }
       }
     },
+    "This server has no cron, so nothing can be recorded in the background.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server hat kein cron, daher kann im Hintergrund nichts aufgezeichnet werden."
+          }
+        }
+      }
+    },
     "This server has no diff command, which the history needs.": {
       "localizations": {
         "de": {
@@ -13024,6 +13164,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Papierkorb"
+          }
+        }
+      }
+    },
+    "Trends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf"
+          }
+        }
+      }
+    },
+    "Trends over the last 7 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf der letzten 7 Tage"
           }
         }
       }
