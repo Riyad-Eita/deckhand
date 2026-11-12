@@ -56,7 +56,13 @@ final class PlainChatModel {
             + (attached + [asked]).filter { !$0.isEmpty }.map { .text($0) })
         let history = ChatModel.history(messages, start: thread.historyStart, summary: thread.historySummary)
         let start = thread.historyStart
-        if messages.isEmpty { thread.title = String((asked.isEmpty ? files.first?.name ?? "" : asked).prefix(60)) }
+        if messages.isEmpty {
+            thread.title = String((asked.isEmpty ? files.first?.name ?? "" : asked).prefix(60))
+            if !asked.isEmpty {
+                let request = asked, thread = thread
+                Task { if let t = await QuickAI.title(for: request) { thread.title = t } }
+            }
+        }
         messages.append(user)
         persist()
         isRunning = true

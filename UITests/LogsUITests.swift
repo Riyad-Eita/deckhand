@@ -26,11 +26,15 @@ final class LogsUITests: XCTestCase {
         app.buttons["Errors"].tap()
         XCTAssertFalse(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'started on'")).firstMatch.exists)
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.lifetime = .keepAlways; add(shot)
-        app.buttons["Explain"].tap()
+        app.buttons["logs.explain"].tap()
+        // A quick explanation first (on-device model or your key); "Fix it" hands it to an agent.
+        let fix = app.buttons["explain.fix"]
+        if fix.waitForExistence(timeout: 30) { fix.tap() } else { throw XCTSkip("No on-device model or key for the explanation") }
         let codex = app.buttons["Codex on the server"]
         XCTAssertTrue(codex.waitForExistence(timeout: 5))
         codex.tap()
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Explain in plain words'")).firstMatch.waitForExistence(timeout: 15))
+        // (The task gets the logs prompt: what the lines mean and what to do.)
         if app.buttons["Stop"].firstMatch.exists { app.buttons["Stop"].firstMatch.tap() }
     }
 }

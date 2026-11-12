@@ -164,7 +164,12 @@ final class ChatModel {
         let history = Self.history(messages, start: thread.historyStart, summary: thread.historySummary)
         let historyStart = thread.historyStart
         messages.append(user)
-        if history.isEmpty { thread.title = String(asked.prefix(60)) }
+        if history.isEmpty {
+            thread.title = String(asked.prefix(60))
+            // A short title from the on-device model, if this iPhone has one (free, private).
+            let request = asked, thread = thread
+            Task { if let t = await QuickAI.title(for: request) { thread.title = t } }
+        }
         persist()
         isRunning = true
         runStartedAt = Date()

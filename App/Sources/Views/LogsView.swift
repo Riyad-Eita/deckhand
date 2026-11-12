@@ -73,6 +73,7 @@ struct LogViewer: View {
     @State private var followTask: Task<Void, Never>?
     @State private var loading = true
     @State private var investigatePrompt: String?
+    @State private var explaining: String?
 
     private var shown: [LogLine] {
         lines.filter { line in
@@ -117,15 +118,21 @@ struct LogViewer: View {
                 }
                 .pickerStyle(.segmented)
                 Button {
-                    investigatePrompt = Logs.explainPrompt(source: source, lines: shown)
+                    explaining = shown.suffix(120).map(\.text).joined(separator: "\n")
                 } label: {
                     Label("Explain", systemImage: "sparkle.magnifyingglass")
                 }
+                .accessibilityIdentifier("logs.explain")
                 .buttonStyle(.borderedProminent)
                 .disabled(shown.isEmpty)
             }
             .padding(12)
             .background(.bar)
+        }
+        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+            ExplainSheet(text: e.text, context: String(localized: "the log \(source.title)")) { _ in
+                investigatePrompt = Logs.explainPrompt(source: source, lines: shown)
+            }
         }
         .navigationTitle(source.title)
         .navigationBarTitleDisplayMode(.inline)

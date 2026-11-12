@@ -5005,6 +5005,16 @@
         }
       }
     },
+    "Explanations need Apple Intelligence on this iPhone or a model key in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erklärungen brauchen Apple Intelligence auf diesem iPhone oder einen Modell-Schlüssel in den Einstellungen."
+          }
+        }
+      }
+    },
     "Export": {
       "localizations": {
         "de": {
@@ -5321,6 +5331,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nächstes Mal automatisch beheben?"
+          }
+        }
+      }
+    },
+    "Fix it with an agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit einem Agenten beheben"
           }
         }
       }
@@ -8273,6 +8293,16 @@
         }
       }
     },
+    "On this iPhone · free, nothing leaves the device": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem iPhone · kostenlos, nichts verlässt das Gerät"
+          }
+        }
+      }
+    },
     "Online": {
       "localizations": {
         "de": {
@@ -9292,6 +9322,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lese %@"
+          }
+        }
+      }
+    },
+    "Reading it…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird gelesen …"
           }
         }
       }
@@ -12318,6 +12358,16 @@
         }
       }
     },
+    "The on-device model couldn't answer right now (Apple Intelligence may still be getting ready). Add a model key in Settings to use it as a fallback.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Modell auf dem Gerät konnte gerade nicht antworten (Apple Intelligence wird eventuell noch vorbereitet). Hinterlege einen Modell-Schlüssel in den Einstellungen als Ersatz."
+          }
+        }
+      }
+    },
     "The package lists are %lld days old — check for updates to see the latest.": {
       "localizations": {
         "de": {
@@ -13809,6 +13859,16 @@
         }
       }
     },
+    "What it means": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was das bedeutet"
+          }
+        }
+      }
+    },
     "What runs here, how it fits together, and what's risky": {
       "localizations": {
         "de": {
@@ -13928,6 +13988,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mit automatischen Sicherheitsupdates patcht sich der Server jeden Tag selbst, auch wenn du nicht hinschaust."
+          }
+        }
+      }
+    },
+    "With your key · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deinem Schlüssel · %@"
           }
         }
       }
@@ -14710,6 +14780,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "systemd: Status, Neustart, Logs"
+          }
+        }
+      }
+    },
+    "the log %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "das Log %@"
+          }
+        }
+      }
+    },
+    "the terminal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "das Terminal"
           }
         }
       }
