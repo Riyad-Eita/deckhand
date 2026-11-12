@@ -113,6 +113,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.domains")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            ExpiryView(server: server)
+                        } label: {
+                            ManageRow(title: "Certificates and domains", subtitle: "A push before one expires", symbol: "calendar.badge.exclamationmark")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.expiry")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             AppInstallsView(server: server)
                         } label: {
                             ManageRow(title: "Install apps", subtitle: "n8n, Nextcloud, Uptime Kuma, Postgres … in one tap", symbol: "square.grid.2x2")

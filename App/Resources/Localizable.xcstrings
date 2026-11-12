@@ -358,6 +358,16 @@
         }
       }
     },
+    "%@: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        }
+      }
+    },
     "%@: CPU %lld %%, memory %lld %%, disk %lld %%, up %@.": {
       "localizations": {
         "de": {
@@ -394,6 +404,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld täglich, %2$lld wöchentlich, %3$lld monatlich"
+          }
+        }
+      }
+    },
+    "%lld days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tage"
           }
         }
       }
@@ -764,6 +784,16 @@
         }
       }
     },
+    "A push before one expires": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Mitteilung, bevor etwas abläuft"
+          }
+        }
+      }
+    },
     "A push for every SSH login you don't expect": {
       "localizations": {
         "de": {
@@ -1030,6 +1060,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Swap hinzufügen"
+          }
+        }
+      }
+    },
+    "Add the domains to watch.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge die Domains hinzu, die überwacht werden sollen."
           }
         }
       }
@@ -2368,6 +2408,16 @@
         }
       }
     },
+    "Certificates and domains": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikate und Domains"
+          }
+        }
+      }
+    },
     "Change databases": {
       "localizations": {
         "de": {
@@ -2664,6 +2714,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe Benutzername und Passwort oder Schlüssel in den Server-Einstellungen. Bei einem Schlüssel muss sein öffentlicher Teil in ~/.ssh/authorized_keys auf dem Server stehen."
+          }
+        }
+      }
+    },
+    "Checked %@. Pushes at 30, 7 and 1 days left.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geprüft %@. Mitteilungen bei 30, 7 und 1 verbleibendem Tag."
           }
         }
       }
@@ -4347,6 +4407,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Doku"
+          }
+        }
+      }
+    },
+    "Domain": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain"
           }
         }
       }
@@ -11728,6 +11798,16 @@
         }
       }
     },
+    "Suggestions from your uptime checks and web servers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschläge aus deinen Erreichbarkeitsprüfungen und Webservern."
+          }
+        }
+      }
+    },
     "Swipe to remove a rule. The rule that lets Deckhand reach SSH can't be removed. Every change is checked with a fresh login and undone by itself if that fails.": {
       "localizations": {
         "de": {
@@ -12428,6 +12508,16 @@
         }
       }
     },
+    "The server checks your certificates and domain registrations once a day and sends a push 30, 7 and 1 days before one expires.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server prüft einmal täglich deine Zertifikate und Domain-Registrierungen und schickt 30, 7 und 1 Tag vor dem Ablauf eine Mitteilung."
+          }
+        }
+      }
+    },
     "The server couldn't open port %@ (%@). Its previous configuration was put back.": {
       "localizations": {
         "de": {
@@ -12778,6 +12868,16 @@
         }
       }
     },
+    "This server has no cron, so daily checks can't run.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server hat kein cron, daher können keine täglichen Prüfungen laufen."
+          }
+        }
+      }
+    },
     "This server has no diff command, which the history needs.": {
       "localizations": {
         "de": {
@@ -13074,6 +13174,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Root- und Passwort-Logins abschalten"
+          }
+        }
+      }
+    },
+    "Turn on": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einschalten"
           }
         }
       }
@@ -13749,6 +13859,16 @@
         }
       }
     },
+    "Watch a domain": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain überwachen"
+          }
+        }
+      }
+    },
     "Web": {
       "localizations": {
         "de": {
@@ -14412,6 +14532,16 @@
         }
       }
     },
+    "expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "abgelaufen"
+          }
+        }
+      }
+    },
     "fail2ban bans addresses that keep failing to log in, which stops password guessing and keeps logs readable.": {
       "localizations": {
         "de": {
@@ -14823,6 +14953,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "heute"
+          }
+        }
+      }
+    },
+    "unknown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unbekannt"
           }
         }
       }

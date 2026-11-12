@@ -975,3 +975,42 @@ struct LiveAppTemplateTests {
         await conn.disconnect()
     }
 }
+
+/// Expiry warnings on the disposable server (DECKHAND_BACKUP_* and DECKHAND_EXPIRY_TEST=1): a real certificate and
+/// RDAP lookup for github.com, a deliberately expired certificate at expired.badssl.com, pushes to a fake ntfy on the
+/// server — once per step, not again on the next run. Removes everything afterwards.
+struct LiveExpiryTests {
+    @Test func certificatesDomainsAndWarnings() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_EXPIRY_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        do {
+            let port = Int.random(in: 41000...41900)
+            let fake = "import http.server,sys\nclass H(http.server.BaseHTTPRequestHandler):\n def do_POST(s):\n  n=int(s.headers.get('Content-Length',0)); open(sys.argv[2],'a').write(s.rfile.read(n).decode()+'\\n'); s.send_response(200); s.end_headers()\n def log_message(s,*a): pass\nhttp.server.HTTPServer(('127.0.0.1',int(sys.argv[1])),H).serve_forever()\n"
+            _ = try await conn.run("printf '%s' \(ShellQuote.quote(fake)) > /tmp/dh-ntfy.py; rm -f /tmp/dh-pushes; (python3 /tmp/dh-ntfy.py \(port) /tmp/dh-pushes > /dev/null 2>&1 < /dev/null &); sleep 1", timeout: .seconds(15))
+            #expect(try await conn.run(Expiry.installCommand(topic: "http://127.0.0.1:\(port)/t"), timeout: .seconds(30)).stdout.contains("@@ok"))
+            _ = try await conn.run(Expiry.addCommand("github.com") + "\n" + Expiry.addCommand("expired.badssl.com"), timeout: .seconds(15))
+            _ = try await conn.run(Expiry.runNowCommand, timeout: .seconds(120))
+            let s = Expiry.parseStatus(try await conn.run(Expiry.statusCommand, timeout: .seconds(30)).stdout)
+            #expect(s.installed && s.entries.count == 2)
+            let gh = try #require(s.entries.first { $0.domain == "github.com" })
+            #expect((gh.daysLeft(gh.certificateEnd) ?? -1) > 0, "github cert: \(gh)")
+            #expect((gh.daysLeft(gh.registrationEnd) ?? -1) > 30, "github domain: \(gh)")
+            let bad = try #require(s.entries.first { $0.domain == "expired.badssl.com" })
+            #expect((bad.daysLeft(bad.certificateEnd) ?? 1) < 0, "badssl cert: \(bad)")
+            let pushes = try await conn.run("cat /tmp/dh-pushes", timeout: .seconds(10)).stdout
+            #expect(pushes.contains("The certificate for expired.badssl.com has expired."), "\(pushes)")
+            #expect(!pushes.contains("github.com"))
+            // The next run doesn't repeat the warning.
+            _ = try await conn.run(Expiry.runNowCommand, timeout: .seconds(120))
+            #expect(try await conn.run("grep -c 'has expired' /tmp/dh-pushes", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "1")
+            _ = try await conn.run(Expiry.uninstallCommand + "; pkill -f 'dh-ntfy.py \(port)'; rm -f /tmp/dh-ntfy.py /tmp/dh-pushes", timeout: .seconds(15))
+            #expect(!(try await conn.run("crontab -l 2>/dev/null", timeout: .seconds(10)).stdout.contains("expiry")))
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}
