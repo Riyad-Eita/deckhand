@@ -14,6 +14,10 @@ struct DeckhandApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                #if DEBUG
+                // DECKHAND_APPEARANCE=light|dark: screenshots in both looks from UI tests.
+                .preferredColorScheme(ProcessInfo.processInfo.environment["DECKHAND_APPEARANCE"].map { $0 == "dark" ? .dark : .light })
+                #endif
                 .environment(AppSettings.shared)
                 .environment(Connections.shared)
         }

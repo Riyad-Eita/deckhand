@@ -704,6 +704,16 @@
         }
       }
     },
+    "Accepted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angenommen"
+          }
+        }
+      }
+    },
     "Access": {
       "localizations": {
         "de": {
@@ -1336,6 +1346,36 @@
         }
       }
     },
+    "App Store": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store"
+          }
+        }
+      }
+    },
+    "App Store Connect": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store Connect"
+          }
+        }
+      }
+    },
+    "App Store Connect → Users and Access → Integrations → Team Keys. A key with the Developer role is enough. The key stays in this iPhone's Keychain; the app talks to Apple directly.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store Connect → Benutzer und Zugriff → Integrationen → Teamschlüssel. Ein Schlüssel mit der Rolle „Entwickler“ reicht. Der Schlüssel bleibt im Schlüsselbund dieses iPhones; die App spricht direkt mit Apple."
+          }
+        }
+      }
+    },
     "App log": {
       "localizations": {
         "de": {
@@ -1402,6 +1442,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Freigaben"
+          }
+        }
+      }
+    },
+    "Approved, waiting for release": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genehmigt, wartet auf Veröffentlichung"
+          }
+        }
+      }
+    },
+    "Apps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps"
           }
         }
       }
@@ -1678,6 +1738,26 @@
         }
       }
     },
+    "Beta approved": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beta genehmigt"
+          }
+        }
+      }
+    },
+    "Beta rejected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beta abgelehnt"
+          }
+        }
+      }
+    },
     "Beta — new features arrive with every update.": {
       "localizations": {
         "de": {
@@ -1804,6 +1884,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Build-Befehl (optional)"
+          }
+        }
+      }
+    },
+    "Builds": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Builds"
+          }
+        }
+      }
+    },
+    "Builds, TestFlight and reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Builds, TestFlight und Reviews"
           }
         }
       }
@@ -2244,6 +2344,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe …"
+          }
+        }
+      }
+    },
+    "Choose the .p8 file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".p8-Datei auswählen"
           }
         }
       }
@@ -3270,6 +3380,16 @@
         }
       }
     },
+    "Deckhand checks the review state now and then in the background and tells you when it moves on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand prüft den Review-Status ab und zu im Hintergrund und sagt dir Bescheid, wenn sich etwas tut."
+          }
+        }
+      }
+    },
     "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your iPhone.": {
       "localizations": {
         "de": {
@@ -3647,6 +3767,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Trennen"
+          }
+        }
+      }
+    },
+    "Disconnect App Store Connect?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store Connect trennen?"
           }
         }
       }
@@ -4355,6 +4485,16 @@
         }
       }
     },
+    "Expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgelaufen"
+          }
+        }
+      }
+    },
     "Expires": {
       "localizations": {
         "de": {
@@ -4391,6 +4531,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Export"
+          }
+        }
+      }
+    },
+    "Export compliance review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfung der Exportkonformität"
+          }
+        }
+      }
+    },
+    "External": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extern"
+          }
+        }
+      }
+    },
+    "External · public link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extern · öffentlicher Link"
+          }
+        }
+      }
+    },
+    "External: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extern: %@"
           }
         }
       }
@@ -4721,6 +4901,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Live"
+          }
+        }
+      }
+    },
+    "Follow your apps without the web dashboard, and get a notification when a review moves on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte deine Apps ohne Web-Dashboard im Blick und bekomme eine Mitteilung, wenn sich beim Review etwas tut."
           }
         }
       }
@@ -5180,6 +5370,26 @@
         }
       }
     },
+    "In beta review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Beta-Review"
+          }
+        }
+      }
+    },
+    "In review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Review"
+          }
+        }
+      }
+    },
     "Incident": {
       "localizations": {
         "de": {
@@ -5310,6 +5520,16 @@
         }
       }
     },
+    "Installed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert"
+          }
+        }
+      }
+    },
     "Installed packages stay; only the download cache goes.": {
       "localizations": {
         "de": {
@@ -5400,12 +5620,32 @@
         }
       }
     },
+    "Internal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intern"
+          }
+        }
+      }
+    },
     "Interrupted": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Unterbrochen"
+          }
+        }
+      }
+    },
+    "Invalid build": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungültiger Build"
           }
         }
       }
@@ -5436,6 +5676,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mit einem Agenten untersuchen"
+          }
+        }
+      }
+    },
+    "Invited": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeladen"
+          }
+        }
+      }
+    },
+    "Issuer ID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aussteller-ID"
           }
         }
       }
@@ -5626,6 +5886,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel"
+          }
+        }
+      }
+    },
+    "Key ID": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel-ID"
           }
         }
       }
@@ -6200,6 +6470,16 @@
         }
       }
     },
+    "Metadata rejected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metadaten abgelehnt"
+          }
+        }
+      }
+    },
     "Method": {
       "localizations": {
         "de": {
@@ -6356,6 +6636,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Braucht Aufmerksamkeit"
+          }
+        }
+      }
+    },
+    "Needs export compliance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportkonformität fehlt"
           }
         }
       }
@@ -6570,6 +6860,16 @@
         }
       }
     },
+    "No TestFlight groups yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine TestFlight-Gruppen."
+          }
+        }
+      }
+    },
     "No account, no tracking. Keys stay in your iPhone's Keychain.": {
       "localizations": {
         "de": {
@@ -6606,6 +6906,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Antwort von %1$@ auf Port %2$lld."
+          }
+        }
+      }
+    },
+    "No apps in this team yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Apps in diesem Team."
           }
         }
       }
@@ -6656,6 +6966,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Backups gefunden"
+          }
+        }
+      }
+    },
+    "No builds uploaded yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Builds hochgeladen."
           }
         }
       }
@@ -6870,12 +7190,32 @@
         }
       }
     },
+    "No testers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Tester"
+          }
+        }
+      }
+    },
     "No text changes (binary file or only file mode).": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Keine Textänderungen (Binärdatei oder nur Dateirechte)."
+          }
+        }
+      }
+    },
+    "No versions yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Versionen."
           }
         }
       }
@@ -6963,12 +7303,32 @@
         }
       }
     },
+    "Not invited": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht eingeladen"
+          }
+        }
+      }
+    },
     "Not now": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Nicht jetzt"
+          }
+        }
+      }
+    },
+    "Not submitted for external testing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht für externe Tests eingereicht"
           }
         }
       }
@@ -7199,6 +7559,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf %@"
+          }
+        }
+      }
+    },
+    "On the App Store": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im App Store"
           }
         }
       }
@@ -7763,6 +8133,16 @@
         }
       }
     },
+    "Preparing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Vorbereitung"
+          }
+        }
+      }
+    },
     "Presets": {
       "localizations": {
         "de": {
@@ -7844,6 +8224,36 @@
         }
       }
     },
+    "Processing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird verarbeitet"
+          }
+        }
+      }
+    },
+    "Processing failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verarbeitung fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Processing for the App Store": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird für den App Store verarbeitet"
+          }
+        }
+      }
+    },
     "Progress": {
       "localizations": {
         "de": {
@@ -7921,6 +8331,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Images aktualisieren"
+          }
+        }
+      }
+    },
+    "Pulled back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurückgezogen"
           }
         }
       }
@@ -8106,6 +8526,16 @@
         }
       }
     },
+    "Ready to test": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit zum Testen"
+          }
+        }
+      }
+    },
     "Reattaching to the run on the server…": {
       "localizations": {
         "de": {
@@ -8202,6 +8632,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paketlisten aktualisieren"
+          }
+        }
+      }
+    },
+    "Rejected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgelehnt"
           }
         }
       }
@@ -8332,6 +8772,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„%1$@“ von %2$lld Servern entfernen?"
+          }
+        }
+      }
+    },
+    "Removed from sale": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus dem Verkauf genommen"
           }
         }
       }
@@ -8603,6 +9053,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Schlüssel prüfen"
+          }
+        }
+      }
+    },
+    "Revoked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
           }
         }
       }
@@ -10518,6 +10978,26 @@
         }
       }
     },
+    "TestFlight": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TestFlight"
+          }
+        }
+      }
+    },
+    "Testing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Test"
+          }
+        }
+      }
+    },
     "That key can't log in to these servers anymore. A backup of each authorized_keys file stays next to it.": {
       "localizations": {
         "de": {
@@ -10574,6 +11054,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Schritt „%@“ ist fehlgeschlagen. Deine vorherigen Dateien wurden zurückgelegt."
+          }
+        }
+      }
+    },
+    "The API key is removed from this iPhone. It stays valid in App Store Connect until you revoke it there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der API-Schlüssel wird von diesem iPhone entfernt. In App Store Connect bleibt er gültig, bis du ihn dort widerrufst."
           }
         }
       }
@@ -11979,6 +12469,16 @@
         }
       }
     },
+    "Valid": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gültig"
+          }
+        }
+      }
+    },
     "Value": {
       "localizations": {
         "de": {
@@ -12039,12 +12539,32 @@
         }
       }
     },
+    "Waiting for beta review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf Beta-Review"
+          }
+        }
+      }
+    },
     "Waiting for confirmation": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Wartet auf Bestätigung"
+          }
+        }
+      }
+    },
+    "Waiting for review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf Review"
           }
         }
       }
