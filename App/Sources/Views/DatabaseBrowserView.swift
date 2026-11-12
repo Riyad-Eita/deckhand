@@ -79,6 +79,14 @@ private struct TablesView: View {
     var body: some View {
         List {
             if let error { ProblemView(message: error, compact: true) }
+            if let tables, !tables.rows.isEmpty {
+                Section {
+                    NavigationLink { AskDatabaseView(server: server, db: db) } label: {
+                        Label("Ask in plain language", systemImage: "text.bubble")
+                    }
+                    .accessibilityIdentifier("dbb.ask")
+                }
+            }
             if let tables {
                 if tables.rows.isEmpty { Text("No tables.").foregroundStyle(.secondary) }
                 ForEach(Array(tables.rows.enumerated()), id: \.offset) { _, row in
@@ -404,5 +412,112 @@ private struct RedisValueView: View {
             if let first = lines.first, first.hasPrefix("@@ttl ") { ttl = String(first.dropFirst(6)); lines.removeFirst() }
             value = lines.joined(separator: "\n").trimmingCharacters(in: .newlines)
         }
+    }
+}
+
+/// A question in plain language → your model writes one read-only query → you see it (and can change it) → it runs
+/// read-only → table and a short answer.
+private struct AskDatabaseView: View {
+    let server: Server
+    let db: DatabaseBrowser.Database
+    @Environment(Connections.self) private var connections
+    @Environment(AppSettings.self) private var settings
+    @State private var question = ""
+    @State private var sql = ""
+    @State private var result: DatabaseBrowser.Grid?
+    @State private var answer: String?
+    @State private var note: String?
+    @State private var error: String?
+    @State private var busy: String?
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        List {
+            Section {
+                TextField("How many orders came in this week?", text: $question, axis: .vertical)
+                    .lineLimit(1...4).focused($focused)
+                    .accessibilityIdentifier("ask.question")
+                Button { Task { await write() } } label: {
+                    HStack { Label("Write the query", systemImage: "sparkles"); Spacer(); if busy == "write" { ProgressView() } }
+                }
+                .disabled(question.trimmingCharacters(in: .whitespaces).isEmpty || busy != nil)
+                .accessibilityIdentifier("ask.write")
+            } footer: {
+                if !settings.isConfigured {
+                    Text("Needs a model key in Settings. Your model sees the table and column names, not the data — until you run the query and ask for the answer.")
+                } else {
+                    Text("Your model sees the table and column names to write the query; the result goes to it only for the short answer.")
+                }
+            }
+            if let error { ProblemView(message: error, compact: true) }
+            if let note { Section { Text(note).font(.subheadline) } }
+            if !sql.isEmpty {
+                Section {
+                    TextEditor(text: $sql).font(.callout.monospaced()).frame(minHeight: 90)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        .accessibilityIdentifier("ask.sql")
+                    Button { Task { await run() } } label: {
+                        HStack { Label("Run read-only", systemImage: "play.fill"); Spacer(); if busy == "run" { ProgressView() } }
+                    }
+                    .disabled(busy != nil || !AskDatabase.isReadOnly(sql))
+                    .accessibilityIdentifier("ask.run")
+                } header: {
+                    Text("Query")
+                } footer: {
+                    if !AskDatabase.isReadOnly(sql) { Text("Only single reading queries run here. Use SQL with “Allow changes” for anything else.").foregroundStyle(.orange) }
+                    else { Text("Check it, change it if you like — it runs in a read-only transaction.") }
+                }
+            }
+            if let answer {
+                Section { Text(answer).font(.body.weight(.medium)).accessibilityIdentifier("ask.answer") }
+            }
+            if let result {
+                Section("\(result.rows.count) rows") {
+                    if result.columns.isEmpty { Text("No rows.").foregroundStyle(.secondary) }
+                    else { GridView(grid: result) { _, _ in }.frame(minHeight: 160).listRowInsets(EdgeInsets()) }
+                }
+            }
+        }
+        .navigationTitle("Ask")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear { focused = question.isEmpty }
+    }
+
+    private var provider: (any LLMProvider)? { settings.isConfigured ? Providers.make(settings.providerConfig) : nil }
+
+    private func write() async {
+        focused = false
+        busy = "write"
+        defer { busy = nil }
+        error = nil; note = nil; answer = nil; result = nil
+        #if DEBUG
+        if let canned = ProcessInfo.processInfo.environment["DECKHAND_SEED_ASK_SQL"] { sql = canned; return }
+        #endif
+        guard let provider else { error = LLMError.missingAPIKey.localizedDescription; return }
+        let schema: DatabaseBrowser.Grid
+        switch await runSQL(connections, server, db, AskDatabase.schemaSQL(db)) {
+        case .success(let g): schema = g
+        case .failure(let e): error = e.message; return
+        }
+        do {
+            let reply = try await AskDatabase.complete(provider, system: AskDatabase.sqlSystem(db),
+                                                       prompt: AskDatabase.sqlPrompt(question: question, schema: AskDatabase.schemaText(schema)))
+            if let q = AskDatabase.sql(in: reply) { sql = q } else { sql = ""; note = reply.trimmingCharacters(in: .whitespacesAndNewlines) }
+        } catch { self.error = error.localizedDescription }
+    }
+
+    private func run() async {
+        focused = false
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        busy = "run"
+        defer { busy = nil }
+        error = nil; answer = nil
+        switch await runSQL(connections, server, db, sql) {
+        case .success(let g): result = g
+        case .failure(let e): error = e.message; result = nil; return
+        }
+        guard let provider, let result else { return }
+        answer = try? await AskDatabase.complete(provider, system: AskDatabase.answerSystem,
+                                                 prompt: AskDatabase.answerPrompt(question: question, sql: sql, grid: result), maxTokens: 300)
     }
 }
