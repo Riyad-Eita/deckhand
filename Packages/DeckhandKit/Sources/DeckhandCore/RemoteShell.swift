@@ -69,15 +69,28 @@ public struct LocalShell: StreamingShell {
             let out = Pipe(), err = Pipe()
             process.standardOutput = out
             process.standardError = err
-            out.fileHandleForReading.readabilityHandler = { h in state.append(h.availableData, stderr: false, handle: h) }
-            err.fileHandleForReading.readabilityHandler = { h in state.append(h.availableData, stderr: true, handle: h) }
+            // One thread per pipe with blocking reads until real end-of-file. (readabilityHandler + availableData can
+            // report an empty read under load, which looked like EOF and dropped the rest of the output.)
+            for (handle, isErr) in [(out.fileHandleForReading, false), (err.fileHandleForReading, true)] {
+                Thread.detachNewThread {
+                    let fd = handle.fileDescriptor
+                    var buf = [UInt8](repeating: 0, count: 65_536)
+                    while true {
+                        let n = read(fd, &buf, buf.count)
+                        if n > 0 { state.append(Data(buf[0..<n]), stderr: isErr); continue }
+                        if n < 0 && errno == EINTR { continue }
+                        break
+                    }
+                    withExtendedLifetime(handle) { state.pipeClosed() }
+                }
+            }
             process.terminationHandler = { p in
                 state.exited(p.terminationStatus)
                 DispatchQueue.global().asyncAfter(deadline: .now() + LocalShell.drainGrace) { state.finish() }
             }
             do { try process.run() } catch {
-                out.fileHandleForReading.readabilityHandler = nil
-                err.fileHandleForReading.readabilityHandler = nil
+                try? out.fileHandleForWriting.close()
+                try? err.fileHandleForWriting.close()
                 state.fail(error)
                 return
             }
@@ -108,14 +121,13 @@ private final class LocalRunState: @unchecked Sendable {
 
     var isRunning: Bool { lock.withLock { status == nil } }
 
-    func append(_ data: Data, stderr isErr: Bool, handle: FileHandle) {
-        if data.isEmpty {
-            handle.readabilityHandler = nil
-            let closed = lock.withLock { openPipes -= 1; return openPipes == 0 && status != nil }
-            if closed { finish() }
-            return
-        }
+    func append(_ data: Data, stderr isErr: Bool) {
         lock.withLock { if isErr { stderr.append(data) } else { stdout.append(data) } }
+    }
+
+    func pipeClosed() {
+        let closed = lock.withLock { openPipes -= 1; return openPipes == 0 && status != nil }
+        if closed { finish() }
     }
 
     func exited(_ code: Int32) {
