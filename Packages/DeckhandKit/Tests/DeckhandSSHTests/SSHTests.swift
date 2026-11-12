@@ -1014,3 +1014,60 @@ struct LiveExpiryTests {
         await conn.disconnect()
     }
 }
+
+/// Network tools on the disposable server (DECKHAND_BACKUP_*, DECKHAND_NET_TEST=1) with whatever tools it has.
+struct LiveNetworkToolsTests {
+    @Test func toolsOnAServer() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_NET_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func run(_ tool: NetworkTools.Tool, _ target: String, port: Int = 443) async throws -> NetworkTools.Result {
+            NetworkTools.parse(tool, try await conn.run(NetworkTools.serverCommand(tool, target: target, port: port), timeout: .seconds(90)).stdout)
+        }
+        do {
+            let dns = try await run(.dns, "github.com")
+            #expect(dns.ok == true, "\(dns)")
+            #expect(try await run(.port, "github.com").ok == true)
+            #expect(try await run(.port, "127.0.0.1", port: 1).ok == false)
+            let http = try await run(.http, "https://github.com/")
+            let httpRaw = try await conn.run(NetworkTools.serverCommand(.http, target: "https://github.com/"), timeout: .seconds(30))
+            #expect(http.ok == true && http.summary.first == "Status 200", "\(http) — \(httpRaw.stdout) \(httpRaw.stderr)")
+            let ping = try await run(.ping, "github.com")
+            print("ping:", ping.summary, ping.raw.prefix(120))
+            let trace = try await run(.traceroute, "github.com")
+            print("traceroute:", trace.summary)
+            #expect(!trace.summary.isEmpty)
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}
+
+/// Metrics history on the disposable server (DECKHAND_BACKUP_*, DECKHAND_METRICS_TEST=1): install, a real sample,
+/// remove.
+struct LiveMetricsHistoryTests {
+    @Test func samplerOnAServer() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_METRICS_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        do {
+            #expect(try await conn.run(MetricsHistory.installCommand, timeout: .seconds(30)).stdout.contains("@@ok"))
+            _ = try await conn.run("$HOME/.deckhand/metrics/run.sh", timeout: .seconds(30))
+            let r = MetricsHistory.parse(try await conn.run(MetricsHistory.readCommand(), timeout: .seconds(30)).stdout)
+            #expect(r.installed && r.samples.count == 2, "\(r)")
+            let s = try #require(r.samples.last)
+            #expect(s.memory > 0 && s.memory < 100 && s.disk > 0 && s.rxBytes > 0 && s.cpu >= 0, "\(s)")
+            #expect(MetricsHistory.series(r.samples, metric: .network).count == 1)
+            _ = try await conn.run(MetricsHistory.uninstallCommand, timeout: .seconds(30))
+            #expect(!(try await conn.run("crontab -l 2>/dev/null", timeout: .seconds(10)).stdout.contains("metrics")))
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}
