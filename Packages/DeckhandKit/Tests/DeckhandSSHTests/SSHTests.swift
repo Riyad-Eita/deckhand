@@ -1122,3 +1122,45 @@ struct LiveCronWatchTests {
         await conn.disconnect()
     }
 }
+
+/// Crontab edits on the disposable server (DECKHAND_BACKUP_*, DECKHAND_CRON_TEST=1): add, change, remove by exact
+/// line — the crontab ends exactly as it began. Timers are read on DECKHAND_TEST_* (read-only) when set.
+struct LiveCronEditorTests {
+    @Test func addEditRemove() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_CRON_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(30)).stdout }
+        do {
+            let before = try await sh("crontab -l 2>/dev/null")
+            let a = CronEditor.line(schedule: "0 3 * * 1", command: "echo dh-edit-$(date +%F)")
+            #expect(try await sh(CronEditor.addCommand(a)).contains("@@ok"))
+            #expect(try await sh("crontab -l").contains(#"0 3 * * 1 echo dh-edit-$(date +\%F)"#))
+            let b = CronEditor.line(schedule: "*/20 * * * *", command: "echo dh-edit-2")
+            #expect(try await sh(CronEditor.replaceCommand(a, with: b)).contains("@@ok"))
+            let mid = try await sh("crontab -l")
+            #expect(mid.contains(b) && !mid.contains("dh-edit-$("))
+            #expect(try await sh(CronEditor.replaceCommand(a, with: b)).contains("@@failed line changed"))
+            #expect(try await sh(CronEditor.replaceCommand(b, with: nil)).contains("@@ok"))
+            #expect(try await sh("crontab -l 2>/dev/null") == before)
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+
+    @Test func timersOnAServerWithSystemd() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_CRON_TEST"] == "1", env["DECKHAND_TEST_HOST"] != nil else { return }
+        let conn = try await LiveSSHTests().connection()
+        do {
+            let timers = CronEditor.parseTimers(try await conn.run(CronEditor.timersCommand, timeout: .seconds(60)).stdout)
+            #expect(!timers.isEmpty)
+            #expect(timers.contains { $0.next != nil && !$0.calendar.isEmpty }, "\(timers.prefix(3))")
+            print("timers:", timers.prefix(4).map { "\($0.unit) \($0.calendar) ok=\(String(describing: $0.ok))" })
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}

@@ -123,7 +123,7 @@ struct ServerDashboardView: View {
                         NavigationLink {
                             CronWatchView(server: server)
                         } label: {
-                            ManageRow(title: "Cron jobs", subtitle: "A push when a job fails or stops running", symbol: "clock.badge.checkmark")
+                            ManageRow(title: "Scheduled jobs", subtitle: "Cron and timers in plain words; a push when one fails", symbol: "clock.badge.checkmark")
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.cron")
