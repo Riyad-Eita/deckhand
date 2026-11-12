@@ -43,11 +43,14 @@ public struct Message: Sendable, Hashable, Codable, Identifiable {
     public var id: UUID
     public var role: Role
     public var blocks: [ContentBlock]
+    /// When the message was made (nil for messages stored before times were kept).
+    public var date: Date?
 
-    public init(id: UUID = UUID(), role: Role, blocks: [ContentBlock]) {
+    public init(id: UUID = UUID(), role: Role, blocks: [ContentBlock], date: Date? = Date()) {
         self.id = id
         self.role = role
         self.blocks = blocks
+        self.date = date
     }
 
     public static func user(_ text: String) -> Message { Message(role: .user, blocks: [.text(text)]) }

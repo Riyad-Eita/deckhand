@@ -944,6 +944,26 @@
         }
       }
     },
+    "Action log": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionsprotokoll"
+          }
+        }
+      }
+    },
+    "Action log: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionsprotokoll: %@"
+          }
+        }
+      }
+    },
     "Actions": {
       "localizations": {
         "de": {
@@ -2578,6 +2598,16 @@
         }
       }
     },
+    "Changed files with diffs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geänderte Dateien mit Unterschieden"
+          }
+        }
+      }
+    },
     "Changed since last healthy": {
       "localizations": {
         "de": {
@@ -3214,6 +3244,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Befehl auf dem Server"
+          }
+        }
+      }
+    },
+    "Commands": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Befehle"
           }
         }
       }
@@ -5411,6 +5451,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dateien, die jeder ändern kann"
+          }
+        }
+      }
+    },
+    "Files changed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geänderte Dateien"
           }
         }
       }
@@ -7846,6 +7896,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kein Konto, kein Tracking. Schlüssel bleiben im Schlüsselbund deines iPhones."
+          }
+        }
+      }
+    },
+    "No actions yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Aktionen."
           }
         }
       }
