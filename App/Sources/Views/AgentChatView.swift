@@ -158,6 +158,13 @@ struct AgentChatView: View {
                 .accessibilityLabel("Changed files")
                 .accessibilityIdentifier("chat.changes")
             }
+            ToolbarItem(placement: .primaryAction) {
+                NavigationLink { ActionLogView(thread: model.thread, server: model.server) } label: {
+                    Image(systemName: "list.bullet.rectangle")
+                }
+                .accessibilityLabel("Action log")
+                .accessibilityIdentifier("chat.log")
+            }
         }
         // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.
         .environment(\.explainFix, { model.send($0) })
