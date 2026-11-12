@@ -121,6 +121,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.expiry")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            NetworkToolsView(server: server)
+                        } label: {
+                            ManageRow(title: "Network tools", subtitle: "Ping, traceroute, DNS, ports, HTTP", symbol: "network")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.network")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             AppInstallsView(server: server)
                         } label: {
                             ManageRow(title: "Install apps", subtitle: "n8n, Nextcloud, Uptime Kuma, Postgres … in one tap", symbol: "square.grid.2x2")

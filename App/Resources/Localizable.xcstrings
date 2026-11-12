@@ -1796,6 +1796,16 @@
         }
       }
     },
+    "Ask an agent about it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einen Agenten dazu fragen"
+          }
+        }
+      }
+    },
     "Ask anything": {
       "localizations": {
         "de": {
@@ -5615,6 +5625,16 @@
         }
       }
     },
+    "From the iPhone, ping measures how long a connection to port 443 takes (iOS doesn't allow ICMP).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vom iPhone aus misst Ping, wie lange eine Verbindung zu Port 443 dauert (iOS erlaubt kein ICMP)."
+          }
+        }
+      }
+    },
     "Full access": {
       "extractionState": "manual",
       "localizations": {
@@ -5633,6 +5653,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voll automatisch"
+          }
+        }
+      }
+    },
+    "Full output": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollständige Ausgabe"
           }
         }
       }
@@ -7450,6 +7480,16 @@
         }
       }
     },
+    "Network tools": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netzwerk-Werkzeuge"
+          }
+        }
+      }
+    },
     "Never ban %@": {
       "localizations": {
         "de": {
@@ -8953,6 +8993,16 @@
         }
       }
     },
+    "Ping, traceroute, DNS, ports, HTTP": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping, Traceroute, DNS, Ports, HTTP"
+          }
+        }
+      }
+    },
     "Plan": {
       "localizations": {
         "de": {
@@ -9636,6 +9686,16 @@
         }
       }
     },
+    "Record": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eintrag"
+          }
+        }
+      }
+    },
     "Refresh": {
       "localizations": {
         "de": {
@@ -10123,6 +10183,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eingeschränkter Schlüssel (rk_…)"
+          }
+        }
+      }
+    },
+    "Result": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnis"
           }
         }
       }
@@ -12888,6 +12958,16 @@
         }
       }
     },
+    "This iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesem iPhone"
+          }
+        }
+      }
+    },
     "This iPhone's keys": {
       "localizations": {
         "de": {
@@ -13148,12 +13228,42 @@
         }
       }
     },
+    "Tool": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkzeug"
+          }
+        }
+      }
+    },
     "Topic URL": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Topic-URL"
+          }
+        }
+      }
+    },
+    "Trace": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Route"
+          }
+        }
+      }
+    },
+    "Traceroute runs on the server — iPhones can't send it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traceroute läuft auf dem Server – iPhones können es nicht senden."
           }
         }
       }
@@ -14828,6 +14938,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "von überall"
+          }
+        }
+      }
+    },
+    "from this iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "von diesem iPhone"
           }
         }
       }
