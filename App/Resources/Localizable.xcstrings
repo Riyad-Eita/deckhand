@@ -1405,6 +1405,16 @@
         }
       }
     },
+    "All servers at once. Runs as each server's login user.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Server gleichzeitig. Läuft als Anmeldebenutzer des jeweiligen Servers."
+          }
+        }
+      }
+    },
     "Allow": {
       "localizations": {
         "de": {
@@ -4471,6 +4481,16 @@
         }
       }
     },
+    "Disk space": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicherplatz"
+          }
+        }
+      }
+    },
     "Disk usage": {
       "localizations": {
         "de": {
@@ -5923,6 +5943,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Risiken mit einem Agenten durchgehen"
+          }
+        }
+      }
+    },
+    "Group (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppe (optional)"
           }
         }
       }
@@ -8160,6 +8190,16 @@
         }
       }
     },
+    "No output": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Ausgabe"
+          }
+        }
+      }
+    },
     "No repositories found": {
       "localizations": {
         "de": {
@@ -8563,6 +8603,16 @@
         }
       }
     },
+    "OS version": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betriebssystem-Version"
+          }
+        }
+      }
+    },
     "Off": {
       "localizations": {
         "de": {
@@ -8669,6 +8719,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf diesem iPhone · kostenlos, nichts verlässt das Gerät"
+          }
+        }
+      }
+    },
+    "One server after another; the rest are skipped after a failure.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Server nach dem anderen; nach einem Fehler werden die übrigen übersprungen."
           }
         }
       }
@@ -9119,6 +9179,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Spitze"
+          }
+        }
+      }
+    },
+    "Pending updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausstehende Updates"
           }
         }
       }
@@ -9621,6 +9691,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abfrage"
+          }
+        }
+      }
+    },
+    "Quick commands": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnellbefehle"
           }
         }
       }
@@ -10377,6 +10457,16 @@
         }
       }
     },
+    "Results": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnisse"
+          }
+        }
+      }
+    },
     "Review SSH keys": {
       "localizations": {
         "de": {
@@ -10607,12 +10697,42 @@
         }
       }
     },
+    "Run a command on several servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einen Befehl auf mehreren Servern ausführen"
+          }
+        }
+      }
+    },
     "Run in Terminal": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Im Terminal ausführen"
+          }
+        }
+      }
+    },
+    "Run on %lld servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf %lld Servern ausführen"
+          }
+        }
+      }
+    },
+    "Run on several servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf mehreren Servern ausführen"
           }
         }
       }
@@ -10653,6 +10773,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Läuft"
+          }
+        }
+      }
+    },
+    "Running containers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laufende Container"
           }
         }
       }
@@ -11737,6 +11867,16 @@
         }
       }
     },
+    "Skipped after a failure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach einem Fehler übersprungen"
+          }
+        }
+      }
+    },
     "Snapshots": {
       "localizations": {
         "de": {
@@ -12004,6 +12144,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stoppen und entfernen"
+          }
+        }
+      }
+    },
+    "Stop at the first failure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim ersten Fehler anhalten"
           }
         }
       }
@@ -13138,6 +13288,16 @@
         }
       }
     },
+    "This command can do damage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Befehl kann Schaden anrichten"
+          }
+        }
+      }
+    },
     "This folder doesn't exist anymore.": {
       "localizations": {
         "de": {
@@ -14099,6 +14259,16 @@
         }
       }
     },
+    "Uptime and load": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laufzeit und Last"
+          }
+        }
+      }
+    },
     "Usage limit reached. The task waits on the server and continues at %@ by itself — you can close the app.": {
       "localizations": {
         "de": {
@@ -15038,6 +15208,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "enthält …"
+          }
+        }
+      }
+    },
+    "exit %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit %lld"
           }
         }
       }
