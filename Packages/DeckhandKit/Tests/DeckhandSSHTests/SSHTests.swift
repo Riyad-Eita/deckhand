@@ -1071,3 +1071,54 @@ struct LiveMetricsHistoryTests {
         await conn.disconnect()
     }
 }
+
+/// Cron heartbeats on the disposable server (DECKHAND_BACKUP_*, DECKHAND_CRON_TEST=1): two test lines are watched,
+/// runs are recorded through the wrapper, a failure and a missed run push to a fake ntfy, and unwatching restores the
+/// crontab exactly. The test lines are removed afterwards.
+struct LiveCronWatchTests {
+    @Test func watchRunMissUnwatch() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_CRON_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(60)).stdout }
+        let good = #"17 3 * * * echo dh-test-good-$(date +\%Y)"#
+        let bad = "*/5 * * * * echo dh-test-bad; exit 3"
+        do {
+            let port = Int.random(in: 41000...41900)
+            let fake = "import http.server,sys\nclass H(http.server.BaseHTTPRequestHandler):\n def do_POST(s):\n  n=int(s.headers.get('Content-Length',0)); open(sys.argv[2],'a').write(s.rfile.read(n).decode()+'\\n'); s.send_response(200); s.end_headers()\n def log_message(s,*a): pass\nhttp.server.HTTPServer(('127.0.0.1',int(sys.argv[1])),H).serve_forever()\n"
+            _ = try await sh("printf '%s' \(ShellQuote.quote(fake)) > /tmp/dh-ntfy.py; rm -f /tmp/dh-pushes; (python3 /tmp/dh-ntfy.py \(port) /tmp/dh-pushes > /dev/null 2>&1 < /dev/null &); sleep 1")
+            let before = try await sh("crontab -l 2>/dev/null")
+            _ = try await sh("{ crontab -l 2>/dev/null; printf '%s\\n' \(ShellQuote.quote(good)) \(ShellQuote.quote(bad)); } | crontab -")
+            let topic = "http://127.0.0.1:\(port)/t"
+            #expect(try await sh(CronWatch.watchCommand(line: good, name: "Good job", topic: topic, id: "dhgood")).contains("@@watched dhgood"))
+            #expect(try await sh(CronWatch.watchCommand(line: bad, name: "Bad job", topic: topic, id: "dhbad")).contains("@@watched dhbad"))
+            let tab = try await sh("crontab -l")
+            #expect(tab.contains("wrap.sh dhgood # deckhand-cronwatch dhgood") && tab.contains("cronwatch/check.sh") && !tab.contains("dh-test-good"))
+
+            // Runs as cron would run them.
+            _ = try await sh("$HOME/.deckhand/cronwatch/wrap.sh dhgood; $HOME/.deckhand/cronwatch/wrap.sh dhbad; true")
+            var s = CronWatch.parseStatus(try await sh(CronWatch.statusCommand))
+            #expect(s.watches["dhgood"]?.last?.exitCode == 0 && s.watches["dhgood"]?.output.first?.hasPrefix("dh-test-good-20") == true)
+            #expect(s.watches["dhbad"]?.last?.exitCode == 3)
+            // A missed run: pretend the last start was a day ago.
+            _ = try await sh("echo $(( $(date +%s) - 86400 )) > $HOME/.deckhand/cronwatch/dhbad.started; $HOME/.deckhand/cronwatch/check.sh; $HOME/.deckhand/cronwatch/check.sh; sleep 1")
+            s = CronWatch.parseStatus(try await sh(CronWatch.statusCommand))
+            #expect(s.watches["dhbad"]?.missingSince != nil && s.watches["dhgood"]?.missingSince == nil)
+            let pushes = try await sh("cat /tmp/dh-pushes")
+            #expect(pushes.contains("Cron job failed (exit 3): Bad job") && pushes.contains("Cron job hasn't run: Bad job"), "\(pushes)")
+            #expect(pushes.components(separatedBy: "hasn't run").count == 2, "missed-run push repeated")
+
+            // Unwatch: the original lines come back exactly.
+            _ = try await sh(CronWatch.unwatchCommand(id: "dhgood") + "\n" + CronWatch.unwatchCommand(id: "dhbad"))
+            let restored = try await sh("crontab -l")
+            #expect(restored.contains(good) && restored.contains(bad) && !restored.contains("cronwatch"))
+            _ = try await sh("crontab -l | grep -v -e dh-test-good -e dh-test-bad | crontab -; pkill -f 'dh-ntfy.py \(port)'; rm -f /tmp/dh-ntfy.py /tmp/dh-pushes")
+            #expect(try await sh("crontab -l 2>/dev/null") == before)
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}
