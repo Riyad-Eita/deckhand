@@ -160,6 +160,7 @@ struct AgentChatView: View {
             }
         }
         // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.
+        .environment(\.explainFix, { model.send($0) })
         .environment(\.openURL, OpenURLAction { url in
             guard let port = ListeningPorts.localPort(in: url) else { return .systemAction }
             browsing = BrowserTarget(port: port, path: url.path.isEmpty ? "/" : url.path + (url.query.map { "?" + $0 } ?? ""))
@@ -687,6 +688,8 @@ struct ToolCard: View {
     @State private var expanded = false
     /// Secrets in the command or output are masked until the user taps Show.
     @State private var revealed = false
+    @State private var explaining: String?
+    @Environment(\.explainFix) private var explainFix
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -713,6 +716,12 @@ struct ToolCard: View {
                         .textSelection(.enabled)
                 }
                 .frame(maxHeight: 280)
+                .contextMenu { Button("Explain", systemImage: "sparkle.magnifyingglass") { explaining = output } }
+                if !output.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    Button { explaining = output } label: { Label("Explain", systemImage: "sparkle.magnifyingglass").font(.caption) }
+                        .buttonStyle(.borderless)
+                        .accessibilityIdentifier("toolCard.explain")
+                }
             }
             if expanded || hiding(summary) {
                 let count = secretCount
@@ -726,6 +735,9 @@ struct ToolCard: View {
                     .accessibilityIdentifier("toolCard.secrets")
                 }
             }
+        }
+        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+            ExplainSheet(text: shown(e.text), context: name == "run_command" ? input["command"]?.stringValue.map { "the command `\($0)`" } : nil, fix: explainFix)
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
         .background(Theme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -935,3 +947,5 @@ enum ImagePrep {
         return resized.jpegData(compressionQuality: 0.8)
     }
 }
+
+struct ExplainText: Identifiable { let text: String; var id: Int { text.hashValue } }

@@ -93,10 +93,6 @@ public enum AskDatabase {
 
     /// One model call without tools; the reply's text.
     public static func complete(_ provider: any LLMProvider, system: String, prompt: String, maxTokens: Int = 1_500) async throws -> String {
-        var text = ""
-        for try await event in provider.stream(ChatRequest(system: system, messages: [.user(prompt)], tools: [], maxTokens: maxTokens)) {
-            if case .completed(let m, _, _) = event { text = m.text }
-        }
-        return text
+        try await provider.complete(system: system, prompt: prompt, maxTokens: maxTokens)
     }
 }
