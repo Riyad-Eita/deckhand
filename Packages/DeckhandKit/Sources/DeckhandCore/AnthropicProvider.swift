@@ -87,6 +87,8 @@ public struct AnthropicProvider: LLMProvider {
                 ]
             case .opaque(let provider, let value):
                 return provider == "anthropic" ? value : nil
+            case .image(let type, let data):
+                return ["type": "image", "source": ["type": "base64", "media_type": .string(type), "data": .string(data.base64EncodedString())]]
             }
         }
         return ["role": .string(message.role.rawValue), "content": .array(blocks)]

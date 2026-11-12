@@ -147,9 +147,10 @@ final class ChatModel {
 
     /// `access` overrides the CLI access from Settings for this turn (read-only diagnosis, an approved fix).
     /// `plan`: nil follows the thread's "Plan first" switch; false runs normally (e.g. carrying out a plan).
-    func send(_ text: String, access accessOverride: CLIAccess? = nil, plan: Bool? = nil) {
+    func send(_ text: String, access accessOverride: CLIAccess? = nil, plan: Bool? = nil, images: [Data] = []) {
         let planning = plan ?? thread.planFirst
-        let asked = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        var asked = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if asked.isEmpty && !images.isEmpty { asked = String(localized: "What do you see here?") }
         let trimmed = planning && !asked.isEmpty ? PlanMode.wrap(asked) : asked
         guard !trimmed.isEmpty, !isRunning else { return }
         let settings = AppSettings.shared
@@ -159,7 +160,7 @@ final class ChatModel {
         }
         error = nil
         notice = nil
-        let user = Message.user(trimmed)
+        let user = Message(role: .user, blocks: images.map { .image(mediaType: "image/jpeg", data: $0) } + [.text(trimmed)])
         let history = Self.history(messages, start: thread.historyStart, summary: thread.historySummary)
         let historyStart = thread.historyStart
         messages.append(user)

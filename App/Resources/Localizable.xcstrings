@@ -9416,6 +9416,16 @@
         }
       }
     },
+    "Remove picture": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bild entfernen"
+          }
+        }
+      }
+    },
     "Remove the Whisper model?": {
       "localizations": {
         "de": {
@@ -13585,6 +13595,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Was hat sich geändert seit …"
+          }
+        }
+      }
+    },
+    "What do you see here?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was siehst du hier?"
           }
         }
       }

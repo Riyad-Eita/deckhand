@@ -24,6 +24,8 @@ struct AgentChatView: View {
     @State private var choosingPhoto = false
     @State private var choosingFile = false
     @State private var upload: (name: String, progress: Double)?
+    /// Own key: pictures that go with the next message (downscaled JPEG).
+    @State private var images: [Data] = []
     @State private var uploadError: String?
 
     init(thread: ChatThread, server: Server) {
@@ -208,7 +210,17 @@ struct AgentChatView: View {
         .task {
             if let prompt = DebugSeed.pendingPrompt, model.messages.isEmpty {
                 DebugSeed.pendingPrompt = nil
-                model.send(prompt)
+                if !prompt.isEmpty { model.send(prompt) }
+            }
+            // DECKHAND_SEED_IMAGE=1: a made-up error screenshot waits in the composer (the photo picker can't be scripted).
+            if ProcessInfo.processInfo.environment["DECKHAND_SEED_IMAGE"] == "1", images.isEmpty {
+                let size = CGSize(width: 900, height: 600)
+                let sample = UIGraphicsImageRenderer(size: size).image { ctx in
+                    UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+                    ("502 Bad Gateway\nnginx/1.24.0" as NSString).draw(in: CGRect(x: 60, y: 220, width: 800, height: 200),
+                        withAttributes: [.font: UIFont.systemFont(ofSize: 64, weight: .bold), .foregroundColor: UIColor.black])
+                }
+                if let data = sample.pngData(), let jpeg = ImagePrep.jpeg(data) { images = [jpeg] }
             }
         }
         #endif
@@ -227,6 +239,29 @@ struct AgentChatView: View {
             .font(.caption).foregroundStyle(.secondary)
             .padding(.horizontal, 16).padding(.top, 6)
             .accessibilityIdentifier("chat.planFirst")
+        }
+        if !images.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Array(images.enumerated()), id: \.offset) { i, data in
+                        if let ui = UIImage(data: data) {
+                            Image(uiImage: ui).resizable().scaledToFill().frame(width: 56, height: 56)
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Theme.hairline))
+                                .overlay(alignment: .topTrailing) {
+                                    Button { images.remove(at: i) } label: {
+                                        Image(systemName: "xmark.circle.fill").symbolRenderingMode(.palette)
+                                            .foregroundStyle(.white, .black.opacity(0.6))
+                                    }
+                                    .offset(x: 6, y: -6)
+                                    .accessibilityLabel("Remove picture")
+                                }
+                        }
+                    }
+                }
+                .padding(.horizontal, 16).padding(.top, 8)
+            }
+            .accessibilityIdentifier("chat.images")
         }
         HStack(alignment: .bottom, spacing: 8) {
             Menu {
@@ -272,12 +307,13 @@ struct AgentChatView: View {
                 .accessibilityLabel("Stop")
             } else {
                 Button {
-                    model.send(draft)
+                    model.send(draft, images: images)
                     draft = ""
+                    images = []
                 } label: {
                     Image(systemName: "arrow.up.circle.fill").font(.system(size: 32))
                 }
-                .disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && images.isEmpty)
                 .accessibilityLabel("Send")
             }
         }
@@ -290,6 +326,14 @@ struct AgentChatView: View {
 
     private func uploadPhoto(_ item: PhotosPickerItem) async {
         guard let data = try? await item.loadTransferable(type: Data.self) else { uploadError = String(localized: "Couldn't read the photo."); return }
+        // With your own key the model sees the picture itself; the CLIs get it as a file on the server.
+        if model.thread.engine == .ownKey {
+            guard let jpeg = ImagePrep.jpeg(data) else { uploadError = String(localized: "Couldn't read the photo."); return }
+            images.append(jpeg)
+            uploadError = nil
+            composerFocused = true
+            return
+        }
         let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
@@ -522,6 +566,21 @@ private struct MessageView: View {
     var body: some View {
         switch message.role {
         case .user:
+            let pictures = message.blocks.compactMap { if case .image(_, let d) = $0 { d } else { nil } }
+            if !pictures.isEmpty {
+                HStack(spacing: 6) {
+                    Spacer(minLength: 48)
+                    ForEach(Array(pictures.enumerated()), id: \.offset) { _, d in
+                        if let ui = UIImage(data: d) {
+                            Image(uiImage: ui).resizable().scaledToFit()
+                                .frame(maxWidth: pictures.count == 1 ? 220 : 120, maxHeight: pictures.count == 1 ? 220 : 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Theme.hairline))
+                        }
+                    }
+                }
+                .accessibilityIdentifier("chat.sentImages")
+            }
             if !message.text.isEmpty {
                 HStack {
                     Spacer(minLength: 48)
@@ -861,5 +920,18 @@ struct ReplyText: View {
                 .accessibilityIdentifier("reply.secrets")
             }
         }
+    }
+}
+
+/// Pictures for the model: at most 1568 px on the longer side (what Claude uses at full detail), JPEG.
+enum ImagePrep {
+    static func jpeg(_ data: Data, maxSide: CGFloat = 1568) -> Data? {
+        guard let image = UIImage(data: data) else { return nil }
+        let scale = min(1, maxSide / max(image.size.width, image.size.height))
+        let size = CGSize(width: (image.size.width * scale).rounded(), height: (image.size.height * scale).rounded())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let resized = UIGraphicsImageRenderer(size: size, format: format).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+        return resized.jpegData(compressionQuality: 0.8)
     }
 }
