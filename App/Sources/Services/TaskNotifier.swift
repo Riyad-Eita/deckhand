@@ -44,6 +44,15 @@ final class TaskNotifier: NSObject, UNUserNotificationCenterDelegate {
         post(id: "approval-\(thread.id)", title: String(localized: "Approval needed"), body: "\(thread.title): \(command)", thread: thread.id)
     }
 
+    func reviewChanged(app: String, version: String, state: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "\(app) \(version)"
+        content.body = String(localized: String.LocalizationValue(AppStoreConnect.describe(state)))
+        content.sound = .default
+        content.threadIdentifier = "appstore"
+        center.add(UNNotificationRequest(identifier: "asc-\(app)-\(version)-\(state)", content: content, trigger: nil))
+    }
+
     private func post(id: String, title: String, body: String, thread: UUID) {
         let content = UNMutableNotificationContent()
         content.title = title
@@ -59,9 +68,11 @@ final class TaskNotifier: NSObject, UNUserNotificationCenterDelegate {
     /// Called when the app goes to the background with tasks still running on servers.
     func scheduleCheck(hasActiveRuns: Bool) {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.refreshID)
-        guard hasActiveRuns else { return }
+        // App reviews are watched too while App Store Connect is connected (less often).
+        let watchReviews = AppStoreAccount.shared.isConnected
+        guard hasActiveRuns || watchReviews else { return }
         let request = BGAppRefreshTaskRequest(identifier: Self.refreshID)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 10 * 60)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: (hasActiveRuns ? 10 : 30) * 60)
         try? BGTaskScheduler.shared.submit(request)
     }
 
@@ -81,6 +92,9 @@ final class TaskNotifier: NSObject, UNUserNotificationCenterDelegate {
             } else {
                 stillRunning = true
             }
+        }
+        for (app, version) in await AppStoreAccount.shared.checkReviews() {
+            reviewChanged(app: app.name, version: version.version, state: version.state)
         }
         scheduleCheck(hasActiveRuns: stillRunning)
         return true

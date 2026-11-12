@@ -38,6 +38,14 @@ struct ServerListView: View {
                     }
                 }
             }
+            if !servers.isEmpty {
+                Section("Apps") {
+                    NavigationLink { AppStoreView() } label: {
+                        Label("App Store Connect", systemImage: "app.badge.checkmark")
+                    }
+                    .accessibilityIdentifier("home.appstore")
+                }
+            }
         }
         .overlay {
             if servers.isEmpty {
