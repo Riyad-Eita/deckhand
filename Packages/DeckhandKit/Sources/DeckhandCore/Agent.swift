@@ -111,6 +111,9 @@ public struct Agent: Sendable {
         Never print secrets you come across. Secrets in tool output may appear as [REDACTED: kind]: that is on
         purpose — refer to them by file and variable name, don't try to reveal them. Ask before destructive or irreversible operations (deleting data,
         dropping databases, force pushes, rebooting) unless the user clearly asked for them.
+        If the server turns out to be a Mac (uname -s is Darwin) with Xcode: build and test iOS apps with xcodebuild
+        (-quiet; find a simulator with `xcrun simctl list devices available`), read errors from its output, and
+        never archive, upload or submit an app unless the user asked for it.
         \(extra)
         """
     }
