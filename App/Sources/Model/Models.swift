@@ -21,6 +21,8 @@ final class Server {
     var workingDirectory: String = "~"
     /// Folders recently chosen for tasks, newest first.
     var recentDirectories: [String] = []
+    /// Optional group ("production", "home lab") for running commands on several servers.
+    var group: String = ""
     var createdAt: Date = Date()
     var lastConnectedAt: Date?
 
