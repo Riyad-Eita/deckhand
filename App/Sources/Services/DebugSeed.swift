@@ -72,6 +72,42 @@ enum DebugSeed {
         """)]),
     ]
 
+    /// DECKHAND_SEED_ASC=demo: App Store Connect answers with made-up apps (screenshots, UI tests).
+    static let appStoreFetch: AppStoreConnect.Client.Fetch = { req in
+        let path = req.url?.path ?? ""
+        let app = path.split(separator: "/").dropFirst(2).first.map(String.init) ?? ""
+        let body: String
+        switch true {
+        case path == "/v1/apps":
+            body = #"{"data":[{"type":"apps","id":"a1","attributes":{"name":"Weather Lab","bundleId":"com.example.weather"}},{"type":"apps","id":"a2","attributes":{"name":"Shop Keeper","bundleId":"com.example.shop"}}]}"#
+        case path.hasSuffix("/appStoreVersions"):
+            body = app == "a1"
+                ? #"{"data":[{"type":"appStoreVersions","id":"v3","attributes":{"platform":"IOS","versionString":"2.4","appStoreState":"IN_REVIEW","createdDate":"2026-11-10T09:00:00Z"}},{"type":"appStoreVersions","id":"v2","attributes":{"platform":"IOS","versionString":"2.3","appStoreState":"READY_FOR_SALE","createdDate":"2026-10-28T09:00:00Z"}},{"type":"appStoreVersions","id":"v1","attributes":{"platform":"MAC_OS","versionString":"2.3","appStoreState":"READY_FOR_SALE","createdDate":"2026-10-28T09:00:00Z"}}]}"#
+                : #"{"data":[{"type":"appStoreVersions","id":"v9","attributes":{"platform":"IOS","versionString":"1.0.1","appStoreState":"PENDING_DEVELOPER_RELEASE","createdDate":"2026-11-08T09:00:00Z"}}]}"#
+        case path == "/v1/builds":
+            body = #"""
+            {"data":[
+             {"type":"builds","id":"b3","attributes":{"version":"57","uploadedDate":"2026-11-11T18:20:00Z","expired":false,"processingState":"PROCESSING"},"relationships":{"preReleaseVersion":{"data":{"type":"preReleaseVersions","id":"p24"}},"buildBetaDetail":{"data":{"type":"buildBetaDetails","id":"d3"}}}},
+             {"type":"builds","id":"b2","attributes":{"version":"56","uploadedDate":"2026-11-10T08:40:00Z","expired":false,"processingState":"VALID"},"relationships":{"preReleaseVersion":{"data":{"type":"preReleaseVersions","id":"p24"}},"buildBetaDetail":{"data":{"type":"buildBetaDetails","id":"d2"}}}},
+             {"type":"builds","id":"b1","attributes":{"version":"55","uploadedDate":"2026-10-27T16:05:00Z","expired":false,"processingState":"VALID"},"relationships":{"preReleaseVersion":{"data":{"type":"preReleaseVersions","id":"p23"}},"buildBetaDetail":{"data":{"type":"buildBetaDetails","id":"d1"}}}}],
+             "included":[{"type":"preReleaseVersions","id":"p24","attributes":{"version":"2.4"}},{"type":"preReleaseVersions","id":"p23","attributes":{"version":"2.3"}},
+              {"type":"buildBetaDetails","id":"d3","attributes":{"internalBuildState":"PROCESSING","externalBuildState":"PROCESSING"}},
+              {"type":"buildBetaDetails","id":"d2","attributes":{"internalBuildState":"IN_BETA_TESTING","externalBuildState":"BETA_APPROVED"}},
+              {"type":"buildBetaDetails","id":"d1","attributes":{"internalBuildState":"IN_BETA_TESTING","externalBuildState":"IN_BETA_TESTING"}}]}
+            """#
+        case path.hasSuffix("/betaGroups"):
+            body = #"{"data":[{"type":"betaGroups","id":"g1","attributes":{"name":"Team","isInternalGroup":true,"publicLinkEnabled":null}},{"type":"betaGroups","id":"g2","attributes":{"name":"Early birds","isInternalGroup":false,"publicLinkEnabled":true}}]}"#
+        case path.hasSuffix("/betaTesters"):
+            body = path.contains("g1")
+                ? #"{"data":[{"type":"betaTesters","id":"t1","attributes":{"firstName":"Alex","lastName":"Morgan","email":"alex@example.com","state":"INSTALLED"}},{"type":"betaTesters","id":"t2","attributes":{"firstName":"Sam","lastName":"Lee","email":"sam@example.com","state":"INSTALLED"}}]}"#
+                : #"{"data":[{"type":"betaTesters","id":"t3","attributes":{"firstName":"Robin","lastName":"Park","email":"robin@example.com","state":"INSTALLED"}},{"type":"betaTesters","id":"t4","attributes":{"firstName":"","lastName":"","email":"kim@example.com","state":"INVITED"}}]}"#
+        default:
+            body = #"{"data":[]}"#
+        }
+        try? await Task.sleep(for: .milliseconds(300))
+        return (Data(body.utf8), 200)
+    }
+
     /// A long task whose first steps were summarized.
     static let compactedChat: [Message] = [
         .user("Upgrade the shop to Node 22."),
