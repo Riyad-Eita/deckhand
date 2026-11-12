@@ -12,6 +12,7 @@ struct ServerEditorView: View {
     @Environment(Connections.self) private var connections
 
     @State private var name = ""
+    @State private var group = ""
     @State private var host = ""
     @State private var port = "22"
     @State private var username = ""
@@ -41,6 +42,7 @@ struct ServerEditorView: View {
                     TextField("User", text: $username)
                     TextField("Port", text: $port).keyboardType(.numberPad)
                     TextField("Name (optional)", text: $name)
+                    TextField("Group (optional)", text: $group).accessibilityIdentifier("server.group")
                 } header: {
                     Text("Server")
                 } footer: {
@@ -170,6 +172,7 @@ struct ServerEditorView: View {
         loaded = true
         guard let server else { return }
         name = server.name
+        group = server.group
         host = server.host
         port = String(server.port)
         username = server.username
@@ -193,6 +196,7 @@ struct ServerEditorView: View {
         let target = server ?? created ?? Server(name: "", host: "", username: "", authKind: authKind)
         let hostChanged = target.host != host.trimmingCharacters(in: .whitespaces) || target.port != Int(port) ?? 22
         target.name = name.trimmingCharacters(in: .whitespaces)
+        target.group = group.trimmingCharacters(in: .whitespaces)
         target.host = host.trimmingCharacters(in: .whitespaces)
         target.port = Int(port) ?? 22
         target.username = username.trimmingCharacters(in: .whitespaces)

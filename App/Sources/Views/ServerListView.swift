@@ -40,6 +40,7 @@ struct ServerListView: View {
                     }
                 }
             }
+            if servers.count >= 2 { FleetSection() }
             if !servers.isEmpty || !chats.isEmpty {
                 ChatsSection(chats: chats) { newChat() } delete: { context.delete($0) }
             }
@@ -325,6 +326,18 @@ private struct ChatsSection: View {
             Text("Chats")
         } footer: {
             if chats.isEmpty { Text("Talk to any of your models directly — no server needed.") }
+        }
+    }
+}
+
+/// "Run a command on several servers" — from two servers on.
+private struct FleetSection: View {
+    var body: some View {
+        Section {
+            NavigationLink { FleetRunView() } label: {
+                Label("Run a command on several servers", systemImage: "square.stack.3d.forward.dottedline")
+            }
+            .accessibilityIdentifier("home.fleet")
         }
     }
 }
