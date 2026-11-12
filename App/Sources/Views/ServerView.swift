@@ -209,9 +209,14 @@ struct ThreadListView: View {
         .task {
             // "markdown|": a finished chat with a reply that uses every Markdown block (UI tests, screenshots).
             let seed = DebugSeed.pendingRun?.engine
-            guard seed == "markdown" || seed == "secrets" || seed == "fix" || seed == "checkoffer" || seed == "compacted" || seed == "checkpoint" else { return }
+            guard seed == "markdown" || seed == "secrets" || seed == "fix" || seed == "checkoffer" || seed == "compacted" || seed == "checkpoint" || seed == "plan" else { return }
             DebugSeed.pendingRun = nil
             let thread = ChatThread(server: server, workingDirectory: server.workingDirectory, engine: .codex)
+            if seed == "plan" {
+                thread.title = "Move the shop to port 8081"
+                thread.planFirst = true
+                thread.messages = DebugSeed.planChat
+            }
             if seed == "checkpoint" {
                 // A folder snapshotted at the start of the task, then changed the way an agent would.
                 thread.title = "Tidy the notes"
@@ -240,7 +245,7 @@ struct ThreadListView: View {
             } else if seed == "secrets" {
                 thread.title = "Why can't the app reach the database?"
                 thread.messages = DebugSeed.secretsChat
-            } else {
+            } else if seed == "markdown" {
                 thread.title = "Why does the API return 404?"
                 thread.messages = [.user("Why does the weather API return 404 for some cities?"), DebugSeed.markdownReply]
             }

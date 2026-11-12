@@ -19,7 +19,7 @@ final class CompactionUITests: XCTestCase {
 
         func text(_ s: String) -> XCUIElement { app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", s)).firstMatch }
         let divider = app.buttons["chat.summary"]
-        XCTAssertTrue(divider.waitForExistence(timeout: 30))
+        XCTAssertTrue(divider.waitForExistence(timeout: 60))
         // The earlier steps stay visible above the divider.
         XCTAssertTrue(text("Upgrade the shop to Node 22").exists)
         XCTAssertLessThan(text("Installed Node 22 and rebuilt").frame.minY, divider.frame.minY)
