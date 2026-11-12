@@ -11,6 +11,7 @@ struct ServerDashboardView: View {
     @State private var error: String?
     @State private var updated: Date?
     @State private var investigatePrompt: String?
+    @State private var isMac = false
 
     var body: some View {
         ScrollView {
@@ -282,6 +283,19 @@ struct ServerDashboardView: View {
                         Text("Updated \(updated.formatted(date: .omitted, time: .standard))")
                             .font(.caption).foregroundStyle(.tertiary).frame(maxWidth: .infinity)
                     }
+                } else if isMac {
+                    // A Mac with Remote Login: no /proc stats, but Xcode.
+                    VStack(alignment: .leading, spacing: 0) {
+                        Label("This server is a Mac", systemImage: "desktopcomputer").font(.headline).padding(16)
+                        Divider()
+                        NavigationLink { XcodeView(server: server) } label: {
+                            ManageRow(title: "Xcode", subtitle: "Build, test, archive and upload your apps", symbol: "hammer")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.xcode")
+                    }
+                    .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
                 } else if let error {
                     ProblemView(message: error).frame(maxWidth: .infinity).padding(.top, 80)
                 } else {
@@ -308,6 +322,10 @@ struct ServerDashboardView: View {
             let conn = try await connections.connection(for: server)
             let r = try await conn.run(ServerStats.probeCommand, timeout: .seconds(15))
             guard let s = ServerStats.parse(r.stdout) else {
+                if (try? await conn.run("uname -s", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines)) == "Darwin" {
+                    isMac = true
+                    return
+                }
                 throw ToolError.failed("This server doesn't look like Linux (no /proc).")
             }
             stats = s

@@ -275,6 +275,16 @@
         }
       }
     },
+    "%@ succeeded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ erfolgreich"
+          }
+        }
+      }
+    },
     "%@ wants to run this on %@:": {
       "localizations": {
         "de": {
@@ -314,6 +324,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ · läuft in der App"
+          }
+        }
+      }
+    },
+    "%@ — done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – fertig"
+          }
+        }
+      }
+    },
+    "%@ — failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – fehlgeschlagen"
           }
         }
       }
@@ -438,6 +468,16 @@
         }
       }
     },
+    "%lld of %lld tests failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld Tests fehlgeschlagen"
+          }
+        }
+      }
+    },
     "%lld processes · %lld cores": {
       "localizations": {
         "de": {
@@ -528,6 +568,16 @@
         }
       }
     },
+    "%lld tests passed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tests bestanden"
+          }
+        }
+      }
+    },
     "%lld things to look at": {
       "localizations": {
         "de": {
@@ -564,6 +614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld Updates, %2$lld für die Sicherheit"
+          }
+        }
+      }
+    },
+    "%lld warnings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Warnungen"
           }
         }
       }
@@ -1576,6 +1636,46 @@
         }
       }
     },
+    "Archive": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivieren"
+          }
+        }
+      }
+    },
+    "Archive %@ and upload it to App Store Connect?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ archivieren und zu App Store Connect hochladen?"
+          }
+        }
+      }
+    },
+    "Archive and upload": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivieren und hochladen"
+          }
+        }
+      }
+    },
+    "Archiving…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird archiviert …"
+          }
+        }
+      }
+    },
     "Ask before changes": {
       "extractionState": "manual",
       "localizations": {
@@ -1988,6 +2088,16 @@
         }
       }
     },
+    "Build": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bauen"
+          }
+        }
+      }
+    },
     "Build and run": {
       "localizations": {
         "de": {
@@ -2004,6 +2114,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Build-Befehl (optional)"
+          }
+        }
+      }
+    },
+    "Build, test, archive and upload your apps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps bauen, testen, archivieren und hochladen"
+          }
+        }
+      }
+    },
+    "Building…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird gebaut …"
           }
         }
       }
@@ -2718,6 +2848,16 @@
         }
       }
     },
+    "Code signing couldn't use the signing key (errSecInternalComponent): the keychain that holds it is locked. Unlock it on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Codesignierung konnte den Signierschlüssel nicht nutzen (errSecInternalComponent): Der Schlüsselbund, in dem er liegt, ist gesperrt. Entsperre ihn auf dem Mac."
+          }
+        }
+      }
+    },
     "Codex": {
       "localizations": {
         "de": {
@@ -2918,6 +3058,16 @@
         }
       }
     },
+    "Connect App Store Connect first (Apps on the home screen); the upload uses that key.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde zuerst App Store Connect (Apps auf dem Startbildschirm); das Hochladen nutzt diesen Schlüssel."
+          }
+        }
+      }
+    },
     "Connect GitHub": {
       "localizations": {
         "de": {
@@ -3095,6 +3245,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Topic kopieren"
+          }
+        }
+      }
+    },
+    "Copy your App Store Connect key (AuthKey_<ID>.p8) to ~/.appstoreconnect/private_keys on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopiere deinen App-Store-Connect-Schlüssel (AuthKey_<ID>.p8) auf dem Mac nach ~/.appstoreconnect/private_keys."
           }
         }
       }
@@ -6030,6 +6190,16 @@
         }
       }
     },
+    "Jobs run on the Mac in the background — you can lock the phone; a notification says when they're done. Upload uses your App Store Connect key: its .p8 has to be in ~/.appstoreconnect/private_keys on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufträge laufen im Hintergrund auf dem Mac – du kannst das iPhone sperren; eine Mitteilung sagt dir, wann sie fertig sind. Das Hochladen nutzt deinen App-Store-Connect-Schlüssel: Die .p8-Datei muss auf dem Mac in ~/.appstoreconnect/private_keys liegen."
+          }
+        }
+      }
+    },
     "Journal and log files: follow, search, explain": {
       "localizations": {
         "de": {
@@ -6480,6 +6650,16 @@
         }
       }
     },
+    "Log": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokoll"
+          }
+        }
+      }
+    },
     "Log In": {
       "localizations": {
         "de": {
@@ -6606,6 +6786,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sehe mich in %@ um"
+          }
+        }
+      }
+    },
+    "Looking for projects…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projekte werden gesucht …"
           }
         }
       }
@@ -7180,6 +7370,16 @@
         }
       }
     },
+    "No Xcode projects in your home folder (four levels deep).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Xcode-Projekte in deinem Benutzerordner (bis vier Ebenen tief)."
+          }
+        }
+      }
+    },
     "No account, no tracking. Keys stay in your iPhone's Keychain.": {
       "localizations": {
         "de": {
@@ -7360,6 +7560,16 @@
         }
       }
     },
+    "No iPhone simulator is installed on the Mac. Add one in Xcode → Settings → Components.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Mac ist kein iPhone-Simulator installiert. Füge einen in Xcode → Einstellungen → Komponenten hinzu."
+          }
+        }
+      }
+    },
     "No keys.": {
       "localizations": {
         "de": {
@@ -7466,6 +7676,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Zeilen."
+          }
+        }
+      }
+    },
+    "No shared schemes found.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine geteilten Schemes gefunden."
           }
         }
       }
@@ -7609,6 +7829,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht mit dem Server verbunden."
+          }
+        }
+      }
+    },
+    "Not installed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht installiert"
           }
         }
       }
@@ -8363,6 +8593,16 @@
         }
       }
     },
+    "Picking a simulator…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator wird gewählt …"
+          }
+        }
+      }
+    },
     "Plant tripwires": {
       "localizations": {
         "de": {
@@ -8604,6 +8844,16 @@
         }
       }
     },
+    "Projects": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projekte"
+          }
+        }
+      }
+    },
     "Protect the database folders": {
       "localizations": {
         "de": {
@@ -8832,6 +9082,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lese %@"
+          }
+        }
+      }
+    },
+    "Reading schemes…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schemes werden gelesen …"
           }
         }
       }
@@ -9973,6 +10233,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeitplan"
+          }
+        }
+      }
+    },
+    "Scheme": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheme"
           }
         }
       }
@@ -11418,6 +11688,16 @@
         }
       }
     },
+    "Testing…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird getestet …"
+          }
+        }
+      }
+    },
     "That key can't log in to these servers anymore. A backup of each authorized_keys file stays next to it.": {
       "localizations": {
         "de": {
@@ -11488,6 +11768,16 @@
         }
       }
     },
+    "The Mac's login keychain is locked, so code signing can fail over SSH. Log in on the Mac once (or unlock it in Terminal with `security unlock-keychain`).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Anmeldeschlüsselbund des Macs ist gesperrt, daher kann die Codesignierung über SSH fehlschlagen. Melde dich einmal am Mac an (oder entsperre ihn im Terminal mit `security unlock-keychain`)."
+          }
+        }
+      }
+    },
     "The address %@ can't be found.": {
       "localizations": {
         "de": {
@@ -11544,6 +11834,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Agent sieht es sich an und fragt, bevor er etwas ändert."
+          }
+        }
+      }
+    },
+    "The build lands in TestFlight. Nothing is submitted for review.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Build landet in TestFlight. Zum Review wird nichts eingereicht."
           }
         }
       }
@@ -11694,6 +11994,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Anmeldeprüfung nach dem Schließen des alten Ports ist fehlgeschlagen, daher öffnet der Server ihn innerhalb von 5 Minuten von selbst wieder."
+          }
+        }
+      }
+    },
+    "The login keychain is locked. Building and testing work; archiving and uploading need code signing, so log in on the Mac once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Anmeldeschlüsselbund ist gesperrt. Bauen und Testen funktionieren; Archivieren und Hochladen brauchen Codesignierung – melde dich dafür einmal am Mac an."
           }
         }
       }
@@ -12168,12 +12478,32 @@
         }
       }
     },
+    "This server is a Mac": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server ist ein Mac"
+          }
+        }
+      }
+    },
     "This server is locked down": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Server ist abgeriegelt"
+          }
+        }
+      }
+    },
+    "This server isn't a Mac. To build iOS apps from your iPhone, turn on Remote Login on your Mac (System Settings → General → Sharing) and add the Mac as a server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server ist kein Mac. Um iOS-Apps vom iPhone aus zu bauen, schalte auf deinem Mac die Entfernte Anmeldung ein (Systemeinstellungen → Allgemein → Teilen) und füge den Mac als Server hinzu."
           }
         }
       }
@@ -12789,12 +13119,42 @@
         }
       }
     },
+    "Upload to App Store Connect": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu App Store Connect hochladen"
+          }
+        }
+      }
+    },
+    "Uploaded — it shows up in TestFlight after processing.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochgeladen – nach der Verarbeitung erscheint er in TestFlight."
+          }
+        }
+      }
+    },
     "Uploading %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Lade %@ hoch"
+          }
+        }
+      }
+    },
+    "Uploading…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird hochgeladen …"
           }
         }
       }
@@ -13388,6 +13748,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Falsche Passphrase oder die Datei ist beschädigt."
+          }
+        }
+      }
+    },
+    "Xcode": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode"
           }
         }
       }
