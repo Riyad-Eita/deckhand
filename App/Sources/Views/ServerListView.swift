@@ -8,6 +8,7 @@ struct ServerListView: View {
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @Query(filter: #Predicate<ChatThread> { $0.server == nil }, sort: \ChatThread.updatedAt, order: .reverse) private var chats: [ChatThread]
     @State private var openChat: ChatThread?
+    @State private var importing = false
     @State private var editing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
@@ -40,6 +41,11 @@ struct ServerListView: View {
                     }
                 }
             }
+            if !servers.isEmpty {
+                Button { importing = true } label: { Label("Import from another SSH app", systemImage: "square.and.arrow.down") }
+                    .font(.subheadline)
+                    .accessibilityIdentifier("home.importRow")
+            }
             if servers.count >= 2 { FleetSection() }
             if !servers.isEmpty || !chats.isEmpty {
                 ChatsSection(chats: chats) { newChat() } delete: { context.delete($0) }
@@ -71,6 +77,9 @@ struct ServerListView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
+                    Button("Import from another SSH app") { importing = true }
+                        .font(.subheadline)
+                        .accessibilityIdentifier("home.import")
                     Button("Or just chat with a model") { newChat() }
                         .font(.subheadline)
                         .accessibilityIdentifier("home.justChat")
@@ -146,6 +155,7 @@ struct ServerListView: View {
             }
         }
         .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
+        .sheet(isPresented: $importing) { ImportServersView() }
         .sheet(item: $editing) { ServerEditorView(server: $0) }
         .sheet(isPresented: $showingSettings) { SettingsView() }
     }

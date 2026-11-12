@@ -1545,6 +1545,16 @@
         }
       }
     },
+    "Already in Deckhand": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schon in Deckhand"
+          }
+        }
+      }
+    },
     "Also": {
       "localizations": {
         "de": {
@@ -2944,6 +2954,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auswählen"
+          }
+        }
+      }
+    },
+    "Choose files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien auswählen"
           }
         }
       }
@@ -5975,6 +5995,16 @@
         }
       }
     },
+    "Found %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gefunden"
+          }
+        }
+      }
+    },
     "From": {
       "localizations": {
         "de": {
@@ -6420,6 +6450,16 @@
         }
       }
     },
+    "Import %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld importieren"
+          }
+        }
+      }
+    },
     "Import Private Key…": {
       "localizations": {
         "de": {
@@ -6440,12 +6480,42 @@
         }
       }
     },
+    "Import from another SSH app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus einer anderen SSH-App importieren"
+          }
+        }
+      }
+    },
+    "Import servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server importieren"
+          }
+        }
+      }
+    },
     "Imported %lld servers. Restart Deckhand to load the settings.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld Server importiert. Starte Deckhand neu, um die Einstellungen zu laden."
+          }
+        }
+      }
+    },
+    "Imported. %lld of them need a password or key — swipe a server on the home screen and tap Edit.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importiert. %lld davon brauchen ein Passwort oder einen Schlüssel – wische auf dem Startbildschirm über einen Server und tippe auf Bearbeiten."
           }
         }
       }
@@ -7026,6 +7096,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel"
+          }
+        }
+      }
+    },
+    "Key %@ added.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel %@ hinzugefügt."
+          }
+        }
+      }
+    },
+    "Key %@ found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel %@ gefunden"
+          }
+        }
+      }
+    },
+    "Key %@ not chosen — add it or sign in with a password later": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel %@ nicht ausgewählt – füge ihn hinzu oder melde dich später mit einem Passwort an"
           }
         }
       }
@@ -8510,6 +8610,16 @@
         }
       }
     },
+    "No servers found in %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Server in %@ gefunden."
+          }
+        }
+      }
+    },
     "No shared schemes found.": {
       "localizations": {
         "de": {
@@ -9439,6 +9549,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code einfügen …"
+          }
+        }
+      }
+    },
+    "Paste from the clipboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus der Zwischenablage einfügen"
           }
         }
       }
@@ -15672,6 +15792,16 @@
         }
       }
     },
+    "Your ~/.ssh/config, a CSV export (Termius and others) and the private key files it names — pick them together. Keys stay on this iPhone, in its Keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine ~/.ssh/config, ein CSV-Export (Termius und andere) und die privaten Schlüsseldateien, die darin genannt werden – wähle sie zusammen aus. Schlüssel bleiben auf diesem iPhone, im Schlüsselbund."
+          }
+        }
+      }
+    },
     "banned now": {
       "localizations": {
         "de": {
@@ -16140,6 +16270,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "systemd: Status, Neustart, Logs"
+          }
+        }
+      }
+    },
+    "the clipboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "der Zwischenablage"
           }
         }
       }
