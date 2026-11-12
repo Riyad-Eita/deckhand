@@ -834,6 +834,16 @@
         }
       }
     },
+    "A push when a job fails or stops running": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Mitteilung, wenn ein Job fehlschlägt oder nicht mehr läuft"
+          }
+        }
+      }
+    },
     "A real terminal": {
       "localizations": {
         "de": {
@@ -1914,6 +1924,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fragt nach Face ID, dann nach deinem sudo-Passwort."
+          }
+        }
+      }
+    },
+    "At every boot": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei jedem Start"
           }
         }
       }
@@ -4370,6 +4390,16 @@
         }
       }
     },
+    "Didn't run on time (noticed %@)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lief nicht rechtzeitig (bemerkt %@)"
+          }
+        }
+      }
+    },
     "Disable": {
       "extractionState": "manual",
       "localizations": {
@@ -5065,12 +5095,52 @@
         }
       }
     },
+    "Every day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Tag"
+          }
+        }
+      }
+    },
+    "Every hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Stunde"
+          }
+        }
+      }
+    },
     "Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This iPhone's own keys can't be removed here.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses iPhones lassen sich hier nicht entfernen."
+          }
+        }
+      }
+    },
+    "Every minute": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Minute"
+          }
+        }
+      }
+    },
+    "Every month": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Monat"
           }
         }
       }
@@ -5091,6 +5161,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jede Nacht um %@"
+          }
+        }
+      }
+    },
+    "Every week": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Woche"
           }
         }
       }
@@ -5281,6 +5361,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Failed %@ with exit code %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagen %1$@ mit Exit-Code %2$lld"
           }
         }
       }
@@ -6830,12 +6920,32 @@
         }
       }
     },
+    "Last output": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Ausgabe"
+          }
+        }
+      }
+    },
     "Last result": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Letztes Ergebnis"
+          }
+        }
+      }
+    },
+    "Last run %@, %lld s": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuletzt gelaufen %1$@, %2$lld s"
           }
         }
       }
@@ -7966,6 +8076,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kein üblicher Port hat geantwortet."
+          }
+        }
+      }
+    },
+    "No cron jobs for %@ yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Cron-Jobs für %@."
           }
         }
       }
@@ -12098,6 +12218,16 @@
         }
       }
     },
+    "Stop watching": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr überwachen"
+          }
+        }
+      }
+    },
     "Stopped": {
       "localizations": {
         "de": {
@@ -12698,6 +12828,16 @@
         }
       }
     },
+    "The crontab changed in the meantime. Pull to refresh and try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Crontab hat sich inzwischen geändert. Zum Aktualisieren ziehen und erneut versuchen."
+          }
+        }
+      }
+    },
     "The database most apps want.": {
       "localizations": {
         "de": {
@@ -13204,6 +13344,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das ist keine Deckhand-Backup-Datei."
+          }
+        }
+      }
+    },
+    "This job passes input with % — it can't be watched without changing it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Job übergibt Eingaben mit % – ohne ihn zu ändern, lässt er sich nicht überwachen."
           }
         }
       }
@@ -14359,12 +14509,42 @@
         }
       }
     },
+    "Watch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überwachen"
+          }
+        }
+      }
+    },
     "Watch a domain": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Domain überwachen"
+          }
+        }
+      }
+    },
+    "Watched jobs run through a small wrapper that records each run. You get a push when a run fails or when a job hasn't run on time. Jobs of %@ only.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überwachte Jobs laufen über einen kleinen Wrapper, der jeden Lauf aufzeichnet. Du bekommst eine Mitteilung, wenn ein Lauf fehlschlägt oder ein Job nicht rechtzeitig lief. Nur Jobs von %@."
+          }
+        }
+      }
+    },
+    "Watching — no run yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird überwacht – noch kein Lauf"
           }
         }
       }
