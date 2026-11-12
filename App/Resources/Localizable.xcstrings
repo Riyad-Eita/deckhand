@@ -488,6 +488,16 @@
         }
       }
     },
+    "%lld rows": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zeilen"
+          }
+        }
+      }
+    },
     "%lld running": {
       "localizations": {
         "de": {
@@ -1696,6 +1706,16 @@
         }
       }
     },
+    "Ask": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fragen"
+          }
+        }
+      }
+    },
     "Ask anything": {
       "localizations": {
         "de": {
@@ -1724,6 +1744,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jedes Mal fragen"
+          }
+        }
+      }
+    },
+    "Ask in plain language": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Alltagssprache fragen"
           }
         }
       }
@@ -2544,6 +2574,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfen, ob es funktioniert"
+          }
+        }
+      }
+    },
+    "Check it, change it if you like — it runs in a read-only transaction.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe sie und ändere sie, wenn du willst – sie läuft in einer nur lesenden Transaktion."
           }
         }
       }
@@ -5720,6 +5760,16 @@
         }
       }
     },
+    "How many orders came in this week?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie viele Bestellungen kamen diese Woche rein?"
+          }
+        }
+      }
+    },
     "How requests flow": {
       "localizations": {
         "de": {
@@ -7200,6 +7250,16 @@
         }
       }
     },
+    "Needs a model key in Settings. Your model sees the table and column names, not the data — until you run the query and ask for the answer.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht einen Modell-Schlüssel in den Einstellungen. Dein Modell sieht die Tabellen- und Spaltennamen, nicht die Daten – bis du die Abfrage ausführst und nach der Antwort fragst."
+          }
+        }
+      }
+    },
     "Needs attention": {
       "localizations": {
         "de": {
@@ -8263,6 +8323,16 @@
         }
       }
     },
+    "Only single reading queries run here. Use SQL with “Allow changes” for anything else.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier laufen nur einzelne lesende Abfragen. Für alles andere nutze SQL mit „Änderungen erlauben“."
+          }
+        }
+      }
+    },
     "Only the folders at the end of the command are reachable. Mostly useful for the own-key agent; Claude Code and Codex can already work with files.": {
       "localizations": {
         "de": {
@@ -9121,6 +9191,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abfragen laufen dann echt gegen %@. Ohne das laufen sie in einer Nur-Lesen-Transaktion."
+          }
+        }
+      }
+    },
+    "Query": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abfrage"
           }
         }
       }
@@ -10083,6 +10163,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plan ausführen"
+          }
+        }
+      }
+    },
+    "Run read-only": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur lesend ausführen"
           }
         }
       }
@@ -13942,6 +14032,16 @@
         }
       }
     },
+    "Write the query": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abfrage schreiben"
+          }
+        }
+      }
+    },
     "Writes four decoy files and starts a small watcher (python3) that pushes to %@ when one is opened.": {
       "localizations": {
         "de": {
@@ -14068,6 +14168,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Modell-Key"
+          }
+        }
+      }
+    },
+    "Your model sees the table and column names to write the query; the result goes to it only for the short answer.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Modell sieht die Tabellen- und Spaltennamen, um die Abfrage zu schreiben; das Ergebnis bekommt es nur für die kurze Antwort."
           }
         }
       }

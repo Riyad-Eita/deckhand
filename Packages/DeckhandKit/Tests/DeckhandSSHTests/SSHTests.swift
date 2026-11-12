@@ -838,8 +838,15 @@ struct LiveDatabaseBrowserTests {
         #expect(try await grid(pg, "select total from orders where id = \(id)").get().rows.first?.first == "43")
         _ = try await grid(pg, "update orders set total = 42 where id = \(id)", writes: true).get()
 
+        // Ask in plain language: the schema the model gets, and a generated query run read-only.
+        let schema = AskDatabase.schemaText(try await grid(pg, AskDatabase.schemaSQL(pg)).get())
+        #expect(schema.contains("public.orders(id integer, total") && schema.contains("public.customers("))
+        let asked = try #require(AskDatabase.sql(in: "```sql\nselect count(*) as n from orders\n```"))
+        #expect(try await grid(pg, asked).get().rows.first?.first == "2")
+
         let lite = DatabaseBrowser.Database(engine: .sqlite, location: "/home/\(env["DECKHAND_BACKUP_USER"]!)/app/data.db", name: "data.db")
         #expect(try await grid(lite, DatabaseBrowser.tablesSQL(lite)).get().rows.first?.first == "notes")
+        #expect(AskDatabase.schemaText(try await grid(lite, AskDatabase.schemaSQL(lite)).get()).hasPrefix("notes("))
         if case .success = try await grid(lite, "delete from notes") { Issue.record("sqlite read-only should refuse") }
 
         let redis = try #require(DatabaseBrowser.parseRedisDiscovery(try await conn.run(DatabaseBrowser.redisDiscoverCommand, timeout: .seconds(20)).stdout).first)
