@@ -43,6 +43,28 @@ final class AppStoreUITests: XCTestCase {
         }
     }
 
+    func testDraftAndPostAReply() throws {
+        let app = launch(["DECKHAND_SEED_ASC": "demo", "DECKHAND_SEED_EXPLAIN": "Thanks for the report — the double entries are fixed in 2.4, which is in review now."])
+        let weather = app.buttons["asc.app.Weather Lab"]
+        XCTAssertTrue(weather.waitForExistence(timeout: 20))
+        weather.tap()
+        let reviews = app.buttons["asc.reviews"]
+        XCTAssertTrue(reviews.waitForExistence(timeout: 20))
+        reviews.tap()
+        XCTAssertTrue(app.buttons["review.rv2"].waitForExistence(timeout: 20))
+        app.buttons["1–2 ★"].tap()
+        XCTAssertFalse(app.buttons["review.rv2"].exists)
+        app.buttons["review.rv1"].tap()
+        app.buttons["reply.draft"].tap()
+        let text = app.textViews["reply.text"]
+        XCTAssertTrue(text.waitForExistence(timeout: 10))
+        XCTAssertTrue((text.value as? String)?.hasPrefix("Thanks for the report") == true)
+        let s = XCTAttachment(screenshot: app.screenshot()); s.name = "reply"; s.lifetime = .keepAlways; add(s)
+        app.buttons["reply.post"].tap()
+        app.buttons["Post reply"].tap()
+        XCTAssertTrue(app.buttons["reply.post"].waitForNonExistence(timeout: 10))
+    }
+
     func testConnectWithRealKey() throws {
         guard let key = ProcessInfo.processInfo.environment["DECKHAND_ASC_KEY"] else { throw XCTSkip("No App Store Connect key") }
         let app = launch(["DECKHAND_SEED_ASC_KEY": key])

@@ -378,6 +378,16 @@
         }
       }
     },
+    "%lld / 5970 · Public on the App Store once Apple has published it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld / 5970 · Öffentlich im App Store, sobald Apple sie veröffentlicht hat."
+          }
+        }
+      }
+    },
     "%lld CPU · %@ memory": {
       "localizations": {
         "de": {
@@ -1605,6 +1615,16 @@
         }
       }
     },
+    "Answered": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beantwortet"
+          }
+        }
+      }
+    },
     "Anthropic (Claude)": {
       "extractionState": "manual",
       "localizations": {
@@ -2584,6 +2604,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Job ändern"
+          }
+        }
+      }
+    },
+    "Change reply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort ändern"
           }
         }
       }
@@ -4852,6 +4882,46 @@
         }
       }
     },
+    "Draft a reply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort entwerfen"
+          }
+        }
+      }
+    },
+    "Drafted on this iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem iPhone entworfen."
+          }
+        }
+      }
+    },
+    "Drafted with your key (%@).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deinem Schlüssel entworfen (%@)."
+          }
+        }
+      }
+    },
+    "Drafts need Apple Intelligence on this iPhone or a model key in Settings — or just write it yourself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entwürfe brauchen Apple Intelligence auf diesem iPhone oder einen Modell-Schlüssel in den Einstellungen – oder schreib die Antwort einfach selbst."
+          }
+        }
+      }
+    },
     "Dump now": {
       "localizations": {
         "de": {
@@ -6740,6 +6810,16 @@
         }
       }
     },
+    "It appears under the review on the App Store.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie erscheint unter der Rezension im App Store."
+          }
+        }
+      }
+    },
     "It belongs to %@ — Deckhand asks for your sudo password. Unsaved work in it is lost.": {
       "localizations": {
         "de": {
@@ -6766,6 +6846,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Es lauscht auf %1$@:%2$lld. Binde es an 127.0.0.1 oder schließe den Port in der Firewall."
+          }
+        }
+      }
+    },
+    "It replaces your current reply.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie ersetzt deine aktuelle Antwort."
           }
         }
       }
@@ -8380,6 +8470,26 @@
         }
       }
     },
+    "No reviews with this rating.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Rezensionen mit dieser Bewertung."
+          }
+        }
+      }
+    },
+    "No reviews yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Rezensionen."
+          }
+        }
+      }
+    },
     "No risks found": {
       "localizations": {
         "de": {
@@ -8609,6 +8719,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notizen gelöscht."
+          }
+        }
+      }
+    },
+    "Notes for the draft (optional): fixed in 1.3, coming next month …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen für den Entwurf (optional): behoben in 1.3, kommt nächsten Monat …"
           }
         }
       }
@@ -9563,6 +9683,36 @@
         }
       }
     },
+    "Post": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veröffentlichen"
+          }
+        }
+      }
+    },
+    "Post reply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort veröffentlichen"
+          }
+        }
+      }
+    },
+    "Post this reply publicly?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Antwort öffentlich veröffentlichen?"
+          }
+        }
+      }
+    },
     "PostgreSQL for one address (5432)": {
       "localizations": {
         "de": {
@@ -9911,6 +10061,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vom Anbieter ausgebremst (Rate Limit). %@"
+          }
+        }
+      }
+    },
+    "Rating": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertung"
+          }
+        }
+      }
+    },
+    "Ratings and reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertungen und Rezensionen"
           }
         }
       }
@@ -10442,6 +10612,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passphrase wiederholen"
+          }
+        }
+      }
+    },
+    "Reply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort"
           }
         }
       }
@@ -15298,6 +15478,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Code"
+          }
+        }
+      }
+    },
+    "Your current reply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine aktuelle Antwort"
           }
         }
       }

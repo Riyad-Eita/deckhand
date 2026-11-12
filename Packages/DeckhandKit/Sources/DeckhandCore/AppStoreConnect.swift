@@ -244,16 +244,45 @@ public enum AppStoreConnect {
         }
 
         func get(_ path: String) async throws -> Document {
+            try decode(try await send("GET", path))
+        }
+
+        /// One request; the body as JSON. Errors carry App Store Connect's own detail text.
+        @discardableResult
+        func send(_ method: String, _ path: String, body: [String: Any]? = nil) async throws -> Data {
             guard let url = URL(string: Self.base + path) else { throw Failure.http(0, "bad path") }
             var req = URLRequest(url: url, timeoutInterval: 30)
+            req.httpMethod = method
             req.setValue("Bearer " + (try token(credentials)), forHTTPHeaderField: "Authorization")
+            if let body {
+                req.httpBody = try JSONSerialization.data(withJSONObject: body)
+                req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            }
             let (data, code) = try await fetch(req)
             guard (200..<300).contains(code) else {
                 let detail = (try? JSONSerialization.jsonObject(with: data) as? [String: Any])
                     .flatMap { ($0["errors"] as? [[String: Any]])?.first?["detail"] as? String } ?? ""
                 throw Failure.http(code, detail)
             }
-            return try decode(data)
+            return data
+        }
+
+        /// The newest reviews (up to 100) with the developer's response, if any.
+        public func reviews(app: String) async throws -> [Review] {
+            AppStoreConnect.reviews(try await get("/v1/apps/\(app)/customerReviews?sort=-createdDate&limit=100&include=response"
+                + "&fields[customerReviewResponses]=responseBody,lastModifiedDate,state"))
+        }
+
+        /// Posts the reply; an existing one is deleted first (App Store Connect keeps one per review).
+        public func reply(to review: Review, body: String) async throws {
+            if let existing = review.response { try await send("DELETE", "/v1/customerReviewResponses/\(existing.id)") }
+            try await send("POST", "/v1/customerReviewResponses", body: [
+                "data": [
+                    "type": "customerReviewResponses",
+                    "attributes": ["responseBody": body],
+                    "relationships": ["review": ["data": ["type": "customerReviews", "id": review.id]]],
+                ] as [String: Any],
+            ])
         }
 
         public func apps() async throws -> [App] {
@@ -279,6 +308,50 @@ public enum AppStoreConnect {
             }
             return o
         }
+    }
+
+    // MARK: Customer reviews
+
+    public struct Review: Sendable, Hashable, Identifiable {
+        public struct Response: Sendable, Hashable { public var id: String; public var body: String; public var state: String }
+        public var id: String
+        public var rating: Int
+        public var title: String
+        public var body: String
+        public var nickname: String
+        public var date: Date?
+        /// ISO 3166 alpha-3, e.g. `DEU`.
+        public var territory: String
+        public var response: Response?
+    }
+
+    static func reviews(_ d: Document) -> [Review] {
+        let inc = Dictionary((d.included ?? []).map { ("\($0.type)/\($0.id)", $0) }, uniquingKeysWith: { a, _ in a })
+        return d.data.map { r in
+            let resp = r.relationships?["response"]?.data.flatMap { inc["\($0.type)/\($0.id)"] }
+            return Review(id: r.id, rating: r.attributes?["rating"]?.intValue ?? 0, title: r.string("title") ?? "",
+                          body: r.string("body") ?? "", nickname: r.string("reviewerNickname") ?? "", date: r.date("createdDate"),
+                          territory: r.string("territory") ?? "",
+                          response: resp.map { Review.Response(id: $0.id, body: $0.string("responseBody") ?? "", state: $0.string("state") ?? "") })
+        }
+    }
+
+    /// Instructions for drafting a reply (on-device model or the user's key).
+    public static let replyInstructions = """
+    You write the developer's public reply to an App Store review. Use the review's language. Be warm, concrete and \
+    short (2–4 sentences, under 600 characters): thank them, answer the actual point, say what changed or what's \
+    planned only if the developer's notes say so, and invite them to get in touch for bugs. No promises, no \
+    marketing phrases, no emojis, no signature. Answer with the reply text only.
+    """
+
+    public static func replyPrompt(_ r: Review, app: String, notes: String = "") -> String {
+        """
+        App: \(app)
+        Rating: \(r.rating) of 5\(r.territory.isEmpty ? "" : " (store \(r.territory))")
+        Title: \(r.title)
+        Review: \(r.body)
+        \(notes.isEmpty ? "" : "Developer's notes: \(notes)")
+        """
     }
 
     // MARK: Review watch
