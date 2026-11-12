@@ -44,6 +44,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.files")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            EnvVaultView(server: server)
+                        } label: {
+                            ManageRow(title: "Environment files", subtitle: ".env secrets kept on your iPhone, with history", symbol: "key.viewfinder")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.vault")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             ProcessesView(server: server)
                         } label: {
                             ManageRow(title: "Processes", subtitle: "What uses CPU and memory; end stuck processes", symbol: "cpu")

@@ -95,6 +95,16 @@
         }
       }
     },
+    "%@ exists but your user can't read it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ existiert, aber dein Benutzer kann sie nicht lesen."
+          }
+        }
+      }
+    },
     "%@ forwards to %@, but nothing listens there.": {
       "localizations": {
         "de": {
@@ -668,6 +678,16 @@
         }
       }
     },
+    "%lld variables": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Variablen"
+          }
+        }
+      }
+    },
     "%lld warnings": {
       "localizations": {
         "de": {
@@ -683,6 +703,16 @@
     },
     "..": {
       "shouldTranslate": false
+    },
+    ".env secrets kept on your iPhone, with history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".env-Geheimnisse auf deinem iPhone, mit Verlauf"
+          }
+        }
+      }
     },
     "1 thing to look at": {
       "localizations": {
@@ -1060,6 +1090,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Domain hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei hinzufügen"
           }
         }
       }
@@ -1591,6 +1631,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine App namens %@ ist schon installiert."
+          }
+        }
+      }
+    },
+    "An existing file is read into the vault; a new one starts empty.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine vorhandene Datei wird übernommen; eine neue beginnt leer."
           }
         }
       }
@@ -2574,6 +2624,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zertifikate und Domains"
+          }
+        }
+      }
+    },
+    "Change %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ändern"
           }
         }
       }
@@ -3769,6 +3829,16 @@
         }
       }
     },
+    "Couldn't put the file in place.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei konnte nicht an ihren Platz gelegt werden."
+          }
+        }
+      }
+    },
     "Couldn't reach the topic.": {
       "localizations": {
         "de": {
@@ -4035,6 +4105,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cron-Jobs"
+          }
+        }
+      }
+    },
+    "Current": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuell"
           }
         }
       }
@@ -5104,6 +5184,16 @@
         }
       }
     },
+    "Encrypted in this iPhone's Keychain, with the last 30 versions. Written to the server as 0600 files over SFTP — the values never appear in a command line.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsselt im Schlüsselbund dieses iPhones, mit den letzten 30 Versionen. Per SFTP als 0600-Datei auf den Server geschrieben – die Werte erscheinen nie in einer Befehlszeile."
+          }
+        }
+      }
+    },
     "Encrypted nightly backups with restic; browse and restore": {
       "localizations": {
         "de": {
@@ -5220,6 +5310,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gib diesen Code auf der Seite ein"
+          }
+        }
+      }
+    },
+    "Environment files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgebungsdateien"
           }
         }
       }
@@ -6266,6 +6366,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geheimnisse ausblenden"
+          }
+        }
+      }
+    },
+    "Hide value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert ausblenden"
           }
         }
       }
@@ -8460,6 +8570,16 @@
         }
       }
     },
+    "No files yet. Add an app's .env to keep it here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Dateien. Füge die .env einer App hinzu, um sie hier aufzubewahren."
+          }
+        }
+      }
+    },
     "No iPhone simulator is installed on the Mac. Add one in Xcode → Settings → Components.": {
       "localizations": {
         "de": {
@@ -8809,6 +8929,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht für externe Tests eingereicht"
+          }
+        }
+      }
+    },
+    "Not written yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht geschrieben."
           }
         }
       }
@@ -12187,6 +12317,16 @@
         }
       }
     },
+    "Show value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert anzeigen"
+          }
+        }
+      }
+    },
     "Showing the first %@ of %@.": {
       "localizations": {
         "de": {
@@ -13308,6 +13448,16 @@
         }
       }
     },
+    "The app using it may need a restart to pick it up. The previous file stays as .deckhand-prev next to it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App, die sie nutzt, muss eventuell neu starten. Die vorherige Datei bleibt als .deckhand-prev daneben liegen."
+          }
+        }
+      }
+    },
     "The build lands in TestFlight. Nothing is submitted for review.": {
       "localizations": {
         "de": {
@@ -13904,6 +14054,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel dieses iPhones"
+          }
+        }
+      }
+    },
+    "This is what's on the server (as of the last write or import).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So steht es auf dem Server (Stand des letzten Schreibens oder Imports)."
           }
         }
       }
@@ -14999,6 +15159,16 @@
         }
       }
     },
+    "Variables": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Variablen"
+          }
+        }
+      }
+    },
     "View": {
       "localizations": {
         "de": {
@@ -15512,6 +15682,26 @@
         }
       }
     },
+    "Write": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreiben"
+          }
+        }
+      }
+    },
+    "Write %@ on %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ auf %2$@ schreiben?"
+          }
+        }
+      }
+    },
     "Write the query": {
       "localizations": {
         "de": {
@@ -15522,12 +15712,42 @@
         }
       }
     },
+    "Write to the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf den Server schreiben"
+          }
+        }
+      }
+    },
     "Writes four decoy files and starts a small watcher (python3) that pushes to %@ when one is opened.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Schreibt vier Köder-Dateien und startet einen kleinen Wächter (python3), der an %@ pusht, wenn eine geöffnet wird."
+          }
+        }
+      }
+    },
+    "Written as 0600.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als 0600 geschrieben."
+          }
+        }
+      }
+    },
+    "Written to the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf den Server geschrieben"
           }
         }
       }
@@ -16419,6 +16639,36 @@
     },
     "·": {
       "shouldTranslate": false
+    },
+    "· changed on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· auf dem Server geändert"
+          }
+        }
+      }
+    },
+    "· in sync": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· aktuell"
+          }
+        }
+      }
+    },
+    "· missing on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· fehlt auf dem Server"
+          }
+        }
+      }
     },
     "“.” and “..” can't be used as names.": {
       "localizations": {
