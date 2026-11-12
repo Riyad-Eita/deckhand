@@ -208,8 +208,10 @@ public actor SSHConnection: StreamingShell {
     /// Uploads `data` into `directory` (may start with `~`) as `name`, never overwriting: `photo.jpg` becomes
     /// `photo-2.jpg` if needed. Uses SFTP, or base64 chunks over exec when the server has no SFTP.
     /// Returns the absolute path. `progress` gets 0…1.
+    /// `commandLineFallback` false: fail instead of sending the data as command lines (for secrets, which must
+    /// never show up in a process list).
     public func upload(
-        _ data: Data, named name: String, into directory: String, useSFTP: Bool = true,
+        _ data: Data, named name: String, into directory: String, useSFTP: Bool = true, commandLineFallback: Bool = true,
         progress: @escaping @Sendable (Double) -> Void
     ) async throws -> String {
         let safe = name.replacingOccurrences(of: "/", with: "-").trimmingCharacters(in: .whitespaces)
@@ -236,6 +238,7 @@ public actor SSHConnection: StreamingShell {
                 }
             }
         } catch {
+            guard commandLineFallback else { throw SSHError.unsupportedKey("This server has no SFTP, so secrets can't be written safely.") }
             // No SFTP subsystem: send base64 in pieces small enough for a command line.
             let piece = 48 * 1024
             _ = try await run(": > \(ShellQuote.quote(path))", timeout: .seconds(20))
