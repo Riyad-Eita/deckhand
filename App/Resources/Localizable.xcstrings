@@ -22,6 +22,16 @@
         }
       }
     },
+    "%@ %@ on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@ auf %3$@"
+          }
+        }
+      }
+    },
     "%@ %@?": {
       "shouldTranslate": false
     },
@@ -980,6 +990,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Konten"
+          }
+        }
+      }
+    },
+    "Action": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktion"
           }
         }
       }
@@ -2774,6 +2794,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Änderungen"
+          }
+        }
+      }
+    },
+    "Chat": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chat"
           }
         }
       }
@@ -6045,6 +6075,16 @@
         }
       }
     },
+    "Folders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
+          }
+        }
+      }
+    },
     "Folders your login user can read. Databases are best backed up as dumps into one of these folders.": {
       "localizations": {
         "de": {
@@ -6283,6 +6323,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Risiken mit einem Agenten durchgehen"
+          }
+        }
+      }
+    },
+    "Go to": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gehe zu"
           }
         }
       }
@@ -9253,6 +9303,16 @@
         }
       }
     },
+    "On which server?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf welchem Server?"
+          }
+        }
+      }
+    },
     "One server after another; the rest are skipped after a failure.": {
       "localizations": {
         "de": {
@@ -12027,6 +12087,16 @@
         }
       }
     },
+    "Servers, tasks, or an action": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server, Aufgaben oder eine Aktion"
+          }
+        }
+      }
+    },
     "Serves %@ from %@ with HTTPS (installs Caddy if needed).": {
       "localizations": {
         "de": {
@@ -12788,6 +12858,16 @@
         }
       }
     },
+    "Stop %@ on %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ auf %2$@ stoppen?"
+          }
+        }
+      }
+    },
     "Stop %@?": {
       "localizations": {
         "de": {
@@ -13164,6 +13244,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aufgabe abgebrochen"
+          }
+        }
+      }
+    },
+    "Tasks and chats": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgaben und Chats"
           }
         }
       }
@@ -14524,6 +14614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versuch es erneut. Wenn es immer wieder passiert, helfen die Details."
+          }
+        }
+      }
+    },
+    "Try “restart nginx on web-1”, “logs of shop”, or a server or task name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probier „restart nginx on web-1“, „logs of shop“ oder den Namen eines Servers oder einer Aufgabe."
           }
         }
       }
