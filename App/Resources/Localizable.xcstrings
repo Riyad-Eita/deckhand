@@ -478,6 +478,16 @@
         }
       }
     },
+    "%lld findings to look at": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Funde zum Ansehen"
+          }
+        }
+      }
+    },
     "%lld hidden": {
       "localizations": {
         "de": {
@@ -854,6 +864,16 @@
         }
       }
     },
+    "A hidden file inside an installed package (often test data or a placeholder). Usually harmless — check which package owns it with dpkg -S.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine versteckte Datei in einem installierten Paket (oft Testdaten oder ein Platzhalter). Meist harmlos — mit dpkg -S prüfen, zu welchem Paket sie gehört."
+          }
+        }
+      }
+    },
     "A plain chat with %@. No server, no tools — switch the model any time from the title.": {
       "localizations": {
         "de": {
@@ -870,6 +890,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein anderer Port als 22 hält die meisten automatischen Login-Versuche fern. Hat dein Hoster eine eigene Firewall (Security Groups, Cloud-Firewall), gib den neuen Port dort zuerst frei."
+          }
+        }
+      }
+    },
+    "A program listens to all network traffic — expected for Docker networks, tcpdump or VPN software.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Programm hört den gesamten Netzwerkverkehr mit — erwartet bei Docker-Netzwerken, tcpdump oder VPN-Software."
           }
         }
       }
@@ -924,12 +954,32 @@
         }
       }
     },
+    "A system file changed since the baseline — normal after package updates. Re-baseline after updating (Install again) or check the package that owns it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Systemdatei hat sich seit der Basis geändert — normal nach Paket-Updates. Nach Updates neu erfassen (erneut installieren) oder das zugehörige Paket prüfen."
+          }
+        }
+      }
+    },
     "A system file every user can write is an easy way to become root.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Eine Systemdatei, die jeder Nutzer ändern kann, ist ein einfacher Weg zu root."
+          }
+        }
+      }
+    },
+    "A weekly scan sends a push only for new findings you haven't muted. Scans can take a few minutes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein wöchentlicher Scan schickt nur für neue, nicht stummgeschaltete Funde einen Push. Scans können ein paar Minuten dauern."
           }
         }
       }
@@ -1635,6 +1685,16 @@
         }
       }
     },
+    "Also install ClamAV (about 300 MB)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch ClamAV installieren (etwa 300 MB)"
+          }
+        }
+      }
+    },
     "Also reachable from outside": {
       "localizations": {
         "de": {
@@ -1952,6 +2012,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fragen"
+          }
+        }
+      }
+    },
+    "Ask an agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agent fragen"
           }
         }
       }
@@ -3074,6 +3144,16 @@
           "stringUnit": {
             "state": "translated",
             "value": ".p8-Datei auswählen"
+          }
+        }
+      }
+    },
+    "ClamAV found a known malware signature in this file. Look at it before deleting — and find out how it got there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ClamAV hat in dieser Datei eine bekannte Malware-Signatur gefunden. Sieh sie dir vor dem Löschen an — und finde heraus, wie sie dorthin kam."
           }
         }
       }
@@ -5415,6 +5495,16 @@
         }
       }
     },
+    "Every Sunday at 04:30": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Sonntag um 04:30"
+          }
+        }
+      }
+    },
     "Every account that can log in is a door. Accounts without a password are an open door.": {
       "localizations": {
         "de": {
@@ -5855,6 +5945,16 @@
         }
       }
     },
+    "Files in /dev that aren't devices — common in containers and with some drivers.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien in /dev, die keine Geräte sind — üblich in Containern und bei manchen Treibern."
+          }
+        }
+      }
+    },
     "Files moved to the trash on the server.": {
       "localizations": {
         "de": {
@@ -5931,6 +6031,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine Adresse wird ermittelt …"
+          }
+        }
+      }
+    },
+    "Findings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funde"
           }
         }
       }
@@ -6410,12 +6520,32 @@
         }
       }
     },
+    "Hidden files in system folders — often normal ones like /etc/.updated or /dev/.lxc. Check the path; mute it if you know it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versteckte Dateien in Systemordnern — oft normale wie /etc/.updated oder /dev/.lxc. Pfad prüfen; stummschalten, wenn du ihn kennst."
+          }
+        }
+      }
+    },
     "Hide Secrets": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Geheimnisse verbergen"
+          }
+        }
+      }
+    },
+    "Hide muted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stummgeschaltete ausblenden"
           }
         }
       }
@@ -6826,6 +6956,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apps installieren"
+          }
+        }
+      }
+    },
+    "Install scanners": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanner installieren"
           }
         }
       }
@@ -7450,6 +7590,16 @@
         }
       }
     },
+    "Last scan %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Scan %@"
+          }
+        }
+      }
+    },
     "Later": {
       "localizations": {
         "de": {
@@ -7870,6 +8020,16 @@
         }
       }
     },
+    "Malware scans": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Malware-Scans"
+          }
+        }
+      }
+    },
     "Max": {
       "localizations": {
         "de": {
@@ -8086,6 +8246,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf ein neues iPhone umziehen"
+          }
+        }
+      }
+    },
+    "Mute": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stummschalten"
           }
         }
       }
@@ -8650,6 +8820,16 @@
         }
       }
     },
+    "No kernel modules folder — normal in containers, which share the host's kernel.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Ordner für Kernel-Module — normal in Containern, die den Kernel des Hosts teilen."
+          }
+        }
+      }
+    },
     "No keys.": {
       "localizations": {
         "de": {
@@ -8983,6 +9163,16 @@
         }
       }
     },
+    "Not scanned yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht gescannt"
+          }
+        }
+      }
+    },
     "Not submitted for external testing": {
       "localizations": {
         "de": {
@@ -9089,6 +9279,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts gesammelt."
+          }
+        }
+      }
+    },
+    "Nothing found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts gefunden"
           }
         }
       }
@@ -9249,6 +9449,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf %@"
+          }
+        }
+      }
+    },
+    "On Debian and Ubuntu some tools (like lwp-request) are scripts by design. Usually harmless.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter Debian und Ubuntu sind manche Tools (wie lwp-request) absichtlich Skripte. Meist harmlos."
           }
         }
       }
@@ -11287,6 +11497,16 @@
         }
       }
     },
+    "Rootkits and known malware, weekly, explained": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rootkits und bekannte Malware, wöchentlich, erklärt"
+          }
+        }
+      }
+    },
     "Rotate": {
       "localizations": {
         "de": {
@@ -11577,6 +11797,16 @@
         }
       }
     },
+    "SSH allows root logins. Not malware — a setting to tighten under Security.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH erlaubt Root-Logins. Keine Malware — eine Einstellung, die du unter Sicherheit verschärfen kannst."
+          }
+        }
+      }
+    },
     "SSH already uses this port.": {
       "localizations": {
         "de": {
@@ -11753,6 +11983,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erneut scannen"
+          }
+        }
+      }
+    },
+    "Scan now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt scannen"
           }
         }
       }
@@ -12363,6 +12603,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anzeigen"
+          }
+        }
+      }
+    },
+    "Show %lld muted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld stummgeschaltete zeigen"
           }
         }
       }
@@ -14948,6 +15198,16 @@
         }
       }
     },
+    "Unmute": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wieder melden"
+          }
+        }
+      }
+    },
     "Unstage": {
       "localizations": {
         "de": {
@@ -16202,6 +16462,16 @@
         }
       }
     },
+    "chkrootkit's Suckit check often misfires on modern systemd. Usually a false positive.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Suckit-Prüfung von chkrootkit schlägt bei modernem systemd oft falsch an. Meist ein Fehlalarm."
+          }
+        }
+      }
+    },
     "container": {
       "localizations": {
         "de": {
@@ -16441,6 +16711,16 @@
         }
       }
     },
+    "muted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "stumm"
+          }
+        }
+      }
+    },
     "n8n, Nextcloud, Uptime Kuma, Postgres … in one tap": {
       "localizations": {
         "de": {
@@ -16570,6 +16850,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "schreibgeschützt"
+          }
+        }
+      }
+    },
+    "rkhunter and chkrootkit look for rootkits and tampered system files; ClamAV looks for known malware in home and web folders.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rkhunter und chkrootkit suchen nach Rootkits und manipulierten Systemdateien; ClamAV sucht bekannte Malware in Home- und Web-Ordnern."
           }
         }
       }
