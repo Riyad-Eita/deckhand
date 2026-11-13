@@ -203,7 +203,7 @@ final class ChatModel {
                 HouseRulesStore.set(rules, for: server)
                 let ruleCheck = rules == nil ? nil : Self.ruleChecker(shell: shell, workingDirectory: thread.workingDirectory)
                 let agent = Agent(
-                    provider: Providers.make(config),
+                    provider: AppProviders.make(config),
                     shell: shell,
                     tools: planning ? PlanMode.tools(ServerTools.all(workingDirectory: thread.workingDirectory))
                         : ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,

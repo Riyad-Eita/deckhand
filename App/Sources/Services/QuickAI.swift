@@ -41,7 +41,7 @@ enum QuickAI {
             return nil
         }
         let config = AppSettings.shared.providerConfig
-        let text = try await Providers.make(config).complete(system: instructions, prompt: prompt, maxTokens: 800)
+        let text = try await AppProviders.make(config).complete(system: instructions, prompt: prompt, maxTokens: 800)
         return (text, .key(model: config.model))
     }
 

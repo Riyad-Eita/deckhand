@@ -483,7 +483,7 @@ private struct AskDatabaseView: View {
         .onAppear { focused = question.isEmpty }
     }
 
-    private var provider: (any LLMProvider)? { settings.isConfigured ? Providers.make(settings.providerConfig) : nil }
+    private var provider: (any LLMProvider)? { settings.isConfigured ? AppProviders.make(settings.providerConfig) : nil }
 
     private func write() async {
         focused = false

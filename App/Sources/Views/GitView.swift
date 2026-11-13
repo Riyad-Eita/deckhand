@@ -211,7 +211,7 @@ struct GitRepoView: View {
         let settings = AppSettings.shared
         if settings.isConfigured {
             guard let diff = try? await conn.run(Git.stagedDiffForMessage(repo), timeout: .seconds(30)).stdout else { return }
-            let provider = Providers.make(settings.providerConfig)
+            let provider = AppProviders.make(settings.providerConfig)
             var text = ""
             do {
                 for try await e in provider.stream(ChatRequest(system: "", messages: [.user(Git.commitMessagePrompt(diff: diff))], tools: [], maxTokens: 600)) {

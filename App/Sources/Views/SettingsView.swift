@@ -51,11 +51,18 @@ struct SettingsView: View {
 
                 if settings.providerKind == .custom || settings.providerKind == .openRouter {
                     Section("Endpoint") {
-                        TextField("Base URL", text: $settings.baseURL)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .keyboardType(.URL)
-                            .font(Theme.mono)
+                        if let url = URL(string: settings.baseURL), ServerModelURL.parse(url) != nil {
+                            Label(String(localized: "On \(ServerTunnels.serverName(for: url) ?? String(localized: "a removed server")), through SSH"),
+                                  systemImage: "server.rack")
+                                .accessibilityIdentifier("settings.serverModel")
+                            Button("Use another address") { settings.baseURL = ProviderKind.custom.defaultBaseURL.absoluteString }
+                        } else {
+                            TextField("Base URL", text: $settings.baseURL)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .keyboardType(.URL)
+                                .font(Theme.mono)
+                        }
                     }
                 }
 
