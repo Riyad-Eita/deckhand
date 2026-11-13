@@ -6,6 +6,7 @@ struct ServerDashboardView: View {
     let server: Server
     /// Opens the terminal with a command (e.g. something that needs a sudo password).
     var runInTerminal: (String) -> Void = { _ in }
+    @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(Connections.self) private var connections
     @State private var stats: ServerStats?
     @State private var error: String?
@@ -22,7 +23,8 @@ struct ServerDashboardView: View {
                             investigatePrompt = ("On this server: \(warning). Find out what causes it and suggest safe fixes, biggest win first. Don't change anything yet — ask me before you do.")
                         }
                     }
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+                    LazyVGrid(columns: typeSize.isAccessibilitySize ? [GridItem(.flexible())]
+                              : [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                         MetricCard(title: "CPU", value: percent(stats.cpu), detail: String(localized: "\(stats.cores) cores"), fraction: stats.cpu)
                         MetricCard(
                             title: "Memory", value: percent(stats.memUsedFraction),
@@ -400,6 +402,7 @@ struct ServerDashboardView: View {
 }
 
 private struct MetricCard: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let title: LocalizedStringKey
     let value: String
     let detail: String
@@ -410,7 +413,7 @@ private struct MetricCard: View {
             Text(title).textCase(.uppercase).font(.caption2.weight(.semibold)).tracking(0.8).foregroundStyle(.secondary)
             Text(value).font(.system(.title2, design: .rounded).weight(.semibold)).monospacedDigit()
             if let fraction { UsageBar(fraction: fraction) }
-            Text(detail).font(.caption).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+            Text(detail).font(.caption).foregroundStyle(.secondary).lineLimit(typeSize.isAccessibilitySize ? 3 : 1).minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)

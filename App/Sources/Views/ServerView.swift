@@ -135,7 +135,10 @@ struct ThreadListView: View {
             }
             Section {
                 NavigationLink { ServerMemoryView(server: server) } label: {
-                    Label("Server notes", systemImage: "note.text")
+                    HStack(spacing: 12) {
+                        Image(systemName: "note.text").foregroundStyle(Theme.accent).accessibilityHidden(true)
+                        Text("Server notes").fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 .accessibilityIdentifier("agent.memory")
             } footer: {

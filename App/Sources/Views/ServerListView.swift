@@ -72,6 +72,9 @@ struct ServerListView: View {
         }
         .overlay {
             if servers.isEmpty && chats.isEmpty {
+                // Scrolls at large text sizes instead of clipping; centered otherwise.
+                GeometryReader { geo in
+                ScrollView {
                 VStack(spacing: 22) {
                     Image(systemName: "server.rack")
                         .font(.system(size: 40, weight: .light))
@@ -79,24 +82,28 @@ struct ServerListView: View {
                         .frame(width: 84, height: 84)
                         .background(Theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                     VStack(spacing: 8) {
-                        Text("Add your first server").font(.title2.weight(.semibold))
+                        Text("Add your first server").font(.title2.weight(.semibold)).multilineTextAlignment(.center)
                         Text("Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this iPhone.")
                             .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                     Button { addingServer = true } label: {
-                        Text("Add Server").font(.headline).frame(maxWidth: 260).padding(.vertical, 6)
+                        Text("Add Server").font(.headline).multilineTextAlignment(.center).frame(maxWidth: 260).padding(.vertical, 6)
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     Button("Import from another SSH app") { importing = true }
-                        .font(.subheadline)
+                        .font(.subheadline).multilineTextAlignment(.center)
                         .accessibilityIdentifier("home.import")
                     Button("Or just chat with a model") { newChat() }
-                        .font(.subheadline)
+                        .font(.subheadline).multilineTextAlignment(.center)
                         .accessibilityIdentifier("home.justChat")
                     WorksWithStrip().padding(.top, 8)
                 }
                 .padding(32)
+                .frame(maxWidth: .infinity, minHeight: geo.size.height)
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                }
             }
         }
         .navigationTitle("Deckhand")
@@ -215,7 +222,7 @@ struct ServerRow: View {
                     // Agents signed in on this server.
                     ForEach(AgentStatus.shared.clis(for: server), id: \.self) { BrandIcon(brand: $0.brand, size: 18) }
                 }
-                Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
+                Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary)
             }
             Spacer(minLength: 8)
             HStack(spacing: 6) {
@@ -240,7 +247,7 @@ struct ServerRow: View {
 struct WorksWithStrip: View {
     var body: some View {
         VStack(spacing: 10) {
-            Text("WORKS WITH").font(.caption2.weight(.semibold)).tracking(1.2).foregroundStyle(.tertiary)
+            Text("WORKS WITH").font(.caption2.weight(.semibold)).tracking(1.2).foregroundStyle(.secondary)
             HStack(spacing: 10) {
                 ForEach([Brand.claude, .codex, .openai, .openrouter, .github, .mcp], id: \.self) { BrandIcon(brand: $0, size: 34) }
             }
@@ -289,8 +296,12 @@ struct AgentSetupCard: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                 }
                 Spacer()
-                Button(action: dismiss) { Image(systemName: "xmark").font(.caption.weight(.bold)).foregroundStyle(.tertiary) }
-                    .buttonStyle(.plain).accessibilityLabel("Not now")
+                Button(action: dismiss) {
+                    Image(systemName: "xmark").font(.caption.weight(.bold)).foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityLabel("Not now")
+                .padding(-12)
             }
             option(icons: [.claude, .codex], title: "Your Claude or ChatGPT plan",
                    detail: "Claude Code or Codex runs on \(serverName). Sign in once — no API key needed.",
@@ -318,6 +329,7 @@ struct AgentSetupCard: View {
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+                        .fixedSize(horizontal: false, vertical: true)
                     Text(detail).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                 }

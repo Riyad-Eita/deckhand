@@ -2,6 +2,14 @@ import DeckhandCore
 import SwiftData
 import SwiftUI
 
+/// Menus at normal text sizes; a separate list at accessibility sizes, where a value beside its label gets cut off.
+struct AdaptivePickerStyle: ViewModifier {
+    @Environment(\.dynamicTypeSize) private var typeSize
+    func body(content: Content) -> some View {
+        if typeSize.isAccessibilitySize { content.pickerStyle(.navigationLink) } else { content.pickerStyle(.menu) }
+    }
+}
+
 struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +38,7 @@ struct SettingsView: View {
                             Text("Provider")
                         }
                     }
+                    .modifier(AdaptivePickerStyle())
                     SecureField(settings.providerKind == .custom ? "API key (optional)" : "API key", text: $settings.apiKey)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
@@ -38,8 +47,9 @@ struct SettingsView: View {
                         Picker("Model", selection: $settings.model) {
                             ForEach(modelChoices, id: \.self) { Text($0).tag($0) }
                         }
+                        .modifier(AdaptivePickerStyle())
                     }
-                    TextField("Model id", text: $settings.model)
+                    TextField("Model id", text: $settings.model, axis: .vertical)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                         .font(Theme.mono)
