@@ -428,6 +428,16 @@
         }
       }
     },
+    "%lld bytes of binary data": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Bytes Binärdaten"
+          }
+        }
+      }
+    },
     "%lld cores": {
       "localizations": {
         "de": {
@@ -518,6 +528,16 @@
         }
       }
     },
+    "%lld ms · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld ms · %2$@"
+          }
+        }
+      }
+    },
     "%lld of %lld": {
       "localizations": {
         "de": {
@@ -554,6 +574,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld Prozesse · %2$lld Kerne"
+          }
+        }
+      }
+    },
+    "%lld requests": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Anfragen"
           }
         }
       }
@@ -1004,6 +1034,16 @@
         }
       }
     },
+    "API key header": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel-Header"
+          }
+        }
+      }
+    },
     "Accepted": {
       "localizations": {
         "de": {
@@ -1254,6 +1294,16 @@
         }
       }
     },
+    "Add header": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Header hinzufügen"
+          }
+        }
+      }
+    },
     "Add swap": {
       "localizations": {
         "de": {
@@ -1294,6 +1344,16 @@
         }
       }
     },
+    "Add variable": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Variable hinzufügen"
+          }
+        }
+      }
+    },
     "Add your first server": {
       "localizations": {
         "de": {
@@ -1330,6 +1390,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zur Erreichbarkeit hinzugefügt"
+          }
+        }
+      }
+    },
+    "Added “%@” to Imported.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ zu Importiert hinzugefügt."
           }
         }
       }
@@ -2168,6 +2238,16 @@
         }
       }
     },
+    "Auth": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung"
+          }
+        }
+      }
+    },
     "Auto-fix": {
       "localizations": {
         "de": {
@@ -2358,6 +2438,16 @@
         }
       }
     },
+    "Bearer token": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearer-Token"
+          }
+        }
+      }
+    },
     "Bearer token (optional)": {
       "localizations": {
         "de": {
@@ -2444,6 +2534,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wiederholte Fehlversuche blockieren"
+          }
+        }
+      }
+    },
+    "Body": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Body"
           }
         }
       }
@@ -3809,6 +3909,16 @@
         }
       }
     },
+    "Copy as curl": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als curl kopieren"
+          }
+        }
+      }
+    },
     "Copy key": {
       "localizations": {
         "de": {
@@ -4506,6 +4616,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Köder-Dateien, die melden, wenn jemand herumschnüffelt"
+          }
+        }
+      }
+    },
+    "Default": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
           }
         }
       }
@@ -5434,12 +5554,42 @@
         }
       }
     },
+    "Environment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgebung"
+          }
+        }
+      }
+    },
+    "Environment %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgebung %lld"
+          }
+        }
+      }
+    },
     "Environment files": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Umgebungsdateien"
+          }
+        }
+      }
+    },
+    "Environment name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name der Umgebung"
           }
         }
       }
@@ -6467,8 +6617,28 @@
         }
       }
     },
+    "Group requests in collections, switch between environments like staging and production, and send them from this iPhone or from one of your servers — handy for APIs that only that server can reach.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fasse Anfragen in Sammlungen zusammen, wechsle zwischen Umgebungen wie Staging und Produktion und sende sie von diesem iPhone oder von einem deiner Server — praktisch für APIs, die nur dieser Server erreicht."
+          }
+        }
+      }
+    },
     "HTTP %lld": {
       "shouldTranslate": false
+    },
+    "HTTP requests": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTP-Anfragen"
+          }
+        }
+      }
     },
     "Hands off": {
       "localizations": {
@@ -6506,6 +6676,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sieh dir `%@` an: "
+          }
+        }
+      }
+    },
+    "Header": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Header"
+          }
+        }
+      }
+    },
+    "Headers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Header"
+          }
+        }
+      }
+    },
+    "Headers (%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Header (%lld)"
           }
         }
       }
@@ -6796,6 +6996,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server importieren"
+          }
+        }
+      }
+    },
+    "Imported": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importiert"
           }
         }
       }
@@ -7446,6 +7656,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel-ID"
+          }
+        }
+      }
+    },
+    "Key or {{key}}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel oder {{key}}"
           }
         }
       }
@@ -8260,6 +8480,16 @@
         }
       }
     },
+    "My API": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine API"
+          }
+        }
+      }
+    },
     "MySQL for one address (3306)": {
       "localizations": {
         "de": {
@@ -8460,6 +8690,26 @@
         }
       }
     },
+    "New collection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Sammlung"
+          }
+        }
+      }
+    },
+    "New environment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Umgebung"
+          }
+        }
+      }
+    },
     "New file": {
       "localizations": {
         "de": {
@@ -8506,6 +8756,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neuer Port"
+          }
+        }
+      }
+    },
+    "New request": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Anfrage"
           }
         }
       }
@@ -9073,6 +9333,16 @@
     "Node.js": {
       "shouldTranslate": false
     },
+    "None": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine"
+          }
+        }
+      }
+    },
     "None found": {
       "localizations": {
         "de": {
@@ -9169,6 +9439,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch nicht gescannt"
+          }
+        }
+      }
+    },
+    "Not secret": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht geheim"
+          }
+        }
+      }
+    },
+    "Not set in this environment: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In dieser Umgebung nicht gesetzt: %@"
           }
         }
       }
@@ -9959,6 +10249,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code einfügen …"
+          }
+        }
+      }
+    },
+    "Paste a curl command": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "curl-Befehl einfügen"
           }
         }
       }
@@ -11206,6 +11506,16 @@
         }
       }
     },
+    "Response": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antwort"
+          }
+        }
+      }
+    },
     "Restart": {
       "extractionState": "manual",
       "localizations": {
@@ -12157,6 +12467,16 @@
         }
       }
     },
+    "Secret": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geheim"
+          }
+        }
+      }
+    },
     "Secret key": {
       "localizations": {
         "de": {
@@ -12227,6 +12547,16 @@
         }
       }
     },
+    "Send API requests": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Anfragen senden"
+          }
+        }
+      }
+    },
     "Send a test": {
       "localizations": {
         "de": {
@@ -12243,6 +12573,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Benachrichtigungen an das ntfy-Topic dieses iPhones senden"
+          }
+        }
+      }
+    },
+    "Send from": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senden von"
+          }
+        }
+      }
+    },
+    "Sent with curl on the server, so it reaches addresses only that server can see (localhost, private networks).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird mit curl auf dem Server gesendet und erreicht so Adressen, die nur dieser Server sieht (localhost, private Netze)."
           }
         }
       }
@@ -13378,6 +13728,16 @@
         }
       }
     },
+    "Swipe a variable to mark it secret: its value then lives in this iPhone's Keychain, not in the saved collection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wische über eine Variable, um sie als geheim zu markieren: Ihr Wert liegt dann im Schlüsselbund dieses iPhones, nicht in der gespeicherten Sammlung."
+          }
+        }
+      }
+    },
     "Swipe to remove a rule. The rule that lets Deckhand reach SSH can't be removed. Every change is checked with a fresh login and undone by itself if that fails.": {
       "localizations": {
         "de": {
@@ -13678,6 +14038,16 @@
         }
       }
     },
+    "That isn't a URL: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist keine URL: %@"
+          }
+        }
+      }
+    },
     "That isn't a valid cron expression.": {
       "localizations": {
         "de": {
@@ -13844,6 +14214,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Build landet in TestFlight. Zum Review wird nichts eingereicht."
+          }
+        }
+      }
+    },
+    "The clipboard doesn't hold a curl command. In a browser's developer tools, use Copy as cURL on a request.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der Zwischenablage ist kein curl-Befehl. Nutze in den Entwicklerwerkzeugen eines Browsers „Als cURL kopieren“ bei einer Anfrage."
           }
         }
       }
@@ -14718,6 +15098,16 @@
         }
       }
     },
+    "Token or {{token}}": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token oder {{token}}"
+          }
+        }
+      }
+    },
     "Too many web requests": {
       "localizations": {
         "de": {
@@ -14734,6 +15124,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Werkzeug"
+          }
+        }
+      }
+    },
+    "Tools": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkzeuge"
           }
         }
       }
@@ -15519,6 +15919,16 @@
         }
       }
     },
+    "User and password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzer und Passwort"
+          }
+        }
+      }
+    },
     "Username": {
       "localizations": {
         "de": {
@@ -16142,6 +16552,16 @@
         }
       }
     },
+    "Write {{name}} in a URL, header, body or token to use a variable of the chosen environment.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreib {{name}} in eine URL, einen Header, den Body oder ein Token, um eine Variable der gewählten Umgebung zu nutzen."
+          }
+        }
+      }
+    },
     "Writes four decoy files and starts a small watcher (python3) that pushes to %@ when one is opened.": {
       "localizations": {
         "de": {
@@ -16492,6 +16912,16 @@
         }
       }
     },
+    "curl ended with exit code %lld.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "curl wurde mit Exit-Code %lld beendet."
+          }
+        }
+      }
+    },
     "exit %lld": {
       "localizations": {
         "de": {
@@ -16727,6 +17157,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "n8n, Nextcloud, Uptime Kuma, Postgres … mit einem Tipp"
+          }
+        }
+      }
+    },
+    "name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
           }
         }
       }
@@ -17023,6 +17463,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "gültig bis"
+          }
+        }
+      }
+    },
+    "value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert"
+          }
+        }
+      }
+    },
+    "via %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "über %@"
           }
         }
       }

@@ -196,6 +196,24 @@ enum DebugSeed {
             UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")
         }
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
+        // DECKHAND_SEED_HTTP=1: one demo collection for the HTTP client (replaces what's there).
+        if env["DECKHAND_SEED_HTTP"] == "1" {
+            typealias H = HTTPClient
+            let token = H.Variable(name: "token", value: "", secret: true)
+            var c = H.Collection(name: "Example API", requests: [
+                H.Request(name: "Home page", url: "{{base}}/"),
+                H.Request(name: "Create item", method: .POST, url: "{{base}}/items",
+                          headers: [.init(name: "Accept", value: "application/json")],
+                          body: "{\n  \"name\": \"Deck chair\",\n  \"stock\": 12\n}", auth: .bearer("{{token}}")),
+                H.Request(name: "Delete item", method: .DELETE, url: "{{base}}/items/42", auth: .bearer("{{token}}")),
+            ], environments: [
+                H.Environment(name: "Production", variables: [.init(name: "base", value: "https://example.com"), token]),
+                H.Environment(name: "Local on the server", variables: [.init(name: "base", value: "http://localhost:8080")]),
+            ])
+            c.activeEnvironment = c.environments[0].id
+            HTTPStore.shared.collections = [c]
+            HTTPStore.shared.setSecret("demo-token", for: token)
+        }
         // DECKHAND_SEED_CONNECTION="Name|https://url" adds an HTTP MCP connection once.
         if let raw = env["DECKHAND_SEED_CONNECTION"], let bar = raw.firstIndex(of: "|") {
             let name = String(raw[..<bar]), url = String(raw[raw.index(after: bar)...])
