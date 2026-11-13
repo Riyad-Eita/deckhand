@@ -1205,3 +1205,38 @@ struct LiveServerCopyTests {
         await conn.disconnect()
     }
 }
+
+/// The env vault on the disposable server (DECKHAND_BACKUP_*, DECKHAND_VAULT_TEST=1): a file written through SFTP is
+/// 0600 with the exact content, the previous one is kept, and reading it back matches. Cleans up.
+struct LiveEnvVaultTests {
+    @Test func writeReadRollback() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_VAULT_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(30)).stdout }
+        func write(_ text: String) async throws -> String {
+            _ = try await sh(EnvVault.prepareStagingCommand)
+            let up = try await conn.upload(Data(text.utf8), named: "env-\(UUID().uuidString.prefix(6))", into: EnvVault.stagingDir,
+                                           commandLineFallback: false) { _ in }
+            return try await sh(EnvVault.installCommand(uploaded: up, path: "~/dh-vault-test/.env"))
+        }
+        do {
+            let v1 = "DATABASE_URL=postgres://app:s3cret@localhost/shop\n"
+            #expect(try await write(v1).contains("@@mode 600"))
+            var r = EnvVault.parseRead(try await sh(EnvVault.readCommand("~/dh-vault-test/.env")))
+            #expect(r.content == v1 && r.mode == "600")
+            let v2 = EnvVault.serialize(EnvVault.set("PORT", "8081", in: EnvVault.parse(v1)))
+            _ = try await write(v2)
+            r = EnvVault.parseRead(try await sh(EnvVault.readCommand("~/dh-vault-test/.env")))
+            #expect(EnvVault.hash(r.content) == EnvVault.hash(v2))
+            #expect(try await sh("cat ~/dh-vault-test/.env.deckhand-prev; stat -c %a ~/dh-vault-test/.env.deckhand-prev") == v1 + "600\n")
+            #expect(try await sh("stat -c %a ~/.deckhand/vault; ls -A ~/.deckhand/vault | wc -l") == "700\n0\n")   // staging left empty
+        } catch { Issue.record(error) }
+        _ = try? await sh("rm -rf -- ~/dh-vault-test")
+        await conn.disconnect()
+    }
+}
