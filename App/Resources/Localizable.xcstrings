@@ -448,6 +448,16 @@
         }
       }
     },
+    "%lld changes on %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Änderungen auf %2$@."
+          }
+        }
+      }
+    },
     "%lld cores": {
       "localizations": {
         "de": {
@@ -2036,6 +2046,16 @@
         }
       }
     },
+    "App servers allowed to reach the database (IPs)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Server, die die Datenbank erreichen dürfen (IPs)"
+          }
+        }
+      }
+    },
     "Applied": {
       "localizations": {
         "de": {
@@ -2056,12 +2076,52 @@
         }
       }
     },
+    "Apply %lld changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Änderungen anwenden"
+          }
+        }
+      }
+    },
+    "Apply %lld changes to %lld servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Änderungen auf %2$lld Servern anwenden"
+          }
+        }
+      }
+    },
+    "Apply a hardening profile": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Härtungsprofil anwenden"
+          }
+        }
+      }
+    },
     "Apply fix": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Lösung anwenden"
+          }
+        }
+      }
+    },
+    "Apply “%@”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ anwenden?"
           }
         }
       }
@@ -3628,6 +3688,16 @@
         }
       }
     },
+    "Closes: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließt: %@"
+          }
+        }
+      }
+    },
     "Cloud keys (root)": {
       "localizations": {
         "de": {
@@ -4329,6 +4399,16 @@
         }
       }
     },
+    "Couldn't read the server's settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einstellungen des Servers konnten nicht gelesen werden."
+          }
+        }
+      }
+    },
     "Couldn't read the server.": {
       "localizations": {
         "de": {
@@ -4610,6 +4690,16 @@
         }
       }
     },
+    "Database server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenbankserver"
+          }
+        }
+      }
+    },
     "Databases": {
       "localizations": {
         "de": {
@@ -4756,6 +4846,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand meldet sich als dieser Nutzer mit einem Schlüssel an, den es auf diesem iPhone erzeugt. Das Passwort ist für sudo – speichere es in deinem Passwortmanager."
+          }
+        }
+      }
+    },
+    "Deckhand logs in with a password here — set up a key first (Edit server → Create a key).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand meldet sich hier mit Passwort an — richte zuerst einen Schlüssel ein (Server bearbeiten → Schlüssel erstellen)."
           }
         }
       }
@@ -5241,6 +5341,16 @@
         }
       }
     },
+    "Docker publishes ports past the firewall (%@). Bind them to 127.0.0.1 in the compose file or put a reverse proxy in front.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker veröffentlicht Ports an der Firewall vorbei (%@). Binde sie in der Compose-Datei an 127.0.0.1 oder setze einen Reverse-Proxy davor."
+          }
+        }
+      }
+    },
     "Docs": {
       "localizations": {
         "de": {
@@ -5317,6 +5427,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erledigt."
+          }
+        }
+      }
+    },
+    "Done. Open the security check-up to see the new score.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig. Öffne den Sicherheits-Check, um die neue Bewertung zu sehen."
           }
         }
       }
@@ -6435,6 +6555,26 @@
         }
       }
     },
+    "Firewall and SSH changes are confirmed by a fresh login and undone by themselves if it fails. Every change can be rolled back from Change history.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall- und SSH-Änderungen werden durch eine neue Anmeldung bestätigt und machen sich selbst rückgängig, wenn sie fehlschlägt. Jede Änderung lässt sich im Änderungsverlauf zurücknehmen."
+          }
+        }
+      }
+    },
+    "Firewall rules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall-Regeln"
+          }
+        }
+      }
+    },
     "Firewall: block everything except SSH and open web ports": {
       "localizations": {
         "de": {
@@ -6920,6 +7060,26 @@
         }
       }
     },
+    "Hardening profile": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Härtungsprofil"
+          }
+        }
+      }
+    },
+    "Hardening profiles": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Härtungsprofile"
+          }
+        }
+      }
+    },
     "Have a look at `%@`: ": {
       "localizations": {
         "de": {
@@ -7046,6 +7206,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hier beginnt der Verlauf"
+          }
+        }
+      }
+    },
+    "Home lab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homelab"
           }
         }
       }
@@ -7590,6 +7760,16 @@
         }
       }
     },
+    "Installs with apt only.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert sich nur mit apt."
+          }
+        }
+      }
+    },
     "Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.": {
       "localizations": {
         "de": {
@@ -7980,6 +8160,26 @@
         }
       }
     },
+    "Keys only, no root password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Schlüssel, kein Root-Passwort"
+          }
+        }
+      }
+    },
+    "Keys only, no root password, 3 tries": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Schlüssel, kein Root-Passwort, 3 Versuche"
+          }
+        }
+      }
+    },
     "Keys that can log in": {
       "localizations": {
         "de": {
@@ -8156,6 +8356,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlankes Git-Hosting mit Issues und Pull-Requests."
+          }
+        }
+      }
+    },
+    "Limited: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeschränkt: %@"
           }
         }
       }
@@ -9230,6 +9440,16 @@
         }
       }
     },
+    "No app servers named: the database is then only reachable on the server itself and through SSH.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine App-Server angegeben: Die Datenbank ist dann nur auf dem Server selbst und über SSH erreichbar."
+          }
+        }
+      }
+    },
     "No apps in this team yet.": {
       "localizations": {
         "de": {
@@ -9713,6 +9933,16 @@
         }
       }
     },
+    "Not an IP address or range: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine IP-Adresse oder kein Bereich: %@"
+          }
+        }
+      }
+    },
     "Not connected": {
       "localizations": {
         "de": {
@@ -9929,6 +10159,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts passt."
+          }
+        }
+      }
+    },
+    "Nothing to change — these servers already match the profile.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts zu ändern — diese Server passen schon zum Profil."
           }
         }
       }
@@ -10223,6 +10463,16 @@
         }
       }
     },
+    "Only SSH is public. The database port opens just for the app servers you name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur SSH ist öffentlich. Der Datenbank-Port öffnet sich nur für die App-Server, die du nennst."
+          }
+        }
+      }
+    },
     "Only continue if you know the server was reinstalled. Otherwise ask whoever runs it — someone may be in between.": {
       "localizations": {
         "de": {
@@ -10379,6 +10629,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Über Deckhand öffnen"
+          }
+        }
+      }
+    },
+    "Open to everyone: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für alle offen: %@"
           }
         }
       }
@@ -10619,6 +10879,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passwörter und Root-Login aus"
+          }
+        }
+      }
+    },
+    "Passwords still allowed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter noch erlaubt"
           }
         }
       }
@@ -10963,6 +11233,16 @@
         }
       }
     },
+    "Preview the changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen ansehen"
+          }
+        }
+      }
+    },
     "Previous Match": {
       "localizations": {
         "de": {
@@ -11080,6 +11360,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prozessor"
+          }
+        }
+      }
+    },
+    "Profile": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil"
           }
         }
       }
@@ -11442,6 +11732,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server wird gelesen …"
+          }
+        }
+      }
+    },
+    "Reads each server's settings as root first; nothing changes until you apply.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liest zuerst die Einstellungen jedes Servers als Root; nichts ändert sich, bevor du anwendest."
           }
         }
       }
@@ -12537,6 +12837,16 @@
         }
       }
     },
+    "SSH from anywhere; your services only from your home network and Tailscale.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH von überall; deine Dienste nur aus deinem Heimnetz und über Tailscale."
+          }
+        }
+      }
+    },
     "SSH key": {
       "localizations": {
         "de": {
@@ -12577,6 +12887,16 @@
         }
       }
     },
+    "SSH logins": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH-Anmeldungen"
+          }
+        }
+      }
+    },
     "SSH now runs on port %@. Deckhand saved the new port for this server.": {
       "localizations": {
         "de": {
@@ -12603,6 +12923,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Port"
+          }
+        }
+      }
+    },
+    "SSH, HTTP and HTTPS open to everyone; everything else closed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH, HTTP und HTTPS für alle offen; alles andere zu."
           }
         }
       }
@@ -13217,6 +13547,16 @@
         }
       }
     },
+    "Set the firewall rules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall-Regeln setzen"
+          }
+        }
+      }
+    },
     "Set up": {
       "localizations": {
         "de": {
@@ -13243,6 +13583,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Backups einrichten"
+          }
+        }
+      }
+    },
+    "Set up dnf-automatic on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richte auf diesem Server dnf-automatic ein."
           }
         }
       }
@@ -14828,6 +15178,16 @@
         }
       }
     },
+    "The firewall will block port %@ from the internet. Services on it keep running for the server itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Firewall sperrt Port %@ aus dem Internet. Dienste darauf laufen für den Server selbst weiter."
+          }
+        }
+      }
+    },
     "The first visit shows the installer; keep SQLite and create the admin account there.": {
       "localizations": {
         "de": {
@@ -15534,6 +15894,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Server ist kein Mac. Um iOS-Apps vom iPhone aus zu bauen, schalte auf deinem Mac die Entfernte Anmeldung ein (Systemeinstellungen → Allgemein → Teilen) und füge den Mac als Server hinzu."
+          }
+        }
+      }
+    },
+    "This server uses %@; Deckhand sets up ufw only.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server nutzt %@; Deckhand richtet nur ufw ein."
           }
         }
       }
@@ -16705,6 +17075,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Web-Apps"
+          }
+        }
+      }
+    },
+    "Web server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Webserver"
+          }
+        }
+      }
+    },
+    "Web server, database or home lab preset, previewed first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorlage für Webserver, Datenbank oder Homelab, vorher angezeigt"
           }
         }
       }
@@ -18043,6 +18433,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "heute"
+          }
+        }
+      }
+    },
+    "ufw needs apt (Debian or Ubuntu).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ufw braucht apt (Debian oder Ubuntu)."
           }
         }
       }

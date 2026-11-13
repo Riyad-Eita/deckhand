@@ -246,6 +246,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.malware")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                HardeningProfilesView(preselected: server)
+                            } label: {
+                                ManageRow(title: "Hardening profile", subtitle: "Web server, database or home lab preset, previewed first", symbol: "shield.lefthalf.filled")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.profiles")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 ProvisionView(server: server)
                             } label: {
                                 ManageRow(title: "Secure a fresh server", subtitle: "Admin user, key login, firewall and more in one go", symbol: "sparkles.rectangle.stack")
