@@ -255,6 +255,16 @@
         }
       }
     },
+    "%@ of CPU in %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ CPU in %2$@"
+          }
+        }
+      }
+    },
     "%@ on %@ then uses your plan.": {
       "localizations": {
         "de": {
@@ -331,6 +341,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ arbeitet in %2$@"
+          }
+        }
+      }
+    },
+    "%@ written": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ geschrieben"
           }
         }
       }
@@ -900,6 +920,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein Browser, den der Agent steuern kann."
+          }
+        }
+      }
+    },
+    "A check in the app's code failed — for example an empty value that was expected to be there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Prüfung im Code der App ist fehlgeschlagen — etwa ein leerer Wert, der da sein sollte."
           }
         }
       }
@@ -1504,6 +1534,16 @@
         }
       }
     },
+    "Addresses inside the app; the developer turns them into function names with the build's symbols.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adressen in der App; der Entwickler macht daraus mit den Symbolen des Builds Funktionsnamen."
+          }
+        }
+      }
+    },
     "Adds a small login hook (PAM) that pushes to your ntfy topic. It can't block a login. Subscribe to the topic in the ntfy app: %@": {
       "localizations": {
         "de": {
@@ -1992,6 +2032,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alles, was %@ nutzt, wird unterbrochen."
+          }
+        }
+      }
+    },
+    "App": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App"
           }
         }
       }
@@ -4469,12 +4519,32 @@
         }
       }
     },
+    "Crash": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absturz"
+          }
+        }
+      }
+    },
     "Crash dumps": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Absturzabbilder"
+          }
+        }
+      }
+    },
+    "Crash reports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Absturzberichte"
           }
         }
       }
@@ -4960,6 +5030,26 @@
         }
       }
     },
+    "Delete all reports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Berichte löschen"
+          }
+        }
+      }
+    },
+    "Delete all reports?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Berichte löschen?"
+          }
+        }
+      }
+    },
     "Delete notes and stop using them": {
       "localizations": {
         "de": {
@@ -5116,6 +5206,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entwicklung"
+          }
+        }
+      }
+    },
+    "Device": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerät"
           }
         }
       }
@@ -6805,6 +6905,16 @@
         }
       }
     },
+    "From iOS, kept on this iPhone, shared only by you": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von iOS, bleiben auf diesem iPhone, nur du teilst sie"
+          }
+        }
+      }
+    },
     "From the iPhone, ping measures how long a connection to port 443 takes (iOS doesn't allow ICMP).": {
       "localizations": {
         "de": {
@@ -6947,6 +7057,16 @@
         }
       }
     },
+    "GitHub opens with the summary above filled in — you see everything before you send it. The full report holds the same plus memory addresses; it has no personal data.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub öffnet sich mit der Zusammenfassung oben — du siehst alles, bevor du es abschickst. Der ganze Bericht enthält dasselbe plus Speicheradressen; persönliche Daten stehen nicht darin."
+          }
+        }
+      }
+    },
     "GitHub personal access token": {
       "localizations": {
         "de": {
@@ -7050,6 +7170,26 @@
         }
       }
     },
+    "Hang": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hänger"
+          }
+        }
+      }
+    },
+    "Hang of %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hänger von %@"
+          }
+        }
+      }
+    },
     "Harden SSH logins": {
       "localizations": {
         "de": {
@@ -7126,6 +7266,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Health-URL, z. B. http://127.0.0.1:3000/"
+          }
+        }
+      }
+    },
+    "Heavy CPU use": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hohe CPU-Last"
+          }
+        }
+      }
+    },
+    "Heavy disk writes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viele Schreibzugriffe"
           }
         }
       }
@@ -8316,6 +8476,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Später"
+          }
+        }
+      }
+    },
+    "Launch took %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start dauerte %@"
           }
         }
       }
@@ -9696,6 +9866,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Ausgabe"
+          }
+        }
+      }
+    },
+    "No reports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Berichte"
           }
         }
       }
@@ -12186,6 +12366,26 @@
         }
       }
     },
+    "Report on GitHub": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf GitHub melden"
+          }
+        }
+      }
+    },
+    "Reports come from iOS (MetricKit) and stay on this iPhone. No crash service, no tracking.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Berichte kommen von iOS (MetricKit) und bleiben auf diesem iPhone. Kein Absturzdienst, kein Tracking."
+          }
+        }
+      }
+    },
     "Repository": {
       "localizations": {
         "de": {
@@ -13707,6 +13907,16 @@
         }
       }
     },
+    "Share the full report": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzen Bericht teilen"
+          }
+        }
+      }
+    },
     "Shouldn't be reachable from the internet.": {
       "localizations": {
         "de": {
@@ -14013,6 +14223,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nach einem Fehler übersprungen"
+          }
+        }
+      }
+    },
+    "Slow launch": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langsamer Start"
           }
         }
       }
@@ -15018,12 +15238,82 @@
         }
       }
     },
+    "The app didn't react to touches for a while.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat eine Weile nicht auf Berührungen reagiert."
+          }
+        }
+      }
+    },
+    "The app kept the processor busy for a long time, which drains the battery.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat den Prozessor lange beschäftigt, das kostet Akku."
+          }
+        }
+      }
+    },
+    "The app quit unexpectedly.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App wurde unerwartet beendet."
+          }
+        }
+      }
+    },
+    "The app read memory it wasn't allowed to.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat auf Speicher zugegriffen, auf den sie nicht durfte."
+          }
+        }
+      }
+    },
+    "The app stopped itself after an error it couldn't recover from.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat sich nach einem Fehler beendet, von dem sie sich nicht erholen konnte."
+          }
+        }
+      }
+    },
+    "The app took long to open.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat lange zum Öffnen gebraucht."
+          }
+        }
+      }
+    },
     "The app using it may need a restart to pick it up. The previous file stays as .deckhand-prev next to it.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Die App, die sie nutzt, muss eventuell neu starten. Die vorherige Datei bleibt als .deckhand-prev daneben liegen."
+          }
+        }
+      }
+    },
+    "The app wrote a lot of data to storage in a short time.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App hat in kurzer Zeit viele Daten gespeichert."
           }
         }
       }
@@ -17279,6 +17569,16 @@
         }
       }
     },
+    "When Deckhand crashes or hangs, iOS hands a report to the app within a day. It shows up here, and only you decide whether to share it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn Deckhand abstürzt oder hängt, gibt iOS der App innerhalb eines Tages einen Bericht. Er erscheint hier, und nur du entscheidest, ob du ihn teilst."
+          }
+        }
+      }
+    },
     "When “%@” fails": {
       "localizations": {
         "de": {
@@ -17295,6 +17595,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wohin"
+          }
+        }
+      }
+    },
+    "Where it happened": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo es passiert ist"
           }
         }
       }
@@ -18090,6 +18400,36 @@
     },
     "https://example.com/mcp": {
       "shouldTranslate": false
+    },
+    "iOS": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS"
+          }
+        }
+      }
+    },
+    "iOS ended the app because it didn't respond in time.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS hat die App beendet, weil sie nicht rechtzeitig reagiert hat."
+          }
+        }
+      }
+    },
+    "iOS ended the app for using too much of a resource (memory, CPU or wakeups).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS hat die App beendet, weil sie zu viel von einer Ressource verbraucht hat (Speicher, CPU oder Aufwecker)."
+          }
+        }
+      }
     },
     "in %@ s": {
       "localizations": {

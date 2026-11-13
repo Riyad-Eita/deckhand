@@ -134,6 +134,12 @@ struct SettingsView: View {
                         }
                     }
                     .accessibilityIdentifier("settings.appBackup")
+                    NavigationLink { CrashReportsView() } label: {
+                        RowLabel(title: String(localized: "Crash reports"), subtitle: String(localized: "From iOS, kept on this iPhone, shared only by you")) {
+                            Image(systemName: "stethoscope").foregroundStyle(Theme.accent).frame(width: 26)
+                        }
+                    }
+                    .accessibilityIdentifier("settings.crashReports")
                 }
 
                 Section {

@@ -1,0 +1,42 @@
+{
+  "timeStampBegin" : "2026-11-12 22:00:00",
+  "timeStampEnd" : "2026-11-12 22:59:00",
+  "crashDiagnostics" : [
+    {
+      "version" : "1.0.0",
+      "callStackTree" : {
+        "callStackPerThread" : true,
+        "callStacks" : [
+          {
+            "threadAttributed" : false,
+            "callStackRootFrames" : [ { "binaryName" : "libsystem_kernel.dylib", "offsetIntoBinaryTextSegment" : 4096, "sampleCount" : 1, "binaryUUID" : "A1", "address" : 7000 } ]
+          },
+          {
+            "threadAttributed" : true,
+            "callStackRootFrames" : [
+              {
+                "binaryName" : "Deckhand", "offsetIntoBinaryTextSegment" : 123456, "sampleCount" : 1, "binaryUUID" : "B2", "address" : 8000,
+                "subFrames" : [
+                  { "binaryName" : "Deckhand", "offsetIntoBinaryTextSegment" : 120000, "sampleCount" : 1, "binaryUUID" : "B2", "address" : 8001,
+                    "subFrames" : [ { "binaryName" : "SwiftUI", "offsetIntoBinaryTextSegment" : 99, "sampleCount" : 1, "binaryUUID" : "C3", "address" : 8002 } ] }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "diagnosticMetaData" : {
+        "appBuildVersion" : "4", "appVersion" : "1.2", "regionFormat" : "DE", "exceptionType" : 6, "exceptionCode" : 1,
+        "signal" : 5, "osVersion" : "iPhone OS 26.1 (23B85)", "deviceType" : "iPhone17,1", "platformArchitecture" : "arm64",
+        "terminationReason" : "Namespace SIGNAL, Code 5 Trace/BPT trap: 5"
+      }
+    }
+  ],
+  "hangDiagnostics" : [
+    { "version" : "1.0.0", "diagnosticMetaData" : { "appVersion" : "1.2", "appBuildVersion" : "4", "osVersion" : "iPhone OS 26.1 (23B85)", "deviceType" : "iPhone17,1", "hangDuration" : "3.4 sec" },
+      "callStackTree" : { "callStackPerThread" : true, "callStacks" : [ { "threadAttributed" : true, "callStackRootFrames" : [ { "binaryName" : "Deckhand", "offsetIntoBinaryTextSegment" : 5, "sampleCount" : 20 } ] } ] } }
+  ],
+  "cpuExceptionDiagnostics" : [
+    { "diagnosticMetaData" : { "appVersion" : "1.2", "totalCPUTime" : "90 sec", "totalSampledTime" : "180 sec" } }
+  ]
+}
