@@ -33,7 +33,7 @@ struct FilesView: View {
     var body: some View {
         List {
             if let error {
-                Text(error).foregroundStyle(.red).font(.footnote)
+                ProblemView(message: error, compact: true)
                     .accessibilityIdentifier("files.error")
             }
             if let folder {

@@ -32,7 +32,7 @@ struct FileViewer: View {
     var body: some View {
         Group {
             if let error {
-                ContentUnavailableView("Can't open the file", systemImage: "exclamationmark.triangle", description: Text(error))
+                VStack(spacing: 14) { Text("Can't open the file").font(.title3.weight(.semibold)); ProblemView(message: error) }.frame(maxWidth: .infinity).padding(.vertical, 30)
             } else if binary {
                 ContentUnavailableView(
                     "Not a text file", systemImage: "doc",

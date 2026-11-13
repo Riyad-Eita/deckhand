@@ -196,7 +196,7 @@ private struct VoiceSettingsSection: View {
                 LabeledContent("Whisper large-v3", value: "Installed")
                 Button("Remove Model", role: .destructive) { confirmDelete = true }
             case .failed(let message):
-                Text(message).font(.footnote).foregroundStyle(.red)
+                ProblemView(message: message, compact: true)
                 Button("Try Again") { voice.install() }
             }
         } header: {

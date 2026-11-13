@@ -5,6 +5,7 @@ import SwiftUI
 struct ProblemView: View {
     let message: String
     var compact = false
+    @State private var showDetails = false
 
     private var problem: Problem { Problem.from(message) }
 
@@ -26,6 +27,7 @@ struct ProblemView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(problem.message).foregroundStyle(.red)
                     Text(problem.suggestion).foregroundStyle(.secondary)
+                    details
                 }
             } icon: { Image(systemName: symbol).foregroundStyle(.red) }
             .font(.footnote)
@@ -34,8 +36,20 @@ struct ProblemView: View {
                 Image(systemName: symbol).font(.system(size: 34, weight: .light)).foregroundStyle(.secondary)
                 Text(problem.message).font(.headline).multilineTextAlignment(.center)
                 Text(problem.suggestion).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                details
             }
             .padding(.horizontal, 24)
+        }
+    }
+
+    @ViewBuilder private var details: some View {
+        if let d = problem.details {
+            if showDetails {
+                Text(d).font(.caption2.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
+            } else {
+                Button("Details") { showDetails = true }.font(.caption).buttonStyle(.borderless)
+                    .accessibilityIdentifier("problem.details")
+            }
         }
     }
 }
