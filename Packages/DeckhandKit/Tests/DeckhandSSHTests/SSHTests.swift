@@ -1240,3 +1240,46 @@ struct LiveEnvVaultTests {
         await conn.disconnect()
     }
 }
+
+/// Malware scans on the disposable server with sudo (DECKHAND_UPTIME_HOST/_PORT/_USER/_PASSWORD, DECKHAND_MALWARE_TEST=1):
+/// install rkhunter and chkrootkit, scan, read the result without root, mute a finding, weekly job on and off.
+struct LiveMalwareScanTests {
+    @Test func installScanMute() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_MALWARE_TEST"] == "1", let pw = env["DECKHAND_UPTIME_PASSWORD"] else { return }
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_UPTIME_HOST"]!, port: Int(env["DECKHAND_UPTIME_PORT"] ?? "22")!, username: env["DECKHAND_UPTIME_USER"]!),
+            credential: .password(pw))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func root(_ script: String) async throws -> [RootLine] {
+            var out: [RootLine] = []
+            for try await l in Sudo.run(script, on: conn, access: .password, password: pw) { out.append(l) }
+            return out
+        }
+        do {
+            print("step: install")
+            let installed = try await root(MalwareScan.installScript(clamav: false))
+            #expect(installed.last == .exit(0), "\(installed.suffix(5))")
+            print("step: scan")
+            let scanned = try await root(MalwareScan.scanNowScript)
+            #expect(scanned.last == .exit(0))
+            var s = MalwareScan.parse(try await conn.run(MalwareScan.statusCommand, timeout: .seconds(30)).stdout)
+            #expect(s.installed.isSuperset(of: ["rkhunter", "chkrootkit"]) && s.scanned != nil, "\(s)")
+            #expect(s.clean.contains("chkrootkit") || s.findings.contains { $0.tool == "chkrootkit" })
+            print("findings:", s.findings.map { "\($0.tool): \($0.text.prefix(80))" })
+            print("step: mute")
+            if let f = s.findings.first {
+                _ = try await root(MalwareScan.muteScript(f, muted: true))
+                s = MalwareScan.parse(try await conn.run(MalwareScan.statusCommand, timeout: .seconds(30)).stdout)
+                #expect(s.isMuted(f))
+                _ = try await root(MalwareScan.muteScript(f, muted: false))
+            }
+            print("step: schedule")
+            _ = try await root(MalwareScan.scheduleScript(enabled: true, topic: ""))
+            #expect(MalwareScan.parse(try await conn.run(MalwareScan.statusCommand, timeout: .seconds(30)).stdout).weekly)
+            _ = try await root(MalwareScan.scheduleScript(enabled: false, topic: ""))
+            #expect(!MalwareScan.parse(try await conn.run(MalwareScan.statusCommand, timeout: .seconds(30)).stdout).weekly)
+        } catch { Issue.record(error) }
+        await conn.disconnect()
+    }
+}

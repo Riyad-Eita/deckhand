@@ -230,6 +230,14 @@ struct ServerDashboardView: View {
                             .accessibilityIdentifier("dashboard.audit")
                             Divider().padding(.leading, 58)
                             NavigationLink {
+                                MalwareScanView(server: server)
+                            } label: {
+                                ManageRow(title: "Malware scans", subtitle: "Rootkits and known malware, weekly, explained", symbol: "ladybug")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.malware")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
                                 ProvisionView(server: server)
                             } label: {
                                 ManageRow(title: "Secure a fresh server", subtitle: "Admin user, key login, firewall and more in one go", symbol: "sparkles.rectangle.stack")
