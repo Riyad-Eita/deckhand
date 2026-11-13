@@ -9,6 +9,7 @@ struct ServerListView: View {
     @Query(filter: #Predicate<ChatThread> { $0.server == nil }, sort: \ChatThread.updatedAt, order: .reverse) private var chats: [ChatThread]
     @State private var openChat: ChatThread?
     @State private var importing = false
+    @State private var searching = false
     @State private var editing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
@@ -149,6 +150,12 @@ struct ServerListView: View {
                 Button { showingSettings = true } label: { Image(systemName: "gearshape") }
                     .accessibilityLabel("Settings")
             }
+            ToolbarItem(placement: .topBarLeading) {
+                Button { searching = true } label: { Image(systemName: "magnifyingglass") }
+                    .keyboardShortcut("k", modifiers: .command)
+                    .accessibilityLabel("Go to")
+                    .accessibilityIdentifier("home.search")
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button { addingServer = true } label: { Image(systemName: "plus") }
                     .accessibilityLabel("Add Server")
@@ -156,6 +163,9 @@ struct ServerListView: View {
         }
         .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
         .sheet(isPresented: $importing) { ImportServersView() }
+        .sheet(isPresented: $searching) {
+            CommandPaletteView(openServer: { autoOpen = $0 }, openChat: { openChat = $0 })
+        }
         .sheet(item: $editing) { ServerEditorView(server: $0) }
         .sheet(isPresented: $showingSettings) { SettingsView() }
     }
