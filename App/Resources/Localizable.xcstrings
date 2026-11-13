@@ -528,6 +528,16 @@
         }
       }
     },
+    "%lld in, %lld out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld rein, %2$lld raus"
+          }
+        }
+      }
+    },
     "%lld lines": {
       "localizations": {
         "de": {
@@ -784,6 +794,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Warnungen"
+          }
+        }
+      }
+    },
+    "%lld → %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld → %2$lld"
           }
         }
       }
@@ -1320,6 +1340,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hinterlege zuerst einen API-Key in den Einstellungen."
+          }
+        }
+      }
+    },
+    "Add an API key in Settings, or set up your own model on a server, to compare models.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge in den Einstellungen einen API-Schlüssel hinzu oder richte dein eigenes Modell auf einem Server ein, um Modelle zu vergleichen."
           }
         }
       }
@@ -2177,6 +2207,16 @@
         }
       }
     },
+    "Ask both models…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frag beide Modelle …"
+          }
+        }
+      }
+    },
     "Ask every time": {
       "extractionState": "manual",
       "localizations": {
@@ -2294,6 +2334,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anmeldung"
+          }
+        }
+      }
+    },
+    "Auto": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto"
+          }
+        }
+      }
+    },
+    "Auto would treat this as “%@” and pick %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto würde das als „%1$@“ einordnen und %2$@ wählen."
+          }
+        }
+      }
+    },
+    "Auto — cheapest that fits": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto — das günstigste passende"
           }
         }
       }
@@ -3744,6 +3814,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Commit-Nachricht"
+          }
+        }
+      }
+    },
+    "Compare": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergleichen"
+          }
+        }
+      }
+    },
+    "Compare models": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelle vergleichen"
+          }
+        }
+      }
+    },
+    "Compare two models…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwei Modelle vergleichen …"
           }
         }
       }
@@ -5412,6 +5512,16 @@
         }
       }
     },
+    "Each message goes to the cheapest of your models that's good enough for it. No server, no tools — pick a fixed model any time from the title.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Nachricht geht an das günstigste deiner Modelle, das gut genug dafür ist. Kein Server, keine Werkzeuge — wähle jederzeit über den Titel ein festes Modell."
+          }
+        }
+      }
+    },
     "Earlier steps summarized": {
       "localizations": {
         "de": {
@@ -6341,6 +6451,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erste Verbindung zu %1$@. Der Fingerabdruck des Host-Schlüssels ist\n%2$@\n\nDeckhand merkt ihn sich und warnt dich, falls er sich je ändert."
+          }
+        }
+      }
+    },
+    "First model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstes Modell"
           }
         }
       }
@@ -11155,6 +11275,16 @@
         }
       }
     },
+    "Quick question": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurze Frage"
+          }
+        }
+      }
+    },
     "Quiet hours": {
       "localizations": {
         "de": {
@@ -12743,6 +12873,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suche nach %@"
+          }
+        }
+      }
+    },
+    "Second model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zweites Modell"
           }
         }
       }
@@ -15038,6 +15178,16 @@
         }
       }
     },
+    "Thinking it through": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gründlich durchdenken"
+          }
+        }
+      }
+    },
     "Thinking…": {
       "localizations": {
         "de": {
@@ -16982,6 +17132,16 @@
         }
       }
     },
+    "Writing or summary": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text oder Zusammenfassung"
+          }
+        }
+      }
+    },
     "Written as 0600.": {
       "localizations": {
         "de": {
@@ -17482,6 +17642,16 @@
         }
       }
     },
+    "free": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kostenlos"
+          }
+        }
+      }
+    },
     "from %@": {
       "localizations": {
         "de": {
@@ -17700,6 +17870,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port"
+          }
+        }
+      }
+    },
+    "price unknown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preis unbekannt"
           }
         }
       }

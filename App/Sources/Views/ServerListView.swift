@@ -61,6 +61,12 @@ struct ServerListView: View {
                         Label("HTTP requests", systemImage: "arrow.left.arrow.right")
                     }
                     .accessibilityIdentifier("home.http")
+                    if settings.chatProviders.count > 0 {
+                        NavigationLink { CompareModelsView(prompt: "") } label: {
+                            Label("Compare models", systemImage: "square.split.2x1")
+                        }
+                        .accessibilityIdentifier("home.compare")
+                    }
                 }
             }
         }

@@ -90,6 +90,17 @@ final class AppSettings {
         }
     }
 
+    /// Every model a chat could use, with its tier and price, for "pick for me" and comparisons. Models on the user's
+    /// own server (or localhost) cost nothing per token.
+    var routerCandidates: [ModelRouter.Candidate] {
+        chatProviders.flatMap { kind -> [ModelRouter.Candidate] in
+            let models = Array(Set(kind.suggestedModels + [defaultModel(for: kind)])).filter { !$0.isEmpty }.sorted()
+            let base = defaults.string(forKey: "provider.\(kind.rawValue).baseURL") ?? ""
+            let local = kind == .custom && (base.hasPrefix(ServerModelURL.scheme) || base.contains("localhost") || base.contains("127.0.0.1"))
+            return models.map { ModelRouter.Candidate(provider: kind, model: $0, price: local ? .free : ModelPrice.known($0)) }
+        }
+    }
+
     /// The model chosen in Settings for a provider (or its first suggestion).
     func defaultModel(for kind: ProviderKind) -> String {
         defaults.string(forKey: "provider.\(kind.rawValue).model") ?? kind.suggestedModels.first ?? ""
