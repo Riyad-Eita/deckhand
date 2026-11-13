@@ -362,6 +362,10 @@ private struct FleetSection: View {
                 Label("Run a command on several servers", systemImage: "square.stack.3d.forward.dottedline")
             }
             .accessibilityIdentifier("home.fleet")
+            NavigationLink { HardeningProfilesView() } label: {
+                Label("Apply a hardening profile", systemImage: "shield.lefthalf.filled")
+            }
+            .accessibilityIdentifier("home.profiles")
         }
     }
 }
