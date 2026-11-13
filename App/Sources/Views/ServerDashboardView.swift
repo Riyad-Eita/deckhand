@@ -153,6 +153,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.apps")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            LocalModelView(server: server)
+                        } label: {
+                            ManageRow(title: "Your own AI model", subtitle: "Ollama with a model that fits, private to you", symbol: "cpu")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.localModel")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             DiskUsageView(server: server)
                         } label: {
                             ManageRow(title: "Disk usage", subtitle: "What takes the space, and what can go", symbol: "chart.pie")

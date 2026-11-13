@@ -68,7 +68,7 @@ final class PlainChatModel {
         isRunning = true
         task = Task {
             do {
-                let agent = Agent(provider: Providers.make(config), shell: NoShell(), tools: [], policy: .auto,
+                let agent = Agent(provider: AppProviders.make(config), shell: NoShell(), tools: [], policy: .auto,
                                   system: Self.system, approve: { _ in .deny(reason: nil) })
                 for try await event in agent.run(history: history, userMessage: user) {
                     switch event {

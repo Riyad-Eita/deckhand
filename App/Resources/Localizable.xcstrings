@@ -338,6 +338,16 @@
     "%@ · %@": {
       "shouldTranslate": false
     },
+    "%@ · %@ free": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ frei"
+          }
+        }
+      }
+    },
     "%@ · lists from %@": {
       "localizations": {
         "de": {
@@ -444,6 +454,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Kerne"
+          }
+        }
+      }
+    },
+    "%lld cores · %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Kerne · %2$@"
           }
         }
       }
@@ -698,6 +718,16 @@
         }
       }
     },
+    "%lld tokens/s": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Token/s"
+          }
+        }
+      }
+    },
     "%lld unusual spikes, last %@": {
       "localizations": {
         "de": {
@@ -890,6 +920,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine neue Anmeldung ist fehlgeschlagen, deshalb wurde das zurückgesetzt."
+          }
+        }
+      }
+    },
+    "A good balance on a server without a graphics card.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein guter Kompromiss auf einem Server ohne Grafikkarte."
           }
         }
       }
@@ -1240,6 +1280,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Key für %@ hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modell hinzufügen"
           }
         }
       }
@@ -2498,6 +2548,16 @@
         }
       }
     },
+    "Better reasoning; wants a graphics card or lots of memory.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Besseres Denken; will eine Grafikkarte oder viel Arbeitsspeicher."
+          }
+        }
+      }
+    },
     "Block repeated failed logins": {
       "localizations": {
         "de": {
@@ -3008,6 +3068,16 @@
         }
       }
     },
+    "Chats with a model from this server go through your SSH connection; the server has to be reachable while you chat.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chats mit einem Modell dieses Servers laufen über deine SSH-Verbindung; der Server muss beim Chatten erreichbar sein."
+          }
+        }
+      }
+    },
     "Check": {
       "localizations": {
         "de": {
@@ -3194,6 +3264,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Server prüft per cron. Antwortzeiten der letzten 24 Stunden."
+          }
+        }
+      }
+    },
+    "Checking the hardware…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hardware wird geprüft …"
           }
         }
       }
@@ -3464,6 +3544,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schließ die Seite. Deckhand trägt den Code für dich ein."
+          }
+        }
+      }
+    },
+    "Close to hosted models for many tasks; needs a big GPU.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei vielen Aufgaben nah an gehosteten Modellen; braucht eine große GPU."
           }
         }
       }
@@ -4951,6 +5041,16 @@
         }
       }
     },
+    "Disk free": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freier Speicher"
+          }
+        }
+      }
+    },
     "Disk is %lld %% full": {
       "localizations": {
         "de": {
@@ -5158,6 +5258,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ausgefallen seit"
+          }
+        }
+      }
+    },
+    "Download": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden"
           }
         }
       }
@@ -6477,6 +6587,16 @@
         }
       }
     },
+    "GPU": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU"
+          }
+        }
+      }
+    },
     "Get Started": {
       "localizations": {
         "de": {
@@ -6603,6 +6723,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gehe zu"
+          }
+        }
+      }
+    },
+    "Graphics": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grafik"
           }
         }
       }
@@ -7040,12 +7170,32 @@
         }
       }
     },
+    "In memory: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Speicher: %@"
+          }
+        }
+      }
+    },
     "In review": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Im Review"
+          }
+        }
+      }
+    },
+    "In use": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Gebrauch"
           }
         }
       }
@@ -7140,6 +7290,16 @@
         }
       }
     },
+    "Install Ollama and download": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama installieren und laden"
+          }
+        }
+      }
+    },
     "Install Security Updates": {
       "localizations": {
         "de": {
@@ -7226,6 +7386,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installierte Pakete bleiben; nur der Download-Cache wird gelöscht."
+          }
+        }
+      }
+    },
+    "Installing Ollama…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama wird installiert …"
           }
         }
       }
@@ -8270,6 +8440,26 @@
         }
       }
     },
+    "Measure": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messen"
+          }
+        }
+      }
+    },
+    "Measure speed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschwindigkeit messen"
+          }
+        }
+      }
+    },
     "Measuring…": {
       "localizations": {
         "de": {
@@ -8386,6 +8576,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modell-ID"
+          }
+        }
+      }
+    },
+    "Models · Ollama %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelle · Ollama %@"
           }
         }
       }
@@ -9373,6 +9573,16 @@
         }
       }
     },
+    "None — runs on the processor": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine — läuft auf dem Prozessor"
+          }
+        }
+      }
+    },
     "Not a text file": {
       "localizations": {
         "de": {
@@ -9723,6 +9933,46 @@
         }
       }
     },
+    "Ollama couldn't be installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama konnte nicht installiert werden."
+          }
+        }
+      }
+    },
+    "Ollama is installed with its official script and listens only on the server itself; Deckhand reaches it through your SSH connection. Your prompts never leave your server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama wird mit dem offiziellen Skript installiert und lauscht nur auf dem Server selbst; Deckhand erreicht es über deine SSH-Verbindung. Deine Prompts verlassen deinen Server nie."
+          }
+        }
+      }
+    },
+    "Ollama runs, but no model is downloaded yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama läuft, aber es ist noch kein Modell geladen."
+          }
+        }
+      }
+    },
+    "Ollama with a model that fits, private to you": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama mit einem passenden Modell, nur für dich"
+          }
+        }
+      }
+    },
     "On": {
       "localizations": {
         "de": {
@@ -9739,6 +9989,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf %@"
+          }
+        }
+      }
+    },
+    "On %@, through SSH": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf %@, über SSH"
           }
         }
       }
@@ -10333,6 +10593,16 @@
         }
       }
     },
+    "Pick a model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle ein Modell"
+          }
+        }
+      }
+    },
     "Pick a port between 1024 and 65535.": {
       "localizations": {
         "de": {
@@ -10680,6 +10950,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wird für den App Store verarbeitet"
+          }
+        }
+      }
+    },
+    "Processor": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozessor"
           }
         }
       }
@@ -13247,12 +13527,32 @@
         }
       }
     },
+    "Small; good for summaries and simple questions.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klein; gut für Zusammenfassungen und einfache Fragen."
+          }
+        }
+      }
+    },
     "Snapshots": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Snapshots"
+          }
+        }
+      }
+    },
+    "Solid all-rounder; can use tools for simple agent tasks.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solider Allrounder; kann Werkzeuge für einfache Agent-Aufgaben nutzen."
           }
         }
       }
@@ -13338,6 +13638,16 @@
         }
       }
     },
+    "Start Ollama and download": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ollama starten und laden"
+          }
+        }
+      }
+    },
     "Start a task": {
       "localizations": {
         "de": {
@@ -13414,6 +13724,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starte GitHub-Anmeldung auf %@ …"
+          }
+        }
+      }
+    },
+    "Starting the download…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download startet …"
           }
         }
       }
@@ -13704,6 +14024,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorschlagen"
+          }
+        }
+      }
+    },
+    "Suggested": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empfohlen"
           }
         }
       }
@@ -14418,6 +14748,16 @@
         }
       }
     },
+    "The model didn't answer.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Modell hat nicht geantwortet."
+          }
+        }
+      }
+    },
     "The model provider has a problem right now. Try again in a minute.": {
       "localizations": {
         "de": {
@@ -14594,6 +14934,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server führt diese Lösung selbst aus, wenn die Prüfung wieder fehlschlägt."
+          }
+        }
+      }
+    },
+    "The server this model runs on was removed from Deckhand. Pick another model in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server, auf dem dieses Modell läuft, wurde aus Deckhand entfernt. Wähle in den Einstellungen ein anderes Modell."
           }
         }
       }
@@ -14898,6 +15248,16 @@
         }
       }
     },
+    "This server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server"
+          }
+        }
+      }
+    },
     "This server doesn't allow SSH port forwarding (AllowTcpForwarding no in sshd_config).": {
       "localizations": {
         "de": {
@@ -14984,6 +15344,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diesem Server fehlt python3, das die Regeln brauchen. Installiere es unter Updates oder im Terminal."
+          }
+        }
+      }
+    },
+    "This server has too little free memory or disk for a local model. The smallest one needs about 1.1 GB of free memory and 1.5 GB of disk.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server hat zu wenig freien Arbeits- oder Festplattenspeicher für ein lokales Modell. Das kleinste braucht etwa 1,1 GB freien Arbeitsspeicher und 1,5 GB Festplatte."
           }
         }
       }
@@ -15084,6 +15454,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Timer werden vom System verwaltet; Deckhand zeigt sie nur an."
+          }
+        }
+      }
+    },
+    "Tiny and fast; fine for short answers and commit messages.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Winzig und schnell; reicht für kurze Antworten und Commit-Nachrichten."
           }
         }
       }
@@ -15839,6 +16219,16 @@
         }
       }
     },
+    "Use %@ for chats": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ für Chats nutzen"
+          }
+        }
+      }
+    },
     "Use Folder": {
       "localizations": {
         "de": {
@@ -15865,6 +16255,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorlage verwenden"
+          }
+        }
+      }
+    },
+    "Use another address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Adresse nutzen"
+          }
+        }
+      }
+    },
+    "Use for chats": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Chats nutzen"
           }
         }
       }
@@ -16742,6 +17152,16 @@
         }
       }
     },
+    "Your own AI model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigenes KI-Modell"
+          }
+        }
+      }
+    },
     "Your own API key": {
       "localizations": {
         "de": {
@@ -16858,6 +17278,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine ~/.ssh/config, ein CSV-Export (Termius und andere) und die privaten Schlüsseldateien, die darin genannt werden – wähle sie zusammen aus. Schlüssel bleiben auf diesem iPhone, im Schlüsselbund."
+          }
+        }
+      }
+    },
+    "a removed server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "einem entfernten Server"
           }
         }
       }
