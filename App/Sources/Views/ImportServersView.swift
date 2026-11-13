@@ -110,12 +110,21 @@ struct ImportServersView: View {
 
     private func importChosen() {
         var withoutCredentials = 0
+        var made: [(candidate: HostImport.Candidate, server: Server)] = []
         for c in candidates where chosen.contains(c.id) && !isDuplicate(c) {
             let key = c.identityFile.flatMap { keys[$0] }
             let server = Server(name: c.name == c.host ? "" : c.name, host: c.host, port: c.port, username: c.user,
                                 authKind: key != nil ? .key : .password)
             context.insert(server)
+            made.append((c, server))
             if let key { Keychain.set(key, for: server.secretAccount) } else { withoutCredentials += 1 }
+        }
+        // ProxyJump: link to the jump host among the imported and existing servers (by alias or address).
+        let pool: [(name: String, server: Server)] = made.map { ($0.candidate.name, $0.server) } + existing.map { ($0.name, $0) }
+        let keys = pool.map { (name: $0.name, host: $0.server.host, port: $0.server.port, user: $0.server.username) }
+        for (c, server) in made {
+            guard let jump = c.proxyJump, let i = HostImport.jumpTarget(jump, among: keys), pool[i].server !== server else { continue }
+            server.jumpHostID = pool[i].server.id
         }
         try? context.save()
         if withoutCredentials > 0 {

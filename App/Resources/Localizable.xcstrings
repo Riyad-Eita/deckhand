@@ -325,6 +325,16 @@
         }
       }
     },
+    "%@ via %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ über %2$@"
+          }
+        }
+      }
+    },
     "%@ wants to run this on %@:": {
       "localizations": {
         "de": {
@@ -6895,6 +6905,16 @@
         }
       }
     },
+    "For servers behind a bastion: Deckhand logs in to the jump host first and reaches this server through it, like ssh -J. The address above is then as the jump host sees it (for example a private IP).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Server hinter einem Bastion-Host: Deckhand meldet sich zuerst am Jump-Host an und erreicht diesen Server darüber, wie ssh -J. Die Adresse oben ist dann so, wie der Jump-Host sie sieht (zum Beispiel eine private IP)."
+          }
+        }
+      }
+    },
     "Force Quit": {
       "localizations": {
         "de": {
@@ -8146,6 +8166,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Journal und Logdateien: live, suchen, erklären"
+          }
+        }
+      }
+    },
+    "Jump host": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump-Host"
           }
         }
       }
@@ -9640,6 +9670,16 @@
         }
       }
     },
+    "No answer from the jump host %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Antwort vom Jump-Host %@."
+          }
+        }
+      }
+    },
     "No app servers named: the database is then only reachable on the server itself and through SSH.": {
       "localizations": {
         "de": {
@@ -10119,6 +10159,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine."
+          }
+        }
+      }
+    },
+    "None — connect directly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keiner — direkt verbinden"
           }
         }
       }
@@ -15594,6 +15644,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Installation ist nicht fertig geworden."
+          }
+        }
+      }
+    },
+    "The jump host %@ doesn't allow forwarding (AllowTcpForwarding no in its sshd_config).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Jump-Host %@ erlaubt keine Weiterleitung (AllowTcpForwarding no in seiner sshd_config)."
+          }
+        }
+      }
+    },
+    "The jump hosts of %@ go round in a circle. Pick another one in the server's settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Jump-Hosts von %@ drehen sich im Kreis. Wähle in den Servereinstellungen einen anderen."
           }
         }
       }

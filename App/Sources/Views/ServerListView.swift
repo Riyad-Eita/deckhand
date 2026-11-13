@@ -69,6 +69,12 @@ struct ServerListView: View {
                     }
                 }
             }
+            if !servers.isEmpty {
+                Section {} footer: {
+                    Text("Beta — new features arrive with every update.")
+                        .frame(maxWidth: .infinity)
+                }
+            }
         }
         .overlay {
             if servers.isEmpty && chats.isEmpty {
@@ -100,13 +106,6 @@ struct ServerListView: View {
             }
         }
         .navigationTitle("Deckhand")
-        .safeAreaInset(edge: .bottom) {
-            if !servers.isEmpty {
-                Text("Beta — new features arrive with every update.")
-                    .font(.footnote).foregroundStyle(.secondary)
-                    .padding(.bottom, 8)
-            }
-        }
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
         .sheet(item: $agentSetupServer) { ServerToolsView(server: $0) { _ in } }
         .task {
@@ -199,6 +198,10 @@ struct ServerListView: View {
 struct ServerRow: View {
     let server: Server
     let state: Connections.State
+    @Query private var servers: [Server]
+    private var jumpName: String? {
+        server.jumpHostID.flatMap { id in servers.first { $0.id == id }?.displayName }
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -215,7 +218,8 @@ struct ServerRow: View {
                     // Agents signed in on this server.
                     ForEach(AgentStatus.shared.clis(for: server), id: \.self) { BrandIcon(brand: $0.brand, size: 18) }
                 }
-                Text(server.address).font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
+                Text(jumpName.map { String(localized: "\(server.address) via \($0)") } ?? server.address)
+                    .font(Theme.monoSmall).foregroundStyle(.secondary).lineLimit(1)
             }
             Spacer(minLength: 8)
             HStack(spacing: 6) {

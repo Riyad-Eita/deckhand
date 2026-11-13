@@ -13,6 +13,8 @@ struct ServerEditorView: View {
 
     @State private var name = ""
     @State private var group = ""
+    @State private var jumpHostID: UUID?
+    @Query(sort: \Server.name) private var allServers: [Server]
     @State private var host = ""
     @State private var port = "22"
     @State private var username = ""
@@ -51,6 +53,18 @@ struct ServerEditorView: View {
                 }
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+
+                if !jumpChoices.isEmpty {
+                    Section {
+                        Picker("Jump host", selection: $jumpHostID) {
+                            Text("None — connect directly").tag(UUID?.none)
+                            ForEach(jumpChoices) { s in Text(s.displayName).tag(Optional(s.id)) }
+                        }
+                        .accessibilityIdentifier("server.jumpHost")
+                    } footer: {
+                        Text("For servers behind a bastion: Deckhand logs in to the jump host first and reaches this server through it, like ssh -J. The address above is then as the jump host sees it (for example a private IP).")
+                    }
+                }
 
                 Section("Sign in with") {
                     Picker("Method", selection: $authKind) {
@@ -171,12 +185,20 @@ struct ServerEditorView: View {
             && (authKind == .password ? !password.isEmpty : !privateKey.isEmpty)
     }
 
+    /// Servers that can be this one's jump host (not itself, and none that would make a loop).
+    private var jumpChoices: [Server] {
+        let byID = Dictionary(uniqueKeysWithValues: allServers.map { ($0.id, $0.jumpHostID) })
+        let me = server?.id ?? created?.id ?? UUID()
+        return allServers.filter { JumpChain.allowed($0.id, for: me, jumpOf: { byID[$0] ?? nil }) }
+    }
+
     private func load() {
         guard !loaded else { return }
         loaded = true
         guard let server else { return }
         name = server.name
         group = server.group
+        jumpHostID = server.jumpHostID
         host = server.host
         port = String(server.port)
         username = server.username
@@ -202,6 +224,10 @@ struct ServerEditorView: View {
         let hostChanged = target.host != host.trimmingCharacters(in: .whitespaces) || target.port != Int(port) ?? 22
         target.name = name.trimmingCharacters(in: .whitespaces)
         target.group = group.trimmingCharacters(in: .whitespaces)
+        if target.jumpHostID != jumpHostID {
+            target.jumpHostID = jumpHostID
+            Task { await connections.disconnect(target) }   // the next connect goes the new way
+        }
         target.host = host.trimmingCharacters(in: .whitespaces)
         target.port = Int(port) ?? 22
         target.username = username.trimmingCharacters(in: .whitespaces)

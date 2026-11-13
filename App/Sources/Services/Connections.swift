@@ -48,9 +48,10 @@ final class Connections {
         guard let credential = Self.credential(for: server) else {
             throw SSHError.unsupportedKey("No password or key saved for this server.")
         }
+        let via = try await jumpConnection(for: server)
         let connection = SSHConnection(
             endpoint: SSHEndpoint(host: server.host, port: server.port, username: server.username),
-            credential: credential)
+            credential: credential, via: via)
         states[server.id] = .connecting
         let name = server.displayName
         do {
@@ -68,14 +69,34 @@ final class Connections {
         return connection
     }
 
+    struct JumpLoop: LocalizedError {
+        let name: String
+        var errorDescription: String? {
+            String(localized: "The jump hosts of \(name) go round in a circle. Pick another one in the server's settings.")
+        }
+    }
+
+    /// The connected jump host for `server`, if it uses one (chains work; loops are refused).
+    func jumpConnection(for server: Server) async throws -> SSHConnection? {
+        guard let jumpID = server.jumpHostID else { return nil }
+        let all = (try? DeckhandApp.container.mainContext.fetch(FetchDescriptor<Server>())) ?? []
+        let byID = Dictionary(uniqueKeysWithValues: all.map { ($0.id, $0) })
+        guard JumpChain.hops(from: server.id, jumpOf: { byID[$0]?.jumpHostID }) != nil else {
+            throw JumpLoop(name: server.displayName)
+        }
+        guard let jump = byID[jumpID] else { return nil }
+        return try await connection(for: jump)
+    }
+
     /// Logs in on another port with the saved credentials; the host key must match the pinned one.
     func testLogin(_ server: Server, port: Int, username: String? = nil, credential: SSHCredential? = nil) async throws -> SSHConnection {
         if credential == nil { try await KeyProtection.shared.ensureUnlocked() }
         guard let credential = credential ?? Self.credential(for: server) else {
             throw SSHError.unsupportedKey("No password or key saved for this server.")
         }
+        let via = try await jumpConnection(for: server)
         let connection = SSHConnection(
-            endpoint: SSHEndpoint(host: server.host, port: port, username: username ?? server.username), credential: credential)
+            endpoint: SSHEndpoint(host: server.host, port: port, username: username ?? server.username), credential: credential, via: via)
         let pinned = server.pinnedHostKey
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask { try await connection.connect(pinnedHostKey: pinned) { _, _ in false } }
