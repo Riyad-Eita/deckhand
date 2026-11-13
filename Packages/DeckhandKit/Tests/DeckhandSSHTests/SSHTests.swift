@@ -1283,3 +1283,44 @@ struct LiveMalwareScanTests {
         await conn.disconnect()
     }
 }
+
+/// Jump host against the disposable server (DECKHAND_BACKUP_HOST/PORT/USER/KEY, DECKHAND_JUMP_TEST=1): the server
+/// is its own jump host — the target is its sshd on 127.0.0.1:22, reached only through the tunnel.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_JUMP_TEST"] == "1"))
+struct LiveJumpHostTests {
+    @Test func throughJumpHost() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let user = env["DECKHAND_BACKUP_USER"]!
+        let bastion = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: user),
+            credential: .privateKey(key, passphrase: nil))
+        let target = SSHConnection(endpoint: SSHEndpoint(host: "127.0.0.1", port: 22, username: user),
+                                   credential: .privateKey(key, passphrase: nil), via: bastion)
+
+        // Without the jump host connected: a clear error, no attempt to reach 127.0.0.1 from here.
+        await #expect(throws: SSHError.self) { try await target.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true }) }
+
+        try await bastion.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        try await target.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        #expect(await target.hostKey != nil)
+        let r = try await target.run("echo via-$(hostname) $SSH_CONNECTION", timeout: .seconds(20))
+        print("step: run", r.stdout)
+        #expect(r.exitCode == 0 && r.stdout.hasPrefix("via-"))
+        // The target sees the connection coming from the jump host's loopback.
+        #expect(r.stdout.contains("127.0.0.1") || r.stdout.contains("::1"))
+
+        // Port forwards (web apps, local models) work through the jump too.
+        let port = Int.random(in: 41000...41999)
+        let dir = "/tmp/dh-jump-\(port)"
+        _ = try await target.run("mkdir -p \(dir) && echo 'through the jump host' > \(dir)/index.html && cd \(dir) && (setsid nohup python3 -m http.server \(port) --bind 127.0.0.1 >/dev/null 2>&1 &) ; sleep 1", timeout: .seconds(15))
+        let fwd = try await target.forward(remotePort: port)
+        let (data, _) = try await URLSession.shared.data(from: fwd.url.appending(path: "index.html"))
+        print("step: forward", String(decoding: data, as: UTF8.self))
+        #expect(String(decoding: data, as: UTF8.self) == "through the jump host\n")
+        fwd.stop()
+        _ = try await target.run("pkill -f 'http.server \(port) --bind 127.0.0.1'; rm -rf -- \(dir)", timeout: .seconds(10))
+        await target.disconnect()
+        await bastion.disconnect()
+    }
+}

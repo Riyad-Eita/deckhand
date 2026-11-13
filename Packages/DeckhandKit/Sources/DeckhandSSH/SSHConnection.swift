@@ -38,6 +38,10 @@ public enum SSHError: Error, LocalizedError, Sendable {
     case signInRejected(user: String)
     /// The connection dropped while working.
     case connectionLost
+    /// The jump host isn't connected.
+    case jumpHostDown(String)
+    /// The jump host doesn't allow forwarding (AllowTcpForwarding no).
+    case jumpNotAllowed(String)
 
     public var errorDescription: String? {
         switch self {
@@ -52,14 +56,23 @@ public enum SSHError: Error, LocalizedError, Sendable {
         case .unknownHost(let h): String(localized: "The address \(h) can't be found.")
         case .signInRejected(let u): String(localized: "The server didn't accept the login for \(u).")
         case .connectionLost: String(localized: "The connection to the server was lost.")
+        case .jumpHostDown(let h): String(localized: "No answer from the jump host \(h).")
+        case .jumpNotAllowed(let h): String(localized: "The jump host \(h) doesn't allow forwarding (AllowTcpForwarding no in its sshd_config).")
         }
     }
 
     /// Turns NIO / Citadel errors (whose own descriptions read "NIOCore.ChannelError error 0") into plain ones.
-    static func translate(_ error: Error, host: String, port: Int, user: String) -> Error {
+    static func translate(_ error: Error, host: String, port: Int, user: String, jumpHost: String? = nil) -> Error {
         if error is SSHError || error is CancellationError { return error }
         let text = String(describing: error)
         let lower = text.lowercased()
+        if let jumpHost {
+            // Opening the tunnel from the jump host failed: forwarding forbidden, or the target didn't answer it.
+            if lower.contains("prohibit") || lower.contains("reasoncode: 1") || lower.contains("reason: 1") { return SSHError.jumpNotAllowed(jumpHost) }
+            if lower.contains("connect failed") || lower.contains("reasoncode: 2") || lower.contains("reason: 2") {
+                return SSHError.unreachable(host: host, port: port)
+            }
+        }
         if lower.contains("allauthenticationoptionsfailed") || lower.contains("authentication failed") {
             return SSHError.signInRejected(user: user)
         }
@@ -169,9 +182,19 @@ public actor SSHConnection: StreamingShell {
     /// The server's host key line after the first successful connect. Store it to pin the host.
     public private(set) var hostKey: String?
 
-    public init(endpoint: SSHEndpoint, credential: SSHCredential) {
+    /// A jump host (bastion): this connection is tunnelled through it, like `ssh -J`.
+    public let via: SSHConnection?
+
+    public init(endpoint: SSHEndpoint, credential: SSHCredential, via: SSHConnection? = nil) {
         self.endpoint = endpoint
         self.credential = credential
+        self.via = via
+    }
+
+    /// Opens an SSH session to another server through this one (direct-tcpip), for jump hosts.
+    func jump(to settings: SSHClientSettings) async throws -> SSHClient {
+        guard let client, client.isConnected else { throw SSHError.notConnected }
+        return try await client.jump(to: settings)
     }
 
     public var isConnected: Bool { client?.isConnected ?? false }
@@ -193,9 +216,17 @@ public actor SSHConnection: StreamingShell {
             }, hostKeyValidator: .custom(check))
         settings.connectTimeout = .seconds(15)
         do {
-            client = try await SSHClient.connect(to: settings)
+            if let via {
+                // The jump host must be connected (and trusted) first; the target's host key is checked as usual.
+                guard await via.isConnected else { throw SSHError.jumpHostDown(via.endpoint.host) }
+                client = try await via.jump(to: settings)
+            } else {
+                client = try await SSHClient.connect(to: settings)
+            }
+        } catch let e as SSHError {
+            throw e
         } catch {
-            throw SSHError.translate(error, host: endpoint.host, port: endpoint.port, user: endpoint.username)
+            throw SSHError.translate(error, host: endpoint.host, port: endpoint.port, user: endpoint.username, jumpHost: via?.endpoint.host)
         }
         hostKey = check.seen
     }

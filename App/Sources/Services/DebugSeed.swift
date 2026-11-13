@@ -254,6 +254,18 @@ enum DebugSeed {
         context.insert(server)
         Keychain.set(key, for: server.secretAccount)
         try? context.save()
+        // DECKHAND_SEED_JUMP_TARGET="name|host|port": a second server with the same login, reached through the seeded one.
+        if let raw = env["DECKHAND_SEED_JUMP_TARGET"] {
+            let p = raw.split(separator: "|").map(String.init)
+            if p.count == 3 {
+                let target = Server(name: p[0], host: p[1], port: Int(p[2]) ?? 22, username: user,
+                                    authKind: env["DECKHAND_SEED_PASSWORD"] != nil ? .password : .key)
+                target.jumpHostID = server.id
+                context.insert(target)
+                Keychain.set(key, for: target.secretAccount)
+                try? context.save()
+            }
+        }
         // DECKHAND_SEED_LOCAL_MODEL=<model>: the OpenAI-compatible provider points at that model on the seeded server.
         if let local = env["DECKHAND_SEED_LOCAL_MODEL"] {
             UserDefaults.standard.set(ServerModelURL.make(serverID: server.id).absoluteString, forKey: "provider.custom.baseURL")

@@ -10,9 +10,12 @@ public enum HostImport {
         public var user: String
         /// The IdentityFile's file name (`id_ed25519`), if the source named one.
         public var identityFile: String?
+        /// ProxyJump: the jump host's alias or `user@host:port` (the first hop of a chain).
+        public var proxyJump: String?
         public var id: String { "\(user)@\(host):\(port)#\(name)" }
-        public init(name: String, host: String, port: Int = 22, user: String, identityFile: String? = nil) {
+        public init(name: String, host: String, port: Int = 22, user: String, identityFile: String? = nil, proxyJump: String? = nil) {
             self.name = name; self.host = host; self.port = port; self.user = user; self.identityFile = identityFile
+            self.proxyJump = proxyJump
         }
     }
 
@@ -44,7 +47,9 @@ public enum HostImport {
                 let user = b.opts["user"] ?? fallback("user") ?? defaultUser
                 let port = Int(b.opts["port"] ?? fallback("port") ?? "22") ?? 22
                 let identity = (b.opts["identityfile"] ?? fallback("identityfile")).map { ($0 as NSString).lastPathComponent }
-                out.append(Candidate(name: name, host: host, port: port, user: user, identityFile: identity))
+                let jump = (b.opts["proxyjump"] ?? fallback("proxyjump"))?.split(separator: ",").first.map(String.init)
+                    .flatMap { $0.lowercased() == "none" ? nil : $0 }
+                out.append(Candidate(name: name, host: host, port: port, user: user, identityFile: identity, proxyJump: jump))
             }
         }
         return out
@@ -92,5 +97,38 @@ public enum HostImport {
     /// The same server already exists (host case-insensitive, same port and user).
     public static func isDuplicate(_ c: Candidate, of existing: [(host: String, port: Int, user: String)]) -> Bool {
         existing.contains { $0.host.lowercased() == c.host.lowercased() && $0.port == c.port && $0.user == c.user }
+    }
+
+    /// Which of `servers` a ProxyJump value means: an alias (server name) or `[user@]host[:port]`.
+    public static func jumpTarget(_ proxyJump: String, among servers: [(name: String, host: String, port: Int, user: String)]) -> Int? {
+        if let i = servers.firstIndex(where: { $0.name == proxyJump }) { return i }
+        var rest = Substring(proxyJump)
+        var user: String?
+        if let at = rest.lastIndex(of: "@") { user = String(rest[..<at]); rest = rest[rest.index(after: at)...] }
+        var port = 22
+        if let colon = rest.lastIndex(of: ":"), let p = Int(rest[rest.index(after: colon)...]) { port = p; rest = rest[..<colon] }
+        let host = String(rest)
+        return servers.firstIndex { ($0.host == host || $0.name == host) && $0.port == port && (user == nil || $0.user == user) }
+    }
+}
+
+/// Jump host chains: which servers go through which, and whether a choice would make a loop.
+public enum JumpChain {
+    /// The hops to reach `start` (nearest jump host first), or nil when the chain loops or is longer than `limit`.
+    public static func hops(from start: UUID, jumpOf: (UUID) -> UUID?, limit: Int = 5) -> [UUID]? {
+        var chain: [UUID] = []
+        var current = jumpOf(start)
+        while let c = current {
+            if c == start || chain.contains(c) || chain.count >= limit { return nil }
+            chain.append(c)
+            current = jumpOf(c)
+        }
+        return chain
+    }
+
+    /// Whether `candidate` may be `server`'s jump host (no loop back to `server`).
+    public static func allowed(_ candidate: UUID, for server: UUID, jumpOf: (UUID) -> UUID?) -> Bool {
+        guard candidate != server else { return false }
+        return hops(from: server, jumpOf: { $0 == server ? candidate : jumpOf($0) }) != nil
     }
 }

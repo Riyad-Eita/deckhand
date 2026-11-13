@@ -53,3 +53,50 @@ struct HostImportTests {
         #expect(!HostImport.isDuplicate(c, of: [("web.example.com", 2222, "deploy")]))
     }
 }
+
+@Suite struct JumpHostTests {
+    @Test func proxyJumpFromSSHConfig() {
+        let found = HostImport.parseSSHConfig("""
+        Host bastion
+          HostName 203.0.113.10
+          User admin
+        Host db
+          HostName 10.0.0.5
+          ProxyJump bastion
+        Host app
+          HostName 10.0.0.6
+          ProxyJump admin@203.0.113.10:2222,other
+        Host direct
+          HostName 10.0.0.7
+          ProxyJump none
+        """)
+        #expect(found.first { $0.name == "db" }?.proxyJump == "bastion")
+        #expect(found.first { $0.name == "app" }?.proxyJump == "admin@203.0.113.10:2222")
+        #expect(found.first { $0.name == "direct" }?.proxyJump == nil)
+        #expect(found.first { $0.name == "bastion" }?.proxyJump == nil)
+    }
+
+    @Test func jumpTargetByAliasOrAddress() {
+        let servers: [(name: String, host: String, port: Int, user: String)] = [
+            ("bastion", "203.0.113.10", 22, "admin"), ("edge", "203.0.113.10", 2222, "admin"), ("db", "10.0.0.5", 22, "me"),
+        ]
+        #expect(HostImport.jumpTarget("bastion", among: servers) == 0)
+        #expect(HostImport.jumpTarget("admin@203.0.113.10:2222", among: servers) == 1)
+        #expect(HostImport.jumpTarget("203.0.113.10", among: servers) == 0)
+        #expect(HostImport.jumpTarget("nobody@203.0.113.10", among: servers) == nil)
+        #expect(HostImport.jumpTarget("unknown", among: servers) == nil)
+    }
+
+    @Test func chainsAndLoops() {
+        let a = UUID(), b = UUID(), c = UUID()
+        var jumps: [UUID: UUID] = [a: b, b: c]
+        #expect(JumpChain.hops(from: a, jumpOf: { jumps[$0] }) == [b, c])
+        #expect(JumpChain.hops(from: c, jumpOf: { jumps[$0] }) == [])
+        // c → a would loop (a → b → c → a).
+        #expect(!JumpChain.allowed(a, for: c, jumpOf: { jumps[$0] }))
+        #expect(!JumpChain.allowed(c, for: c, jumpOf: { jumps[$0] }))
+        #expect(JumpChain.allowed(b, for: a, jumpOf: { jumps[$0] }))
+        jumps[c] = a
+        #expect(JumpChain.hops(from: a, jumpOf: { jumps[$0] }) == nil)
+    }
+}

@@ -23,6 +23,8 @@ final class Server {
     var recentDirectories: [String] = []
     /// Optional group ("production", "home lab") for running commands on several servers.
     var group: String = ""
+    /// Another server to connect through (jump host / bastion, like `ssh -J`).
+    var jumpHostID: UUID?
     var createdAt: Date = Date()
     var lastConnectedAt: Date?
 
