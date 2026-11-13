@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UIKit
 
 @main
 struct DeckhandApp: App {
@@ -52,8 +53,13 @@ struct RootView: View {
         .hostKeyPrompt()
         .onOpenURL { AppRouter.shared.handle($0) }
         .onAppear { AppLock.shared.appeared() }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)) { _ in
+            KeyProtection.shared.lockNow()
+        }
         .onChange(of: scenePhase) { _, phase in
             AppLock.shared.scenePhaseChanged(phase)
+            if phase == .background { KeyProtection.shared.didEnterBackground() }
+            if phase == .active { KeyProtection.shared.didBecomeActive() }
             guard phase == .background else { return }
             let active = ((try? context.fetch(FetchDescriptor<ChatThread>())) ?? []).contains { $0.cliRunActive }
             TaskNotifier.shared.scheduleCheck(hasActiveRuns: active)

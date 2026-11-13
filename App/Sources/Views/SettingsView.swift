@@ -1,4 +1,5 @@
 import DeckhandCore
+import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
@@ -239,7 +240,10 @@ private struct NotificationSettingsSection: View {
 /// App lock: on/off (needs one successful Face ID / passcode check) and how long the app may stay in the background.
 private struct AppLockSection: View {
     @Environment(AppSettings.self) private var settings
+    @Query private var servers: [Server]
     @State private var method = AppLock.shared.method
+    @State private var keysProtected = KeyProtection.shared.enabled
+    @State private var switching = false
 
     var body: some View {
         @Bindable var settings = settings
@@ -259,13 +263,36 @@ private struct AppLockSection: View {
                     }
                 }
             }
+            Toggle(isOn: Binding(get: { keysProtected }, set: { on in
+                switching = true
+                Task {
+                    let accounts = servers.flatMap { [$0.secretAccount, $0.secretAccount + ".passphrase"] }
+                    if await KeyProtection.shared.setEnabled(on, accounts: accounts) { keysProtected = on }
+                    switching = false
+                }
+            })) {
+                Label(String(localized: "\(method ?? "Face ID") for server keys"), systemImage: "key.viewfinder")
+            }
+            .disabled(method == nil || switching)
+            .accessibilityIdentifier("settings.keyProtection")
+            #if DEBUG
+            if ProcessInfo.processInfo.environment["DECKHAND_SHOW_KEY_STATE"] == "1", let first = servers.first {
+                // UI tests: whether the first server's secret carries the Face ID access control.
+                Text(!Keychain.exists(first.secretAccount) ? "keys: none" : Keychain.isProtected(first.secretAccount) ? "keys: protected" : "keys: plain")
+                    .font(.caption.monospaced())
+                    .accessibilityIdentifier("settings.keyState")
+            }
+            #endif
         } header: {
             Text("Security")
         } footer: {
             if method == nil {
                 Text("Set a passcode on this iPhone to use App Lock.")
             } else {
-                Text("Deckhand asks for \(method ?? "Face ID") when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Deckhand asks for \(method ?? "Face ID") when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
+                    Text("With \(method ?? "Face ID") for server keys, passwords and keys can't be read without a check — one check keeps them open while you use the app and for 10 minutes after. While they're locked, background checks and notifications that need SSH pause; tasks already running on a server keep going and ntfy pushes from the server still arrive.")
+                }
             }
         }
     }
