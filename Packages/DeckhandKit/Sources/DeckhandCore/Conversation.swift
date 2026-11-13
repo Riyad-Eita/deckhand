@@ -45,6 +45,9 @@ public struct Message: Sendable, Hashable, Codable, Identifiable {
     public var blocks: [ContentBlock]
     /// When the message was made (nil for messages stored before times were kept).
     public var date: Date?
+    /// Which model wrote an assistant message and what it used (plain chats show it with the cost).
+    public var model: String?
+    public var usage: Usage?
 
     public init(id: UUID = UUID(), role: Role, blocks: [ContentBlock], date: Date? = Date()) {
         self.id = id

@@ -30,6 +30,11 @@ final class PlainChatModel {
         thread.chatProviderRaw.flatMap(ProviderKind.init(rawValue:)) ?? AppSettings.shared.providerKind
     }
     var model: String { thread.chatModel ?? AppSettings.shared.defaultModel(for: provider) }
+    var isAuto: Bool { thread.chatModel == ModelRouter.auto }
+    /// What "Auto" chose for the last message.
+    private(set) var lastRoute: (kind: ModelRouter.TaskKind, pick: ModelRouter.Candidate)?
+
+    func useAuto() { thread.chatModel = ModelRouter.auto }
 
     func use(_ kind: ProviderKind, model: String) {
         thread.chatProviderRaw = kind.rawValue
@@ -45,8 +50,19 @@ final class PlainChatModel {
         var asked = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if asked.isEmpty && !images.isEmpty { asked = String(localized: "What do you see here?") }
         guard !asked.isEmpty || !files.isEmpty, !isRunning else { return }
-        let config = AppSettings.shared.providerConfig(kind: provider, model: model)
-        guard !config.model.isEmpty, !config.apiKey.isEmpty || provider == .custom else {
+        var kind = provider, chosen = model
+        if isAuto {
+            let task = ModelRouter.classify(asked + files.map(\.text).joined(), images: images.count)
+            let length = (messages.map(\.text) + [asked] + files.map(\.text)).reduce(0) { $0 + $1.count }
+            guard let pick = ModelRouter.pick(for: task, length: length, among: AppSettings.shared.routerCandidates) else {
+                error = LLMError.missingAPIKey.localizedDescription
+                return
+            }
+            kind = pick.provider; chosen = pick.model
+            lastRoute = (task, pick)
+        }
+        let config = AppSettings.shared.providerConfig(kind: kind, model: chosen)
+        guard !config.model.isEmpty, !config.apiKey.isEmpty || kind == .custom else {
             error = LLMError.missingAPIKey.localizedDescription
             return
         }
@@ -73,10 +89,18 @@ final class PlainChatModel {
                 for try await event in agent.run(history: history, userMessage: user) {
                     switch event {
                     case .textDelta(let t): liveText += t
-                    case .message(let m):
+                    case .message(var m):
+                        if m.role == .assistant { m.model = chosen }
                         messages.append(m)
                         liveText = ""
                         persist()
+                    case .usage(let u):
+                        if let i = messages.lastIndex(where: { $0.role == .assistant }) {
+                            var total = messages[i].usage ?? Usage()
+                            total.inputTokens += u.inputTokens; total.outputTokens += u.outputTokens; total.cacheReadTokens += u.cacheReadTokens
+                            messages[i].usage = total
+                            persist()
+                        }
                     case .compacted(let summary, let dropped):
                         thread.historySummary = summary
                         thread.historyStart = min(start + dropped, messages.count)
@@ -109,6 +133,7 @@ struct PlainChatView: View {
     @State private var choosingPhoto = false
     @State private var choosingFile = false
     @FocusState private var focused: Bool
+    @State private var comparing = false
     @Environment(AppSettings.self) private var settings
 
     init(thread: ChatThread) {
@@ -123,7 +148,9 @@ struct PlainChatView: View {
                     if model.messages.isEmpty && !model.isRunning {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Ask anything").font(.title3.weight(.semibold))
-                            Text("A plain chat with \(model.model). No server, no tools — switch the model any time from the title.")
+                            Text(model.isAuto
+                                 ? String(localized: "Each message goes to the cheapest of your models that's good enough for it. No server, no tools — pick a fixed model any time from the title.")
+                                 : String(localized: "A plain chat with \(model.model). No server, no tools — switch the model any time from the title."))
                                 .font(.subheadline).foregroundStyle(.secondary)
                         }
                         .padding(.top, 24)
@@ -151,6 +178,14 @@ struct PlainChatView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Menu {
+                    Button {
+                        model.useAuto()
+                    } label: {
+                        if model.isAuto { Label("Auto — cheapest that fits", systemImage: "checkmark") } else { Label("Auto — cheapest that fits", systemImage: "wand.and.stars") }
+                    }
+                    .accessibilityIdentifier("chat.model.auto")
+                    Button { comparing = true } label: { Label("Compare two models…", systemImage: "square.split.2x1") }
+                        .accessibilityIdentifier("chat.compare")
                     ForEach(settings.chatProviders) { kind in
                         Section(kind.displayName) {
                             let models = Array(Set(kind.suggestedModels + [settings.defaultModel(for: kind)])).filter { !$0.isEmpty }.sorted()
@@ -158,7 +193,7 @@ struct PlainChatView: View {
                                 Button {
                                     model.use(kind, model: m)
                                 } label: {
-                                    if kind == model.provider && m == model.model { Label(m, systemImage: "checkmark") } else { Text(m) }
+                                    if !model.isAuto && kind == model.provider && m == model.model { Label(m, systemImage: "checkmark") } else { Text(m) }
                                 }
                             }
                         }
@@ -167,7 +202,7 @@ struct PlainChatView: View {
                     VStack(spacing: 1) {
                         Text(thread.title).font(.subheadline.weight(.semibold)).lineLimit(1)
                         HStack(spacing: 3) {
-                            Text(model.model).font(.caption2).foregroundStyle(.secondary)
+                            Text(model.isAuto ? String(localized: "Auto") : model.model).font(.caption2).foregroundStyle(.secondary)
                             Image(systemName: "chevron.down").font(.system(size: 8, weight: .semibold)).foregroundStyle(.secondary)
                         }
                     }
@@ -175,6 +210,9 @@ struct PlainChatView: View {
                 }
                 .accessibilityIdentifier("chat.model")
             }
+        }
+        .sheet(isPresented: $comparing) {
+            NavigationStack { CompareModelsView(prompt: model.messages.last(where: { $0.role == .user })?.text ?? draft) }
         }
         #if DEBUG
         .task {
@@ -209,7 +247,10 @@ struct PlainChatView: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.leading, 48)
         case .assistant:
-            ReplyText(text: m.text)
+            VStack(alignment: .leading, spacing: 4) {
+                ReplyText(text: m.text)
+                if let name = m.model { ModelCaption(model: name, usage: m.usage) }
+            }
         }
     }
 
@@ -293,5 +334,28 @@ struct PlainChatView: View {
         }
         .offset(x: 6, y: -6)
         .accessibilityLabel("Remove")
+    }
+}
+
+/// Under an answer: which model wrote it and what it cost.
+struct ModelCaption: View {
+    let model: String
+    let usage: Usage?
+    @Environment(AppSettings.self) private var settings
+
+    var body: some View {
+        let price = settings.routerCandidates.first { $0.model == model }?.price ?? ModelPrice.known(model)
+        HStack(spacing: 4) {
+            Image(systemName: "cpu").font(.system(size: 9))
+            Text(model)
+            if let usage, usage.outputTokens > 0 {
+                Text("·")
+                if let price { Text(ModelPrice.format(price.cost(usage))) } else { Text("\(usage.inputTokens + usage.cacheReadTokens) in, \(usage.outputTokens) out") }
+            }
+        }
+        .font(.caption2.monospacedDigit())
+        .foregroundStyle(.tertiary)
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("chat.caption")
     }
 }

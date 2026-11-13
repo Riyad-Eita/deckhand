@@ -181,6 +181,9 @@ enum DebugSeed {
         // DECKHAND_RESET=1: start from an empty app (UI tests run one after another in the same simulator).
         if env["DECKHAND_RESET"] == "1" {
             UserDefaults.standard.removeObject(forKey: KeyProtection.defaultsKey)
+            UserDefaults.standard.removeObject(forKey: "provider.custom.baseURL")
+            UserDefaults.standard.removeObject(forKey: "provider.custom.model")
+            if AppSettings.shared.providerKind != .anthropic { AppSettings.shared.providerKind = .anthropic }
             KeyProtection.shared.lockNow()
             // Tasks and plain chats first, then servers: deleting a task twice (once by the server's cascade) made
             // the save fail, and then nothing was reset.
@@ -245,6 +248,11 @@ enum DebugSeed {
         context.insert(server)
         Keychain.set(key, for: server.secretAccount)
         try? context.save()
+        // DECKHAND_SEED_LOCAL_MODEL=<model>: the OpenAI-compatible provider points at that model on the seeded server.
+        if let local = env["DECKHAND_SEED_LOCAL_MODEL"] {
+            UserDefaults.standard.set(ServerModelURL.make(serverID: server.id).absoluteString, forKey: "provider.custom.baseURL")
+            UserDefaults.standard.set(local, forKey: "provider.custom.model")
+        }
     }
 
     @MainActor
