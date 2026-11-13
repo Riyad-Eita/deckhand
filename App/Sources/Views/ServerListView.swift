@@ -52,11 +52,15 @@ struct ServerListView: View {
                 ChatsSection(chats: chats) { newChat() } delete: { context.delete($0) }
             }
             if !servers.isEmpty {
-                Section("Apps") {
+                Section("Tools") {
                     NavigationLink { AppStoreView() } label: {
                         Label("App Store Connect", systemImage: "app.badge.checkmark")
                     }
                     .accessibilityIdentifier("home.appstore")
+                    NavigationLink { HTTPCollectionsView() } label: {
+                        Label("HTTP requests", systemImage: "arrow.left.arrow.right")
+                    }
+                    .accessibilityIdentifier("home.http")
                 }
             }
         }
