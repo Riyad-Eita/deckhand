@@ -44,6 +44,7 @@ final class Connections {
     /// Returns a connected `SSHConnection`, connecting (and asking about the host key) if needed.
     func connection(for server: Server) async throws -> SSHConnection {
         if let existing = connections[server.id], await existing.isConnected { return existing }
+        try await KeyProtection.shared.ensureUnlocked()
         guard let credential = Self.credential(for: server) else {
             throw SSHError.unsupportedKey("No password or key saved for this server.")
         }
@@ -69,6 +70,7 @@ final class Connections {
 
     /// Logs in on another port with the saved credentials; the host key must match the pinned one.
     func testLogin(_ server: Server, port: Int, username: String? = nil, credential: SSHCredential? = nil) async throws -> SSHConnection {
+        if credential == nil { try await KeyProtection.shared.ensureUnlocked() }
         guard let credential = credential ?? Self.credential(for: server) else {
             throw SSHError.unsupportedKey("No password or key saved for this server.")
         }

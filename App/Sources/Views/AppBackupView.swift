@@ -31,7 +31,12 @@ struct AppBackupView: View {
                 SecureField("Passphrase", text: $passphrase).accessibilityIdentifier("backup.app.pass")
                 SecureField("Repeat passphrase", text: $repeatPassphrase).accessibilityIdentifier("backup.app.pass2")
                 Toggle("Include passwords, keys and API keys", isOn: $includeSecrets)
-                Button("Create backup file") { export() }
+                Button("Create backup file") {
+                    Task {
+                        if includeSecrets, KeyProtection.shared.enabled, await !KeyProtection.shared.unlock() { return }
+                        export()
+                    }
+                }
                     .disabled(passphrase.count < 8 || passphrase != repeatPassphrase)
                     .accessibilityIdentifier("backup.app.export")
                 if let exported {

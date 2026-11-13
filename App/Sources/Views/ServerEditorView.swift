@@ -24,6 +24,7 @@ struct ServerEditorView: View {
     @State private var importingKey = false
     @State private var testState: TestState = .idle
     @State private var loaded = false
+    @State private var secretLocked = false
     /// The server created by "Test Connection", so Save updates it instead of adding a second one.
     @State private var created: Server?
     /// Replace the password with a freshly made key after a successful password login.
@@ -119,7 +120,10 @@ struct ServerEditorView: View {
                 defer { if access { url.stopAccessingSecurityScopedResource() } }
                 if let text = try? String(contentsOf: url, encoding: .utf8) { privateKey = text; publicKey = nil }
             }
-            .onAppear(perform: load)
+            .task {
+                if server != nil, KeyProtection.shared.enabled { _ = await KeyProtection.shared.unlock() }
+                load()
+            }
         }
         .hostKeyPrompt(inSheet: true)
     }
@@ -177,6 +181,7 @@ struct ServerEditorView: View {
         port = String(server.port)
         username = server.username
         authKind = server.authKind
+        secretLocked = Keychain.isLocked(server.secretAccount)
         let secret = Keychain.get(server.secretAccount) ?? ""
         if authKind == .password { password = secret } else {
             privateKey = secret
@@ -206,8 +211,11 @@ struct ServerEditorView: View {
             context.insert(target)
             created = target
         }
-        Keychain.set(authKind == .password ? password : privateKey, for: target.secretAccount)
-        Keychain.set(authKind == .key ? passphrase : nil, for: target.secretAccount + ".passphrase")
+        // Locked by Face ID and left empty: keep what's saved instead of erasing it.
+        if !(secretLocked && (authKind == .password ? password : privateKey).isEmpty) {
+            Keychain.set(authKind == .password ? password : privateKey, for: target.secretAccount)
+            Keychain.set(authKind == .key ? passphrase : nil, for: target.secretAccount + ".passphrase")
+        }
         return target
     }
 

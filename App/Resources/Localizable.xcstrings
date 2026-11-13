@@ -115,6 +115,16 @@
         }
       }
     },
+    "%@ for server keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ für Server-Schlüssel"
+          }
+        }
+      }
+    },
     "%@ forwards to %@, but nothing listens there.": {
       "localizations": {
         "de": {
@@ -10194,6 +10204,16 @@
         }
       }
     },
+    "Protect your server keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server-Schlüssel schützen"
+          }
+        }
+      }
+    },
     "Protocol": {
       "localizations": {
         "de": {
@@ -10702,6 +10722,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ entfernen?"
+          }
+        }
+      }
+    },
+    "Remove Face ID from your server keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID von den Server-Schlüsseln entfernen"
           }
         }
       }
@@ -12013,6 +12043,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Röntgen"
+          }
+        }
+      }
+    },
+    "Server keys are locked. Open Deckhand and unlock them with Face ID.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Server-Schlüssel sind gesperrt. Öffne Deckhand und entsperre sie mit Face ID."
           }
         }
       }
@@ -14898,6 +14938,16 @@
         }
       }
     },
+    "Unlock your server keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server-Schlüssel entsperren"
+          }
+        }
+      }
+    },
     "Unstage": {
       "localizations": {
         "de": {
@@ -15658,6 +15708,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Warum ist %@ ausgefallen?"
+          }
+        }
+      }
+    },
+    "With %@ for server keys, passwords and keys can't be read without a check — one check keeps them open while you use the app and for 10 minutes after. While they're locked, background checks and notifications that need SSH pause; tasks already running on a server keep going and ntfy pushes from the server still arrive.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ für Server-Schlüssel lassen sich Passwörter und Schlüssel nur nach einer Prüfung lesen — eine Prüfung hält sie offen, solange du die App nutzt, und 10 Minuten danach. Solange sie gesperrt sind, pausieren Hintergrundprüfungen und Mitteilungen, die SSH brauchen; Aufgaben, die schon auf einem Server laufen, laufen weiter, und ntfy-Pushes vom Server kommen trotzdem an."
           }
         }
       }
