@@ -52,7 +52,7 @@ struct RootView: View {
         }
         .hostKeyPrompt()
         .onOpenURL { AppRouter.shared.handle($0) }
-        .onAppear { AppLock.shared.appeared() }
+        .onAppear { AppLock.shared.appeared(); CrashReporter.shared.start() }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)) { _ in
             KeyProtection.shared.lockNow()
         }

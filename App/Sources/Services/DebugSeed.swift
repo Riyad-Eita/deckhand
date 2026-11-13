@@ -199,6 +199,12 @@ enum DebugSeed {
             UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")
         }
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
+        // DECKHAND_SEED_DIAGNOSTIC=1: one MetricKit payload with a crash and a hang (replaces stored reports).
+        if env["DECKHAND_SEED_DIAGNOSTIC"] == "1" {
+            CrashReporter.shared.deleteAll()
+            CrashReporter.shared.save([Data(Self.sampleDiagnostic.utf8)])
+            CrashReporter.shared.load()
+        }
         // DECKHAND_SEED_HTTP=1: one demo collection for the HTTP client (replaces what's there).
         if env["DECKHAND_SEED_HTTP"] == "1" {
             typealias H = HTTPClient
@@ -254,6 +260,17 @@ enum DebugSeed {
             UserDefaults.standard.set(local, forKey: "provider.custom.model")
         }
     }
+
+    static let sampleDiagnostic = #"""
+    {"timeStampBegin":"2026-11-12 22:00:00","timeStampEnd":"2026-11-12 22:59:00",
+     "crashDiagnostics":[{"diagnosticMetaData":{"appVersion":"1.2","appBuildVersion":"4","exceptionType":6,"signal":5,
+       "osVersion":"iPhone OS 26.1 (23B85)","deviceType":"iPhone17,1","terminationReason":"Namespace SIGNAL, Code 5 Trace/BPT trap: 5"},
+       "callStackTree":{"callStackPerThread":true,"callStacks":[{"threadAttributed":true,"callStackRootFrames":[
+         {"binaryName":"Deckhand","offsetIntoBinaryTextSegment":123456,"subFrames":[{"binaryName":"Deckhand","offsetIntoBinaryTextSegment":120000,
+           "subFrames":[{"binaryName":"SwiftUI","offsetIntoBinaryTextSegment":99}]}]}]}]}}],
+     "hangDiagnostics":[{"diagnosticMetaData":{"appVersion":"1.2","appBuildVersion":"4","osVersion":"iPhone OS 26.1 (23B85)",
+       "deviceType":"iPhone17,1","hangDuration":"3.4 sec"}}]}
+    """#
 
     @MainActor
     static func runIntent(_ spec: String) async {
