@@ -10,7 +10,7 @@ struct GitReposView: View {
 
     var body: some View {
         List {
-            if let error { Text(error).foregroundStyle(.red).font(.footnote) }
+            if let error { ProblemView(message: error, compact: true) }
             if let repos {
                 if repos.isEmpty {
                     ContentUnavailableView("No repositories found", systemImage: "arrow.triangle.branch",
@@ -325,7 +325,7 @@ struct GitBranchesView: View {
     var body: some View {
         NavigationStack {
             List {
-                if let error { Text(error).font(.footnote).foregroundStyle(.red) }
+                if let error { ProblemView(message: error, compact: true) }
                 Section {
                     HStack {
                         TextField("new-branch", text: $newName).textInputAutocapitalization(.never).autocorrectionDisabled().font(.body.monospaced())

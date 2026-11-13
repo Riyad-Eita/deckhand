@@ -44,7 +44,7 @@ struct ServerToolsView: View {
                         }
                     }
                 } else if let error {
-                    ContentUnavailableView("Could not read the server", systemImage: "exclamationmark.triangle", description: Text(error))
+                    VStack(spacing: 14) { Text("Could not read the server").font(.title3.weight(.semibold)); ProblemView(message: error) }.frame(maxWidth: .infinity).padding(.vertical, 30)
                 } else {
                     HStack { Spacer(); ProgressView("Checking the server…"); Spacer() }
                         .listRowBackground(Color.clear)
@@ -176,7 +176,7 @@ private struct ConnectionSyncSection: View {
                         }
                     }
                 }
-                if let error { Text(error).font(.footnote).foregroundStyle(.red) }
+                if let error { ProblemView(message: error, compact: true) }
             }
         } header: {
             Text("Connections")

@@ -70,7 +70,7 @@ struct SSHPortView: View {
                     }
                 }
             } else if case .failed(let m) = root.phase {
-                Text(m).foregroundStyle(.red).font(.footnote)
+                ProblemView(message: m, compact: true)
             } else {
                 HStack { Spacer(); ProgressView(); Spacer() }.listRowBackground(Color.clear)
             }

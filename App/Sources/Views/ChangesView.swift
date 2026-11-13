@@ -87,7 +87,7 @@ struct RootTaskSheet: View {
                     }
                 }
                 if case .failed(let message) = runner.phase {
-                    Section { Text(message).foregroundStyle(.red).font(.footnote) }
+                    Section { ProblemView(message: message, compact: true) }
                 }
                 if let failed = runner.failedStep {
                     Section {
@@ -197,7 +197,7 @@ struct ChangesView: View {
 
     var body: some View {
         List {
-            if let error { Text(error).foregroundStyle(.red).font(.footnote) }
+            if let error { ProblemView(message: error, compact: true) }
             if let records {
                 if records.isEmpty {
                     ContentUnavailableView(
@@ -287,7 +287,7 @@ struct ChangeDetailView: View {
                 case .running, .needsPassword:
                     HStack { ProgressView(); Text("Comparing…").foregroundStyle(.secondary) }
                 case .failed(let m):
-                    Text(m).foregroundStyle(.red).font(.footnote)
+                    ProblemView(message: m, compact: true)
                 case .finished:
                     if diff.lines.isEmpty {
                         Text("The files are the same as before this change.").foregroundStyle(.secondary)

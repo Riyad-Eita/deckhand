@@ -20,7 +20,7 @@ struct PackageUpdatesView: View {
     var body: some View {
         List {
             if let error {
-                Text(error).foregroundStyle(.red).font(.footnote)
+                ProblemView(message: error, compact: true)
             }
             if let status {
                 if status.manager == nil {

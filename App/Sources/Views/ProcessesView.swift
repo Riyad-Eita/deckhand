@@ -34,7 +34,7 @@ struct ProcessesView: View {
                 .listRowBackground(Color.clear)
             }
             if let error {
-                Text(error).foregroundStyle(.red).font(.footnote)
+                ProblemView(message: error, compact: true)
             }
             if let notice {
                 Text(notice).foregroundStyle(.secondary).font(.footnote)

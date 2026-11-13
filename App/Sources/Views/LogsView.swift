@@ -11,7 +11,7 @@ struct LogsView: View {
 
     var body: some View {
         List {
-            if let error { Text(error).font(.footnote).foregroundStyle(.red) }
+            if let error { ProblemView(message: error, compact: true) }
             Section {
                 ForEach(sources) { source in
                     NavigationLink {

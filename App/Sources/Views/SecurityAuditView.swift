@@ -37,7 +37,7 @@ struct SecurityAuditView: View {
                     Text("Fixes back up every file first and can be rolled back in the change history.")
                 }
             } else if case .failed(let m) = root.phase {
-                Text(m).foregroundStyle(.red).font(.footnote)
+                ProblemView(message: m, compact: true)
             } else {
                 VStack(spacing: 10) {
                     ProgressView()

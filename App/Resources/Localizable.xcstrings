@@ -1074,6 +1074,16 @@
         }
       }
     },
+    "A usage limit was reached.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Nutzungslimit wurde erreicht."
+          }
+        }
+      }
+    },
     "A weekly scan sends a push only for new findings you haven't muted. Scans can take a few minutes.": {
       "localizations": {
         "de": {
@@ -3368,6 +3378,16 @@
         }
       }
     },
+    "Check the sudo password — it's the password of your login on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe das sudo-Passwort — es ist das Passwort deiner Anmeldung auf dem Server."
+          }
+        }
+      }
+    },
     "Check the user name and password or key in the server's settings. With a key, its public part must be in ~/.ssh/authorized_keys on the server.": {
       "localizations": {
         "de": {
@@ -5106,6 +5126,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Losgelöster HEAD"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
           }
         }
       }
@@ -10093,6 +10123,16 @@
         }
       }
     },
+    "Nothing answers on that address and port. Check that the service runs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter dieser Adresse und diesem Port antwortet nichts. Prüfe, ob der Dienst läuft."
+          }
+        }
+      }
+    },
     "Nothing changed in %@ since this task began.": {
       "localizations": {
         "de": {
@@ -14057,6 +14097,16 @@
         }
       }
     },
+    "Something went wrong.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas ist schiefgegangen."
+          }
+        }
+      }
+    },
     "Sort by": {
       "localizations": {
         "de": {
@@ -14858,6 +14908,16 @@
         }
       }
     },
+    "That file or folder isn't there (anymore). Pull down to refresh, or check the path.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Datei oder dieser Ordner ist nicht (mehr) da. Zieh nach unten zum Aktualisieren oder prüfe den Pfad."
+          }
+        }
+      }
+    },
     "That isn't a URL: %@": {
       "localizations": {
         "de": {
@@ -14894,6 +14954,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Name ist zu lang."
+          }
+        }
+      }
+    },
+    "That part of the server can't be written to. The disk may have errors — check the system log.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Teil des Servers ist schreibgeschützt. Die Festplatte hat vielleicht Fehler — sieh ins Systemprotokoll."
           }
         }
       }
@@ -14944,6 +15014,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der API-Schlüssel wird von diesem iPhone entfernt. In App Store Connect bleibt er gültig, bis du ihn dort widerrufst."
+          }
+        }
+      }
+    },
+    "The HTTPS certificate isn't trusted. Check its expiry and the address you use.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dem HTTPS-Zertifikat wird nicht vertraut. Prüfe das Ablaufdatum und die Adresse."
           }
         }
       }
@@ -15074,6 +15154,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Verbindung wurde geschlossen, bevor der Befehl fertig war."
+          }
+        }
+      }
+    },
+    "The connection to the server closed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung zum Server wurde geschlossen."
           }
         }
       }
@@ -15248,12 +15338,32 @@
         }
       }
     },
+    "The login was rejected.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde abgelehnt."
+          }
+        }
+      }
+    },
     "The model didn't answer.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Das Modell hat nicht geantwortet."
+          }
+        }
+      }
+    },
+    "The model provider had a problem.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Modellanbieter hatte ein Problem."
           }
         }
       }
@@ -15368,6 +15478,16 @@
         }
       }
     },
+    "The server couldn't do this.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server konnte das nicht ausführen."
+          }
+        }
+      }
+    },
     "The server couldn't open port %@ (%@). Its previous configuration was put back.": {
       "localizations": {
         "de": {
@@ -15474,6 +15594,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Host-Schlüssel des Servers hat sich geändert (erwartet %1$@, erhalten %2$@). Das kann bedeuten, dass jemand die Verbindung abfängt."
+          }
+        }
+      }
+    },
+    "The server's identity changed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Identität des Servers hat sich geändert."
           }
         }
       }
@@ -17658,6 +17788,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Key"
+          }
+        }
+      }
+    },
+    "Your login isn't allowed to use sudo. Log in as an admin user, or add this user to the sudo group.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Anmeldung darf sudo nicht nutzen. Melde dich als Admin an oder füge diesen Benutzer der sudo-Gruppe hinzu."
           }
         }
       }

@@ -23,7 +23,7 @@ struct DockerView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
-            if let error { Text(error).foregroundStyle(.red).font(.footnote) }
+            if let error { ProblemView(message: error, compact: true) }
             if let overview {
                 if !overview.installed {
                     ContentUnavailableView("Docker isn't installed", systemImage: "shippingbox", description: Text("Install Docker on this server to manage containers here."))

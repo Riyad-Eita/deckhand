@@ -50,7 +50,7 @@ struct FolderPicker: View {
                             Text("No sub-folders").foregroundStyle(.secondary)
                         }
                     } else if let error {
-                        Text(error).foregroundStyle(.red).font(.footnote)
+                        ProblemView(message: error, compact: true)
                     } else {
                         HStack { Spacer(); ProgressView(); Spacer() }
                     }

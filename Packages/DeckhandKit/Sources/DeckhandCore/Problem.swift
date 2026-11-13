@@ -21,9 +21,42 @@ public struct Problem: Sendable, Hashable {
     public var kind: Kind
     public var message: String
     public var suggestion: String
+    /// The original text when `message` replaced something technical (shown on request).
+    public var details: String?
 
-    /// Classifies an error message (what `localizedDescription` gives) and picks a suggestion.
+    public init(kind: Kind, message: String, suggestion: String, details: String? = nil) {
+        self.kind = kind; self.message = message; self.suggestion = suggestion; self.details = details
+    }
+
+    /// Library error descriptions ("ChannelError.ioOnClosedChannel", "Error Domain=… Code=…") aren't for people.
+    public static func isTechnical(_ text: String) -> Bool {
+        let markers = ["ChannelError", "NIOCore", "NIOSSH", "Citadel", "SSHClientError", "Error Domain=", "Code=", "Error(", "error(",
+                       ".swift:", "Swift.", "Foundation."]
+        if markers.contains(where: text.contains) { return true }
+        return text.range(of: #"^[A-Za-z]+(\.[A-Za-z]+)*\([^)]*\)$"#, options: .regularExpression) != nil
+            || text.range(of: #"^[a-z]+[A-Z][A-Za-z]+$"#, options: .regularExpression) != nil
+    }
+
+    /// Classifies an error message (what `localizedDescription` gives) and picks a suggestion. Technical texts are
+    /// replaced by plain words and kept as `details`.
     public static func from(_ message: String) -> Problem {
+        var p = classify(message)
+        if isTechnical(p.message) {
+            p.details = p.message
+            p.message = switch p.kind {
+            case .network: String(localized: "The connection to the server closed.")
+            case .signIn: String(localized: "The login was rejected.")
+            case .hostKey: String(localized: "The server's identity changed.")
+            case .server: String(localized: "The server couldn't do this.")
+            case .provider: String(localized: "The model provider had a problem.")
+            case .limit: String(localized: "A usage limit was reached.")
+            case .other: String(localized: "Something went wrong.")
+            }
+        }
+        return p
+    }
+
+    static func classify(_ message: String) -> Problem {
         let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
         let m = text.lowercased()
         func has(_ words: String...) -> Bool { words.contains { m.contains($0) } }
@@ -72,6 +105,27 @@ public struct Problem: Sendable, Hashable {
             return Problem(kind: .provider, message: text, suggestion: String(localized:
                 "The model provider has a problem right now. Try again in a minute."))
         }
+        if has("ioonclosedchannel", "connection reset by peer", "broken pipe", "channel closed", "alreadyclosed", "outputclosed",
+               "unexpected eof", "connection closed") {
+            return Problem(kind: .network, message: text, suggestion: String(localized:
+                "Pull down or try again. Tasks keep running on the server meanwhile."))
+        }
+        if has("a password is required", "sorry, try again", "incorrect password attempt", "falsches passwort") {
+            return Problem(kind: .signIn, message: text, suggestion: String(localized:
+                "Check the sudo password — it's the password of your login on the server."))
+        }
+        if has("is not in the sudoers file", "not allowed to run sudo", "may not run sudo") {
+            return Problem(kind: .server, message: text, suggestion: String(localized:
+                "Your login isn't allowed to use sudo. Log in as an admin user, or add this user to the sudo group."))
+        }
+        if has("certificate", "ssl error", "tls") && has("invalid", "untrusted", "expired", "not trusted", "error") {
+            return Problem(kind: .network, message: text, suggestion: String(localized:
+                "The HTTPS certificate isn't trusted. Check its expiry and the address you use."))
+        }
+        if has("read-only file system") {
+            return Problem(kind: .server, message: text, suggestion: String(localized:
+                "That part of the server can't be written to. The disk may have errors — check the system log."))
+        }
         if has("no space left on device", "disk quota exceeded") {
             return Problem(kind: .server, message: text, suggestion: String(localized:
                 "The server's disk is full. Free some space — old logs, Docker images, package caches."))
@@ -88,6 +142,14 @@ public struct Problem: Sendable, Hashable {
             return Problem(kind: .server, message: text, suggestion: String(localized:
                 "The server took too long. It may be busy — check Processes, then try again."))
         }
-        return Problem(kind: .other, message: text, suggestion: String(localized: "Try again. If it keeps happening, the details help."))
+        if has("no such file or directory", "does not exist", "existiert nicht") {
+            return Problem(kind: .server, message: text, suggestion: String(localized:
+                "That file or folder isn't there (anymore). Pull down to refresh, or check the path."))
+        }
+        if has("connection refused") {
+            return Problem(kind: .network, message: text, suggestion: String(localized:
+                "Nothing answers on that address and port. Check that the service runs."))
+        }
+                return Problem(kind: .other, message: text, suggestion: String(localized: "Try again. If it keeps happening, the details help."))
     }
 }

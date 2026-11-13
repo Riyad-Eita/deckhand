@@ -14,7 +14,7 @@ struct WebAppsView: View {
 
     var body: some View {
         List {
-            if let error { Text(error).foregroundStyle(.red).font(.footnote) }
+            if let error { ProblemView(message: error, compact: true) }
             if let ports {
                 Section {
                     if ports.isEmpty { Text("Nothing listens on a port right now.").foregroundStyle(.secondary) }
@@ -90,7 +90,7 @@ struct BrowserSheet: View {
                     TunnelWebView(url: URL(string: path, relativeTo: forward.url)?.absoluteURL ?? forward.url, reloadToken: reloadToken)
                         .ignoresSafeArea(edges: .bottom)
                 } else if let error {
-                    ContentUnavailableView("Couldn't open port \(String(port))", systemImage: "exclamationmark.triangle", description: Text(error))
+                    VStack(spacing: 14) { Text("Couldn't open port \(String(port))").font(.title3.weight(.semibold)); ProblemView(message: error) }.frame(maxWidth: .infinity).padding(.vertical, 30)
                 } else {
                     ProgressView("Opening a tunnel to port \(String(port))…").frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
