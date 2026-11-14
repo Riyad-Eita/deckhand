@@ -143,7 +143,10 @@ struct FilesView: View {
                 } label: { FileRow(file: file) }
             } else if file.kind == .file {
                 NavigationLink {
-                    FileViewer(server: server, path: full, size: file.size)
+                    switch FilePreview.kind(forFileName: file.name) {
+                    case .image, .pdf: QuickLookFileView(server: server, path: full, size: file.size)
+                    case .log, .text: FileViewer(server: server, path: full, size: file.size)
+                    }
                 } label: { FileRow(file: file) }
             } else {
                 FileRow(file: file)
