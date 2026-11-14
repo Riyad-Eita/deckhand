@@ -4459,6 +4459,16 @@
         }
       }
     },
+    "Copy link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link kopieren"
+          }
+        }
+      }
+    },
     "Copy to %@": {
       "localizations": {
         "de": {
@@ -7211,6 +7221,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Von Git auf diesen Server; Auto-Deploy, Rollback, Logs"
+          }
+        }
+      }
+    },
+    "From a link. Check the address before you import — links never carry passwords or keys, you sign in afterwards.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus einem Link. Prüfe die Adresse vor dem Import – Links enthalten nie Passwörter oder Schlüssel, du meldest dich danach an."
           }
         }
       }
@@ -12285,6 +12305,16 @@
         }
       }
     },
+    "QR code for %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QR-Code für %@"
+          }
+        }
+      }
+    },
     "Queries then run for real against %@. Without this they run in a read-only transaction.": {
       "localizations": {
         "de": {
@@ -13893,6 +13923,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erneut scannen"
+          }
+        }
+      }
+    },
+    "Scan it with the Camera on another iPhone that has Deckhand. Only the address and the user name are in it — no password, no key. The other side signs in with their own.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne ihn mit der Kamera auf einem anderen iPhone mit Deckhand. Er enthält nur Adresse und Benutzernamen – kein Passwort, keinen Schlüssel. Die andere Seite meldet sich mit eigenen Zugangsdaten an."
           }
         }
       }

@@ -1,3 +1,4 @@
+import DeckhandCore
 import Foundation
 import Observation
 
@@ -16,6 +17,14 @@ final class AppRouter {
 
     /// A risky action waiting for approval (`deckhand://approve/<server>/<fingerprint>?who=…&cmd=…`).
     var pendingApproval: ApprovalLink?
+
+    /// Servers from a `deckhand://add?…` link (or a scanned QR code), shown on the import screen — never added unseen.
+    var pendingImport: ImportLink?
+
+    struct ImportLink: Identifiable, Equatable {
+        let candidates: [HostImport.Candidate]
+        let id = UUID()
+    }
 
     struct ApprovalLink: Identifiable, Equatable {
         let server: UUID
@@ -44,6 +53,8 @@ final class AppRouter {
                                                who: q.first { $0.name == "who" }?.value ?? "",
                                                command: q.first { $0.name == "cmd" }?.value ?? "")
             }
+        case "add":
+            if let c = HostLink.parse(url) { pendingImport = ImportLink(candidates: [c]) }
         case "uptime":
             if parts.count == 2, let server = UUID(uuidString: parts[0]) { pendingIncident = IncidentLink(server: server, check: parts[1]) }
         default:
