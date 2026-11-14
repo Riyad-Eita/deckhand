@@ -1,8 +1,11 @@
-import ActivityKit
 import Foundation
+#if !targetEnvironment(macCatalyst)
+import ActivityKit
+extension TaskActivityAttributes: ActivityAttributes {}
+#endif
 
-/// A task shown on the Lock Screen and in the Dynamic Island while it runs.
-struct TaskActivityAttributes: ActivityAttributes {
+/// A task shown on the Lock Screen and in the Dynamic Island while it runs (no Live Activities on the Mac).
+struct TaskActivityAttributes: Codable, Hashable {
     enum Phase: String, Codable, Hashable {
         case running, approval, waiting, done, failed
     }

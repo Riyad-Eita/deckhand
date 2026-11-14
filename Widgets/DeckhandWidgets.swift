@@ -1,6 +1,7 @@
-import ActivityKit
 import SwiftUI
 import WidgetKit
+#if !targetEnvironment(macCatalyst)
+import ActivityKit
 
 @main
 struct DeckhandWidgets: WidgetBundle {
@@ -9,6 +10,17 @@ struct DeckhandWidgets: WidgetBundle {
         ServerStatusWidget()
     }
 }
+#else
+/// The Mac has no Live Activities; the status widget works in Notification Center and on the desktop.
+@main
+struct DeckhandWidgets: WidgetBundle {
+    var body: some Widget {
+        ServerStatusWidget()
+    }
+}
+#endif
+
+#if !targetEnvironment(macCatalyst)
 
 struct TaskLiveActivity: Widget {
     var body: some WidgetConfiguration {
@@ -102,3 +114,5 @@ private struct PhaseIcon: View {
         }
     }
 }
+
+#endif

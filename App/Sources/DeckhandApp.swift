@@ -61,6 +61,9 @@ struct RootView: View {
             OnboardingView { onboardingDone = true }
                 .hostKeyPrompt(inSheet: true)
                 .serverLinkImport(enabled: true)
+                // Mac Catalyst presents the cover in its own window: pass the shared objects explicitly.
+                .environment(AppSettings.shared)
+                .environment(Connections.shared)
         }
         .hostKeyPrompt()
         .serverLinkImport(enabled: !showOnboarding)
