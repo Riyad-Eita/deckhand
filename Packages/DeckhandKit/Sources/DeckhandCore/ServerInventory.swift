@@ -89,10 +89,43 @@ extension ServerCLI {
 public enum PersistentSession {
     public static let name = "deckhand"
 
+    /// The kept session for terminal tab `tab` (1-based): "deckhand", "deckhand-2", …
+    public static func name(tab: Int) -> String { tab <= 1 ? name : "\(name)-\(tab)" }
+
     /// First line to type into a fresh login shell; replaces the shell with the multiplexer.
-    /// Falls back to the plain shell when neither is installed.
-    public static let attachCommand = """
-    if command -v tmux >/dev/null 2>&1; then exec tmux new-session -A -s \(name); \
-    elif command -v screen >/dev/null 2>&1; then exec screen -xRR -S \(name); fi
-    """
+    /// Falls back to the plain shell when neither is installed. In tmux the window title follows the running
+    /// program (set for this session only, not globally), so the app can name the tab.
+    public static func attachCommand(tab: Int = 1) -> String {
+        let n = name(tab: tab)
+        return "if command -v tmux >/dev/null 2>&1; then exec tmux new-session -A -s \(n) \\; set-option set-titles on \\; "
+            + "set-option set-titles-string '#{pane_current_command}'; "
+            + "elif command -v screen >/dev/null 2>&1; then exec screen -xRR -S \(n); fi"
+    }
+
+    public static let attachCommand = attachCommand(tab: 1)
+
+    /// Ends a tab's kept session (when its tab is closed).
+    public static func endCommand(tab: Int) -> String {
+        let n = name(tab: tab)
+        return "tmux kill-session -t \(n) 2>/dev/null; screen -S \(n) -X quit 2>/dev/null; true"
+    }
+}
+
+/// Terminal tabs: numbers, titles.
+public enum TerminalTabs {
+    /// The lowest tab number not in use.
+    public static func next(after tabs: [Int]) -> Int {
+        var n = 1
+        while tabs.contains(n) { n += 1 }
+        return n
+    }
+
+    /// A short tab title from the terminal title: "bash"/"zsh" and "user@host: dir" become the folder; programs stay.
+    public static func title(_ raw: String?, tab: Int) -> String {
+        let fallback = String(localized: "Shell \(tab)")
+        guard var t = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !t.isEmpty else { return fallback }
+        if let colon = t.range(of: ": "), t[..<colon.lowerBound].contains("@") { t = String(t[colon.upperBound...]) }
+        if ["bash", "zsh", "sh", "fish", "-bash", "-zsh"].contains(t) { return fallback }
+        return t.count > 24 ? String(t.prefix(23)) + "…" : t
+    }
 }
