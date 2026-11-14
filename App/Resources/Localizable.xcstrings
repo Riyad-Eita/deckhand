@@ -1755,6 +1755,16 @@
         }
       }
     },
+    "All servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Server"
+          }
+        }
+      }
+    },
     "All servers at once. Runs as each server's login user.": {
       "localizations": {
         "de": {
@@ -2384,6 +2394,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Den Agenten fragen"
+          }
+        }
+      }
+    },
+    "Asks for": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fragt nach"
           }
         }
       }
@@ -5823,6 +5843,16 @@
         }
       }
     },
+    "Edit snippet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snippet bearbeiten"
+          }
+        }
+      }
+    },
     "Edit value": {
       "localizations": {
         "de": {
@@ -7720,6 +7750,26 @@
         }
       }
     },
+    "Insert without filling in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einfügen ohne Ausfüllen"
+          }
+        }
+      }
+    },
+    "Insert, don't run": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einfügen, nicht ausführen"
+          }
+        }
+      }
+    },
     "Install": {
       "localizations": {
         "de": {
@@ -9500,6 +9550,16 @@
         }
       }
     },
+    "New snippet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Snippet"
+          }
+        }
+      }
+    },
     "New task": {
       "localizations": {
         "de": {
@@ -9976,6 +10036,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Zeilen."
+          }
+        }
+      }
+    },
+    "No saved commands yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine gespeicherten Befehle"
           }
         }
       }
@@ -10473,6 +10543,16 @@
         }
       }
     },
+    "Off: the snippet shows up on every server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus: Das Snippet erscheint auf jedem Server."
+          }
+        }
+      }
+    },
     "Official docs for Azure, .NET and Microsoft 365.": {
       "localizations": {
         "de": {
@@ -10699,6 +10779,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mach nur weiter, wenn du weißt, dass der Server neu aufgesetzt wurde. Sonst frag, wer ihn betreibt – es könnte jemand dazwischen sein."
+          }
+        }
+      }
+    },
+    "Only for %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur für %@"
           }
         }
       }
@@ -13197,12 +13287,32 @@
         }
       }
     },
+    "Save as snippet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Snippet speichern"
+          }
+        }
+      }
+    },
     "Save rules": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Regeln sichern"
+          }
+        }
+      }
+    },
+    "Save the commands you type often. Write {{name}} where a value changes, or {{name:default}} with a default — Deckhand asks for it before sending. In a task, open a command's card and tap Save as snippet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichere Befehle, die du oft tippst. Schreib {{name}}, wo sich ein Wert ändert, oder {{name:standard}} mit einem Standardwert — Deckhand fragt vor dem Senden danach. In einer Aufgabe öffnest du die Karte eines Befehls und tippst auf Als Snippet speichern."
           }
         }
       }
@@ -14293,6 +14403,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Snapshots"
+          }
+        }
+      }
+    },
+    "Snippets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snippets"
           }
         }
       }
@@ -16408,6 +16528,16 @@
         }
       }
     },
+    "Title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
+          }
+        }
+      }
+    },
     "To": {
       "localizations": {
         "de": {
@@ -17948,6 +18078,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schreib {{name}} in eine URL, einen Header, den Body oder ein Token, um eine Variable der gewählten Umgebung zu nutzen."
+          }
+        }
+      }
+    },
+    "Write {{name}} where a value changes, or {{name:default}}. Deckhand asks for the values before sending.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreib {{name}}, wo sich ein Wert ändert, oder {{name:standard}}. Deckhand fragt vor dem Senden nach den Werten."
           }
         }
       }

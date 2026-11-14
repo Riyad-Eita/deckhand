@@ -168,6 +168,7 @@ struct AgentChatView: View {
         }
         // Links to the server's localhost (http://localhost:3000) open through an SSH tunnel.
         .environment(\.explainFix, { model.send($0) })
+        .environment(\.snippetServer, SnippetServer(id: model.server.id, name: model.server.displayName))
         .environment(\.openURL, OpenURLAction { url in
             guard let port = ListeningPorts.localPort(in: url) else { return .systemAction }
             browsing = BrowserTarget(port: port, path: url.path.isEmpty ? "/" : url.path + (url.query.map { "?" + $0 } ?? ""))
@@ -696,7 +697,9 @@ struct ToolCard: View {
     /// Secrets in the command or output are masked until the user taps Show.
     @State private var revealed = false
     @State private var explaining: String?
+    @State private var savingSnippet: Snippet?
     @Environment(\.explainFix) private var explainFix
+    @Environment(\.snippetServer) private var snippetServer
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -724,10 +727,19 @@ struct ToolCard: View {
                 }
                 .frame(maxHeight: 280)
                 .contextMenu { Button("Explain", systemImage: "sparkle.magnifyingglass") { explaining = output } }
-                if !output.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    Button { explaining = output } label: { Label("Explain", systemImage: "sparkle.magnifyingglass").font(.caption) }
-                        .buttonStyle(.borderless)
-                        .accessibilityIdentifier("toolCard.explain")
+                HStack(spacing: 16) {
+                    if !output.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Button { explaining = output } label: { Label("Explain", systemImage: "sparkle.magnifyingglass").font(.caption) }
+                            .buttonStyle(.borderless)
+                            .accessibilityIdentifier("toolCard.explain")
+                    }
+                    if name == "run_command", let command = input["command"]?.stringValue, Secrets.find(in: command).isEmpty {
+                        Button {
+                            savingSnippet = Snippet(title: Snippet.suggestedTitle(for: command), command: command, serverID: snippetServer?.id)
+                        } label: { Label("Save as snippet", systemImage: "text.badge.star").font(.caption) }
+                            .buttonStyle(.borderless)
+                            .accessibilityIdentifier("toolCard.snippet")
+                    }
                 }
             }
             if expanded || hiding(summary) {
@@ -743,6 +755,7 @@ struct ToolCard: View {
                 }
             }
         }
+        .sheet(item: $savingSnippet) { s in SnippetEditor(snippet: s, serverID: snippetServer?.id, serverName: snippetServer?.name) }
         .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: shown(e.text), context: name == "run_command" ? input["command"]?.stringValue.map { "the command `\($0)`" } : nil, fix: explainFix)
         }
@@ -956,3 +969,9 @@ enum ImagePrep {
 }
 
 struct ExplainText: Identifiable { let text: String; var id: Int { text.hashValue } }
+
+/// The server a chat runs on, for saving its commands as snippets.
+struct SnippetServer: Equatable { let id: UUID; let name: String }
+extension EnvironmentValues {
+    @Entry var snippetServer: SnippetServer?
+}
