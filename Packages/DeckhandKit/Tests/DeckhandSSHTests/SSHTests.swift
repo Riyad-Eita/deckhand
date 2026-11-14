@@ -1324,3 +1324,40 @@ struct LiveJumpHostTests {
         await bastion.disconnect()
     }
 }
+
+/// CLI sessions on the disposable server (DECKHAND_BACKUP_HOST/PORT/USER/KEY, DECKHAND_SESSIONS_TEST=1): synthetic
+/// Claude Code and Codex session files in their real places are listed and read, then removed.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_SESSIONS_TEST"] == "1"))
+struct LiveCLISessionsTests {
+    @Test func listAndRead() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let fixtures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appending(path: "DeckhandCoreTests/Fixtures")
+        let claude = try String(contentsOf: fixtures.appending(path: "claude-session.jsonl"), encoding: .utf8)
+        let codex = try String(contentsOf: fixtures.appending(path: "codex-session.jsonl"), encoding: .utf8)
+        let claudeFile = "~/.claude/projects/-home-me-shop/3f2a9c1e-0000-4000-8000-000000000001.jsonl"
+        let codexFile = "~/.codex/sessions/2026/11/13/rollout-2026-11-13T21-00-00-7d1e2f30-0000-4000-8000-000000000002.jsonl"
+        _ = try await conn.run("mkdir -p ~/.claude/projects/-home-me-shop ~/.codex/sessions/2026/11/13 && "
+            + "printf %s \(ShellQuote.quote(Data(claude.utf8).base64EncodedString())) | base64 -d > \(claudeFile) && "
+            + "printf %s \(ShellQuote.quote(Data(codex.utf8).base64EncodedString())) | base64 -d > \(codexFile)", timeout: .seconds(20))
+
+        let sessions = CLISessions.parseList(try await conn.run(CLISessions.listCommand(), timeout: .seconds(30)).stdout)
+        print("step: list", sessions.map { "\($0.cli.rawValue) \($0.folder) \($0.title)" })
+        let shop = try #require(sessions.first { $0.id == "3f2a9c1e-0000-4000-8000-000000000001" })
+        #expect(shop.cli == .claudeCode && shop.folder == "/home/me/shop" && shop.title == "Fix the shop's 502")
+        let api = try #require(sessions.first { $0.id == "7d1e2f30-0000-4000-8000-000000000002" })
+        #expect(api.cli == .codex && api.folder == "/home/me/api" && api.title == "Add a health endpoint")
+
+        let c = try await conn.run(CLISessions.transcriptCommand(cli: .claudeCode, id: shop.id), timeout: .seconds(20))
+        #expect(CLISessions.parseTranscript(cli: .claudeCode, c.stdout).last?.text == "PHP-FPM is down; restart it.")
+        let x = try await conn.run(CLISessions.transcriptCommand(cli: .codex, id: api.id), timeout: .seconds(20))
+        #expect(CLISessions.parseTranscript(cli: .codex, x.stdout).first?.text == "Add a health endpoint")
+
+        _ = try await conn.run("rm -f -- \(claudeFile) \(codexFile); rmdir ~/.claude/projects/-home-me-shop ~/.codex/sessions/2026/11/13 2>/dev/null; true", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}

@@ -1,0 +1,6 @@
+{"type":"custom-title","customTitle":"Fix the shop's 502","sessionId":"3f2a9c1e-0000-4000-8000-000000000001"}
+{"parentUuid":null,"isSidechain":false,"type":"user","message":{"role":"user","content":"Why does the shop return 502?"},"uuid":"u1","timestamp":"2026-11-13T20:00:00Z","cwd":"/home/me/shop","sessionId":"3f2a9c1e-0000-4000-8000-000000000001"}
+{"parentUuid":"u1","isSidechain":false,"type":"assistant","message":{"role":"assistant","content":[{"type":"thinking","thinking":"hidden"},{"type":"text","text":"Let me check PHP-FPM."},{"type":"tool_use","id":"t1","name":"Bash","input":{"command":"systemctl status php8.3-fpm"}}]},"uuid":"a1","timestamp":"2026-11-13T20:00:05Z","cwd":"/home/me/shop"}
+{"parentUuid":"a1","isSidechain":false,"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"t1","content":"Active: failed","is_error":false}]},"uuid":"u2","cwd":"/home/me/shop"}
+{"parentUuid":"u2","isSidechain":true,"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"sidechain noise"}]},"uuid":"s1"}
+{"parentUuid":"u2","isSidechain":false,"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"PHP-FPM is down; restart it."}]},"uuid":"a2","cwd":"/home/me/shop"}
