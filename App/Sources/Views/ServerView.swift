@@ -157,6 +157,13 @@ struct ThreadListView: View {
                     }
                 }
                 .accessibilityIdentifier("agent.memory")
+                NavigationLink { CLISessionsView(server: server) { openThread = $0 } } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: "clock.arrow.2.circlepath").foregroundStyle(Theme.accent).accessibilityHidden(true)
+                        Text("Continue a session from your laptop").fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .accessibilityIdentifier("agent.sessions")
             } footer: {
                 Text("What the agents remember about this server.")
             }
