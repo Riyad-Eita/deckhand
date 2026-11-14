@@ -210,7 +210,7 @@ struct TerminalSheet: View {
 
     var body: some View {
         NavigationStack {
-            TerminalScreen(server: server, pendingCommand: $command)
+            TerminalPane(server: server, tab: 1, isActive: true, pendingCommand: $command)
                 .navigationTitle("Terminal")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
