@@ -31,14 +31,17 @@ final class TaskSearchUITests: XCTestCase {
         XCTAssertFalse(app.buttons["task.Fix 502 errors"].exists)
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'restic finished'")).firstMatch.exists)
         let s = XCTAttachment(screenshot: app.screenshot()); s.name = "search"; s.lifetime = .keepAlways; add(s)
+        search.typeText("\n")   // keyboard away
         app.buttons["Clear search"].tap()
 
         // Pin the oldest task: it moves to the top.
         let backups = app.buttons["task.Check backups"]
-        XCTAssertTrue(backups.waitForExistence(timeout: 5))
+        var t = 0
+        while !(backups.exists && backups.isHittable) && t < 6 { app.swipeUp(); t += 1 }
+        XCTAssertTrue(backups.isHittable)
         let fix = app.buttons["task.Fix 502 errors"]
         XCTAssertLessThan(fix.frame.minY, backups.frame.minY)
-        backups.swipeRight()
+        backups.press(forDuration: 1.0)
         app.buttons["Pin"].tap()
         sleep(1)
         XCTAssertLessThan(app.buttons["task.Check backups"].frame.minY, app.buttons["task.Fix 502 errors"].frame.minY)

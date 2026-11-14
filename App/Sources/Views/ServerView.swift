@@ -166,6 +166,7 @@ struct ThreadListView: View {
                         Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
                         TextField("Search tasks", text: $taskSearch)
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
+                            .submitLabel(.search)
                             .accessibilityIdentifier("tasks.search")
                         if !taskSearch.isEmpty {
                             Button { taskSearch = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary) }
@@ -197,6 +198,7 @@ struct ThreadListView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
         .sheet(item: Binding(get: { sharing.map { SharedFile(url: $0) } }, set: { sharing = $0?.url })) { f in
             ShareSheet(items: [f.url]).presentationDetents([.medium, .large])
