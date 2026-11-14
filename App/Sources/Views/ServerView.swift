@@ -109,8 +109,24 @@ struct ThreadListView: View {
         return AppSettings.shared.isConfigured
     }
 
+    @State private var taskSearch = ""
+    @State private var sharing: URL?
+
+    /// Pinned first, then newest; filtered by the search (titles and content).
     private var threads: [ChatThread] {
-        (server.threads ?? []).sorted { $0.updatedAt > $1.updatedAt }
+        let all = (server.threads ?? []).sorted { ($0.pinned ? 1 : 0, $0.updatedAt) > ($1.pinned ? 1 : 0, $1.updatedAt) }
+        guard !taskSearch.trimmingCharacters(in: .whitespaces).isEmpty else { return all }
+        return all.filter { TaskExport.match(taskSearch, title: $0.title, messages: $0.messages).matches }
+    }
+
+    private func pinButton(_ thread: ChatThread) -> some View {
+        Button { thread.pinned.toggle() } label: {
+            Label(thread.pinned ? String(localized: "Unpin") : String(localized: "Pin"), systemImage: thread.pinned ? "pin.slash" : "pin")
+        }
+    }
+
+    private func snippet(_ thread: ChatThread) -> String? {
+        taskSearch.isEmpty ? nil : TaskExport.match(taskSearch, title: thread.title, messages: thread.messages).snippet
     }
 
     var body: some View {
@@ -144,34 +160,36 @@ struct ThreadListView: View {
             } footer: {
                 Text("What the agents remember about this server.")
             }
-            if !threads.isEmpty {
-                Section("Recent") {
-                    ForEach(threads) { thread in
-                        Button { openThread = thread } label: {
-                            HStack(spacing: 12) {
-                                BrandIcon(brand: thread.engine.brand, size: 30)
-                                VStack(alignment: .leading, spacing: 3) {
-                                    Text(thread.title).font(.body).foregroundStyle(.primary).lineLimit(1)
-                                    HStack(spacing: 4) {
-                                        Text(thread.engine.shortTitle)
-                                        Text("·")
-                                        Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
-                                        Text("·")
-                                        Text(thread.updatedAt, format: .relative(presentation: .named))
-                                    }
-                                    .font(.caption).foregroundStyle(.secondary)
-                                }
-                                Spacer(minLength: 0)
-                                if thread.cliRunActive {
-                                    Text("Running").font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
-                                        .padding(.horizontal, 7).padding(.vertical, 3)
-                                        .background(Theme.accent.opacity(0.13), in: Capsule())
-                                }
-                                Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
-                            }
-                            .contentShape(Rectangle())
+            if (server.threads?.count ?? 0) > 3 {
+                Section {
+                    HStack {
+                        Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
+                        TextField("Search tasks", text: $taskSearch)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled()
+                            .accessibilityIdentifier("tasks.search")
+                        if !taskSearch.isEmpty {
+                            Button { taskSearch = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary) }
+                                .buttonStyle(.plain).accessibilityLabel("Clear search")
                         }
+                    }
+                }
+            }
+            if !threads.isEmpty {
+                Section(taskSearch.isEmpty ? String(localized: "Recent") : String(localized: "\(threads.count) found")) {
+                    ForEach(threads) { thread in
+                        Button { openThread = thread } label: { TaskRow(thread: thread, snippet: snippet(thread)) }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("task.\(thread.title)")
+                        .swipeActions(edge: .leading) {
+                            pinButton(thread)
+                            .tint(.orange)
+                        }
+                        .contextMenu {
+                            pinButton(thread)
+                            Button { sharing = TaskShare.file(for: thread, server: server) } label: {
+                                Label("Share as Markdown", systemImage: "square.and.arrow.up")
+                            }
+                        }
                     }
                     .onDelete { offsets in
                         for i in offsets { context.delete(threads[i]) }
@@ -180,6 +198,9 @@ struct ThreadListView: View {
             }
         }
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
+        .sheet(item: Binding(get: { sharing.map { SharedFile(url: $0) } }, set: { sharing = $0?.url })) { f in
+            ShareSheet(items: [f.url]).presentationDetents([.medium, .large])
+        }
         .task { await AgentStatus.shared.refresh(server) }
         .sheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
         .sheet(isPresented: $showingSettings) { SettingsView() }
@@ -343,5 +364,63 @@ struct EngineRow: View {
                 ? String(localized: "\(AppSettings.shared.providerKind.displayName.components(separatedBy: " (").first ?? "") · runs in the app")
                 : String(localized: "Your own API key · runs in the app")
         }
+    }
+}
+
+/// A task as a Markdown file in the temporary folder, for the share sheet.
+enum TaskShare {
+    @MainActor
+    static func file(for thread: ChatThread, server: Server?) -> URL? {
+        let md = TaskExport.markdown(title: thread.title, server: server?.displayName, folder: thread.workingDirectory,
+                                     date: thread.updatedAt, messages: thread.messages)
+        let dir = FileManager.default.temporaryDirectory.appending(path: "exports/\(thread.id.uuidString)")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let url = dir.appending(path: TaskExport.fileName(for: thread.title))
+        do { try Data(md.utf8).write(to: url, options: .completeFileProtection); return url } catch { return nil }
+    }
+}
+
+struct SharedFile: Identifiable {
+    let url: URL
+    var id: URL { url }
+}
+
+/// A task in the server's list: engine, title (pinned mark), search snippet, folder and age, running badge.
+private struct TaskRow: View {
+    let thread: ChatThread
+    let snippet: String?
+
+    var body: some View {
+        HStack(spacing: 12) {
+            BrandIcon(brand: thread.engine.brand, size: 30)
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 5) {
+                    if thread.pinned {
+                        Image(systemName: "pin.fill").font(.caption2).foregroundStyle(.orange).accessibilityLabel("Pinned")
+                    }
+                    Text(thread.title).font(.body).foregroundStyle(.primary).lineLimit(1)
+                }
+                if let snippet {
+                    Text(snippet).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+                        .accessibilityIdentifier("tasks.snippet")
+                }
+                HStack(spacing: 4) {
+                    Text(thread.engine.shortTitle)
+                    Text("·")
+                    Text(thread.workingDirectory).lineLimit(1).truncationMode(.head)
+                    Text("·")
+                    Text(thread.updatedAt, format: .relative(presentation: .named))
+                }
+                .font(.caption).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 0)
+            if thread.cliRunActive {
+                Text("Running").font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
+                    .padding(.horizontal, 7).padding(.vertical, 3)
+                    .background(Theme.accent.opacity(0.13), in: Capsule())
+            }
+            Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+        }
+        .contentShape(Rectangle())
     }
 }
