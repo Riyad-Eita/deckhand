@@ -22,6 +22,13 @@ struct FileViewer: View {
     @State private var current = 0
     /// Characters in the longest line, for the width of the unwrapped view.
     @State private var longest = 0
+    /// Logs: following new lines (`tail -F`).
+    @State private var following = false
+    @State private var follower: Task<Void, Never>?
+    @State private var shareURL: URL?
+    @State private var preparingShare = false
+
+    private var isLog: Bool { FilePreview.kind(forFileName: name) == .log }
 
     /// Minified files and other very long lines are always wrapped.
     private var wrapping: Bool { wrap || longest > 1000 }
@@ -55,6 +62,15 @@ struct FileViewer: View {
             if !query.isEmpty { searchBar }
         }
         .toolbar {
+            if isLog && !binary && error == nil {
+                ToolbarItem(placement: .primaryAction) {
+                    Button { following ? stopFollowing() : startFollowing() } label: {
+                        Label(following ? String(localized: "Stop following") : String(localized: "Follow"),
+                              systemImage: following ? "pause.circle.fill" : "play.circle")
+                    }
+                    .accessibilityIdentifier("viewer.follow")
+                }
+            }
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Toggle(isOn: $wrap) { Label("Wrap Lines", systemImage: "text.word.spacing") }
@@ -62,6 +78,8 @@ struct FileViewer: View {
                     Button {
                         task = FileTask(directory: DirectoryListing.parent(of: path), draft: String(localized: "Have a look at `\(name)`: "))
                     } label: { Label("Ask the Agent", systemImage: "sparkles") }
+                    Button { Task { await prepareShare() } } label: { Label("Share File", systemImage: "square.and.arrow.up") }
+                        .disabled(preparingShare)
                     Button { UIPasteboard.general.string = path } label: { Label("Copy Path", systemImage: "doc.on.doc") }
                     if !binary && !lines.isEmpty {
                         Button { UIPasteboard.general.string = lines.joined(separator: "\n") } label: { Label("Copy Text", systemImage: "doc.plaintext") }
@@ -72,6 +90,10 @@ struct FileViewer: View {
         }
         .fileTask($task, server: server)
         .task { await load() }
+        .onDisappear { follower?.cancel() }
+        .sheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
+            ShareSheet(items: [item.url]).presentationDetents([.medium, .large])
+        }
     }
 
     private var subtitle: String {
@@ -106,6 +128,9 @@ struct FileViewer: View {
                 .padding(.trailing, 12)
             }
             .onChange(of: current) { _, _ in jump(proxy) }
+            .onChange(of: lines.count) { _, n in
+                if following, n > 0 { proxy.scrollTo(n - 1, anchor: .bottom) }
+            }
             .onChange(of: matches) { _, _ in jump(proxy) }
         }
     }
@@ -143,6 +168,44 @@ struct FileViewer: View {
     private func jump(_ proxy: ScrollViewProxy) {
         guard matches.indices.contains(current) else { return }
         withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo(matches[current].line, anchor: UnitPoint(x: 0, y: 0.4)) }
+    }
+
+    /// Shows the end of the log and then every new line as it's written.
+    private func startFollowing() {
+        following = true
+        lines = []; tokens = []; matches = []; longest = 0
+        follower = Task {
+            do {
+                let conn = try await connections.connection(for: server)
+                let channel = try await conn.openChannel(FilePreview.followCommand(path))
+                defer { channel.close() }
+                for try await line in channel.lines {
+                    let clean = line.hasSuffix("\r") ? String(line.dropLast()) : line
+                    lines.append(Substring(clean))
+                    longest = max(longest, clean.utf16.count)
+                    if lines.count > 20_000 { lines.removeFirst(lines.count - 20_000) }
+                }
+            } catch {
+                if !Task.isCancelled { self.error = error.localizedDescription }
+            }
+            following = false
+        }
+    }
+
+    private func stopFollowing() {
+        follower?.cancel()
+        follower = nil
+        following = false
+    }
+
+    private func prepareShare() async {
+        preparingShare = true
+        defer { preparingShare = false }
+        do {
+            let conn = try await connections.connection(for: server)
+            let data = try await conn.download(path, maxBytes: Int(FilePreview.maxPreviewBytes))
+            shareURL = try QuickLookFileView.temporaryFile(named: name, data: data)
+        } catch { self.error = error.localizedDescription }
     }
 
     private func load() async {
@@ -253,4 +316,18 @@ enum CodeColors {
 
 extension String {
     func leftPadded(to width: Int) -> String { String(repeating: " ", count: max(0, width - count)) + self }
+}
+
+private struct ShareItem: Identifiable {
+    let url: URL
+    var id: URL { url }
+}
+
+/// The system share sheet for files.
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
