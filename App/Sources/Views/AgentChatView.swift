@@ -115,6 +115,12 @@ struct AgentChatView: View {
                         dismissedBlock = block.fingerprint
                     }
                 }
+                if let cli = model.thread.engine.serverCLI, !model.isRunning,
+                   let warn = PlanUsage.warning(PlanUsageStore.shared.usage(cli, on: model.server)) {
+                    UsageWarningBar(text: warn.text, resetsAt: warn.resetsAt, scheduled: model.startAfter) {
+                        model.startAfter = model.startAfter == nil ? warn.resetsAt.map { $0.addingTimeInterval(60) } : nil
+                    }
+                }
                 if let upload {
                     HStack(spacing: 10) {
                         Image(systemName: "arrow.up.doc").foregroundStyle(Theme.accent)
@@ -182,6 +188,7 @@ struct AgentChatView: View {
         .sheet(item: $browsing) { BrowserSheet(server: model.server, port: $0.port, path: $0.path) }
         .onAppear { AppRouter.shared.visibleThread = model.thread.id }
         .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }
+        .task { await PlanUsageStore.shared.refresh(model.server) }
         .task {
             model.resumeIfNeeded()
             if let pending = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(pending.text, access: pending.access) }
@@ -974,4 +981,34 @@ struct ExplainText: Identifiable { let text: String; var id: Int { text.hashValu
 struct SnippetServer: Equatable { let id: UUID; let name: String }
 extension EnvironmentValues {
     @Entry var snippetServer: SnippetServer?
+}
+
+/// Before a task: the plan's limit is close (or reached). Offers to start the next task after the reset.
+private struct UsageWarningBar: View {
+    let text: String
+    let resetsAt: Date?
+    let scheduled: Date?
+    let toggle: () -> Void
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "hourglass").foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(text).font(.caption)
+                if resetsAt != nil {
+                    Button(action: toggle) {
+                        Text(scheduled == nil ? String(localized: "Start after the reset")
+                             : String(localized: "Starts \(scheduled!.formatted(date: .omitted, time: .shortened)) · Start now instead"))
+                            .font(.caption.weight(.semibold))
+                    }
+                    .buttonStyle(.borderless)
+                    .accessibilityIdentifier("usage.startAfter")
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 16).padding(.top, 8)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("usage.warning")
+    }
 }
