@@ -17,6 +17,9 @@ final class AppRouter {
     /// A risky action waiting for approval (`deckhand://approve/<server>/<fingerprint>?who=…&cmd=…`).
     var pendingApproval: ApprovalLink?
 
+    /// A server to open (`deckhand://server/<id>`, the status widget).
+    var pendingServer: UUID?
+
     struct ApprovalLink: Identifiable, Equatable {
         let server: UUID
         let fingerprint: String
@@ -44,6 +47,8 @@ final class AppRouter {
                                                who: q.first { $0.name == "who" }?.value ?? "",
                                                command: q.first { $0.name == "cmd" }?.value ?? "")
             }
+        case "server":
+            if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
         case "uptime":
             if parts.count == 2, let server = UUID(uuidString: parts[0]) { pendingIncident = IncidentLink(server: server, check: parts[1]) }
         default:

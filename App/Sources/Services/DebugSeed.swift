@@ -187,6 +187,7 @@ enum DebugSeed {
             AppSettings.shared.terminalTheme = TerminalTheme.default.id
             AppSettings.shared.terminalFontSize = TerminalFont.default
             KeyProtection.shared.lockNow()
+            ServerSnapshots.save([])
             // Tasks and plain chats first, then servers: deleting a task twice (once by the server's cascade) made
             // the save fail, and then nothing was reset.
             for thread in (try? context.fetch(FetchDescriptor<ChatThread>())) ?? [] { context.delete(thread) }

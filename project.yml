@@ -41,6 +41,10 @@ targets:
       - package: SwiftTerm
       - package: WhisperKit
         product: WhisperKit
+    entitlements:
+      path: App/Deckhand.entitlements
+      properties:
+        com.apple.security.application-groups: [group.de.fs223.deckhand]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.fs223.deckhand
@@ -68,6 +72,10 @@ targets:
     sources:
       - Widgets
       - App/Shared
+    entitlements:
+      path: Widgets/DeckhandWidgets.entitlements
+      properties:
+        com.apple.security.application-groups: [group.de.fs223.deckhand]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.fs223.deckhand.widgets

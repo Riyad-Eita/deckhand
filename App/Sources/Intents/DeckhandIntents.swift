@@ -60,6 +60,7 @@ struct ServerStatusIntent: AppIntent {
             guard let stats = ServerStats.parse(try await conn.run(ServerStats.probeCommand, timeout: .seconds(20)).stdout) else {
                 throw IntentError.failed(String(localized: "Couldn't read the server."))
             }
+            WidgetSnapshots.record(s, stats)
             let fullest = stats.disks.max { $0.usedFraction < $1.usedFraction }
             let text = String(localized: """
                 \(s.displayName): CPU \(Int((stats.cpu * 100).rounded())) %, memory \(Int((stats.memUsedFraction * 100).rounded())) %, \

@@ -42,7 +42,18 @@ struct RootView: View {
     }
 
     var body: some View {
-        @Bindable var connections = connections
+        #if DEBUG
+        if let mode = ProcessInfo.processInfo.environment["DECKHAND_WIDGET_PREVIEW"] {
+            WidgetPreviewGallery(live: mode == "live")
+        } else {
+            main
+        }
+        #else
+        main
+        #endif
+    }
+
+    private var main: some View {
         NavigationStack {
             ServerListView()
         }

@@ -141,6 +141,7 @@ struct ServerListView: View {
                   let server = thread.server else { return }
             if autoOpen?.id != server.id { autoOpen = server }
         }
+        .modifier(StatusWidgetLinks(servers: servers, autoOpen: $autoOpen))
         #if DEBUG
         .task {
             try? await Task.sleep(for: .milliseconds(500))
@@ -199,6 +200,23 @@ struct ServerListView: View {
         Keychain.set(nil, for: server.secretAccount)
         Keychain.set(nil, for: server.secretAccount + ".passphrase")
         context.delete(server)
+        WidgetSnapshots.sync(servers.filter { $0.id != server.id })
+    }
+}
+
+/// The status widget: a tap opens its server; at launch its copy forgets deleted servers and follows renames.
+private struct StatusWidgetLinks: ViewModifier {
+    let servers: [Server]
+    @Binding var autoOpen: Server?
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: AppRouter.shared.pendingServer, initial: true) { _, id in
+                guard let id else { return }
+                AppRouter.shared.pendingServer = nil
+                if let server = servers.first(where: { $0.id == id }), autoOpen?.id != id { autoOpen = server }
+            }
+            .task { WidgetSnapshots.sync(servers) }
     }
 }
 

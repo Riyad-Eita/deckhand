@@ -1,12 +1,78 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "CPU": {
+      "shouldTranslate": false
+    },
+    "CPU, memory and disk of your servers, from the last check in Deckhand.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, Speicher und Disk deiner Server – vom letzten Abruf in Deckhand."
+          }
+        }
+      }
+    },
+    "Disk": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk"
+          }
+        }
+      }
+    },
     "Needs your approval: %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Braucht deine Freigabe: %@"
+          }
+        }
+      }
+    },
+    "No server status yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Serverstatus"
+          }
+        }
+      }
+    },
+    "Open a server's dashboard in Deckhand once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne einmal das Dashboard eines Servers in Deckhand."
+          }
+        }
+      }
+    },
+    "RAM": {
+      "shouldTranslate": false
+    },
+    "Server status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serverstatus"
+          }
+        }
+      }
+    },
+    "Servers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server"
           }
         }
       }
@@ -30,6 +96,9 @@
           }
         }
       }
+    },
+    "–": {
+      "shouldTranslate": false
     }
   },
   "version": "1.0"

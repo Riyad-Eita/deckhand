@@ -395,6 +395,7 @@ struct ServerDashboardView: View {
             stats = s
             error = nil
             updated = Date()
+            WidgetSnapshots.record(server, s)
         } catch {
             if stats == nil { self.error = error.localizedDescription }
         }
