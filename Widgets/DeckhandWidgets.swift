@@ -4,7 +4,10 @@ import WidgetKit
 
 @main
 struct DeckhandWidgets: WidgetBundle {
-    var body: some Widget { TaskLiveActivity() }
+    var body: some Widget {
+        TaskLiveActivity()
+        ServerStatusWidget()
+    }
 }
 
 struct TaskLiveActivity: Widget {

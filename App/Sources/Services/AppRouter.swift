@@ -18,6 +18,9 @@ final class AppRouter {
     /// A risky action waiting for approval (`deckhand://approve/<server>/<fingerprint>?who=…&cmd=…`).
     var pendingApproval: ApprovalLink?
 
+    /// A server to open (`deckhand://server/<id>`, the status widget).
+    var pendingServer: UUID?
+
     /// Servers from a `deckhand://add?…` link (or a scanned QR code), shown on the import screen — never added unseen.
     var pendingImport: ImportLink?
 
@@ -53,6 +56,8 @@ final class AppRouter {
                                                who: q.first { $0.name == "who" }?.value ?? "",
                                                command: q.first { $0.name == "cmd" }?.value ?? "")
             }
+        case "server":
+            if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
         case "add":
             if let c = HostLink.parse(url) { pendingImport = ImportLink(candidates: [c]) }
         case "uptime":

@@ -3066,7 +3066,8 @@
             "value": "CPU"
           }
         }
-      }
+      },
+      "shouldTranslate": false
     },
     "CPU is measured over one second; 100 % is one full core.": {
       "localizations": {
@@ -3074,6 +3075,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "CPU wird über eine Sekunde gemessen; 100 % ist ein voller Kern."
+          }
+        }
+      }
+    },
+    "CPU, memory and disk of your servers, from the last check in Deckhand.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, Speicher und Disk deiner Server – vom letzten Abruf in Deckhand."
           }
         }
       }
@@ -10440,6 +10451,16 @@
         }
       }
     },
+    "No server status yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Serverstatus"
+          }
+        }
+      }
+    },
     "No servers found in %@.": {
       "localizations": {
         "de": {
@@ -11279,6 +11300,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffne %@ zuerst einmal, damit Deckhand seinen Host-Schlüssel kennt."
+          }
+        }
+      }
+    },
+    "Open a server's dashboard in Deckhand once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne einmal das Dashboard eines Servers in Deckhand."
           }
         }
       }
@@ -12364,6 +12395,9 @@
           }
         }
       }
+    },
+    "RAM": {
+      "shouldTranslate": false
     },
     "Range": {
       "localizations": {
@@ -14353,6 +14387,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Servereinstellung"
+          }
+        }
+      }
+    },
+    "Server status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serverstatus"
           }
         }
       }
@@ -20039,6 +20083,9 @@
           }
         }
       }
+    },
+    "–": {
+      "shouldTranslate": false
     },
     "“.” and “..” can't be used as names.": {
       "localizations": {
