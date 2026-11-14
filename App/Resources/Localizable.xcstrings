@@ -568,6 +568,16 @@
         }
       }
     },
+    "%lld found": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gefunden"
+          }
+        }
+      }
+    },
     "%lld hidden": {
       "localizations": {
         "de": {
@@ -3754,6 +3764,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle Notizen leeren"
+          }
+        }
+      }
+    },
+    "Clear search": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche leeren"
           }
         }
       }
@@ -11553,12 +11573,32 @@
         }
       }
     },
+    "Pin": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anheften"
+          }
+        }
+      }
+    },
     "Ping, traceroute, DNS, ports, HTTP": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Ping, Traceroute, DNS, Ports, HTTP"
+          }
+        }
+      }
+    },
+    "Pinned": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angeheftet"
           }
         }
       }
@@ -13797,6 +13837,16 @@
         }
       }
     },
+    "Search tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgaben durchsuchen"
+          }
+        }
+      }
+    },
     "Searches Cloudflare's documentation. No account needed.": {
       "localizations": {
         "de": {
@@ -14323,6 +14373,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel teilen"
+          }
+        }
+      }
+    },
+    "Share as Markdown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Markdown teilen"
           }
         }
       }
@@ -17454,6 +17514,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wieder melden"
+          }
+        }
+      }
+    },
+    "Unpin": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loslösen"
           }
         }
       }
