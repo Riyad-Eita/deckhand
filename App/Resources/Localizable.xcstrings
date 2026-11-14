@@ -4269,6 +4269,26 @@
         }
       }
     },
+    "Continue a session from your laptop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung vom Laptop fortsetzen"
+          }
+        }
+      }
+    },
+    "Continue here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier fortsetzen"
+          }
+        }
+      }
+    },
     "Copied": {
       "localizations": {
         "de": {
@@ -4585,6 +4605,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server ließ sich nicht lesen."
+          }
+        }
+      }
+    },
+    "Couldn't read the session.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Sitzung konnte nicht gelesen werden."
           }
         }
       }
@@ -10270,6 +10300,16 @@
         }
       }
     },
+    "No sessions on this server yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Sitzungen auf diesem Server"
+          }
+        }
+      }
+    },
     "No shared schemes found.": {
       "localizations": {
         "de": {
@@ -14187,6 +14227,26 @@
         }
       }
     },
+    "Sessions on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen auf dem Server"
+          }
+        }
+      }
+    },
+    "Sessions you start with claude or codex on this server — on your laptop over SSH, say — show up here, and you can carry on with them from your iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen, die du auf diesem Server mit claude oder codex startest — etwa vom Laptop über SSH —, erscheinen hier, und du kannst sie auf dem iPhone fortsetzen."
+          }
+        }
+      }
+    },
     "Set Up": {
       "localizations": {
         "de": {
@@ -16898,6 +16958,16 @@
         }
       }
     },
+    "This session has no messages yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Sitzung hat noch keine Nachrichten."
+          }
+        }
+      }
+    },
     "This user can't use sudo on the server. Log in as root or as an admin user.": {
       "localizations": {
         "de": {
@@ -17544,6 +17614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle zurücknehmen"
+          }
+        }
+      }
+    },
+    "Untitled session": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung ohne Titel"
           }
         }
       }
