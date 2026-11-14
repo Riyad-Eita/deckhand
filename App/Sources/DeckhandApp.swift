@@ -101,6 +101,14 @@ struct RootView: View {
                 try? await Task.sleep(for: .seconds(1))
                 AppRouter.shared.handle(url)
             }
+            // DECKHAND_SNAPSHOT=<file.png>: the app draws its own windows into a PNG every 2 s (Mac screenshots
+            // without screen-recording permission).
+            if let path = ProcessInfo.processInfo.environment["DECKHAND_SNAPSHOT"] {
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(2))
+                    DebugSeed.snapshot(to: URL(fileURLWithPath: path))
+                }
+            }
         }
         #endif
     }
