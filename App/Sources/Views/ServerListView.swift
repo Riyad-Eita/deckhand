@@ -11,6 +11,7 @@ struct ServerListView: View {
     @State private var importing = false
     @State private var searching = false
     @State private var editing: Server?
+    @State private var sharing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
     @State private var autoOpen: Server?
@@ -39,6 +40,9 @@ struct ServerListView: View {
                     .swipeActions {
                         Button("Delete", role: .destructive) { delete(server) }
                         Button("Edit") { editing = server }.tint(.gray)
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button("Share") { sharing = server }.tint(Theme.accent)
                     }
                 }
             }
@@ -124,6 +128,7 @@ struct ServerListView: View {
         .sheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
             ApproveSheet(link: link, server: servers.first { $0.id == link.server })
         }
+        .sheet(item: $sharing) { ServerShareSheet(server: $0) }
         .sheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
             // A tapped uptime push: the incident for that check, over whatever is on screen.
             if let server = servers.first(where: { $0.id == link.server }) {

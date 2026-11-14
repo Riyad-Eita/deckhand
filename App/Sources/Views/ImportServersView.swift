@@ -15,6 +15,8 @@ struct ImportServersView: View {
     @State private var picking = false
     @State private var message: String?
     @State private var imported = false
+    /// Servers from a `deckhand://add` link or QR code: shown for review, imported only on "Import".
+    var fromLink: [HostImport.Candidate] = []
 
     private func isDuplicate(_ c: HostImport.Candidate) -> Bool {
         HostImport.isDuplicate(c, of: existing.map { ($0.host, $0.port, $0.username) })
@@ -23,6 +25,13 @@ struct ImportServersView: View {
     var body: some View {
         NavigationStack {
             List {
+                if !fromLink.isEmpty {
+                    Section {
+                        Label("From a link. Check the address before you import — links never carry passwords or keys, you sign in afterwards.", systemImage: "link")
+                            .font(.subheadline)
+                            .accessibilityIdentifier("import.fromLink")
+                    }
+                }
                 Section {
                     Button { picking = true } label: { Label("Choose files", systemImage: "doc.badge.plus") }
                         .accessibilityIdentifier("import.files")
@@ -63,6 +72,12 @@ struct ImportServersView: View {
                     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
                     guard let data = try? Data(contentsOf: url), data.count < 2_000_000, let text = String(data: data, encoding: .utf8) else { continue }
                     add(text, name: url.lastPathComponent)
+                }
+            }
+            .onAppear {
+                for c in fromLink where !candidates.contains(where: { $0.id == c.id }) {
+                    candidates.append(c)
+                    if !isDuplicate(c) { chosen.insert(c.id) }
                 }
             }
             #if DEBUG

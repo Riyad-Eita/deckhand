@@ -49,8 +49,10 @@ struct RootView: View {
         .fullScreenCover(isPresented: Binding(get: { showOnboarding }, set: { if !$0 { onboardingDone = true } })) {
             OnboardingView { onboardingDone = true }
                 .hostKeyPrompt(inSheet: true)
+                .serverLinkImport(enabled: true)
         }
         .hostKeyPrompt()
+        .serverLinkImport(enabled: !showOnboarding)
         .onOpenURL { AppRouter.shared.handle($0) }
         .onAppear { AppLock.shared.appeared(); CrashReporter.shared.start() }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)) { _ in
@@ -88,6 +90,22 @@ struct RootView: View {
         }
         #endif
     }
+}
+
+/// The import screen for a `deckhand://add` link. Attached to the root and to the onboarding cover (a sheet on a
+/// covered view can't appear), enabled on whichever is in front.
+struct ServerLinkImportModifier: ViewModifier {
+    let enabled: Bool
+    func body(content: Content) -> some View {
+        content.sheet(item: Binding(get: { enabled ? AppRouter.shared.pendingImport : nil },
+                                    set: { AppRouter.shared.pendingImport = $0 })) { link in
+            ImportServersView(fromLink: link.candidates)
+        }
+    }
+}
+
+extension View {
+    func serverLinkImport(enabled: Bool) -> some View { modifier(ServerLinkImportModifier(enabled: enabled)) }
 }
 
 /// Shows the first-connect host key question. Attach it to the root and to every sheet, because an alert

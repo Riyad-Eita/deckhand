@@ -82,8 +82,10 @@ public enum HostImport {
         }
     }
 
-    /// Whatever the text is: an OpenSSH config, or a CSV.
+    /// Whatever the text is: server links, an OpenSSH config, or a CSV.
     public static func parse(_ text: String) -> [Candidate] {
+        let links = HostLink.parseAll(text)
+        if !links.isEmpty { return links }
         let lower = text.lowercased()
         if lower.range(of: #"(^|\n)\s*host\s+\S"#, options: .regularExpression) != nil { return parseSSHConfig(text) }
         return parseCSV(text)
