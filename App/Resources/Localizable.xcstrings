@@ -1084,6 +1084,16 @@
         }
       }
     },
+    "A new task starts with a screenshot of the page; add what to look at, then send.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine neue Aufgabe beginnt mit einem Bildschirmfoto der Seite; schreib dazu, worauf der Agent achten soll, und sende."
+          }
+        }
+      }
+    },
     "A plain chat with %@. No server, no tools — switch the model any time from the title.": {
       "localizations": {
         "de": {
@@ -5420,6 +5430,16 @@
         }
       }
     },
+    "Deployed app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veröffentlichte App"
+          }
+        }
+      }
+    },
     "Deploying …": {
       "localizations": {
         "de": {
@@ -7580,6 +7600,16 @@
         }
       }
     },
+    "Here's how %@ looks right now: ": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sieht %@ gerade aus: "
+          }
+        }
+      }
+    },
     "Hidden files in system folders — often normal ones like /etc/.updated or /dev/.lxc. Check the path; mute it if you know it.": {
       "localizations": {
         "de": {
@@ -7736,6 +7766,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wie Anfragen laufen"
+          }
+        }
+      }
+    },
+    "How the app looks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sieht die App aus"
           }
         }
       }
@@ -8396,6 +8436,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Container werden gestoppt und entfernt. Eine Domain bleibt in Caddy, bis du sie unter Domains entfernst."
+          }
+        }
+      }
+    },
+    "Its public address, straight from the iPhone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihre öffentliche Adresse, direkt vom iPhone."
           }
         }
       }
@@ -14567,6 +14617,16 @@
         }
       }
     },
+    "Share link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link teilen"
+          }
+        }
+      }
+    },
     "Share or save the file": {
       "localizations": {
         "de": {
@@ -14667,6 +14727,16 @@
         }
       }
     },
+    "Show the agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dem Agenten zeigen"
+          }
+        }
+      }
+    },
     "Show the difference to now": {
       "localizations": {
         "de": {
@@ -14683,6 +14753,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Repository-Passwort anzeigen"
+          }
+        }
+      }
+    },
+    "Show this page to": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Seite zeigen an"
           }
         }
       }
@@ -19580,6 +19660,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Port"
+          }
+        }
+      }
+    },
+    "port %@ on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ auf dem Server"
           }
         }
       }

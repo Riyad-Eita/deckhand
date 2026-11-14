@@ -340,4 +340,9 @@ enum PendingPrompt {
     private static var drafts: [UUID: String] = [:]
     static func setDraft(_ text: String, for thread: UUID) { drafts[thread] = text }
     static func takeDraft(for thread: UUID) -> String? { drafts.removeValue(forKey: thread) }
+
+    /// Pictures the composer of a new chat starts with (e.g. a screenshot of the app), not sent.
+    private static var draftImages: [UUID: [Data]] = [:]
+    static func setDraftImages(_ images: [Data], for thread: UUID) { draftImages[thread] = images }
+    static func takeDraftImages(for thread: UUID) -> [Data] { draftImages.removeValue(forKey: thread) ?? [] }
 }
