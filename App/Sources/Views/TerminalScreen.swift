@@ -18,6 +18,7 @@ struct TerminalScreen: View {
     @State private var investigatePrompt: String?
     @State private var terminalView: TerminalView?
     @State private var recent = RecentOutput()
+    @State private var showingSnippets = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -38,6 +39,15 @@ struct TerminalScreen: View {
                         .padding(10)
                         .accessibilityLabel("Explain")
                         .accessibilityIdentifier("terminal.explain")
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        Button { showingSnippets = true } label: {
+                            Image(systemName: "text.badge.star").font(.system(size: 15, weight: .semibold))
+                                .padding(9).background(.ultraThinMaterial, in: Circle())
+                        }
+                        .padding(.top, 10).padding(.trailing, 60)
+                        .accessibilityLabel("Snippets")
+                        .accessibilityIdentifier("terminal.snippets")
                     }
             } else if let error {
                 VStack(spacing: 16) {
@@ -70,6 +80,9 @@ struct TerminalScreen: View {
             ExplainSheet(text: e.text, context: String(localized: "the terminal")) { investigatePrompt = $0 }
         }
         .investigate(on: server, prompt: $investigatePrompt)
+        .sheet(isPresented: $showingSnippets) {
+            SnippetsSheet(server: server) { text, run in session?.send(run ? text + "\n" : text) }
+        }
     }
 
     private func reconnect() {
