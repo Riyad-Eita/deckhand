@@ -1324,3 +1324,38 @@ struct LiveJumpHostTests {
         await bastion.disconnect()
     }
 }
+
+/// Editing a file by hand on the disposable server (DECKHAND_BACKUP_HOST/PORT/USER/KEY, DECKHAND_EDIT_TEST=1): load
+/// with a fingerprint, save, refuse a save after someone else changed the file, keep the permissions.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_EDIT_TEST"] == "1"))
+struct LiveFileEditingTests {
+    @Test func saveOnlyIfUnchanged() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let path = "/tmp/dh-edit-\(Int.random(in: 1000...9999)).conf"
+        _ = try await conn.run("printf 'port = 80\\nname = shop\\n' > \(path) && chmod 640 \(path)", timeout: .seconds(10))
+
+        let loaded = try #require(FileEditing.parseLoad(try await conn.run(FileEditing.loadCommand(path), timeout: .seconds(10)).stdout))
+        #expect(loaded.content == "port = 80\nname = shop\n")
+        let edited = loaded.content.replacingOccurrences(of: "80", with: "8080") + "# ünïcode ✓\n"
+        let r = try await conn.run(FileEditing.saveCommand(path, content: edited, expected: loaded.sha), timeout: .seconds(10))
+        guard case .saved(let newSha) = FileEditing.parseSave(stdout: r.stdout, stderr: r.stderr, exitCode: r.exitCode) else {
+            Issue.record("not saved: \(r.stdout) \(r.stderr)"); return
+        }
+        #expect(try await conn.run("cat \(path)", timeout: .seconds(10)).stdout == edited)
+        #expect(try await conn.run("stat -c %a \(path)", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "640")
+
+        // Someone else changes it: the next save with the old fingerprint is refused.
+        _ = try await conn.run("echo 'extra = 1' >> \(path)", timeout: .seconds(10))
+        let stale = try await conn.run(FileEditing.saveCommand(path, content: "lost\n", expected: newSha), timeout: .seconds(10))
+        #expect(FileEditing.parseSave(stdout: stale.stdout, stderr: stale.stderr, exitCode: stale.exitCode) == .changed)
+        #expect(try await conn.run("tail -1 \(path)", timeout: .seconds(10)).stdout == "extra = 1\n")
+
+        _ = try await conn.run("rm -f -- \(path)", timeout: .seconds(10))
+        await conn.disconnect()
+    }
+}
