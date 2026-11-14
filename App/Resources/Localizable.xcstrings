@@ -3758,6 +3758,16 @@
         }
       }
     },
+    "Close %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ schließen"
+          }
+        }
+      }
+    },
     "Close port %@": {
       "localizations": {
         "de": {
@@ -9620,6 +9630,16 @@
         }
       }
     },
+    "New tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Tab"
+          }
+        }
+      }
+    },
     "New task": {
       "localizations": {
         "de": {
@@ -14143,6 +14163,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ganzen Bericht teilen"
+          }
+        }
+      }
+    },
+    "Shell %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shell %lld"
           }
         }
       }

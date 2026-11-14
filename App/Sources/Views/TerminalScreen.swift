@@ -3,9 +3,101 @@ import DeckhandSSH
 import SwiftTerm
 import SwiftUI
 
+/// The terminal with tabs: each tab is its own shell (and kept session) on the server. Tabs stay connected in the
+/// background, so switching is instant; which tabs are open is remembered per server.
 struct TerminalScreen: View {
     let server: Server
     @Binding var pendingCommand: String?
+    @Environment(Connections.self) private var connections
+    @Environment(AppSettings.self) private var settings
+    @State private var tabs: [Int] = [1]
+    @State private var selected = 1
+    @State private var titles: [Int: String] = [:]
+    @State private var loaded = false
+
+    private var tabsKey: String { "terminal.tabs.\(server.id.uuidString)" }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            tabBar
+            ZStack {
+                ForEach(tabs, id: \.self) { tab in
+                    TerminalPane(server: server, tab: tab, isActive: tab == selected,
+                                 pendingCommand: tab == selected ? $pendingCommand : .constant(nil)) { titles[tab] = $0 }
+                        .opacity(tab == selected ? 1 : 0)
+                        .allowsHitTesting(tab == selected)
+                        .accessibilityHidden(tab != selected)
+                }
+            }
+        }
+        .onAppear {
+            guard !loaded else { return }
+            loaded = true
+            let saved = (UserDefaults.standard.array(forKey: tabsKey) as? [Int])?.filter { $0 >= 1 } ?? []
+            if !saved.isEmpty { tabs = saved; selected = saved[0] }
+        }
+        .onChange(of: tabs) { UserDefaults.standard.set(tabs, forKey: tabsKey) }
+    }
+
+    private var tabBar: some View {
+        let theme = TerminalTheme.named(settings.terminalTheme)
+        return ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                ForEach(Array(tabs.enumerated()), id: \.element) { i, tab in
+                    let title = TerminalTabs.title(titles[tab], tab: tab)
+                    HStack(spacing: 4) {
+                        Text(title).font(.caption.weight(tab == selected ? .semibold : .regular)).lineLimit(1)
+                        if tabs.count > 1 && tab == selected {
+                            Button { close(tab) } label: { Image(systemName: "xmark").font(.caption2.weight(.bold)) }
+                                .accessibilityLabel(String(localized: "Close \(title)"))
+                                .accessibilityIdentifier("terminal.tab.close")
+                        }
+                    }
+                    .padding(.horizontal, 10).padding(.vertical, 6)
+                    .background(tab == selected ? Color.primary.opacity(0.12) : Color.clear, in: Capsule())
+                    .contentShape(Capsule())
+                    .onTapGesture { selected = tab }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityAddTraits(tab == selected ? [.isButton, .isSelected] : .isButton)
+                    .accessibilityIdentifier("terminal.tab.\(i + 1)")
+                }
+                Button { add() } label: { Image(systemName: "plus").font(.footnote.weight(.semibold)).frame(width: 30, height: 28) }
+                    .accessibilityLabel("New tab")
+                    .accessibilityIdentifier("terminal.tab.new")
+            }
+            .padding(.horizontal, 8).padding(.vertical, 4)
+        }
+        .foregroundStyle(theme.isLight ? Color.black : Color.white)
+        .background(SSHTerminalView.swiftUIColor(theme.background))
+        .environment(\.colorScheme, theme.isLight ? .light : .dark)
+    }
+
+    func add() {
+        let n = TerminalTabs.next(after: tabs)
+        tabs.append(n)
+        selected = n
+    }
+
+    private func close(_ tab: Int) {
+        guard tabs.count > 1, let i = tabs.firstIndex(of: tab) else { return }
+        tabs.remove(at: i)
+        titles[tab] = nil
+        if selected == tab { selected = tabs[max(0, i - 1)] }
+        // The tab is gone, so is its kept session on the server.
+        if settings.keepTerminalSessions {
+            let server = server
+            Task { _ = try? await connections.connection(for: server).run(PersistentSession.endCommand(tab: tab), timeout: .seconds(10)) }
+        }
+    }
+}
+
+/// One shell on the server.
+struct TerminalPane: View {
+    let server: Server
+    let tab: Int
+    let isActive: Bool
+    @Binding var pendingCommand: String?
+    var onTitle: (String?) -> Void = { _ in }
     @Environment(Connections.self) private var connections
     @Environment(AppSettings.self) private var settings
     @Environment(\.scenePhase) private var scenePhase
@@ -24,7 +116,7 @@ struct TerminalScreen: View {
         ZStack(alignment: .bottom) {
             SSHTerminalView.swiftUIColor(TerminalTheme.named(settings.terminalTheme).background).ignoresSafeArea(edges: .bottom)
             if let session {
-                SSHTerminalView(session: session, recent: recent, onView: { terminalView = $0 }) { closed = true }
+                SSHTerminalView(session: session, recent: recent, focus: isActive, onView: { terminalView = $0 }, onTitle: onTitle) { closed = true }
                     .id(sessionID)
                     .ignoresSafeArea(.container, edges: .bottom)
                     .overlay(alignment: .topTrailing) {
@@ -93,6 +185,7 @@ struct TerminalScreen: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active && closed { reconnect() }
         }
+        .onChange(of: isActive) { _, active in if active { _ = terminalView?.becomeFirstResponder() } }
         .onDisappear { session?.close() }
         .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: e.text, context: String(localized: "the terminal")) { investigatePrompt = $0 }
@@ -123,7 +216,7 @@ struct TerminalScreen: View {
             let new = try await connection.openTerminal(cols: 80, rows: 24)
             // Logins and other queued commands run in a plain shell; otherwise attach to the kept session.
             if settings.keepTerminalSessions && pendingCommand == nil {
-                new.send("clear; " + PersistentSession.attachCommand + "\n")
+                new.send("clear; " + PersistentSession.attachCommand(tab: tab) + "\n")
             }
             sessionID = UUID()
             session = new
@@ -150,10 +243,12 @@ final class RecentOutput: @unchecked Sendable {
 struct SSHTerminalView: UIViewRepresentable {
     let session: TerminalSession
     var recent: RecentOutput? = nil
+    var focus = true
     var onView: (TerminalView) -> Void = { _ in }
+    var onTitle: (String?) -> Void = { _ in }
     var onClosed: () -> Void = {}
 
-    func makeCoordinator() -> Coordinator { Coordinator(session: session, recent: recent, onClosed: onClosed) }
+    func makeCoordinator() -> Coordinator { Coordinator(session: session, recent: recent, onTitle: onTitle, onClosed: onClosed) }
 
     func makeUIView(context: Context) -> TerminalView {
         let view = DeckhandTerminalView(frame: .zero)
@@ -168,9 +263,9 @@ struct SSHTerminalView: UIViewRepresentable {
         context.coordinator.start(view)
         DispatchQueue.main.async { onView(view) }
         #if DEBUG
-        let focus = ProcessInfo.processInfo.environment["DECKHAND_SEED_NOKEYBOARD"] == nil
+        let focus = focus && ProcessInfo.processInfo.environment["DECKHAND_SEED_NOKEYBOARD"] == nil
         #else
-        let focus = true
+        let focus = focus
         #endif
         if focus { DispatchQueue.main.async { _ = view.becomeFirstResponder() } }
         return view
@@ -231,9 +326,12 @@ struct SSHTerminalView: UIViewRepresentable {
             }
         }
 
-        init(session: TerminalSession, recent: RecentOutput?, onClosed: @escaping () -> Void) {
+        let onTitle: (String?) -> Void
+
+        init(session: TerminalSession, recent: RecentOutput?, onTitle: @escaping (String?) -> Void, onClosed: @escaping () -> Void) {
             self.session = session
             self.recent = recent
+            self.onTitle = onTitle
             self.onClosed = onClosed
         }
 
@@ -258,7 +356,9 @@ struct SSHTerminalView: UIViewRepresentable {
             session.resize(cols: newCols, rows: newRows)
         }
 
-        nonisolated func setTerminalTitle(source: TerminalView, title: String) {}
+        nonisolated func setTerminalTitle(source: TerminalView, title: String) {
+            Task { @MainActor in self.onTitle(title) }
+        }
         nonisolated func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
         nonisolated func scrolled(source: TerminalView, position: Double) {}
         nonisolated func requestOpenLink(source: TerminalView, request: TerminalLinkRequest) {
