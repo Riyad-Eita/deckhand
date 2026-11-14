@@ -1,3 +1,4 @@
+import DeckhandCore
 import Foundation
 import Observation
 
@@ -19,6 +20,14 @@ final class AppRouter {
 
     /// A server to open (`deckhand://server/<id>`, the status widget).
     var pendingServer: UUID?
+
+    /// Servers from a `deckhand://add?…` link (or a scanned QR code), shown on the import screen — never added unseen.
+    var pendingImport: ImportLink?
+
+    struct ImportLink: Identifiable, Equatable {
+        let candidates: [HostImport.Candidate]
+        let id = UUID()
+    }
 
     struct ApprovalLink: Identifiable, Equatable {
         let server: UUID
@@ -49,6 +58,8 @@ final class AppRouter {
             }
         case "server":
             if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
+        case "add":
+            if let c = HostLink.parse(url) { pendingImport = ImportLink(candidates: [c]) }
         case "uptime":
             if parts.count == 2, let server = UUID(uuidString: parts[0]) { pendingIncident = IncidentLink(server: server, check: parts[1]) }
         default:
