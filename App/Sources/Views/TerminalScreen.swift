@@ -23,7 +23,8 @@ struct TerminalScreen: View {
             ZStack {
                 ForEach(tabs, id: \.self) { tab in
                     TerminalPane(server: server, tab: tab, isActive: tab == selected,
-                                 pendingCommand: tab == selected ? $pendingCommand : .constant(nil)) { titles[tab] = $0 }
+                                 pendingCommand: tab == selected ? $pendingCommand : .constant(nil),
+                                 onTitle: { titles[tab] = $0 }, onShortcut: handle)
                         .opacity(tab == selected ? 1 : 0)
                         .allowsHitTesting(tab == selected)
                         .accessibilityHidden(tab != selected)
@@ -72,6 +73,21 @@ struct TerminalScreen: View {
         .environment(\.colorScheme, theme.isLight ? .light : .dark)
     }
 
+    private func handle(_ shortcut: TerminalShortcut) {
+        guard let i = tabs.firstIndex(of: selected) else { return }
+        switch shortcut {
+        case .newTab: add()
+        case .closeTab: close(selected)
+        case .nextTab: selected = tabs[(i + 1) % tabs.count]
+        case .previousTab: selected = tabs[(i - 1 + tabs.count) % tabs.count]
+        case .tab(let n): if n <= tabs.count { selected = tabs[n - 1] }
+        case .larger: settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize + 1)
+        case .smaller: settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize - 1)
+        case .defaultSize: settings.terminalFontSize = TerminalFont.default
+        case .clear: break   // handled by the pane
+        }
+    }
+
     func add() {
         let n = TerminalTabs.next(after: tabs)
         tabs.append(n)
@@ -98,6 +114,7 @@ struct TerminalPane: View {
     let isActive: Bool
     @Binding var pendingCommand: String?
     var onTitle: (String?) -> Void = { _ in }
+    var onShortcut: (TerminalShortcut) -> Void = { _ in }
     @Environment(Connections.self) private var connections
     @Environment(AppSettings.self) private var settings
     @Environment(\.scenePhase) private var scenePhase
@@ -116,7 +133,15 @@ struct TerminalPane: View {
         ZStack(alignment: .bottom) {
             SSHTerminalView.swiftUIColor(TerminalTheme.named(settings.terminalTheme).background).ignoresSafeArea(edges: .bottom)
             if let session {
-                SSHTerminalView(session: session, recent: recent, focus: isActive, onView: { terminalView = $0 }, onTitle: onTitle) { closed = true }
+                SSHTerminalView(session: session, recent: recent, focus: isActive, onView: { terminalView = $0 }, onTitle: onTitle,
+                                onShortcut: { action in
+                                    if action == .clear {
+                                        terminalView?.feed(text: TerminalShortcut.clearLocal)
+                                        session.send(TerminalShortcut.clearRemote)
+                                    } else {
+                                        onShortcut(action)
+                                    }
+                                }) { closed = true }
                     .id(sessionID)
                     .ignoresSafeArea(.container, edges: .bottom)
                     .overlay(alignment: .topTrailing) {
@@ -246,6 +271,7 @@ struct SSHTerminalView: UIViewRepresentable {
     var focus = true
     var onView: (TerminalView) -> Void = { _ in }
     var onTitle: (String?) -> Void = { _ in }
+    var onShortcut: (TerminalShortcut) -> Void = { _ in }
     var onClosed: () -> Void = {}
 
     func makeCoordinator() -> Coordinator { Coordinator(session: session, recent: recent, onTitle: onTitle, onClosed: onClosed) }
@@ -254,6 +280,7 @@ struct SSHTerminalView: UIViewRepresentable {
         let view = DeckhandTerminalView(frame: .zero)
         view.terminalDelegate = context.coordinator
         view.accessibilityIdentifier = "terminal.view"
+        view.onShortcut = onShortcut
         Self.style(view, theme: TerminalTheme.named(AppSettings.shared.terminalTheme), size: AppSettings.shared.terminalFontSize)
         context.coordinator.applied = (AppSettings.shared.terminalTheme, AppSettings.shared.terminalFontSize)
         // Pinch to zoom: changes the font size; the terminal reflows and tells the server its new size.
@@ -378,6 +405,24 @@ struct SSHTerminalView: UIViewRepresentable {
 /// Over SSH these replies can arrive after tmux or the shell stopped waiting for them and then show up as
 /// typed text like ";52;55t". Size changes still reach the server through the SSH window-change request.
 final class DeckhandTerminalView: TerminalView {
+    /// Cmd shortcuts from a hardware keyboard (tabs, clear, text size).
+    var onShortcut: ((TerminalShortcut) -> Void)?
+
+    override var keyCommands: [UIKeyCommand]? {
+        TerminalShortcut.all.map { s in
+            let c = UIKeyCommand(title: s.title, action: #selector(shortcut(_:)), input: s.input,
+                                 modifierFlags: s.shift ? [.command, .shift] : .command)
+            c.wantsPriorityOverSystemBehavior = true
+            return c
+        }
+    }
+
+    @objc private func shortcut(_ command: UIKeyCommand) {
+        guard let input = command.input,
+              let action = TerminalShortcut.action(input: input, shift: command.modifierFlags.contains(.shift)) else { return }
+        onShortcut?(action)
+    }
+
     nonisolated override func windowCommand(source: Terminal, command: Terminal.WindowManipulationCommand) -> [UInt8]? {
         switch command {
         case .reportTextAreaPixelDimension, .reportTerminalWindowPixelDimension, .reportSizeOfScreenInPixels,
