@@ -186,6 +186,8 @@ struct AgentChatView: View {
             model.resumeIfNeeded()
             if let pending = PendingPrompt.take(for: model.thread.id), model.messages.isEmpty { model.send(pending.text, access: pending.access) }
             if let draft = PendingPrompt.takeDraft(for: model.thread.id) { self.draft = draft; composerFocused = true }
+            let pictures = PendingPrompt.takeDraftImages(for: model.thread.id)
+            if !pictures.isEmpty { images = pictures }
         }
         #if DEBUG
         .task {
@@ -299,6 +301,7 @@ struct AgentChatView: View {
             TextField("Tell the agent what to do…", text: $draft, axis: .vertical)
                 .lineLimit(1...6)
                 .focused($composerFocused)
+                .accessibilityIdentifier("chat.input")
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(Theme.card, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
