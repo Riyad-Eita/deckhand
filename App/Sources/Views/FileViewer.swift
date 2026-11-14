@@ -26,6 +26,7 @@ struct FileViewer: View {
     @State private var following = false
     @State private var follower: Task<Void, Never>?
     @State private var shareURL: URL?
+    @State private var editing = false
     @State private var preparingShare = false
 
     private var isLog: Bool { FilePreview.kind(forFileName: name) == .log }
@@ -71,6 +72,12 @@ struct FileViewer: View {
                     .accessibilityIdentifier("viewer.follow")
                 }
             }
+            if !binary && error == nil && !loading && !following && size <= Int64(FileEditing.maxBytes) {
+                ToolbarItem(placement: .primaryAction) {
+                    Button { editing = true } label: { Label("Edit", systemImage: "pencil") }
+                        .accessibilityIdentifier("viewer.edit")
+                }
+            }
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Toggle(isOn: $wrap) { Label("Wrap Lines", systemImage: "text.word.spacing") }
@@ -91,6 +98,9 @@ struct FileViewer: View {
         .fileTask($task, server: server)
         .task { await load() }
         .onDisappear { follower?.cancel() }
+        .fullScreenCover(isPresented: $editing) {
+            FileEditorView(server: server, path: path) { Task { await load() } }
+        }
         .sheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
             ShareSheet(items: [item.url]).presentationDetents([.medium, .large])
         }
