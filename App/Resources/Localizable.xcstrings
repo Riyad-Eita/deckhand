@@ -8790,6 +8790,16 @@
         }
       }
     },
+    "Loading %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ werden geladen …"
+          }
+        }
+      }
+    },
     "Lock after": {
       "localizations": {
         "de": {
@@ -14187,6 +14197,26 @@
         }
       }
     },
+    "Share": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilen"
+          }
+        }
+      }
+    },
+    "Share File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei teilen"
+          }
+        }
+      }
+    },
     "Share Key": {
       "localizations": {
         "de": {
@@ -14954,6 +14984,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht mehr automatisch beheben"
+          }
+        }
+      }
+    },
+    "Stop following": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr folgen"
           }
         }
       }
@@ -16794,6 +16834,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Token oder {{token}}"
+          }
+        }
+      }
+    },
+    "Too large to preview": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu groß für eine Vorschau"
           }
         }
       }

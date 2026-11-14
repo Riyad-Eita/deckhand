@@ -292,6 +292,31 @@ public actor SSHConnection: StreamingShell {
         try await PortForward.start(client: try connectedClient(), remoteHost: remoteHost, remotePort: remotePort)
     }
 
+    /// Reads up to `maxBytes` of a file — over SFTP, or as base64 over a command when the server has no SFTP.
+    public func download(_ path: String, maxBytes: Int) async throws -> Data {
+        do {
+            let sftp = try await connectedClient().openSFTP()
+            defer { Task { try? await sftp.close() } }
+            return try await sftp.withFile(filePath: path, flags: .read) { file in
+                var out = Data()
+                var offset: UInt64 = 0
+                while out.count < maxBytes {
+                    var buffer = try await file.read(from: offset, length: UInt32(min(64 * 1024, maxBytes - out.count)))
+                    guard buffer.readableBytes > 0, let bytes = buffer.readBytes(length: buffer.readableBytes) else { break }
+                    out.append(contentsOf: bytes)
+                    offset += UInt64(bytes.count)
+                }
+                return out
+            }
+        } catch {
+            let r = try await run("head -c \(maxBytes) -- \(ShellQuote.quote(path)) | base64 | tr -d '\\n'", timeout: .seconds(120))
+            guard r.exitCode == 0, let data = Data(base64Encoded: r.stdout.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+                throw ToolError.failed(r.stderr.isEmpty ? "Can't read \(path)" : r.stderr)
+            }
+            return data
+        }
+    }
+
     private func connectedClient() throws -> SSHClient {
         guard let client, client.isConnected else { throw SSHError.notConnected }
         return client
