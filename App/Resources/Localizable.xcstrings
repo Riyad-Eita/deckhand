@@ -3928,6 +3928,16 @@
         }
       }
     },
+    "Colors": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farben"
+          }
+        }
+      }
+    },
     "Column": {
       "localizations": {
         "de": {
@@ -5066,6 +5076,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Standard-Website"
+          }
+        }
+      }
+    },
+    "Default size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standardgröße"
           }
         }
       }
@@ -8456,6 +8476,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlüssel, die sich anmelden können"
+          }
+        }
+      }
+    },
+    "Larger": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größer"
           }
         }
       }
@@ -14447,6 +14477,16 @@
         }
       }
     },
+    "Smaller": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleiner"
+          }
+        }
+      }
+    },
     "Snapshots": {
       "localizations": {
         "de": {
@@ -15294,6 +15334,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Textdateien bis 300 KB."
+          }
+        }
+      }
+    },
+    "Text size %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Textgröße %lld"
+          }
+        }
+      }
+    },
+    "Text size and colors": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Textgröße und Farben"
           }
         }
       }
