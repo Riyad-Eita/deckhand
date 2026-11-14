@@ -3768,6 +3768,16 @@
         }
       }
     },
+    "Close Tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tab schließen"
+          }
+        }
+      }
+    },
     "Close port %@": {
       "localizations": {
         "de": {
@@ -5076,6 +5086,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Standard (Servereinstellung)"
+          }
+        }
+      }
+    },
+    "Default Text Size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard-Schriftgröße"
           }
         }
       }
@@ -8500,6 +8520,16 @@
         }
       }
     },
+    "Larger Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größere Schrift"
+          }
+        }
+      }
+    },
     "Last 24 hours": {
       "localizations": {
         "de": {
@@ -9500,6 +9530,16 @@
         }
       }
     },
+    "New Tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Tab"
+          }
+        }
+      }
+    },
     "New Task Here": {
       "localizations": {
         "de": {
@@ -9686,6 +9726,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nächster Treffer"
+          }
+        }
+      }
+    },
+    "Next Tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächster Tab"
           }
         }
       }
@@ -11659,6 +11709,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorheriger Treffer"
+          }
+        }
+      }
+    },
+    "Previous Tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorheriger Tab"
           }
         }
       }
@@ -14517,6 +14577,16 @@
         }
       }
     },
+    "Smaller Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinere Schrift"
+          }
+        }
+      }
+    },
     "Snapshots": {
       "localizations": {
         "de": {
@@ -15124,6 +15194,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "System-Journal"
+          }
+        }
+      }
+    },
+    "Tab %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tab %lld"
           }
         }
       }
