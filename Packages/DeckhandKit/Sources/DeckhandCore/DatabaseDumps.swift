@@ -44,7 +44,7 @@ public enum DatabaseDumps {
     /// Lists databases the login user can dump. Lines: `@@db <engine>\t<location>\t<name>`.
     public static let discoverCommand = #"""
     if command -v psql >/dev/null 2>&1; then
-      psql -d postgres -lqtA 2>/dev/null | cut -d'|' -f1 | grep -vE '^(template0|template1|postgres|)$' | while read -r d; do printf '@@db postgres\tlocal\t%s\n' "$d"; done
+      psql -X -d postgres -qtA -c "select datname from pg_database where datallowconn and not datistemplate" 2>/dev/null | grep -vE '^(postgres|)$' | while read -r d; do printf '@@db postgres\tlocal\t%s\n' "$d"; done
     fi
     if command -v mysql >/dev/null 2>&1; then
       mysql -N -e 'show databases' 2>/dev/null | grep -vE '^(information_schema|performance_schema|mysql|sys)$' | while read -r d; do printf '@@db mysql\tlocal\t%s\n' "$d"; done
@@ -53,7 +53,7 @@ public enum DatabaseDumps {
       docker ps --format '{{.Names}} {{.Image}}' 2>/dev/null | while read -r c img; do
         case "$img" in
           *postgres*|*postgis*|*timescale*)
-            docker exec "$c" sh -c 'psql -U "${POSTGRES_USER:-postgres}" -lqtA' 2>/dev/null | cut -d'|' -f1 | grep -vE '^(template0|template1|)$' | while read -r d; do printf '@@db postgres\tdocker:%s\t%s\n' "$c" "$d"; done ;;
+            docker exec "$c" sh -c 'psql -X -U "${POSTGRES_USER:-postgres}" -d postgres -qtA -c "select datname from pg_database where datallowconn and not datistemplate"' 2>/dev/null | grep -vE '^$' | while read -r d; do printf '@@db postgres\tdocker:%s\t%s\n' "$c" "$d"; done ;;
           *mysql*|*mariadb*)
             docker exec "$c" sh -c 'mysql -uroot -p"${MYSQL_ROOT_PASSWORD:-$MARIADB_ROOT_PASSWORD}" -N -e "show databases"' 2>/dev/null | grep -vE '^(information_schema|performance_schema|mysql|sys)$' | while read -r d; do printf '@@db mysql\tdocker:%s\t%s\n' "$c" "$d"; done ;;
         esac
