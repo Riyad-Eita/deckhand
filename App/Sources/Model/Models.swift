@@ -113,6 +113,8 @@ final class ChatThread {
     /// Plain chats (no server): the provider and model this chat talks to; nil = the default from Settings.
     var chatProviderRaw: String?
     var chatModel: String?
+    /// Pinned tasks stay at the top of the server's list.
+    var pinned: Bool = false
     var server: Server?
 
     /// A plain chat with a model, without a server.

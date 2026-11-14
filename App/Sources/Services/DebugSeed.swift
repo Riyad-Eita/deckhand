@@ -256,6 +256,19 @@ enum DebugSeed {
         context.insert(server)
         Keychain.set(key, for: server.secretAccount)
         try? context.save()
+        // DECKHAND_SEED_TASKS="title|question|answer;…": finished tasks on the seeded server (for search and export).
+        if let raw = env["DECKHAND_SEED_TASKS"] {
+            for (i, entry) in raw.split(separator: ";").enumerated() {
+                let p = entry.split(separator: "|", omittingEmptySubsequences: false).map(String.init)
+                guard p.count == 3 else { continue }
+                let thread = ChatThread(server: server, workingDirectory: "~")
+                thread.title = p[0]
+                thread.messages = [.user(p[1]), Message(role: .assistant, blocks: [.text(p[2])])]
+                thread.updatedAt = Date().addingTimeInterval(TimeInterval(-60 * (i + 1)))
+                context.insert(thread)
+            }
+            try? context.save()
+        }
         // DECKHAND_SEED_JUMP_TARGET="name|host|port": a second server with the same login, reached through the seeded one.
         if let raw = env["DECKHAND_SEED_JUMP_TARGET"] {
             let p = raw.split(separator: "|").map(String.init)
