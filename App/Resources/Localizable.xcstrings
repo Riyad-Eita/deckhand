@@ -235,6 +235,16 @@
         }
       }
     },
+    "%@ may not write %@. As root it's saved like other changes: with a backup you can roll back in Change history.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ darf %2$@ nicht schreiben. Als Root wird es wie andere Änderungen gesichert: mit einer Sicherung, die du im Änderungsverlauf zurücknehmen kannst."
+          }
+        }
+      }
+    },
     "%@ needs HTTPS: point a domain at this server first. Caddy gets the certificate.": {
       "localizations": {
         "de": {
@@ -3228,6 +3238,16 @@
         }
       }
     },
+    "Changed on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Server geändert"
+          }
+        }
+      }
+    },
     "Changed since last healthy": {
       "localizations": {
         "de": {
@@ -4559,6 +4579,16 @@
         }
       }
     },
+    "Couldn't save the file.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei konnte nicht gesichert werden."
+          }
+        }
+      }
+    },
     "Couldn't save the fix.": {
       "localizations": {
         "de": {
@@ -5397,6 +5427,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verwerfen"
+          }
+        }
+      }
+    },
+    "Discard your changes?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen verwerfen?"
           }
         }
       }
@@ -11253,6 +11293,16 @@
         }
       }
     },
+    "Overwrite": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überschreiben"
+          }
+        }
+      }
+    },
     "Packages": {
       "localizations": {
         "de": {
@@ -12336,6 +12386,16 @@
         }
       }
     },
+    "Redo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholen"
+          }
+        }
+      }
+    },
     "Refresh": {
       "localizations": {
         "de": {
@@ -12392,6 +12452,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neu laden"
+          }
+        }
+      }
+    },
+    "Reload and lose my edits": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu laden, meine Änderungen verwerfen"
           }
         }
       }
@@ -13457,6 +13527,26 @@
         }
       }
     },
+    "Save as root": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Root sichern"
+          }
+        }
+      }
+    },
+    "Save as root?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Root sichern?"
+          }
+        }
+      }
+    },
     "Save as snippet": {
       "localizations": {
         "de": {
@@ -13503,6 +13593,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In den Server-Notizen sichern"
+          }
+        }
+      }
+    },
+    "Saved": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesichert"
           }
         }
       }
@@ -14643,6 +14743,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Solider Allrounder; kann Werkzeuge für einfache Agent-Aufgaben nutzen."
+          }
+        }
+      }
+    },
+    "Someone else changed %@ since you opened it. Overwriting replaces their change with yours.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jemand anderes hat %@ geändert, seit du die Datei geöffnet hast. Überschreiben ersetzt diese Änderung durch deine."
           }
         }
       }
