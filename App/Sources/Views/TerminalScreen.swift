@@ -22,7 +22,7 @@ struct TerminalScreen: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color.black.ignoresSafeArea(edges: .bottom)
+            SSHTerminalView.swiftUIColor(TerminalTheme.named(settings.terminalTheme).background).ignoresSafeArea(edges: .bottom)
             if let session {
                 SSHTerminalView(session: session, recent: recent, onView: { terminalView = $0 }) { closed = true }
                     .id(sessionID)
@@ -39,6 +39,24 @@ struct TerminalScreen: View {
                         .padding(10)
                         .accessibilityLabel("Explain")
                         .accessibilityIdentifier("terminal.explain")
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        Menu {
+                            Picker("Colors", selection: Bindable(settings).terminalTheme) {
+                                ForEach(TerminalTheme.all) { t in Text(t.name).tag(t.id) }
+                            }
+                            Section(String(localized: "Text size \(Int(settings.terminalFontSize))")) {
+                                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize + 1) } label: { Label("Larger", systemImage: "textformat.size.larger") }
+                                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize - 1) } label: { Label("Smaller", systemImage: "textformat.size.smaller") }
+                                Button { settings.terminalFontSize = TerminalFont.default } label: { Label("Default size", systemImage: "arrow.counterclockwise") }
+                            }
+                        } label: {
+                            Image(systemName: "textformat.size").font(.system(size: 15, weight: .semibold))
+                                .padding(9).background(.ultraThinMaterial, in: Circle())
+                        }
+                        .padding(.top, 10).padding(.trailing, 110)
+                        .accessibilityLabel("Text size and colors")
+                        .accessibilityIdentifier("terminal.appearance")
                     }
                     .overlay(alignment: .topTrailing) {
                         Button { showingSnippets = true } label: {
@@ -140,9 +158,13 @@ struct SSHTerminalView: UIViewRepresentable {
     func makeUIView(context: Context) -> TerminalView {
         let view = DeckhandTerminalView(frame: .zero)
         view.terminalDelegate = context.coordinator
-        view.font = UIFont.monospacedSystemFont(ofSize: 13, weight: .regular)
-        view.nativeBackgroundColor = .black
-        view.nativeForegroundColor = UIColor(white: 0.92, alpha: 1)
+        view.accessibilityIdentifier = "terminal.view"
+        Self.style(view, theme: TerminalTheme.named(AppSettings.shared.terminalTheme), size: AppSettings.shared.terminalFontSize)
+        context.coordinator.applied = (AppSettings.shared.terminalTheme, AppSettings.shared.terminalFontSize)
+        // Pinch to zoom: changes the font size; the terminal reflows and tells the server its new size.
+        let pinch = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.pinched(_:)))
+        view.addGestureRecognizer(pinch)
+        context.coordinator.view = view
         context.coordinator.start(view)
         DispatchQueue.main.async { onView(view) }
         #if DEBUG
@@ -154,7 +176,31 @@ struct SSHTerminalView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: TerminalView, context: Context) {}
+    func updateUIView(_ uiView: TerminalView, context: Context) {
+        let wanted = (AppSettings.shared.terminalTheme, AppSettings.shared.terminalFontSize)
+        guard context.coordinator.applied.0 != wanted.0 || context.coordinator.applied.1 != wanted.1 else { return }
+        Self.style(uiView, theme: TerminalTheme.named(wanted.0), size: wanted.1)
+        context.coordinator.applied = wanted
+    }
+
+    static func swiftUIColor(_ hex: String) -> SwiftUI.Color { SwiftUI.Color(uiColor: uiColor(hex)) }
+
+    static func uiColor(_ hex: String) -> UIColor {
+        let c = TerminalTheme.rgb(hex) ?? (0, 0, 0)
+        return UIColor(red: c.r, green: c.g, blue: c.b, alpha: 1)
+    }
+
+    static func style(_ view: TerminalView, theme: TerminalTheme, size: Double) {
+        view.font = UIFont.monospacedSystemFont(ofSize: TerminalFont.clamp(size), weight: .regular)
+        view.nativeBackgroundColor = uiColor(theme.background)
+        view.nativeForegroundColor = uiColor(theme.foreground)
+        view.caretColor = uiColor(theme.cursor)
+        view.installColors(theme.ansi.map { hex in
+            let c = TerminalTheme.rgb(hex) ?? (0, 0, 0)
+            return SwiftTerm.Color(red: UInt16(c.r * 65535), green: UInt16(c.g * 65535), blue: UInt16(c.b * 65535))
+        })
+        view.keyboardAppearance = theme.isLight ? .light : .dark
+    }
 
     static func dismantleUIView(_ uiView: TerminalView, coordinator: Coordinator) {
         coordinator.reader?.cancel()
@@ -166,6 +212,24 @@ struct SSHTerminalView: UIViewRepresentable {
         let recent: RecentOutput?
         let onClosed: () -> Void
         var reader: Task<Void, Never>?
+        weak var view: TerminalView?
+        var applied: (String, Double) = ("", 0)
+        private var pinchStart: Double = TerminalFont.default
+
+        @objc func pinched(_ g: UIPinchGestureRecognizer) {
+            switch g.state {
+            case .began: pinchStart = AppSettings.shared.terminalFontSize
+            case .changed:
+                let size = TerminalFont.clamp(pinchStart * Double(g.scale))
+                if let view, size != applied.1 {
+                    view.font = UIFont.monospacedSystemFont(ofSize: size, weight: .regular)
+                    applied.1 = size
+                }
+            case .ended, .cancelled:
+                AppSettings.shared.terminalFontSize = applied.1   // remembered for next time
+            default: break
+            }
+        }
 
         init(session: TerminalSession, recent: RecentOutput?, onClosed: @escaping () -> Void) {
             self.session = session
