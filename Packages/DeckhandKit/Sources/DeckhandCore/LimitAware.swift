@@ -9,7 +9,7 @@ public enum LimitAwareRun {
 
     public static func command(
         _ cli: ServerCLI, prompt: String, workingDirectory: String, sessionID: String?, access: CLIAccess,
-        options: CLIOptions = .init(), run: DetachedRun
+        options: CLIOptions = .init(), run: DetachedRun, startAt: Date? = nil
     ) -> String {
         let first = ServerCLIRun.command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options)
         let resume = ServerCLIRun.command(cli, prompt: continuePrompt, workingDirectory: workingDirectory, sessionID: "@@SID@@", access: access, options: options)
@@ -17,6 +17,7 @@ public enum LimitAwareRun {
         let out = run.base + ".out"
         return """
         \(waitFunction)
+        \(startAt.map { startDelay(until: Int($0.timeIntervalSince1970), run: run) } ?? "")
         \(first)
         code=$?
         n=0
@@ -37,6 +38,21 @@ public enum LimitAwareRun {
           n=$((n + 1))
         done
         (exit $code)
+        """
+    }
+
+    /// Waits on the server until `until` (epoch) before the task starts — "start after the reset". Shows in the app
+    /// like a limit wait.
+    static func startDelay(until: Int, run: DetachedRun) -> String {
+        """
+        w=$(( \(until) - $(date +%s) ))
+        if [ "$w" -gt 0 ]; then
+          echo \(until) > \(run.base).waiting
+          printf '{"type":"deckhand.waiting","until":%s}\\n' \(until)
+          sleep "$w"
+          rm -f \(run.base).waiting
+          echo '{"type":"deckhand.resumed"}'
+        fi
         """
     }
 

@@ -90,10 +90,11 @@ public enum ServerCLIRun {
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
         sessionID: String?, access: CLIAccess, options: CLIOptions = .init(), run: DetachedRun, fromLine: Int = 1,
-        meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil
+        meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil
     ) -> AsyncThrowingStream<AgentEvent, Error> {
         let cliCommand = LimitAwareRun.command(
-            cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run)
+            cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run,
+            startAt: startAt)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()

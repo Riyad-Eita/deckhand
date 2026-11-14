@@ -155,6 +155,16 @@
         }
       }
     },
+    "%@ hit its usage limit; it resets %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hat sein Nutzungslimit erreicht; es setzt sich um %2$@ zurück."
+          }
+        }
+      }
+    },
     "%@ is %lld %% full": {
       "localizations": {
         "de": {
@@ -454,6 +464,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@: CPU %2$lld %%, Speicher %3$lld %%, Platte %4$lld %%, läuft seit %5$@."
+          }
+        }
+      }
+    },
+    "%lld %% of the %@ limit used.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld %% des %2$@-Limits verbraucht."
           }
         }
       }
@@ -868,6 +888,26 @@
         }
       }
     },
+    "%lld-day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld-Tage"
+          }
+        }
+      }
+    },
+    "%lld-hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld-Stunden"
+          }
+        }
+      }
+    },
     "%lld.": {
       "shouldTranslate": false
     },
@@ -920,6 +960,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "5 Minuten"
+          }
+        }
+      }
+    },
+    "5-hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5-Stunden"
           }
         }
       }
@@ -2808,6 +2858,16 @@
         }
       }
     },
+    "Big tasks can wait for the reset: in a task, tap Start after the reset when the limit is close.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Große Aufgaben können auf den Reset warten: Tippe in einer Aufgabe auf Nach dem Reset starten, wenn das Limit nah ist."
+          }
+        }
+      }
+    },
     "Block repeated failed logins": {
       "localizations": {
         "de": {
@@ -3674,6 +3734,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude Code oder Codex läuft auf %@. Einmal anmelden – kein API-Key nötig."
+          }
+        }
+      }
+    },
+    "Claude Code reports its usage only when a limit is reached.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code meldet seinen Verbrauch erst, wenn ein Limit erreicht ist."
           }
         }
       }
@@ -8850,6 +8920,16 @@
         }
       }
     },
+    "Limit reached — resets %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit erreicht — zurückgesetzt um %@"
+          }
+        }
+      }
+    },
     "Limited: %@": {
       "localizations": {
         "de": {
@@ -11723,6 +11803,16 @@
         }
       }
     },
+    "Plan usage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abo-Verbrauch"
+          }
+        }
+      }
+    },
     "Plan — tap a step to leave it out": {
       "localizations": {
         "de": {
@@ -12912,6 +13002,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anfragen"
+          }
+        }
+      }
+    },
+    "Resets %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurückgesetzt %@"
+          }
+        }
+      }
+    },
+    "Resets %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurückgesetzt um %@."
           }
         }
       }
@@ -14687,6 +14797,16 @@
         }
       }
     },
+    "Shows after the first Codex task on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheint nach der ersten Codex-Aufgabe auf diesem Server."
+          }
+        }
+      }
+    },
     "Sign in": {
       "localizations": {
         "de": {
@@ -15078,6 +15198,16 @@
         }
       }
     },
+    "Start after the reset": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach dem Reset starten"
+          }
+        }
+      }
+    },
     "Start an agent task": {
       "localizations": {
         "de": {
@@ -15154,6 +15284,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starte …"
+          }
+        }
+      }
+    },
+    "Starts %@ · Start now instead": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startet %@ · Doch jetzt starten"
           }
         }
       }
@@ -18295,6 +18435,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur werktags"
+          }
+        }
+      }
+    },
+    "Weekly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wöchentlich"
           }
         }
       }

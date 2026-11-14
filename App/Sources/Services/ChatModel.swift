@@ -45,6 +45,8 @@ final class ChatModel {
     var error: String?
     /// Non-fatal information for the current run (e.g. a connection that could not be opened).
     private(set) var notice: String?
+    /// "Start after the reset": the next server run waits on the server until then.
+    var startAfter: Date?
     private(set) var usage = Usage()
     var pendingApproval: PendingApproval?
     /// The plan in the last reply that is waiting to be run, adjusted or dropped, and the steps the user unticked.
@@ -107,7 +109,8 @@ final class ChatModel {
                     sessionID: thread.cliSessionID, access: access, options: cliOptions(cli),
                     run: run, fromLine: thread.cliRunLine,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
-                    notify: notify)
+                    notify: notify, startAt: starting ? startAfter : nil)
+                if starting { startAfter = nil }
                 for try await event in events {
                     if reconnecting { notice = nil; reconnecting = false; delay = 2 }
                     handle(event)

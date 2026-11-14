@@ -31,6 +31,7 @@ struct ServerToolsView: View {
                     } footer: {
                         Text("They run on the server with your own ChatGPT or Claude subscription. Updates install into your home folder, no root needed.")
                     }
+                    PlanUsageSection(server: server)
                     GitHubSection(server: server, showSignIn: { githubSignIn = true }, signInClosed: githubClosed)
                     ConnectionSyncSection(server: server)
                     Section("Server") {
@@ -198,5 +199,55 @@ private struct ConnectionSyncSection: View {
         } catch {
             self.error = error.localizedDescription
         }
+    }
+}
+
+/// How much of the plans is left, as the CLIs report it.
+private struct PlanUsageSection: View {
+    let server: Server
+    @State private var store = PlanUsageStore.shared
+
+    var body: some View {
+        Section {
+            ForEach(ServerCLI.allCases) { cli in
+                let u = store.usage(cli, on: server)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(cli.displayName).font(.subheadline.weight(.semibold))
+                    if let u, !u.windows.isEmpty {
+                        ForEach(u.windows, id: \.minutes) { w in
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack {
+                                    Text(w.name).font(.caption)
+                                    Spacer()
+                                    Text("\(Int(w.usedPercent.rounded())) %").font(.caption.monospacedDigit().weight(.medium))
+                                        .foregroundStyle(w.usedPercent >= 80 ? .orange : .secondary)
+                                }
+                                ProgressView(value: min(1, w.usedPercent / 100)).tint(w.usedPercent >= 80 ? .orange : Theme.accent)
+                                if let r = w.resetsAt {
+                                    Text("Resets \(r.formatted(date: w.minutes > 1440 ? .abbreviated : .omitted, time: .shortened))")
+                                        .font(.caption2).foregroundStyle(.secondary)
+                                }
+                            }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityIdentifier("usage.\(cli.rawValue).\(w.minutes)")
+                        }
+                    } else if let u, let reset = u.limitResets {
+                        Label(String(localized: "Limit reached — resets \(reset.formatted(date: .omitted, time: .shortened))"), systemImage: "hourglass")
+                            .font(.caption).foregroundStyle(.orange)
+                    } else {
+                        Text(cli == .claudeCode
+                             ? String(localized: "Claude Code reports its usage only when a limit is reached.")
+                             : String(localized: "Shows after the first Codex task on this server."))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.vertical, 2)
+            }
+        } header: {
+            Text("Plan usage")
+        } footer: {
+            Text("Big tasks can wait for the reset: in a task, tap Start after the reset when the limit is close.")
+        }
+        .task { await store.refresh(server, maxAge: 0) }
     }
 }
