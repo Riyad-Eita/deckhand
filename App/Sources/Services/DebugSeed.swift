@@ -2,6 +2,7 @@
 import DeckhandCore
 import Foundation
 import SwiftData
+import UIKit
 
 /// Simulator test hook: `SIMCTL_CHILD_DECKHAND_SEED_HOST=… xcrun simctl launch …` adds a server once.
 /// Variables: DECKHAND_SEED_HOST, _PORT, _USER, _KEY (private key text), _NAME, _APIKEY (Anthropic), _OPEN (open server).
@@ -319,6 +320,17 @@ enum DebugSeed {
         } catch {
             try? ("ERROR \(error)").write(to: out, atomically: true, encoding: .utf8)
         }
+    }
+}
+
+extension DebugSeed {
+    /// Draws the app's windows into a PNG (DECKHAND_SNAPSHOT; Mac screenshots without screen-recording permission).
+    @MainActor static func snapshot(to url: URL) {
+        let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).filter { !$0.isHidden }
+        guard let main = windows.max(by: { $0.bounds.width * $0.bounds.height < $1.bounds.width * $1.bounds.height }) else { return }
+        let renderer = UIGraphicsImageRenderer(bounds: main.bounds)
+        let image = renderer.image { _ in for w in windows where w.windowScene == main.windowScene { w.drawHierarchy(in: w.frame, afterScreenUpdates: false) } }
+        try? image.pngData()?.write(to: url, options: .atomic)
     }
 }
 #endif

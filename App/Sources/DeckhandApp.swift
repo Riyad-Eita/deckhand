@@ -61,6 +61,9 @@ struct RootView: View {
             OnboardingView { onboardingDone = true }
                 .hostKeyPrompt(inSheet: true)
                 .serverLinkImport(enabled: true)
+                // Mac Catalyst presents the cover in its own window: pass the shared objects explicitly.
+                .environment(AppSettings.shared)
+                .environment(Connections.shared)
         }
         .hostKeyPrompt()
         .serverLinkImport(enabled: !showOnboarding)
@@ -97,6 +100,14 @@ struct RootView: View {
             if let s = ProcessInfo.processInfo.environment["DECKHAND_SEED_OPEN_URL"], let url = URL(string: s) {
                 try? await Task.sleep(for: .seconds(1))
                 AppRouter.shared.handle(url)
+            }
+            // DECKHAND_SNAPSHOT=<file.png>: the app draws its own windows into a PNG every 2 s (Mac screenshots
+            // without screen-recording permission).
+            if let path = ProcessInfo.processInfo.environment["DECKHAND_SNAPSHOT"] {
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(2))
+                    DebugSeed.snapshot(to: URL(fileURLWithPath: path))
+                }
             }
         }
         #endif

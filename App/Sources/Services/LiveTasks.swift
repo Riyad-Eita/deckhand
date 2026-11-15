@@ -1,4 +1,6 @@
+#if !targetEnvironment(macCatalyst)
 import ActivityKit
+#endif
 import DeckhandCore
 import Foundation
 
@@ -7,6 +9,7 @@ import Foundation
 @MainActor
 final class LiveTasks {
     static let shared = LiveTasks()
+#if !targetEnvironment(macCatalyst)
     private var activities: [UUID: Activity<TaskActivityAttributes>] = [:]
     private var lastUpdate: [UUID: Date] = [:]
 
@@ -41,6 +44,14 @@ final class LiveTasks {
     private nonisolated static func activity(_ id: String) -> Activity<TaskActivityAttributes>? {
         Activity<TaskActivityAttributes>.activities.first { $0.id == id }
     }
+
+#else
+    // The Mac has no Live Activities: the same calls do nothing there.
+    func start(_ thread: ChatThread, server: Server) {}
+    func update(_ thread: ChatThread, phase: TaskActivityAttributes.Phase, step: String, waitingUntil: Date? = nil, force: Bool = false) {}
+    func end(_ thread: ChatThread, ok: Bool, stopped: Bool = false) {}
+
+#endif
 
     /// A short line for what a tool call does.
     static func step(for call: ToolCall) -> String {
