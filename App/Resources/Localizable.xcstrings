@@ -2272,6 +2272,16 @@
         }
       }
     },
+    "App name or link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App-Name oder Link"
+          }
+        }
+      }
+    },
     "App secrets": {
       "localizations": {
         "de": {
@@ -3965,6 +3975,16 @@
         }
       }
     },
+    "Clipboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablage"
+          }
+        }
+      }
+    },
     "Clock sync": {
       "localizations": {
         "de": {
@@ -4496,6 +4516,26 @@
         }
       }
     },
+    "Control This Mac": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Mac steuern"
+          }
+        }
+      }
+    },
+    "Control this Mac": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Mac steuern"
+          }
+        }
+      }
+    },
     "Copied": {
       "localizations": {
         "de": {
@@ -4622,6 +4662,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf einen anderen Server kopieren"
+          }
+        }
+      }
+    },
+    "Copy to the Mac's clipboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Zwischenablage des Macs kopieren"
           }
         }
       }
@@ -5309,6 +5359,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand selbst meldet sich mit einem Passwort an. Stell diesen Server zuerst in seinen Einstellungen auf einen Schlüssel um, damit dich das Abschalten der Passwörter nicht aussperrt."
+          }
+        }
+      }
+    },
+    "Deckhand keeps this Mac awake.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand hält diesen Mac wach."
           }
         }
       }
@@ -8873,6 +8933,26 @@
         }
       }
     },
+    "Keep awake for 1 hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Stunde wach halten"
+          }
+        }
+      }
+    },
+    "Keep awake for 8 hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "8 Stunden wach halten"
+          }
+        }
+      }
+    },
     "Keep terminal sessions": {
       "localizations": {
         "de": {
@@ -9223,6 +9303,16 @@
         }
       }
     },
+    "Let it sleep again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wieder schlafen lassen"
+          }
+        }
+      }
+    },
     "Let's Encrypt only issues a certificate when the domain points here and ports 80 and 443 are reachable.": {
       "localizations": {
         "de": {
@@ -9349,6 +9439,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ werden geladen …"
+          }
+        }
+      }
+    },
+    "Loading Shortcuts…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurzbefehle werden geladen …"
           }
         }
       }
@@ -9529,6 +9629,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unter Speicherplatz im Server-Tab siehst du, was weg kann."
+          }
+        }
+      }
+    },
+    "Look at the screen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildschirm ansehen"
           }
         }
       }
@@ -10353,6 +10463,16 @@
         }
       }
     },
+    "No Shortcuts on this Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Kurzbefehle auf diesem Mac."
+          }
+        }
+      }
+    },
     "No TestFlight groups yet.": {
       "localizations": {
         "de": {
@@ -10459,6 +10579,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine App-Server angegeben: Die Datenbank ist dann nur auf dem Server selbst und über SSH erreichbar."
+          }
+        }
+      }
+    },
+    "No app with that name on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine App mit diesem Namen auf dem Mac."
           }
         }
       }
@@ -11506,6 +11636,16 @@
         }
       }
     },
+    "On the Mac's clipboard.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der Zwischenablage des Macs."
+          }
+        }
+      }
+    },
     "On the last page, tap Copy Code.": {
       "localizations": {
         "de": {
@@ -11746,6 +11886,16 @@
         }
       }
     },
+    "Open on the Mac": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Mac öffnen"
+          }
+        }
+      }
+    },
     "Open port %@ next to %@": {
       "localizations": {
         "de": {
@@ -11802,6 +11952,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offen nach außen"
+          }
+        }
+      }
+    },
+    "Opened on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Mac geöffnet."
           }
         }
       }
@@ -12102,6 +12262,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aus der Zwischenablage einfügen"
+          }
+        }
+      }
+    },
+    "Paste it on the Mac with ⌘V.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge es auf dem Mac mit ⌘V ein."
           }
         }
       }
@@ -12840,6 +13010,16 @@
     },
     "RAM": {
       "shouldTranslate": false
+    },
+    "Ran “%@”.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ ausgeführt."
+          }
+        }
+      }
     },
     "Range": {
       "localizations": {
@@ -14573,6 +14753,26 @@
         }
       }
     },
+    "Screen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildschirm"
+          }
+        }
+      }
+    },
+    "Screen, Shortcuts, apps and links, clipboard, stay awake": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildschirm, Kurzbefehle, Apps und Links, Zwischenablage, wach bleiben"
+          }
+        }
+      }
+    },
     "Search": {
       "localizations": {
         "de": {
@@ -15333,6 +15533,16 @@
         }
       }
     },
+    "Shortcuts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurzbefehle"
+          }
+        }
+      }
+    },
     "Shouldn't be reachable from the internet.": {
       "localizations": {
         "de": {
@@ -16044,6 +16254,36 @@
         }
       }
     },
+    "Stay awake": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wach bleiben"
+          }
+        }
+      }
+    },
+    "Stays awake for 8 hours.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bleibt 8 Stunden wach."
+          }
+        }
+      }
+    },
+    "Stays awake for an hour.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bleibt eine Stunde wach."
+          }
+        }
+      }
+    },
     "Stays on your server in ~/.deckhand/history. Private keys and password files are left out.": {
       "localizations": {
         "de": {
@@ -16454,6 +16694,16 @@
         }
       }
     },
+    "Take another": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch eins aufnehmen"
+          }
+        }
+      }
+    },
     "Takes websites and databases offline until you give the all clear.": {
       "localizations": {
         "de": {
@@ -16654,6 +16904,16 @@
         }
       }
     },
+    "Text": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text"
+          }
+        }
+      }
+    },
     "Text file": {
       "localizations": {
         "de": {
@@ -16690,6 +16950,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Textgröße und Farben"
+          }
+        }
+      }
+    },
+    "That didn't work on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das hat auf dem Mac nicht geklappt."
           }
         }
       }
@@ -16824,12 +17094,42 @@
         }
       }
     },
+    "The Mac didn't allow a screenshot over SSH. On the Mac: System Settings → Privacy & Security → Screen & System Audio Recording → add “sshd-keygen-wrapper” (/usr/libexec), then try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Mac erlaubt kein Bildschirmfoto über SSH. Auf dem Mac: Systemeinstellungen → Datenschutz & Sicherheit → Bildschirm- & Systemaudioaufnahme → „sshd-keygen-wrapper“ (/usr/libexec) hinzufügen, dann erneut versuchen."
+          }
+        }
+      }
+    },
+    "The Mac may sleep again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Mac darf wieder schlafen."
+          }
+        }
+      }
+    },
     "The Mac's login keychain is locked, so code signing can fail over SSH. Log in on the Mac once (or unlock it in Terminal with `security unlock-keychain`).": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der Anmeldeschlüsselbund des Macs ist gesperrt, daher kann die Codesignierung über SSH fehlschlagen. Melde dich einmal am Mac an (oder entsperre ihn im Terminal mit `security unlock-keychain`)."
+          }
+        }
+      }
+    },
+    "The Shortcut didn't finish. Shortcuts that ask a question or show something need someone at the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Kurzbefehl wurde nicht fertig. Kurzbefehle, die etwas fragen oder anzeigen, brauchen jemanden am Mac."
           }
         }
       }
@@ -16980,6 +17280,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Build landet in TestFlight. Zum Review wird nichts eingereicht."
+          }
+        }
+      }
+    },
+    "The clipboard can only be set while you're signed in on the Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Zwischenablage geht nur, solange du am Mac angemeldet bist."
           }
         }
       }
@@ -19541,6 +19851,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wohin"
+          }
+        }
+      }
+    },
+    "While a long task runs, the Mac doesn't go to sleep. The display can still turn off.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solange eine lange Aufgabe läuft, schläft der Mac nicht ein. Der Bildschirm darf trotzdem ausgehen."
           }
         }
       }
