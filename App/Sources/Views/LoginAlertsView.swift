@@ -88,7 +88,7 @@ struct LoginAlertsView: View {
         .task { if status == nil { await load() } }
         .refreshable { await load() }
         .sudoPassword(root, server: server)
-        .sheet(item: $task, onDismiss: { Task { await load() } }) { t in
+        .appSheet(item: $task, onDismiss: { Task { await load() } }) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.changeID), steps: RootTaskSheet.changeSteps,
                           guardID: t.change.guardSeconds != nil ? t.changeID : nil)

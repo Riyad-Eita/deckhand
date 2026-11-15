@@ -70,8 +70,8 @@ struct IncidentView: View {
         .navigationTitle("Incident")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $thread) { AgentChatView(thread: $0, server: server) }
-        .sheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
+        .appSheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
+        .appSheet(isPresented: $showingSettings) { SettingsView() }
         .task { await load() }
         .task { await AgentStatus.shared.refresh(server) }
     }

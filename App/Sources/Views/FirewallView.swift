@@ -60,12 +60,12 @@ struct FirewallView: View {
         .refreshable { await load() }
         .sudoPassword(root, server: server)
         .investigate(on: server, prompt: $investigatePrompt)
-        .sheet(item: $task, onDismiss: { Task { await load() } }) { t in
+        .appSheet(item: $task, onDismiss: { Task { await load() } }) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.changeID), steps: RootTaskSheet.changeSteps,
                           guardID: t.change.guardSeconds != nil ? t.changeID : nil)
         }
-        .sheet(isPresented: $adding) {
+        .appSheet(isPresented: $adding) {
             if let status {
                 AddRuleSheet { rule in
                     let change = Firewall.add(rule, to: status)

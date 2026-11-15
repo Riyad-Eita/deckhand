@@ -200,7 +200,7 @@ struct RootView: View {
 struct ServerLinkImportModifier: ViewModifier {
     let enabled: Bool
     func body(content: Content) -> some View {
-        content.sheet(item: Binding(get: { enabled ? AppRouter.shared.pendingImport : nil },
+        content.appSheet(item: Binding(get: { enabled ? AppRouter.shared.pendingImport : nil },
                                     set: { AppRouter.shared.pendingImport = $0 })) { link in
             ImportServersView(fromLink: link.candidates)
         }

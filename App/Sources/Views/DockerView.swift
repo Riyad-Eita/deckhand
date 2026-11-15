@@ -78,7 +78,7 @@ struct DockerView: View {
                             titleVisibility: .visible) {
             Button(confirmCompose?.action.title ?? "", role: .destructive) { composeRun = confirmCompose }
         }
-        .sheet(item: $composeRun, onDismiss: { Task { await load() } }) { run in
+        .appSheet(item: $composeRun, onDismiss: { Task { await load() } }) { run in
             CommandOutputSheet(server: server, title: "\(run.action.title) \(run.project.name)",
                                command: Docker.composeCommand(run.action, project: run.project))
         }

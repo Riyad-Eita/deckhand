@@ -180,12 +180,12 @@ struct AgentChatView: View {
             browsing = BrowserTarget(port: port, path: url.path.isEmpty ? "/" : url.path + (url.query.map { "?" + $0 } ?? ""))
             return .handled
         })
-        .sheet(isPresented: $settingUpRemedy) {
+        .appSheet(isPresented: $settingUpRemedy) {
             if let check = IncidentLinks.check(for: model.thread.id), let commands = appliedFix {
                 RemedySheet(server: model.server, checkID: check, checkName: model.thread.title, initialCommands: commands) { appliedFix = nil }
             }
         }
-        .sheet(item: $browsing) { BrowserSheet(server: model.server, port: $0.port, path: $0.path) }
+        .appSheet(item: $browsing) { BrowserSheet(server: model.server, port: $0.port, path: $0.path) }
         .onAppear { AppRouter.shared.visibleThread = model.thread.id }
         .onDisappear { if AppRouter.shared.visibleThread == model.thread.id { AppRouter.shared.visibleThread = nil } }
         .task { await PlanUsageStore.shared.refresh(model.server) }
@@ -765,8 +765,8 @@ struct ToolCard: View {
                 }
             }
         }
-        .sheet(item: $savingSnippet) { s in SnippetEditor(snippet: s, serverID: snippetServer?.id, serverName: snippetServer?.name) }
-        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+        .appSheet(item: $savingSnippet) { s in SnippetEditor(snippet: s, serverID: snippetServer?.id, serverName: snippetServer?.name) }
+        .appSheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: shown(e.text), context: name == "run_command" ? input["command"]?.stringValue.map { "the command `\($0)`" } : nil, fix: explainFix)
         }
         .padding(.horizontal, 12).padding(.vertical, 10)

@@ -62,8 +62,8 @@ struct ServerToolsView: View {
                 }
             }
             .task { await refresh() }
-            .sheet(isPresented: $githubSignIn, onDismiss: { githubClosed += 1 }) { GitHubLoginSheet(server: server) }
-            .sheet(item: $signingIn) { cli in
+            .appSheet(isPresented: $githubSignIn, onDismiss: { githubClosed += 1 }) { GitHubLoginSheet(server: server) }
+            .appSheet(item: $signingIn) { cli in
                 CLILoginView(server: server, cli: cli) { _ in Task { await refresh() } }
             }
         }

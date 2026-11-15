@@ -36,7 +36,7 @@ struct PanicView: View {
         .navigationTitle("Panic button")
         .sudoPassword(root, server: server)
         .task { await load() }
-        .sheet(item: $task) { t in
+        .appSheet(item: $task) { t in
             RootTaskSheet(server: server, title: "Lock down this server",
                           summary: "Saves the evidence first, then changes SSH and the firewall. If the app can't log in again within five minutes, everything is undone by itself.",
                           files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps,

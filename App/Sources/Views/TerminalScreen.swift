@@ -203,11 +203,11 @@ struct TerminalPane: View {
         }
         .onChange(of: isActive) { _, active in if active { _ = terminalView?.becomeFirstResponder() } }
         .onDisappear { session?.close() }
-        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+        .appSheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: e.text, context: String(localized: "the terminal")) { investigatePrompt = $0 }
         }
         .investigate(on: server, prompt: $investigatePrompt)
-        .sheet(isPresented: $showingSnippets) {
+        .appSheet(isPresented: $showingSnippets) {
             SnippetsSheet(server: server) { text, run in session?.send(run ? text + "\n" : text) }
         }
     }

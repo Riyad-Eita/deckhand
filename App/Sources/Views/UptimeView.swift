@@ -67,11 +67,11 @@ struct UptimeView: View {
         }
         .task { await load() }
         .refreshable { await load() }
-        .sheet(item: $remedyFor) { check in
+        .appSheet(item: $remedyFor) { check in
             RemedySheet(server: server, checkID: check.id, checkName: check.name, existing: check.remedy) { Task { await load() } }
         }
         .navigationDestination(item: $incident) { IncidentView(server: server, checkID: $0) }
-        .sheet(isPresented: $adding) {
+        .appSheet(isPresented: $adding) {
             AddCheckSheet { check in
                 Task {
                     // Refreshes the runner too, so pushes carry the link back into the app.

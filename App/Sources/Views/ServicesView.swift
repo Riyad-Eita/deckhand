@@ -145,7 +145,7 @@ struct ServiceDetailView: View {
         .navigationTitle(unit.shortName)
         .navigationBarTitleDisplayMode(.inline)
         .investigate(on: server, prompt: $investigatePrompt)
-        .sheet(item: $terminal, onDismiss: { Task { await refresh() } }) { request in
+        .appSheet(item: $terminal, onDismiss: { Task { await refresh() } }) { request in
             TerminalSheet(server: server, command: request.command)
         }
         .task { await refresh() }

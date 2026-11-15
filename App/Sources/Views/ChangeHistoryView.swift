@@ -74,7 +74,7 @@ struct ChangeHistoryView: View {
             ChangesDetailView(server: server, title: String(localized: "Since \(date.formatted(date: .abbreviated, time: .shortened))"),
                               command: ChangeHistory.sinceCommand(date))
         }
-        .sheet(isPresented: $pickingDate) { SincePicker { since = $0 } }
+        .appSheet(isPresented: $pickingDate) { SincePicker { since = $0 } }
         .task { await load() }
         .refreshable { await load() }
     }

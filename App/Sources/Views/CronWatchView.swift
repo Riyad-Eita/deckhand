@@ -64,7 +64,7 @@ struct CronWatchView: View {
                     .accessibilityIdentifier("cron.new")
             }
         }
-        .sheet(item: $editing) { target in
+        .appSheet(item: $editing) { target in
             JobEditorSheet(line: target.line) { newLine in
                 Task {
                     await perform(target.line.map { CronEditor.replaceCommand($0, with: newLine) } ?? CronEditor.addCommand(newLine))

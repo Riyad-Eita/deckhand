@@ -172,7 +172,7 @@ private struct TableView: View {
             if case .success(let g) = await runSQL(connections, server, db, DatabaseBrowser.primaryKeySQL(db, table: table)) { key = g.rows.compactMap { $0.first ?? nil } }
             await load()
         }
-        .sheet(item: $editing) { e in
+        .appSheet(item: $editing) { e in
             EditCellSheet(server: server, db: db, table: table, columns: grid?.columns ?? [], key: key, edit: e) { Task { await load() } }
         }
     }

@@ -129,7 +129,7 @@ struct LogViewer: View {
             .padding(12)
             .background(.bar)
         }
-        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+        .appSheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: e.text, context: String(localized: "the log \(source.title)")) { _ in
                 investigatePrompt = Logs.explainPrompt(source: source, lines: shown)
             }

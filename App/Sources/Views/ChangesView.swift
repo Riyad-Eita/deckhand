@@ -309,7 +309,7 @@ struct ChangeDetailView: View {
         .navigationTitle(record.title)
         .navigationBarTitleDisplayMode(.inline)
         .sudoPassword(diff, server: server)
-        .sheet(isPresented: $rollingBack, onDismiss: { if rolledBack { dismiss() } }) {
+        .appSheet(isPresented: $rollingBack, onDismiss: { if rolledBack { dismiss() } }) {
             RootTaskSheet(
                 server: server, title: "Roll back", summary: "Restores the files from the backup made before “\(record.title)”, checks the configuration and reloads the service.",
                 files: record.files, script: ConfigChange.rollbackScript(id: record.id), steps: RootTaskSheet.rollbackSteps,

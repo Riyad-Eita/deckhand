@@ -58,14 +58,14 @@ struct DomainsView: View {
         .toolbar { ToolbarItem(placement: .primaryAction) { Button { _Concurrency.Task { await load() } } label: { Image(systemName: "arrow.clockwise") }.accessibilityLabel("Refresh") } }
         .sudoPassword(root, server: server)
         .task { await load() }
-        .sheet(isPresented: $adding) {
+        .appSheet(isPresented: $adding) {
             AddDomainSheet(server: server) { d in
                 let c = Domains.addChange(d)
                 task = Task(id: ConfigChange.makeID(title: c.title), change: c,
                             summary: String(localized: "Installs Caddy if needed and serves \(d.name) from \(d.upstream) with HTTPS."))
             }
         }
-        .sheet(item: $task) { t in
+        .appSheet(item: $task) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps) { _ in
                 _Concurrency.Task { try? await _Concurrency.Task.sleep(for: .seconds(2)); await load() }

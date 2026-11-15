@@ -139,7 +139,7 @@ struct ServerListView: View {
         }
         .navigationTitle("Deckhand")
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
-        .sheet(item: $agentSetupServer) { ServerToolsView(server: $0) { _ in } }
+        .appSheet(item: $agentSetupServer) { ServerToolsView(server: $0) { _ in } }
         #if DEBUG
         .task {
             // DECKHAND_SEED_WINDOW=1: open the first server in its own window (Mac, iPad).
@@ -155,11 +155,11 @@ struct ServerListView: View {
         }
         .navigationDestination(item: $autoOpen) { ServerView(server: $0).sidebarPage("server.\($0.id)") }
         .navigationDestination(item: $openChat) { PlainChatView(thread: $0) }
-        .sheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
+        .appSheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
             ApproveSheet(link: link, server: servers.first { $0.id == link.server })
         }
-        .sheet(item: $sharing) { ServerShareSheet(server: $0) }
-        .sheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
+        .appSheet(item: $sharing) { ServerShareSheet(server: $0) }
+        .appSheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
             // A tapped uptime push: the incident for that check, over whatever is on screen.
             if let server = servers.first(where: { $0.id == link.server }) {
                 NavigationStack {
@@ -196,7 +196,7 @@ struct ServerListView: View {
             if DebugSeed.pendingRun != nil, autoOpen == nil,
                let s = servers.first(where: { $0.createdAt >= DebugSeed.seededAt }) { autoOpen = s }
         }
-        .sheet(isPresented: $showingConnections) { NavigationStack { ConnectionsView() } }
+        .appSheet(isPresented: $showingConnections) { NavigationStack { ConnectionsView() } }
         #endif
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -214,13 +214,13 @@ struct ServerListView: View {
                     .accessibilityLabel("Add Server")
             }
         }
-        .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
-        .sheet(isPresented: $importing) { ImportServersView() }
-        .sheet(isPresented: $searching) {
+        .appSheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
+        .appSheet(isPresented: $importing) { ImportServersView() }
+        .appSheet(isPresented: $searching) {
             CommandPaletteView(openServer: { autoOpen = $0 }, openChat: { openChat = $0 })
         }
-        .sheet(item: $editing) { ServerEditorView(server: $0) }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
+        .appSheet(item: $editing) { ServerEditorView(server: $0) }
+        .appSheet(isPresented: $showingSettings) { SettingsView() }
     }
 
     /// A chat needs a model key first; without one, Settings opens.

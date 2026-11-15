@@ -211,7 +211,7 @@ struct PlainChatView: View {
                 .accessibilityIdentifier("chat.model")
             }
         }
-        .sheet(isPresented: $comparing) {
+        .appSheet(isPresented: $comparing) {
             NavigationStack { CompareModelsView(prompt: model.messages.last(where: { $0.role == .user })?.text ?? draft) }
         }
         #if DEBUG

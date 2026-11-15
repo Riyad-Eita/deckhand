@@ -48,7 +48,7 @@ struct BackupsView: View {
         }
         .task { await load() }
         .refreshable { await load() }
-        .sheet(item: Binding(get: { password.map { PasswordNote(value: $0) } }, set: { password = $0?.value })) { note in
+        .appSheet(item: Binding(get: { password.map { PasswordNote(value: $0) } }, set: { password = $0?.value })) { note in
             PasswordSheet(password: note.value)
         }
     }

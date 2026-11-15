@@ -121,7 +121,7 @@ struct FilesView: View {
             }
         }
         .fileTask($task, server: server)
-        .sheet(item: Binding(get: { copying.map { ExplainText(text: $0) } }, set: { copying = $0?.text })) { c in
+        .appSheet(item: Binding(get: { copying.map { ExplainText(text: $0) } }, set: { copying = $0?.text })) { c in
             ServerCopySheet(source: server, path: c.text)
         }
         .task { await load() }

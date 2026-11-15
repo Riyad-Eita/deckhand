@@ -143,8 +143,8 @@ struct GitRepoView: View {
         .toolbar { ToolbarItem(placement: .topBarTrailing) { if busy != nil { ProgressView() } } }
         .task { await refresh(fetch: true) }
         .refreshable { await refresh(fetch: true) }
-        .sheet(isPresented: $showBranches, onDismiss: { Task { await refresh() } }) { GitBranchesView(server: server, repo: repo) }
-        .sheet(isPresented: $showIdentity, onDismiss: { Task { await refresh() } }) { GitIdentityView(server: server, repo: repo) }
+        .appSheet(isPresented: $showBranches, onDismiss: { Task { await refresh() } }) { GitBranchesView(server: server, repo: repo) }
+        .appSheet(isPresented: $showIdentity, onDismiss: { Task { await refresh() } }) { GitIdentityView(server: server, repo: repo) }
         .confirmationDialog("Throw away the changes to \(confirmDiscard?.path ?? "")?", isPresented: Binding(get: { confirmDiscard != nil }, set: { if !$0 { confirmDiscard = nil } }), titleVisibility: .visible) {
             Button("Throw away", role: .destructive) { if let f = confirmDiscard { run(Git.discardCommand(repo, file: f)) } }
         } message: {

@@ -101,7 +101,7 @@ struct FileViewer: View {
         .fullScreenCover(isPresented: $editing) {
             FileEditorView(server: server, path: path) { Task { await load() } }
         }
-        .sheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
+        .appSheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
             ShareSheet(items: [item.url]).presentationDetents([.medium, .large])
         }
     }

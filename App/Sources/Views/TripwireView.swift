@@ -69,7 +69,7 @@ struct TripwireView: View {
             }
         }
         .sudoPassword(root, server: server)
-        .sheet(item: $task) { t in
+        .appSheet(item: $task) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps) { _ in
                 Task { await load() }

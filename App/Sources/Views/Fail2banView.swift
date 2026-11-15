@@ -96,7 +96,7 @@ struct Fail2banView: View {
         .refreshable { await load() }
         .sudoPassword(root, server: server)
         .sudoPassword(unbanner, server: server)
-        .sheet(item: $task, onDismiss: { Task { await load() } }) { t in
+        .appSheet(item: $task, onDismiss: { Task { await load() } }) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.changeID), steps: RootTaskSheet.changeSteps)
         }

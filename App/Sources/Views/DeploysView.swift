@@ -41,7 +41,7 @@ struct DeploysView: View {
         .navigationTitle("Deploys")
         .task { await load() }
         .refreshable { await load() }
-        .sheet(isPresented: $adding) { NewAppSheet(server: server) { Task { await load() } } }
+        .appSheet(isPresented: $adding) { NewAppSheet(server: server) { Task { await load() } } }
     }
 
     private func load() async {

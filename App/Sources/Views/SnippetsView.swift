@@ -57,8 +57,8 @@ struct SnippetsSheet: View {
                         .accessibilityIdentifier("snippet.new")
                 }
             }
-            .sheet(item: $editing) { s in SnippetEditor(snippet: s, serverID: server.id, serverName: server.displayName) }
-            .sheet(item: $filling) { s in
+            .appSheet(item: $editing) { s in SnippetEditor(snippet: s, serverID: server.id, serverName: server.displayName) }
+            .appSheet(item: $filling) { s in
                 SnippetFillSheet(snippet: s) { text, run in send(text, run); store.used(s); dismiss() }
             }
         }

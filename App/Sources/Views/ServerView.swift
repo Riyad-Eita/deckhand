@@ -81,7 +81,7 @@ struct ServerView: View {
         .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
             if let id, server.threads?.contains(where: { $0.id == id }) == true { tab = .agent }
         }
-        .sheet(isPresented: $showingTools) {
+        .appSheet(isPresented: $showingTools) {
             ServerToolsView(server: server) { command in
                 terminalCommand = command
                 tab = .terminal
@@ -215,12 +215,12 @@ struct ThreadListView: View {
         }
         .scrollDismissesKeyboard(.immediately)
         .navigationDestination(item: $openThread) { AgentChatView(thread: $0, server: server) }
-        .sheet(item: Binding(get: { sharing.map { SharedFile(url: $0) } }, set: { sharing = $0?.url })) { f in
+        .appSheet(item: Binding(get: { sharing.map { SharedFile(url: $0) } }, set: { sharing = $0?.url })) { f in
             ShareSheet(items: [f.url]).presentationDetents([.medium, .large])
         }
         .task { await AgentStatus.shared.refresh(server) }
-        .sheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
+        .appSheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
+        .appSheet(isPresented: $showingSettings) { SettingsView() }
         .onChange(of: AppRouter.shared.pendingThread, initial: true) { _, id in
             guard let id, let thread = threads.first(where: { $0.id == id }) else { return }
             AppRouter.shared.pendingThread = nil
@@ -234,7 +234,7 @@ struct ThreadListView: View {
             PendingPrompt.set(start.prompt, for: thread.id)
             openThread = thread
         }
-        .sheet(item: $pickingFolderFor) { engine in
+        .appSheet(item: $pickingFolderFor) { engine in
             FolderPicker(server: server, engine: engine) { folder in
                 let thread = ChatThread(server: server, workingDirectory: folder, engine: engine)
                 context.insert(thread)

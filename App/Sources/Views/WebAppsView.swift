@@ -67,7 +67,7 @@ struct WebAppsView: View {
         .navigationTitle("Web apps")
         .task { await load() }
         .refreshable { await load() }
-        .sheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path, publicURL: $0.url) }
+        .appSheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path, publicURL: $0.url) }
     }
 
     private func load() async {
