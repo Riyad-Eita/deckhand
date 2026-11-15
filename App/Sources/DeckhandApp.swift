@@ -10,12 +10,16 @@ struct DeckhandApp: App {
         catch { fatalError("Couldn't open the app's data: \(error)") }
     }()
 
+    /// When this run of the app started.
+    static let launchedAt = Date()
+
     init() {
+        _ = Self.launchedAt
         TaskNotifier.shared.start()
     }
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: "main") {
             RootView()
                 #if DEBUG
                 // DECKHAND_APPEARANCE=light|dark: screenshots in both looks from UI tests.
@@ -26,12 +30,22 @@ struct DeckhandApp: App {
         }
         .modelContainer(Self.container)
         .commands { DeckhandCommands() }
+
+        // Mac and iPad: a server in a window of its own ("Open in New Window").
+        WindowGroup("Server", id: "server", for: UUID.self) { $id in
+            ServerWindow(serverID: id)
+                .environment(AppSettings.shared)
+                .environment(Connections.shared)
+        }
+        .modelContainer(Self.container)
     }
 }
 
 /// The Mac menu bar (and keyboard shortcuts on the iPad).
 struct DeckhandCommands: Commands {
     @FocusedValue(\.terminalOpen) private var terminalOpen
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
 
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
@@ -39,6 +53,10 @@ struct DeckhandCommands: Commands {
             Button("New Chat") { AppRouter.shared.command = .newChat }.keyboardShortcut("n", modifiers: [.command, .shift])
             Divider()
             Button("Import Servers…") { AppRouter.shared.command = .importServers }
+            if supportsMultipleWindows {
+                Divider()
+                Button("New Window") { openWindow(id: "main") }.keyboardShortcut("n", modifiers: [.command, .option])
+            }
         }
         CommandGroup(replacing: .appSettings) {
             Button("Settings…") { AppRouter.shared.command = .settings }.keyboardShortcut(",")
@@ -104,6 +122,7 @@ struct RootView: View {
                 .environment(Connections.shared)
         }
         .hostKeyPrompt()
+        .appLockCover()
         .serverLinkImport(enabled: !showOnboarding)
         .onOpenURL { AppRouter.shared.handle($0) }
         .onAppear {
