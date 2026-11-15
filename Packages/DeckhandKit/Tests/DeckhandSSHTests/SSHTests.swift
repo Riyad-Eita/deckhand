@@ -1471,3 +1471,84 @@ struct LiveAgentScheduleTests {
         await conn.disconnect()
     }
 }
+
+/// The morning briefing on the disposable server (DECKHAND_BACKUP_*, DECKHAND_CRON_TEST=1), without a push topic:
+/// cron makes the report at the chosen minute, a second run the same day does nothing, "run now" does, the old-log
+/// fix runs, read-only house rules stop the fixes, and uninstall leaves the crontab as it was.
+struct LiveBriefingTests {
+    @Test func briefingFromCron() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_CRON_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(120)).stdout }
+        let old = "~/.deckhand/runs/dh-brief-old-\(UUID().uuidString.prefix(6).lowercased()).out"
+        var addedRules = false
+        do {
+            let before = try await sh("crontab -l 2>/dev/null")
+            // The next full minute in UTC, so cron fires within about a minute.
+            let next = Date().addingTimeInterval(60)
+            var utc = Calendar(identifier: .gregorian); utc.timeZone = TimeZone(identifier: "UTC")!
+            let c = utc.dateComponents([.hour, .minute, .second], from: next)
+            if (c.second ?? 0) > 50 { try await Task.sleep(for: .seconds(12)) }
+            let target = utc.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60))
+            var config = Briefing.Config(hour: target.hour!, minute: target.minute!, timeZone: "UTC", topic: "", name: "Live test")
+            #expect(try await sh(Briefing.installCommand(config)).contains("@@ok"))
+            let cronLine = try await sh("crontab -l | grep 'deckhand/briefing/run.sh'")
+            #expect(cronLine.hasPrefix("\(target.minute!) * * * * /"), "\(cronLine)")
+
+            var state = Briefing.State()
+            for _ in 0..<95 {
+                state = Briefing.parse(try await sh(Briefing.readCommand))
+                if state.report != nil { break }
+                try await Task.sleep(for: .seconds(1))
+            }
+            let r = try #require(state.report, "cron made no report")
+            #expect(state.installed)
+            #expect(state.config?.hour == target.hour)
+            #expect(!r.disks.isEmpty)
+            #expect(r.memory != nil)
+            #expect(r.updates?.manager != nil)
+            print("briefing:", Briefing.items(r).map(\.title))
+
+            // Same day again: nothing new. Run now: a new report, yesterday's kept as previous.
+            _ = try await sh("$HOME/.deckhand/briefing/run.sh")
+            #expect(Briefing.parse(try await sh(Briefing.readCommand)).report?.generated == r.generated)
+            try await Task.sleep(for: .seconds(1.2))
+            _ = try await sh(Briefing.runNowCommand)
+            #expect(Briefing.parse(try await sh(Briefing.readCommand)).report?.generated != r.generated)
+            #expect(try await sh("[ -f ~/.deckhand/briefing/previous ] && echo yes") .contains("yes"))
+
+            // Fixes: an old task log goes away and is listed.
+            config.fixes = true
+            _ = try await sh(Briefing.installCommand(config))
+            _ = try await sh("mkdir -p ~/.deckhand/runs && echo x > \(old) && touch -d '40 days ago' \(old)")
+            _ = try await sh(Briefing.runNowCommand)
+            let fixed = try #require(Briefing.parse(try await sh(Briefing.readCommand)).report)
+            #expect(fixed.fixes.contains { if case .oldRuns(let n) = $0 { n >= 1 } else { false } })
+            #expect(try await sh("[ -f \(old) ] && echo still || echo gone").contains("gone"))
+
+            // Read-only house rules: no fixes (only when the test server has no rules of its own).
+            if try await sh("[ -f ~/.deckhand/rules/rules.json ] && echo has || echo none").contains("none") {
+                addedRules = true
+                _ = try await sh("mkdir -p ~/.deckhand/rules && echo '{\"readOnly\": true}' > ~/.deckhand/rules/rules.json")
+                _ = try await sh("echo x > \(old) && touch -d '40 days ago' \(old)")
+                _ = try await sh(Briefing.runNowCommand)
+                let ro = try #require(Briefing.parse(try await sh(Briefing.readCommand)).report)
+                #expect(ro.skipped == [.readOnly])
+                #expect(ro.fixes.isEmpty)
+            }
+
+            #expect(try await sh(Briefing.uninstallCommand).contains("@@ok"))
+            #expect(try await sh("crontab -l 2>/dev/null") == before)
+            #expect(try await sh("[ -d ~/.deckhand/briefing ] && echo still || echo gone").contains("gone"))
+        } catch { Issue.record(error) }
+        if addedRules { _ = try? await sh("rm -f ~/.deckhand/rules/rules.json; rmdir ~/.deckhand/rules 2>/dev/null; true") }
+        _ = try? await sh("rm -f \(old)")
+        _ = try? await sh(Briefing.uninstallCommand)
+        await conn.disconnect()
+    }
+}

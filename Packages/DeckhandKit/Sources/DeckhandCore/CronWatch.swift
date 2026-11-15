@@ -174,7 +174,7 @@ public enum CronWatch {
     /// `@@run <id> <start> <end> <exit>`, `@@out <id> <line>`, `@@missing <id> <epoch>`.
     public static let statusCommand = """
     D=\(dir)
-    crontab -l 2>/dev/null | grep -v -e 'cronwatch/check.sh' -e '/\\.deckhand/[a-z]*/run\\.sh' | grep -vE '# deckhand-[a-z-]+$' | sed 's/^/@@job /'
+    crontab -l 2>/dev/null | grep -v -e 'cronwatch/check.sh' -e '/\\.deckhand/[a-z]*/run\\.sh' -e '/\\.deckhand/schedules/' | grep -vE '# deckhand-[a-z-]+$' | sed 's/^/@@job /'
     for f in "$D"/*.line; do [ -f "$f" ] || continue
       id=$(basename "$f" .line)
       printf '@@watch %s\\t%s\\t%s\\n' "$id" "$(cat "$D/$id.every" 2>/dev/null)" "$(cat "$D/$id.name" 2>/dev/null)"
