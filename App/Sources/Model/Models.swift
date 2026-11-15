@@ -27,6 +27,8 @@ final class Server {
     var jumpHostID: UUID?
     var createdAt: Date = Date()
     var lastConnectedAt: Date?
+    /// The server is a Mac (seen as Darwin when connecting): shown with a laptop icon.
+    var isMac: Bool = false
 
     @Relationship(deleteRule: .cascade, inverse: \ChatThread.server)
     var threads: [ChatThread]? = []

@@ -361,7 +361,11 @@ struct ServerDashboardView: View {
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
                 } else if let error {
-                    ProblemView(message: error).frame(maxWidth: .infinity).padding(.top, 80)
+                    VStack(spacing: 14) {
+                        ProblemView(message: error)
+                        if server.isMac { MacAsleepHint() }
+                    }
+                    .frame(maxWidth: .infinity).padding(.top, 80)
                 } else {
                     ProgressView("Reading the server…").frame(maxWidth: .infinity).padding(.top, 80)
                 }
@@ -388,6 +392,7 @@ struct ServerDashboardView: View {
             guard let s = ServerStats.parse(r.stdout) else {
                 if (try? await conn.run("uname -s", timeout: .seconds(10)).stdout.trimmingCharacters(in: .whitespacesAndNewlines)) == "Darwin" {
                     isMac = true
+                    if !server.isMac { server.isMac = true }
                     return
                 }
                 throw ToolError.failed("This server doesn't look like Linux (no /proc).")

@@ -8623,6 +8623,16 @@
         }
       }
     },
+    "Is the Mac asleep? A sleeping Mac can't answer. Wake it, or on the Mac turn on \"Prevent automatic sleeping when the display is off\" (System Settings → Energy) and check that Remote Login is on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schläft der Mac? Ein schlafender Mac kann nicht antworten. Weck ihn auf oder schalte auf dem Mac „Automatischen Ruhezustand bei ausgeschaltetem Display verhindern“ ein (Systemeinstellungen → Energie) und prüfe, ob die entfernte Anmeldung an ist."
+          }
+        }
+      }
+    },
     "Issuer ID": {
       "localizations": {
         "de": {
