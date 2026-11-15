@@ -1971,6 +1971,16 @@
         }
       }
     },
+    "Allow with %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ erlauben"
+          }
+        }
+      }
+    },
     "Allow with Face ID": {
       "localizations": {
         "de": {
@@ -2540,6 +2550,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fragt nach"
+          }
+        }
+      }
+    },
+    "Asks for %@, then your sudo password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fragt nach %@, dann nach deinem sudo-Passwort."
           }
         }
       }
@@ -8483,6 +8503,16 @@
         }
       }
     },
+    "Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for %@. No answer means no.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Statt Claude Code oder Codex nur zu stoppen, schickt der Server einen Push mit Erlauben und Ablehnen – auch wenn die App geschlossen ist. Befehle, die sich nicht rückgängig machen lassen, öffnen Deckhand für %@. Keine Antwort heißt nein."
+          }
+        }
+      }
+    },
     "Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.": {
       "localizations": {
         "de": {
@@ -13012,6 +13042,16 @@
         }
       }
     },
+    "Remove %@ from your server keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ von den Server-Schlüsseln entfernen"
+          }
+        }
+      }
+    },
     "Remove %@?": {
       "localizations": {
         "de": {
@@ -14609,6 +14649,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Röntgen"
+          }
+        }
+      }
+    },
+    "Server keys are locked. Open Deckhand and unlock them with %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Server-Schlüssel sind gesperrt. Öffne Deckhand und entsperre sie mit %@."
           }
         }
       }
