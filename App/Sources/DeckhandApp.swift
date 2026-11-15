@@ -212,6 +212,7 @@ struct SidebarPlaceholder: View {
         ContentUnavailableView("Select a server", systemImage: "server.rack",
                                description: Text("Pick a server, a chat or a tool on the left."))
             .accessibilityIdentifier("sidebar.placeholder")
+            .sidebarPage(nil)
     }
 }
 

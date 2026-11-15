@@ -38,7 +38,8 @@ struct ServerListView: View {
                     Group {
                         if inSidebar {
                             // In a split view a destination link opens in the detail column.
-                            NavigationLink { ServerView(server: server) } label: { ServerRow(server: server, state: connections.state(for: server)) }
+                            NavigationLink { ServerView(server: server).sidebarPage("server.\(server.id)") } label: { ServerRow(server: server, state: connections.state(for: server)) }
+                                .sidebarRow("server.\(server.id)")
                         } else {
                             NavigationLink(value: server) { ServerRow(server: server, state: connections.state(for: server)) }
                         }
@@ -63,18 +64,21 @@ struct ServerListView: View {
             }
             if !servers.isEmpty {
                 Section("Tools") {
-                    NavigationLink { AppStoreView() } label: {
+                    NavigationLink { AppStoreView().sidebarPage("appstore") } label: {
                         Label("App Store Connect", systemImage: "app.badge.checkmark")
                     }
+                    .sidebarRow("appstore")
                     .accessibilityIdentifier("home.appstore")
-                    NavigationLink { HTTPCollectionsView() } label: {
+                    NavigationLink { HTTPCollectionsView().sidebarPage("http") } label: {
                         Label("HTTP requests", systemImage: "arrow.left.arrow.right")
                     }
+                    .sidebarRow("http")
                     .accessibilityIdentifier("home.http")
                     if settings.chatProviders.count > 0 {
-                        NavigationLink { CompareModelsView(prompt: "") } label: {
+                        NavigationLink { CompareModelsView(prompt: "").sidebarPage("compare") } label: {
                             Label("Compare models", systemImage: "square.split.2x1")
                         }
+                        .sidebarRow("compare")
                         .accessibilityIdentifier("home.compare")
                     }
                 }
@@ -411,12 +415,13 @@ private struct ChatsSection: View {
     var body: some View {
         Section {
             ForEach(chats.prefix(5)) { chat in
-                NavigationLink { PlainChatView(thread: chat) } label: {
+                NavigationLink { PlainChatView(thread: chat).sidebarPage("chat.\(chat.id)") } label: {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(chat.title).lineLimit(1)
                         Text(chat.updatedAt.formatted(.relative(presentation: .named))).font(.caption).foregroundStyle(.secondary)
                     }
                 }
+                .sidebarRow("chat.\(chat.id)")
                 .swipeActions { Button("Delete", role: .destructive) { delete(chat) } }
             }
             Button(action: new) { Label("New chat", systemImage: "bubble.left.and.text.bubble.right") }
@@ -433,13 +438,15 @@ private struct ChatsSection: View {
 private struct FleetSection: View {
     var body: some View {
         Section {
-            NavigationLink { FleetRunView() } label: {
+            NavigationLink { FleetRunView().sidebarPage("fleet") } label: {
                 Label("Run a command on several servers", systemImage: "square.stack.3d.forward.dottedline")
             }
+            .sidebarRow("fleet")
             .accessibilityIdentifier("home.fleet")
-            NavigationLink { HardeningProfilesView() } label: {
+            NavigationLink { HardeningProfilesView().sidebarPage("profiles") } label: {
                 Label("Apply a hardening profile", systemImage: "shield.lefthalf.filled")
             }
+            .sidebarRow("profiles")
             .accessibilityIdentifier("home.profiles")
         }
     }

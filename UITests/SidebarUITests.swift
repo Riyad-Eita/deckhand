@@ -24,6 +24,7 @@ final class SidebarUITests: XCTestCase {
         row.tap()
         XCTAssertTrue(app.buttons["Server"].firstMatch.waitForExistence(timeout: 15))
         XCTAssertTrue(row.isHittable, "the sidebar stays visible")
+        XCTAssertTrue(row.isSelected, "the open server is marked in the sidebar")
         app.buttons["Server"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["CPU"].waitForExistence(timeout: 30))
         shot(app, "server")
@@ -32,6 +33,8 @@ final class SidebarUITests: XCTestCase {
         for _ in 0..<5 where !appStore.isHittable { row.swipeUp() }
         appStore.tap()
         XCTAssertTrue(app.navigationBars["App Store Connect"].waitForExistence(timeout: 10) || app.staticTexts["App Store Connect"].waitForExistence(timeout: 5))
+        XCTAssertTrue(appStore.isSelected)
+        XCTAssertFalse(row.isSelected)
         shot(app, "tool")
     }
 
