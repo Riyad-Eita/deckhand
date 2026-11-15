@@ -86,3 +86,12 @@ public enum ServerSync {
         return (try? d.decode([Record].self, from: data)) ?? []
     }
 }
+
+/// Which secrets travel through iCloud Keychain: only server passwords, keys and passphrases ("server.…" accounts),
+/// only when the user turned it on together with the server list, and never while Face ID guards the keys — such
+/// items are bound to this device by design. API keys for model providers always stay here.
+public enum KeychainSyncPolicy {
+    public static func syncs(account: String, serversSynced: Bool, keysSynced: Bool, faceIDProtection: Bool) -> Bool {
+        account.hasPrefix("server.") && serversSynced && keysSynced && !faceIDProtection
+    }
+}

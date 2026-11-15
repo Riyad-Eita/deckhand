@@ -2051,6 +2051,16 @@
         }
       }
     },
+    "Also passwords and keys (iCloud Keychain)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch Passwörter und Schlüssel (iCloud-Schlüsselbund)"
+          }
+        }
+      }
+    },
     "Also reachable from outside": {
       "localizations": {
         "de": {
@@ -8993,6 +9003,16 @@
         }
       }
     },
+    "Keys protected with %@ stay on this device by design — turn that off to sync them through iCloud Keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ geschützte Schlüssel bleiben bewusst auf diesem Gerät – schalte das aus, um sie über den iCloud-Schlüsselbund zu synchronisieren."
+          }
+        }
+      }
+    },
     "Keys that can log in": {
       "localizations": {
         "de": {
@@ -11962,6 +11982,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Passwort nötig"
+          }
+        }
+      }
+    },
+    "Passwords and keys travel end-to-end encrypted through iCloud Keychain; Apple can't read them. API keys for models stay on this device.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter und Schlüssel reisen Ende-zu-Ende-verschlüsselt über den iCloud-Schlüsselbund; Apple kann sie nicht lesen. API-Keys für Modelle bleiben auf diesem Gerät."
           }
         }
       }
