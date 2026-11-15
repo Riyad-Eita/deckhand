@@ -128,6 +128,15 @@ struct SettingsView: View {
                     Text("Opens the terminal inside tmux or screen on the server, so your session keeps running when the connection drops and you can pick up where you left off.")
                 }
 
+                Section {
+                    Toggle("Sync servers with iCloud", isOn: $settings.syncServers)
+                        .accessibilityIdentifier("settings.syncServers")
+                } header: {
+                    Text("Your devices")
+                } footer: {
+                    Text("Your server list on your iPhone, iPad and Mac — names, addresses and users only. Passwords and keys stay on each device; a server that arrives from another device asks you to sign in once.")
+                }
+
                 VoiceSettingsSection()
                 NotificationSettingsSection()
 

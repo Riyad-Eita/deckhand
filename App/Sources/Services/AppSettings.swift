@@ -22,6 +22,8 @@ final class AppSettings {
     var cliAccess: CLIAccess { didSet { defaults.set(cliAccess.rawValue, forKey: "cli.access") } }
     /// Terminal opens inside tmux/screen so it survives disconnects.
     var keepTerminalSessions: Bool { didSet { defaults.set(keepTerminalSessions, forKey: "terminal.keep") } }
+    /// Keep the server list (no secrets) in iCloud, on every device of this Apple Account.
+    var syncServers: Bool { didSet { defaults.set(syncServers, forKey: "sync.servers"); ServerSyncService.shared.settingChanged() } }
     /// Terminal color scheme (`TerminalTheme.id`) and font size, changed by pinching.
     var terminalTheme: String { didSet { defaults.set(terminalTheme, forKey: "terminal.theme") } }
     var terminalFontSize: Double { didSet { defaults.set(terminalFontSize, forKey: "terminal.fontSize") } }
@@ -53,6 +55,7 @@ final class AppSettings {
         approvalPolicy = ApprovalPolicy(rawValue: defaults.string(forKey: "agent.policy") ?? "") ?? .autoRead
         cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
+        syncServers = defaults.bool(forKey: "sync.servers")
         terminalTheme = defaults.string(forKey: "terminal.theme") ?? TerminalTheme.default.id
         terminalFontSize = defaults.object(forKey: "terminal.fontSize") as? Double ?? TerminalFont.default
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""

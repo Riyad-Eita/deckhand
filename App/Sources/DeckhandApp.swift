@@ -16,6 +16,7 @@ struct DeckhandApp: App {
     init() {
         _ = Self.launchedAt
         TaskNotifier.shared.start()
+        ServerSyncService.shared.start()
         #if targetEnvironment(macCatalyst)
         MacWatcher.shared.start()
         #endif
