@@ -304,6 +304,7 @@ struct ServerRow: View {
                 }
                 Text(jumpName.map { String(localized: "\(server.address) via \($0)") } ?? server.address)
                     .font(Theme.monoSmall).foregroundStyle(.secondary)
+                    .lineLimit(1).truncationMode(.middle)   // a narrow sidebar must not hyphenate host names
             }
             Spacer(minLength: 8)
             HStack(spacing: 6) {
