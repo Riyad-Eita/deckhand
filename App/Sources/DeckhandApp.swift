@@ -31,6 +31,8 @@ struct DeckhandApp: App {
 
 /// The Mac menu bar (and keyboard shortcuts on the iPad).
 struct DeckhandCommands: Commands {
+    @FocusedValue(\.terminalOpen) private var terminalOpen
+
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
             Button("New Server") { AppRouter.shared.command = .newServer }.keyboardShortcut("n")
@@ -42,7 +44,9 @@ struct DeckhandCommands: Commands {
             Button("Settings…") { AppRouter.shared.command = .settings }.keyboardShortcut(",")
         }
         CommandGroup(after: .textEditing) {
-            Button("Search Servers and Tasks") { AppRouter.shared.command = .search }.keyboardShortcut("k")
+            // In the terminal Cmd+K clears the screen (as in Terminal), so search gives the key up there.
+            Button("Search Servers and Tasks") { AppRouter.shared.command = .search }
+                .keyboardShortcut(terminalOpen == true ? nil : KeyboardShortcut("k"))
         }
     }
 }
@@ -218,4 +222,9 @@ struct SidebarPlaceholder: View {
 extension EnvironmentValues {
     /// The home list is the sidebar of a split view (Mac, iPad): links open in the detail column.
     @Entry var inSidebar = false
+}
+
+extension FocusedValues {
+    /// True while the focused window shows a terminal.
+    @Entry var terminalOpen: Bool?
 }

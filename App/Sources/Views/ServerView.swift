@@ -53,6 +53,7 @@ struct ServerView: View {
         }
         .navigationTitle(server.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .focusedSceneValue(\.terminalOpen, tab == .terminal)
         .toolbar {
             // The Mac toolbar has no centre slot in a split view's detail column; there the switch sits after the title.
             ToolbarItem(placement: Self.switchPlacement) {
