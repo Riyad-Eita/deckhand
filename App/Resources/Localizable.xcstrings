@@ -10873,6 +10873,16 @@
         }
       }
     },
+    "No tasks running": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Aufgabe läuft"
+          }
+        }
+      }
+    },
     "No testers": {
       "localizations": {
         "de": {
@@ -11672,6 +11682,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffne %@ zuerst einmal, damit Deckhand seinen Host-Schlüssel kennt."
+          }
+        }
+      }
+    },
+    "Open Deckhand": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand öffnen"
           }
         }
       }
@@ -19175,6 +19195,16 @@
         }
       }
     },
+    "Waiting for you": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf dich"
+          }
+        }
+      }
+    },
     "Waiting packages, security first; restart hint": {
       "localizations": {
         "de": {
@@ -19644,6 +19674,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet in %@. Der Agent fragt, bevor er etwas ändert."
+          }
+        }
+      }
+    },
+    "Working…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeitet …"
           }
         }
       }
