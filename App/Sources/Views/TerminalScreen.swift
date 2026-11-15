@@ -38,6 +38,12 @@ struct TerminalScreen: View {
             if !saved.isEmpty { tabs = saved; selected = saved[0] }
         }
         .onChange(of: tabs) { UserDefaults.standard.set(tabs, forKey: tabsKey) }
+        #if targetEnvironment(macCatalyst)
+        // The window's toolbar sits on the terminal's color, so its buttons follow the theme.
+        .toolbarBackground(SSHTerminalView.swiftUIColor(TerminalTheme.named(settings.terminalTheme).background), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(TerminalTheme.named(settings.terminalTheme).isLight ? .light : .dark, for: .navigationBar)
+        #endif
     }
 
     private var tabBar: some View {
@@ -144,46 +150,19 @@ struct TerminalPane: View {
                                 }) { closed = true }
                     .id(sessionID)
                     .ignoresSafeArea(.container, edges: .bottom)
+                    #if !targetEnvironment(macCatalyst)
                     .overlay(alignment: .topTrailing) {
-                        Button {
-                            // The selection if there is one, else what's on screen lately.
-                            let picked = terminalView?.getSelection() ?? ""
-                            explaining = picked.isEmpty ? Explain.tail(Explain.stripANSI(recent.text), lines: 40) : picked
-                        } label: {
-                            Image(systemName: "sparkle.magnifyingglass").font(.system(size: 15, weight: .semibold))
-                                .padding(9).background(.ultraThinMaterial, in: Circle())
+                        HStack(spacing: 14) {
+                            appearanceMenu
+                            snippetsButton
+                            explainButton
                         }
+                        .labelStyle(.iconOnly)
+                        .menuStyle(.button)
+                        .buttonStyle(FloatingCircle())
                         .padding(10)
-                        .accessibilityLabel("Explain")
-                        .accessibilityIdentifier("terminal.explain")
                     }
-                    .overlay(alignment: .topTrailing) {
-                        Menu {
-                            Picker("Colors", selection: Bindable(settings).terminalTheme) {
-                                ForEach(TerminalTheme.all) { t in Text(t.name).tag(t.id) }
-                            }
-                            Section(String(localized: "Text size \(Int(settings.terminalFontSize))")) {
-                                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize + 1) } label: { Label("Larger", systemImage: "textformat.size.larger") }
-                                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize - 1) } label: { Label("Smaller", systemImage: "textformat.size.smaller") }
-                                Button { settings.terminalFontSize = TerminalFont.default } label: { Label("Default size", systemImage: "arrow.counterclockwise") }
-                            }
-                        } label: {
-                            Image(systemName: "textformat.size").font(.system(size: 15, weight: .semibold))
-                                .padding(9).background(.ultraThinMaterial, in: Circle())
-                        }
-                        .padding(.top, 10).padding(.trailing, 110)
-                        .accessibilityLabel("Text size and colors")
-                        .accessibilityIdentifier("terminal.appearance")
-                    }
-                    .overlay(alignment: .topTrailing) {
-                        Button { showingSnippets = true } label: {
-                            Image(systemName: "text.badge.star").font(.system(size: 15, weight: .semibold))
-                                .padding(9).background(.ultraThinMaterial, in: Circle())
-                        }
-                        .padding(.top, 10).padding(.trailing, 60)
-                        .accessibilityLabel("Snippets")
-                        .accessibilityIdentifier("terminal.snippets")
-                    }
+                    #endif
             } else if let error {
                 VStack(spacing: 16) {
                     ProblemView(message: error).foregroundStyle(.white)
@@ -204,6 +183,18 @@ struct TerminalPane: View {
                 .padding()
             }
         }
+        #if targetEnvironment(macCatalyst)
+        .toolbar {
+            // On the Mac these sit in the window's toolbar instead of over the text.
+            if isActive && session != nil {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    appearanceMenu
+                    snippetsButton
+                    explainButton
+                }
+            }
+        }
+        #endif
         .task(id: attempt) { await open() }
         .onChange(of: pendingCommand) { sendPending() }
         .onChange(of: session == nil) { sendPending() }
@@ -219,6 +210,38 @@ struct TerminalPane: View {
         .sheet(isPresented: $showingSnippets) {
             SnippetsSheet(server: server) { text, run in session?.send(run ? text + "\n" : text) }
         }
+    }
+
+    private var explainButton: some View {
+        Button {
+            // The selection if there is one, else what's on screen lately.
+            let picked = terminalView?.getSelection() ?? ""
+            explaining = picked.isEmpty ? Explain.tail(Explain.stripANSI(recent.text), lines: 40) : picked
+        } label: {
+            Label("Explain", systemImage: "sparkle.magnifyingglass")
+        }
+        .accessibilityIdentifier("terminal.explain")
+    }
+
+    private var snippetsButton: some View {
+        Button { showingSnippets = true } label: { Label("Snippets", systemImage: "text.badge.star") }
+            .accessibilityIdentifier("terminal.snippets")
+    }
+
+    private var appearanceMenu: some View {
+        Menu {
+            Picker("Colors", selection: Bindable(settings).terminalTheme) {
+                ForEach(TerminalTheme.all) { t in Text(t.name).tag(t.id) }
+            }
+            Section(String(localized: "Text size \(Int(settings.terminalFontSize))")) {
+                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize + 1) } label: { Label("Larger", systemImage: "textformat.size.larger") }
+                Button { settings.terminalFontSize = TerminalFont.clamp(settings.terminalFontSize - 1) } label: { Label("Smaller", systemImage: "textformat.size.smaller") }
+                Button { settings.terminalFontSize = TerminalFont.default } label: { Label("Default size", systemImage: "arrow.counterclockwise") }
+            }
+        } label: {
+            Label("Text size and colors", systemImage: "textformat.size")
+        }
+        .accessibilityIdentifier("terminal.appearance")
     }
 
     private func reconnect() {
@@ -248,6 +271,17 @@ struct TerminalPane: View {
         } catch {
             self.error = error.localizedDescription
         }
+    }
+}
+
+/// The round, frosted buttons floating over the terminal on iPhone and iPad.
+private struct FloatingCircle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 15, weight: .semibold))
+            .padding(9)
+            .background(.ultraThinMaterial, in: Circle())
+            .opacity(configuration.isPressed ? 0.6 : 1)
     }
 }
 
@@ -286,6 +320,9 @@ struct SSHTerminalView: UIViewRepresentable {
         // Pinch to zoom: changes the font size; the terminal reflows and tells the server its new size.
         let pinch = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.pinched(_:)))
         view.addGestureRecognizer(pinch)
+        #if targetEnvironment(macCatalyst)
+        view.setUpForMac()
+        #endif
         context.coordinator.view = view
         context.coordinator.start(view)
         DispatchQueue.main.async { onView(view) }
@@ -422,6 +459,77 @@ final class DeckhandTerminalView: TerminalView {
               let action = TerminalShortcut.action(input: input, shift: command.modifierFlags.contains(.shift)) else { return }
         onShortcut?(action)
     }
+
+    #if targetEnvironment(macCatalyst)
+    /// On the Mac: no on-screen key bar (there is a real keyboard), and click-and-drag selects text like Terminal.
+    /// While a program asks for the mouse (tmux with mouse on, vim), dragging goes to it; hold Option to select anyway.
+    func setUpForMac() {
+        inputAccessoryView = nil
+        let drag = UIPanGestureRecognizer(target: self, action: #selector(mouseSelect(_:)))
+        drag.maximumNumberOfTouches = 1
+        drag.allowedScrollTypesMask = []   // scroll wheel and trackpad keep scrolling
+        addGestureRecognizer(drag)
+        panGestureRecognizer.require(toFail: drag)
+        mouseDrag = drag
+        #if DEBUG
+        // DECKHAND_SEED_DRAG=x1,y1,x2,y2: select as a mouse drag between two points would, then write the text out.
+        let p = (ProcessInfo.processInfo.environment["DECKHAND_SEED_DRAG"] ?? "").split(separator: ",").compactMap { Double($0) }
+        if p.count == 4 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 12) { [weak self] in
+                guard let self else { return }
+                self.setSelectionRange(start: self.cell(at: CGPoint(x: p[0], y: p[1] + self.contentOffset.y)),
+                                       end: self.cell(at: CGPoint(x: p[2], y: p[3] + self.contentOffset.y)))
+                try? (self.getSelection() ?? "").write(to: FileManager.default.temporaryDirectory.appending(path: "drag.txt"),
+                                                        atomically: true, encoding: .utf8)
+            }
+        }
+        #endif
+    }
+
+    private weak var mouseDrag: UIPanGestureRecognizer?
+    private var dragAnchor: Position?
+
+    override func gestureRecognizerShouldBegin(_ g: UIGestureRecognizer) -> Bool {
+        guard g === mouseDrag else { return super.gestureRecognizerShouldBegin(g) }
+        let programWantsMouse = allowMouseReporting && programMouse
+        return !programWantsMouse || g.modifierFlags.contains(.alternate)
+    }
+
+    /// Whether the program in the terminal asked for mouse events.
+    private var programMouse = false
+
+    nonisolated override func mouseModeChanged(source: Terminal) {
+        super.mouseModeChanged(source: source)
+        let on = source.mouseMode != .off
+        DispatchQueue.main.async { [weak self] in self?.programMouse = on }
+    }
+
+    @objc private func mouseSelect(_ g: UIPanGestureRecognizer) {
+        let here = cell(at: g.location(in: self))
+        switch g.state {
+        case .began:
+            _ = becomeFirstResponder()
+            dragAnchor = here
+            clearSelection()
+        case .changed:
+            guard let dragAnchor else { return }
+            setSelectionRange(start: dragAnchor, end: here)
+        default:
+            dragAnchor = nil
+        }
+    }
+
+    /// The buffer cell under a point, measured the way SwiftTerm lays out its grid.
+    private func cell(at point: CGPoint) -> Position {
+        let scale = traitCollection.displayScale > 0 ? traitCollection.displayScale : 2
+        let width = ("W" as NSString).size(withAttributes: [.font: font]).width
+        let cellWidth = max(1, (width * scale).rounded() / scale)
+        let cellHeight = max(1, ceil(ceil(font.ascender - font.descender + font.leading) * scale) / scale)
+        let col = min(max(0, Int((point.x / cellWidth).rounded())), Int(bounds.width / cellWidth))
+        let row = max(0, Int(point.y / cellHeight))
+        return Position(col: col, row: row)
+    }
+    #endif
 
     nonisolated override func windowCommand(source: Terminal, command: Terminal.WindowManipulationCommand) -> [UInt8]? {
         switch command {
