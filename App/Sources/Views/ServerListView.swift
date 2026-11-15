@@ -20,6 +20,7 @@ struct ServerListView: View {
     @State private var autoOpen: Server?
     @State private var showingConnections = false
     @State private var agentSetupServer: Server?
+    @State private var showingMacSetup = false
     @AppStorage("home.agentCardDismissed") private var agentCardDismissed = false
 
     var body: some View {
@@ -80,6 +81,13 @@ struct ServerListView: View {
                     }
                     .sidebarRow("appstore")
                     .accessibilityIdentifier("home.appstore")
+                    #if targetEnvironment(macCatalyst)
+                    NavigationLink { MacSetupView().sidebarPage("macSetup") } label: {
+                        Label("Use this Mac from your iPhone", systemImage: "laptopcomputer.and.iphone")
+                    }
+                    .sidebarRow("macSetup")
+                    .accessibilityIdentifier("home.macSetup")
+                    #endif
                     NavigationLink { HTTPCollectionsView().sidebarPage("http") } label: {
                         Label("HTTP requests", systemImage: "arrow.left.arrow.right")
                     }
@@ -190,6 +198,9 @@ struct ServerListView: View {
             }
             if DebugSeed.pendingRun != nil, let s = seeded() { autoOpen = s }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
+            #if targetEnvironment(macCatalyst)
+            if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "macSetup" { showingMacSetup = true }
+            #endif
         }
         .onChange(of: servers.count) {
             // The seeded server arrived later than the wait above: open it now.
@@ -197,6 +208,9 @@ struct ServerListView: View {
                let s = servers.first(where: { $0.createdAt >= DebugSeed.seededAt }) { autoOpen = s }
         }
         .appSheet(isPresented: $showingConnections) { NavigationStack { ConnectionsView() } }
+        #if targetEnvironment(macCatalyst)
+        .navigationDestination(isPresented: $showingMacSetup) { MacSetupView().sidebarPage("macSetup") }
+        #endif
         #endif
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
