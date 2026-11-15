@@ -10,7 +10,11 @@ struct DeckhandApp: App {
         catch { fatalError("Couldn't open the app's data: \(error)") }
     }()
 
+    /// When this run of the app started.
+    static let launchedAt = Date()
+
     init() {
+        _ = Self.launchedAt
         TaskNotifier.shared.start()
     }
 

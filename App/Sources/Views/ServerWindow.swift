@@ -5,6 +5,8 @@ import SwiftUI
 struct ServerWindow: View {
     let serverID: UUID?
     @Query private var servers: [Server]
+    @Environment(\.openWindow) private var openWindow
+    @State private var scene: UIWindowScene?
 
     var body: some View {
         Group {
@@ -17,6 +19,35 @@ struct ServerWindow: View {
         }
         .hostKeyPrompt()
         .appLockCover()
+        .background(SceneReader(scene: $scene))
+        #if DEBUG
+        .task(id: scene) {
+            // UI tests start fresh, but the system restores the windows of the last run: close a server window that
+            // came back with the launch and bring the main window up.
+            guard ProcessInfo.processInfo.environment["DECKHAND_RESET"] == "1", let scene,
+                  Date().timeIntervalSince(DeckhandApp.launchedAt) < 5 else { return }
+            openWindow(id: "main")
+            UIApplication.shared.requestSceneSessionDestruction(scene.session, options: nil)
+        }
+        #endif
+    }
+}
+
+/// The window scene a view lives in.
+private struct SceneReader: UIViewRepresentable {
+    @Binding var scene: UIWindowScene?
+    func makeUIView(context: Context) -> Probe { Probe { scene = $0 } }
+    func updateUIView(_ uiView: Probe, context: Context) {}
+
+    final class Probe: UIView {
+        let found: (UIWindowScene?) -> Void
+        init(found: @escaping (UIWindowScene?) -> Void) { self.found = found; super.init(frame: .zero) }
+        required init?(coder: NSCoder) { nil }
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            let s = window?.windowScene
+            DispatchQueue.main.async { self.found(s) }
+        }
     }
 }
 
