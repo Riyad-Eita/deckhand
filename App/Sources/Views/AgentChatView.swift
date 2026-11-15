@@ -329,6 +329,7 @@ struct AgentChatView: View {
                     model.send(draft, images: images)
                     draft = ""
                     images = []
+                    composerFocused = false   // the keyboard makes room for the agent's work
                 } label: {
                     Image(systemName: "arrow.up.circle.fill").font(.system(size: 32))
                 }
