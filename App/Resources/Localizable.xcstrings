@@ -16274,6 +16274,16 @@
         }
       }
     },
+    "Sync servers with iCloud": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server mit iCloud synchronisieren"
+          }
+        }
+      }
+    },
     "System": {
       "localizations": {
         "de": {
@@ -19748,6 +19758,16 @@
         }
       }
     },
+    "Your devices": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Geräte"
+          }
+        }
+      }
+    },
     "Your home folder": {
       "localizations": {
         "de": {
@@ -19914,6 +19934,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Server ist eingerichtet."
+          }
+        }
+      }
+    },
+    "Your server list on your iPhone, iPad and Mac — names, addresses and users only. Passwords and keys stay on each device; a server that arrives from another device asks you to sign in once.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Serverliste auf iPhone, iPad und Mac – nur Namen, Adressen und Benutzer. Passwörter und Schlüssel bleiben auf jedem Gerät; ein Server, der von einem anderen Gerät kommt, bittet dich einmal um die Anmeldung."
           }
         }
       }

@@ -201,6 +201,7 @@ enum DebugSeed {
             // The Keychain survives reinstalls: forget model keys and the home card choice too.
             if env["DECKHAND_SEED_APIKEY"] == nil { AppSettings.shared.apiKey = "" }
             UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")
+            UserDefaults.standard.removeObject(forKey: "sync.servers.last")   // like a new device for iCloud sync
         }
         // DECKHAND_SEED_NOCARD=1: the home card about setting up the agent is already dismissed (store screenshots).
         if env["DECKHAND_SEED_NOCARD"] == "1" { UserDefaults.standard.set(true, forKey: "home.agentCardDismissed") }

@@ -45,6 +45,7 @@ targets:
       path: App/Deckhand.entitlements
       properties:
         com.apple.security.application-groups: [group.de.fs223.deckhand]
+        com.apple.developer.ubiquity-kvstore-identifier: $(TeamIdentifierPrefix)$(CFBundleIdentifier)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.fs223.deckhand
