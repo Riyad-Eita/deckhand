@@ -50,4 +50,13 @@ struct ServerSyncTests {
         #expect(ServerSync.decode(data) == [rec(a, "web", at: t0)])
         #expect(ServerSync.decode(Data("junk".utf8)).isEmpty)
     }
+
+    @Test func onlyServerSecretsTravelAndNeverWithFaceID() {
+        #expect(KeychainSyncPolicy.syncs(account: "server.ABC", serversSynced: true, keysSynced: true, faceIDProtection: false))
+        #expect(KeychainSyncPolicy.syncs(account: "server.ABC.passphrase", serversSynced: true, keysSynced: true, faceIDProtection: false))
+        #expect(!KeychainSyncPolicy.syncs(account: "apikey.anthropic", serversSynced: true, keysSynced: true, faceIDProtection: false))
+        #expect(!KeychainSyncPolicy.syncs(account: "server.ABC", serversSynced: false, keysSynced: true, faceIDProtection: false))
+        #expect(!KeychainSyncPolicy.syncs(account: "server.ABC", serversSynced: true, keysSynced: false, faceIDProtection: false))
+        #expect(!KeychainSyncPolicy.syncs(account: "server.ABC", serversSynced: true, keysSynced: true, faceIDProtection: true))
+    }
 }

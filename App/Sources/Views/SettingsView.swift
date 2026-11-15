@@ -131,10 +131,21 @@ struct SettingsView: View {
                 Section {
                     Toggle("Sync servers with iCloud", isOn: $settings.syncServers)
                         .accessibilityIdentifier("settings.syncServers")
+                    if settings.syncServers {
+                        Toggle("Also passwords and keys (iCloud Keychain)", isOn: $settings.syncKeys)
+                            .disabled(KeyProtection.shared.enabled)
+                            .accessibilityIdentifier("settings.syncKeys")
+                    }
                 } header: {
                     Text("Your devices")
                 } footer: {
-                    Text("Your server list on your iPhone, iPad and Mac — names, addresses and users only. Passwords and keys stay on each device; a server that arrives from another device asks you to sign in once.")
+                    if settings.syncServers && KeyProtection.shared.enabled {
+                        Text("Keys protected with \(Device.biometry) stay on this device by design — turn that off to sync them through iCloud Keychain.")
+                    } else if settings.syncServers && settings.syncKeys {
+                        Text("Passwords and keys travel end-to-end encrypted through iCloud Keychain; Apple can't read them. API keys for models stay on this device.")
+                    } else {
+                        Text("Your server list on your iPhone, iPad and Mac — names, addresses and users only. Passwords and keys stay on each device; a server that arrives from another device asks you to sign in once.")
+                    }
                 }
 
                 VoiceSettingsSection()

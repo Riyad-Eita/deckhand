@@ -22,6 +22,13 @@ final class ServerSyncService {
         settingChanged()
     }
 
+    /// Moves the server secrets to iCloud Keychain or back to this device only.
+    func keySettingChanged() {
+        let context = ModelContext(DeckhandApp.container)
+        let servers = (try? context.fetch(FetchDescriptor<Server>())) ?? []
+        Keychain.resaveServerSecrets(servers.map(\.secretAccount))
+    }
+
     func settingChanged() {
         loop?.cancel(); loop = nil
         #if DEBUG
