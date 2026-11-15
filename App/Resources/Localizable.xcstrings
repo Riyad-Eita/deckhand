@@ -8083,6 +8083,16 @@
         }
       }
     },
+    "Import Servers…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server importieren …"
+          }
+        }
+      }
+    },
     "Import a backup file": {
       "localizations": {
         "de": {
@@ -9973,12 +9983,32 @@
         }
       }
     },
+    "New Chat": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Chat"
+          }
+        }
+      }
+    },
     "New Folder": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "New Server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Server"
           }
         }
       }
@@ -14333,6 +14363,16 @@
         }
       }
     },
+    "Search Servers and Tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server und Aufgaben suchen"
+          }
+        }
+      }
+    },
     "Search and compare models and datasets. A read token raises the limits.": {
       "localizations": {
         "de": {
@@ -14949,6 +14989,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einstellungen"
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen …"
           }
         }
       }

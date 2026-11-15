@@ -18,6 +18,10 @@ final class AppRouter {
     /// A risky action waiting for approval (`deckhand://approve/<server>/<fingerprint>?who=…&cmd=…`).
     var pendingApproval: ApprovalLink?
 
+    /// A menu or keyboard command (Mac menu bar, iPad keyboard) for the home screen to carry out.
+    enum Command: Equatable { case newServer, newChat, importServers, settings, search }
+    var command: Command?
+
     /// A server to open (`deckhand://server/<id>`, the status widget).
     var pendingServer: UUID?
 
