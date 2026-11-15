@@ -153,6 +153,7 @@ struct ServerListView: View {
             if autoOpen?.id != server.id { autoOpen = server }
         }
         .modifier(StatusWidgetLinks(servers: servers, autoOpen: $autoOpen))
+        .modifier(MenuCommands(addingServer: $addingServer, importing: $importing, showingSettings: $showingSettings, searching: $searching, newChat: newChat))
         #if DEBUG
         .task {
             try? await Task.sleep(for: .milliseconds(500))
@@ -212,6 +213,29 @@ struct ServerListView: View {
         Keychain.set(nil, for: server.secretAccount + ".passphrase")
         context.delete(server)
         WidgetSnapshots.sync(servers.filter { $0.id != server.id })
+    }
+}
+
+/// Menu bar and keyboard commands (Mac, iPad) open the same sheets as the buttons.
+private struct MenuCommands: ViewModifier {
+    @Binding var addingServer: Bool
+    @Binding var importing: Bool
+    @Binding var showingSettings: Bool
+    @Binding var searching: Bool
+    let newChat: () -> Void
+
+    func body(content: Content) -> some View {
+        content.onChange(of: AppRouter.shared.command) { _, command in
+            guard let command else { return }
+            AppRouter.shared.command = nil
+            switch command {
+            case .newServer: addingServer = true
+            case .newChat: newChat()
+            case .importServers: importing = true
+            case .settings: showingSettings = true
+            case .search: searching = true
+            }
+        }
     }
 }
 

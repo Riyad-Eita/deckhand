@@ -25,6 +25,25 @@ struct DeckhandApp: App {
                 .environment(Connections.shared)
         }
         .modelContainer(Self.container)
+        .commands { DeckhandCommands() }
+    }
+}
+
+/// The Mac menu bar (and keyboard shortcuts on the iPad).
+struct DeckhandCommands: Commands {
+    var body: some Commands {
+        CommandGroup(replacing: .newItem) {
+            Button("New Server") { AppRouter.shared.command = .newServer }.keyboardShortcut("n")
+            Button("New Chat") { AppRouter.shared.command = .newChat }.keyboardShortcut("n", modifiers: [.command, .shift])
+            Divider()
+            Button("Import Servers…") { AppRouter.shared.command = .importServers }
+        }
+        CommandGroup(replacing: .appSettings) {
+            Button("Settings…") { AppRouter.shared.command = .settings }.keyboardShortcut(",")
+        }
+        CommandGroup(after: .textEditing) {
+            Button("Search Servers and Tasks") { AppRouter.shared.command = .search }.keyboardShortcut("k")
+        }
     }
 }
 
@@ -119,6 +138,11 @@ struct RootView: View {
             }
             // DECKHAND_SEED_NTFY=<topic URL>: the ntfy topic (lock-screen approvals, uptime pushes).
             if let t = ProcessInfo.processInfo.environment["DECKHAND_SEED_NTFY"] { AppSettings.shared.ntfyTopicURL = t }
+            // DECKHAND_SEED_COMMAND=newServer|newChat|importServers|settings|search: as if chosen in the menu bar.
+            if let c = ProcessInfo.processInfo.environment["DECKHAND_SEED_COMMAND"] {
+                try? await Task.sleep(for: .seconds(2))
+                AppRouter.shared.command = ["newServer": .newServer, "newChat": .newChat, "importServers": .importServers, "settings": .settings, "search": .search][c]
+            }
             // DECKHAND_SEED_OPEN_URL=deckhand://thread/<id>: open it like a tapped notification.
             if let s = ProcessInfo.processInfo.environment["DECKHAND_SEED_OPEN_URL"], let url = URL(string: s) {
                 try? await Task.sleep(for: .seconds(1))
