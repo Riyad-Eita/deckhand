@@ -25,6 +25,14 @@ final class AppRouter {
     /// The morning briefing to open (`deckhand://briefing`, the link in the briefing push).
     var pendingBriefing = false
 
+    /// A scanned pairing code (`deckhand://pair?…` from the Camera app or a link).
+    var pendingPairing: PairingLink?
+
+    struct PairingLink: Identifiable, Equatable {
+        let code: Pairing.Code
+        let id = UUID()
+    }
+
     /// A server to open (`deckhand://server/<id>`, the status widget).
     var pendingServer: UUID?
 
@@ -65,6 +73,8 @@ final class AppRouter {
             }
         case "server":
             if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
+        case "pair":
+            if let c = Pairing.parse(url) { pendingPairing = PairingLink(code: c) }
         case "add":
             if let c = HostLink.parse(url) { pendingImport = ImportLink(candidates: [c]) }
         case "briefing":

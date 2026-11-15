@@ -1794,6 +1794,16 @@
         }
       }
     },
+    "Address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse"
+          }
+        }
+      }
+    },
     "Address on the server": {
       "localizations": {
         "de": {
@@ -2348,6 +2358,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeder Linux-Rechner, den du per SSH erreichst. Deckhand kann dafür auf diesem iPhone einen sicheren Schlüssel erzeugen."
+          }
+        }
+      }
+    },
+    "Any Linux machine you can reach over SSH. Run one line on it and scan the QR code — or enter the details yourself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Linux-Rechner, den du per SSH erreichst. Führe darauf eine Zeile aus und scanne den QR-Code – oder gib die Daten selbst ein."
           }
         }
       }
@@ -3891,6 +3911,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe den API-Key in den Einstellungen."
+          }
+        }
+      }
+    },
+    "Check the address and port.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe Adresse und Port."
           }
         }
       }
@@ -5763,6 +5793,9 @@
         }
       }
     },
+    "Deckhand uses the camera to scan pairing codes and server links.": {
+      "shouldTranslate": false
+    },
     "Decoy files that tell you when someone snoops": {
       "localizations": {
         "de": {
@@ -6963,6 +6996,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gib eine Zahl ein."
+          }
+        }
+      }
+    },
+    "Enter the Details Instead": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stattdessen Daten eingeben"
           }
         }
       }
@@ -12556,6 +12599,16 @@
         }
       }
     },
+    "Open a terminal on the server: over SSH from your computer, or in your provider's web console.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne ein Terminal auf dem Server: per SSH von deinem Computer oder in der Web-Konsole deines Anbieters."
+          }
+        }
+      }
+    },
     "Open apps running on the server, even localhost ones": {
       "localizations": {
         "de": {
@@ -12832,6 +12885,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seite muss enthalten (optional)"
+          }
+        }
+      }
+    },
+    "Pair with %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ koppeln"
+          }
+        }
+      }
+    },
+    "Pair with a QR Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit QR-Code koppeln"
           }
         }
       }
@@ -15053,6 +15126,16 @@
         }
       }
     },
+    "Run one line on your server and scan the QR code it shows — or enter host, user and password. Either way Deckhand signs in with a key it creates on this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führe eine Zeile auf deinem Server aus und scanne den angezeigten QR-Code – oder gib Host, Benutzer und Passwort ein. So oder so meldet sich Deckhand mit einem Schlüssel an, den es auf diesem %@ erzeugt."
+          }
+        }
+      }
+    },
     "Run plan": {
       "localizations": {
         "de": {
@@ -15079,6 +15162,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicherheits-Check starten"
+          }
+        }
+      }
+    },
+    "Run this line as the user Deckhand should sign in as:": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führe diese Zeile als der Benutzer aus, mit dem sich Deckhand anmelden soll:"
           }
         }
       }
@@ -15499,6 +15592,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jetzt scannen"
+          }
+        }
+      }
+    },
+    "Scan the Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code scannen"
+          }
+        }
+      }
+    },
+    "Scan the QR code it shows.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne den QR-Code, den sie anzeigt."
           }
         }
       }
@@ -17974,6 +18087,16 @@
         }
       }
     },
+    "That's not a Deckhand pairing code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist kein Kopplungscode von Deckhand."
+          }
+        }
+      }
+    },
     "The %@ step failed. Your previous files were put back.": {
       "localizations": {
         "de": {
@@ -18000,6 +18123,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der API-Schlüssel wird von diesem iPhone entfernt. In App Store Connect bleibt er gültig, bis du ihn dort widerrufst."
+          }
+        }
+      }
+    },
+    "The Camera app works too: it opens Deckhand with the code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kamera-App geht auch: Sie öffnet Deckhand mit dem Code."
           }
         }
       }
@@ -18204,6 +18337,16 @@
         }
       }
     },
+    "The camera isn't available here. Scan the code with the Camera app instead — it opens Deckhand.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kamera ist hier nicht verfügbar. Scanne den Code stattdessen mit der Kamera-App – sie öffnet Deckhand."
+          }
+        }
+      }
+    },
     "The clipboard can only be set while you're signed in on the Mac.": {
       "localizations": {
         "de": {
@@ -18220,6 +18363,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In der Zwischenablage ist kein curl-Befehl. Nutze in den Entwicklerwerkzeugen eines Browsers „Als cURL kopieren“ bei einer Anfrage."
+          }
+        }
+      }
+    },
+    "The code holds a key that works once, for 15 minutes, and can only hand over this %@'s own key. No password or private key ever leaves the server or this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Code enthält einen Schlüssel, der einmal und 15 Minuten lang gilt und nur den eigenen Schlüssel dieses %1$@ übergeben kann. Kein Passwort und kein privater Schlüssel verlässt den Server oder dieses %2$@."
           }
         }
       }
@@ -18360,6 +18513,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die bisherigen Dumps bleiben in ~/.deckhand/db/dumps, bis du sie löschst."
+          }
+        }
+      }
+    },
+    "The easiest way: run one line on the server and scan the code. No password or key to copy.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am einfachsten: Eine Zeile auf dem Server ausführen und den Code scannen. Kein Passwort und kein Schlüssel zum Kopieren."
           }
         }
       }
@@ -18614,6 +18777,16 @@
         }
       }
     },
+    "The server at this address isn't the one that made the code (host key %@). Check the address; nothing was sent.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server unter dieser Adresse ist nicht der, der den Code erzeugt hat (Host-Schlüssel %@). Prüfe die Adresse – es wurde nichts gesendet."
+          }
+        }
+      }
+    },
     "The server checks the branch every minute — no webhook or open port needed.": {
       "localizations": {
         "de": {
@@ -18670,6 +18843,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server hat die Anmeldung für %@ nicht angenommen."
+          }
+        }
+      }
+    },
+    "The server didn't take the key: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat den Schlüssel nicht angenommen: %@"
           }
         }
       }
@@ -18780,6 +18963,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Identität des Servers hat sich geändert."
+          }
+        }
+      }
+    },
+    "The server's identity is checked against the code, so nothing is sent to a different machine at this address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Identität des Servers wird mit dem Code abgeglichen – an einen anderen Rechner unter dieser Adresse wird nichts gesendet."
           }
         }
       }
@@ -18974,6 +19167,16 @@
         }
       }
     },
+    "This code has expired. Run the line on the server again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Code ist abgelaufen. Führe die Zeile auf dem Server noch einmal aus."
+          }
+        }
+      }
+    },
     "This command can do damage": {
       "localizations": {
         "de": {
@@ -19060,6 +19263,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dafür braucht es dein Sudo-Passwort. Führe es im Terminal aus, um es einzugeben."
+          }
+        }
+      }
+    },
+    "This pairing code has expired or was already used. Run the line on the server again for a new one.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Kopplungscode ist abgelaufen oder wurde schon benutzt. Führe die Zeile auf dem Server noch einmal aus, um einen neuen zu bekommen."
           }
         }
       }
@@ -20205,6 +20418,16 @@
         }
       }
     },
+    "Use Another Address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Adresse verwenden"
+          }
+        }
+      }
+    },
     "Use Folder": {
       "localizations": {
         "de": {
@@ -20391,6 +20614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gültig"
+          }
+        }
+      }
+    },
+    "Valid until %@. Deckhand makes a key on this %@, puts the public half on the server and signs in with it from now on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gültig bis %1$@. Deckhand erzeugt einen Schlüssel auf diesem %2$@, legt den öffentlichen Teil auf dem Server ab und meldet sich ab jetzt damit an."
           }
         }
       }
@@ -22122,6 +22355,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "der Zwischenablage"
+          }
+        }
+      }
+    },
+    "the key was not in the expected form": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "der Schlüssel hatte nicht die erwartete Form"
           }
         }
       }

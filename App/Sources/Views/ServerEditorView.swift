@@ -24,6 +24,7 @@ struct ServerEditorView: View {
     @State private var passphrase = ""
     @State private var publicKey: String?
     @State private var importingKey = false
+    @State private var pairing = false
     @State private var testState: TestState = .idle
     @State private var loaded = false
     @State private var secretLocked = false
@@ -39,6 +40,14 @@ struct ServerEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
+                if server == nil {
+                    Section {
+                        Button { pairing = true } label: { Label("Pair with a QR Code", systemImage: "qrcode.viewfinder") }
+                            .accessibilityIdentifier("editor.pair")
+                    } footer: {
+                        Text("The easiest way: run one line on the server and scan the code. No password or key to copy.")
+                    }
+                }
                 Section {
                     TextField("Host or IP", text: $host)
                         .textContentType(.URL).keyboardType(.URL)
@@ -115,6 +124,7 @@ struct ServerEditorView: View {
                 }
             }
             .navigationTitle(server == nil ? "Add Server" : "Edit Server")
+            .appSheet(isPresented: $pairing) { PairingGuideView(onPaired: { dismiss() }) }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
