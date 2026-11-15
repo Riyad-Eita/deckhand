@@ -29,6 +29,9 @@ final class TaskNotifier: NSObject, UNUserNotificationCenterDelegate {
 
     /// Asked once, the first time a task starts.
     func requestPermission() {
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["DECKHAND_REEL_TICK"] == "1" { return }   // no system prompt in screen recordings
+        #endif
         Task { _ = try? await center.requestAuthorization(options: [.alert, .sound, .badge]) }
     }
 

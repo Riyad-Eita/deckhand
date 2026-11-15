@@ -27,7 +27,8 @@ public enum PlanUsage {
     }
 
     /// Not root. `@@codex <epoch>\t<last token_count line>` and `@@claude <epoch>\t<last limit message>`, from the newest
-    /// session files.
+    /// session files. The Claude epoch is the time of the limit message itself (not the file's last change: a session
+    /// that went on after the reset would push "resets 2:40pm" to the next day).
     public static let statusCommand = #"""
     f=$(ls -t ~/.codex/sessions/*/*/*/*.jsonl 2>/dev/null | head -n 1)
     if [ -n "$f" ]; then
@@ -35,8 +36,13 @@ public enum PlanUsage {
       [ -n "$l" ] && printf '@@codex\t%s\t%s\n' "$(stat -c %Y "$f")" "$l"
     fi
     for f in $(ls -t ~/.claude/projects/*/*.jsonl 2>/dev/null | head -n 5); do
-      m=$(grep -oE "(You've hit your|You have hit your|Claude AI usage limit reached)[^\"]{0,160}" "$f" | tail -n 1)
-      if [ -n "$m" ]; then printf '@@claude\t%s\t%s\n' "$(stat -c %Y "$f")" "$m"; break; fi
+      line=$(grep -E "(You've hit your|You have hit your|Claude AI usage limit reached)" "$f" | tail -n 1)
+      if [ -n "$line" ]; then
+        m=$(printf '%s' "$line" | grep -oE "(You've hit your|You have hit your|Claude AI usage limit reached)[^\"]{0,160}" | tail -n 1)
+        ts=$(printf '%s' "$line" | grep -oE '"timestamp":"[^"]+"' | head -n 1 | cut -d'"' -f4)
+        e=$(date -d "$ts" +%s 2>/dev/null || stat -c %Y "$f")
+        printf '@@claude\t%s\t%s\n' "$e" "$m"; break
+      fi
     done
     true
     """#
