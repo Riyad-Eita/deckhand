@@ -293,7 +293,7 @@ struct ThreadListView: View {
                 thread.messages = DebugSeed.secretsChat
             } else if seed == "markdown" {
                 thread.title = "Why does the API return 404?"
-                thread.messages = [.user("Why does the weather API return 404 for some cities?"), DebugSeed.markdownReply]
+                thread.messages = [.user("Why does the weather API return 404 for some cities?\n\n## What I checked\n- the **nginx** log\n- `curl localhost:8080/paris`"), DebugSeed.markdownReply]
             }
             context.insert(thread)
             openThread = thread

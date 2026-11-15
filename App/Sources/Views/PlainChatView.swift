@@ -236,11 +236,11 @@ struct PlainChatView: View {
                 ForEach(Array(m.blocks.enumerated()), id: \.offset) { _, b in
                     if case .text(let t) = b, !t.isEmpty {
                         let isFile = t.contains(":\n```\n")
-                        Text(isFile ? "\(Image(systemName: "doc.text")) \(String(t.prefix { $0 != ":" }))" : "\(t)")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 14).padding(.vertical, 10)
-                            .background(Theme.userBubble.opacity(isFile ? 0.7 : 1), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                            .textSelection(.enabled)
+                        if isFile {
+                            UserBubble(text: String(t.prefix { $0 != ":" }), icon: "doc.text", dimmed: true)
+                        } else {
+                            UserBubble(text: t)
+                        }
                     }
                 }
             }

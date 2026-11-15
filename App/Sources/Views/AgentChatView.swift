@@ -570,7 +570,7 @@ private struct SummaryDivider: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("The agent keeps working from this summary instead of every earlier step, so long tasks fit and cost less.")
                         .font(.caption).foregroundStyle(.secondary)
-                    MarkdownText(summary).font(.footnote)
+                    MarkdownView(summary).font(.footnote)
                 }
                 .padding(12)
                 .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -604,11 +604,8 @@ private struct MessageView: View {
             if !message.text.isEmpty {
                 HStack {
                     Spacer(minLength: 48)
-                    (PlanMode.isPlanRequest(message.text) ? Text("\(Image(systemName: "list.bullet.clipboard"))  \(PlanMode.unwrap(message.text))") : Text(message.text))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 14).padding(.vertical, 10)
-                        .background(Theme.userBubble, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                        .textSelection(.enabled)
+                    UserBubble(text: PlanMode.isPlanRequest(message.text) ? PlanMode.unwrap(message.text) : message.text,
+                               icon: PlanMode.isPlanRequest(message.text) ? "list.bullet.clipboard" : nil)
                 }
             }
             // Tool results render inside their tool cards.
@@ -654,7 +651,7 @@ private struct LiveTurnView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if !model.liveThinking.isEmpty { ThinkingView(text: model.liveThinking, live: true) }
-            if !model.liveText.isEmpty { MarkdownText(model.liveText) }
+            if !model.liveText.isEmpty { ReplyText(text: model.liveText) }   // same renderer as finished replies
             ForEach(model.liveTools, id: \.id) { tool in
                 ToolCard(
                     name: tool.name,
@@ -672,6 +669,25 @@ private struct LiveTurnView: View {
                 .padding(.vertical, 4)
             }
         }
+    }
+}
+
+/// The user's own message (or a prompt the app wrote for them): Markdown rendered on the bubble color.
+struct UserBubble: View {
+    let text: String
+    var icon: String? = nil
+    var dimmed = false
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            if let icon { Image(systemName: icon) }
+            MarkdownView(text)
+        }
+        .foregroundStyle(.white)
+        .tint(.white)
+        .padding(.horizontal, 14).padding(.vertical, 10)
+        .background(Theme.userBubble.opacity(dimmed ? 0.7 : 1), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .environment(\.colorScheme, .dark)   // code blocks and tables on the bubble keep their contrast
     }
 }
 

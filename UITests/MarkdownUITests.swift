@@ -24,6 +24,10 @@ final class MarkdownUITests: XCTestCase {
         XCTAssertTrue(text("Add the missing cities").exists, "numbered list")
         XCTAssertTrue(text("systemctl restart").exists, "bullet list")
         XCTAssertTrue(text("Nothing was changed yet").exists, "quote")
+        // The user's own message renders Markdown too: a heading without "##", code without backticks.
+        XCTAssertTrue(text("What I checked").exists, "heading in the user bubble")
+        XCTAssertFalse(text("## What I checked").exists, "no raw heading marker")
+        XCTAssertFalse(text("`curl").exists, "no raw backticks")
         // The table fits the screen (three columns wrap instead of scrolling).
         let cell = text("paris")
         XCTAssertTrue(cell.exists)
