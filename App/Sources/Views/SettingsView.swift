@@ -275,7 +275,7 @@ private struct AppLockSection: View {
                 if !on { settings.appLock = false; return }
                 Task { if await AppLock.shared.confirmEnable() { settings.appLock = true } }
             })) {
-                Label(String(localized: "Lock with \(method ?? "Face ID")"), systemImage: method == "Touch ID" ? "touchid" : "faceid")
+                Label(String(localized: "Lock with \(method ?? Device.biometry)"), systemImage: method == "Touch ID" ? "touchid" : "faceid")
             }
             .disabled(method == nil)
             .accessibilityIdentifier("settings.appLock")
@@ -294,7 +294,7 @@ private struct AppLockSection: View {
                     switching = false
                 }
             })) {
-                Label(String(localized: "\(method ?? "Face ID") for server keys"), systemImage: "key.viewfinder")
+                Label(String(localized: "\(method ?? Device.biometry) for server keys"), systemImage: "key.viewfinder")
             }
             .disabled(method == nil || switching)
             .accessibilityIdentifier("settings.keyProtection")
@@ -313,8 +313,8 @@ private struct AppLockSection: View {
                 Text("Set a passcode on this \(Device.name) to use App Lock.")
             } else {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Deckhand asks for \(method ?? "Face ID") when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
-                    Text("With \(method ?? "Face ID") for server keys, passwords and keys can't be read without a check — one check keeps them open while you use the app and for 10 minutes after. While they're locked, background checks and notifications that need SSH pause; tasks already running on a server keep going and ntfy pushes from the server still arrive.")
+                    Text("Deckhand asks for \(method ?? Device.biometry) when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
+                    Text("With \(method ?? Device.biometry) for server keys, passwords and keys can't be read without a check — one check keeps them open while you use the app and for 10 minutes after. While they're locked, background checks and notifications that need SSH pause; tasks already running on a server keep going and ntfy pushes from the server still arrive.")
                 }
             }
         }

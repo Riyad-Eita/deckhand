@@ -90,7 +90,7 @@ struct PanicView: View {
             .disabled(preparing || myAddress.isEmpty)
             .accessibilityIdentifier("panic.lock")
         } footer: {
-            Text("Asks for Face ID, then your sudo password.")
+            Text("Asks for \(Device.biometry), then your sudo password.")
         }
     }
 

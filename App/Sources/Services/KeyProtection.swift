@@ -13,7 +13,7 @@ final class KeyProtection: @unchecked Sendable {
     enum Failure: LocalizedError {
         case locked
         var errorDescription: String? {
-            String(localized: "Server keys are locked. Open Deckhand and unlock them with Face ID.")
+            String(localized: "Server keys are locked. Open Deckhand and unlock them with \(Device.biometry).")
         }
     }
 
@@ -85,7 +85,7 @@ final class KeyProtection: @unchecked Sendable {
     /// (also to read items that are protected now). Items that can't be read are left as they are.
     @MainActor
     func setEnabled(_ on: Bool, accounts: [String]) async -> Bool {
-        guard await unlock(reason: on ? String(localized: "Protect your server keys") : String(localized: "Remove Face ID from your server keys")) else {
+        guard await unlock(reason: on ? String(localized: "Protect your server keys") : String(localized: "Remove \(Device.biometry) from your server keys")) else {
             return false
         }
         let values = accounts.compactMap { a in Keychain.get(a).map { (a, $0) } }

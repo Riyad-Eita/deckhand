@@ -1,4 +1,5 @@
 import Foundation
+import LocalAuthentication
 
 /// The device the app runs on, for texts like "Keys stay in this \(Device.name)'s Keychain".
 enum Device {
@@ -15,5 +16,17 @@ enum Device {
         }
         return model.hasPrefix("iPad") ? "iPad" : "iPhone"
         #endif
+    }()
+
+    /// Face ID, Touch ID or Optic ID — what this device has (Touch ID on the Mac); a sensible default without one.
+    static let biometry: String = {
+        let context = LAContext()
+        _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        switch context.biometryType {
+        case .faceID: return "Face ID"
+        case .touchID: return "Touch ID"
+        case .opticID: return "Optic ID"
+        default: return name == "iPhone" ? "Face ID" : "Touch ID"
+        }
     }()
 }

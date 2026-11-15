@@ -113,7 +113,7 @@ struct HouseRulesView: View {
                     Stepper("Wait \(askMinutes) min for an answer", value: $askMinutes, in: 2...60, step: 2)
                 }
             } footer: {
-                Text("Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for Face ID. No answer means no.")
+                Text("Instead of just stopping Claude Code or Codex, the server sends a push with Allow and Deny — also while the app is closed. Commands that can't be undone open Deckhand for \(Device.biometry). No answer means no.")
             }
             Section {
                 Button { Task { await save() } } label: {

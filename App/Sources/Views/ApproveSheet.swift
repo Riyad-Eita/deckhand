@@ -41,7 +41,7 @@ struct ApproveSheet: View {
                 } else {
                     Section {
                         Button(role: .destructive) { Task { await answer(true) } } label: {
-                            HStack { Text("Allow with Face ID"); Spacer(); if sending { ProgressView() } }
+                            HStack { Text("Allow with \(Device.biometry)"); Spacer(); if sending { ProgressView() } }
                         }
                         .disabled(sending || replyTopic == nil)
                         .accessibilityIdentifier("approve.allow")
