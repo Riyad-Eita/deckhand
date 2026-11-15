@@ -276,6 +276,7 @@ struct ServerEditorView: View {
             let conn = try await connections.connection(for: target)
             let r = try await conn.run("uname -sr; whoami", timeout: .seconds(15))
             var info = r.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+            target.isMac = info.hasPrefix("Darwin")
             if authKind == .password && switchToKey {
                 try await installKey(on: target, using: conn)
                 info += "\nSecure key installed — the password is no longer stored."

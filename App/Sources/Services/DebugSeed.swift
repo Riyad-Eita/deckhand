@@ -235,16 +235,18 @@ enum DebugSeed {
             let have = (try? context.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
             if !have.contains(where: { $0.url == url }) { context.insert(ConnectionRecord(name: name, kind: "http", url: url)) }
         }
-        // DECKHAND_SEED_EXTRA="Name|host|user;Name2|host2|user2" adds display-only servers (for screenshots),
+        // DECKHAND_SEED_EXTRA="Name|host|user;Name2|host2|user2|mac" adds display-only servers (for screenshots),
         // after the real seeded server so that one stays first in the list.
         defer { seedExtras(env, context) }
         func seedExtras(_ env: [String: String], _ context: ModelContext) {
         for entry in (env["DECKHAND_SEED_EXTRA"] ?? "").split(separator: ";") {
             let p = entry.split(separator: "|").map(String.init)
-            guard p.count == 3 else { continue }
+            guard p.count == 3 || p.count == 4 else { continue }
             let have = (try? context.fetch(FetchDescriptor<Server>())) ?? []
             if !have.contains(where: { $0.name == p[0] }) {
-                context.insert(Server(name: p[0], host: p[1], username: p[2], authKind: .key))
+                let server = Server(name: p[0], host: p[1], username: p[2], authKind: .key)
+                server.isMac = p.count == 4 && p[3] == "mac"   // "Name|host|user|mac": shown as a Mac
+                context.insert(server)
             }
         }
         try? context.save()

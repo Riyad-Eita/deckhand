@@ -210,6 +210,7 @@ struct TerminalPane: View {
             } else if let error {
                 VStack(spacing: 16) {
                     ProblemView(message: error).foregroundStyle(.white)
+                    if server.isMac { MacAsleepHint().foregroundStyle(.white.opacity(0.8)) }
                     Button("Try Again") { reconnect() }.buttonStyle(.borderedProminent)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

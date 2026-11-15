@@ -289,7 +289,7 @@ struct ServerRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "server.rack")
+            Image(systemName: server.isMac ? "laptopcomputer" : "server.rack")
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(.white)
                 .frame(width: 34, height: 34)
