@@ -63,7 +63,7 @@ struct ProvisionView: View {
         .confirmationDialog("Set up \(server.displayName)?", isPresented: $confirmStart, titleVisibility: .visible) {
             Button("Set up") { Task { await provision() } }
         } message: {
-            Text("Afterwards you log in as \(username) with this iPhone's key; root and password logins are turned off. Keep the sudo password somewhere safe.")
+            Text("Afterwards you log in as \(username) with this \(Device.name)'s key; root and password logins are turned off. Keep the sudo password somewhere safe.")
         }
         .interactiveDismissDisabled(running)
     }
@@ -92,7 +92,7 @@ struct ProvisionView: View {
         } header: {
             Text("Admin user")
         } footer: {
-            Text("Deckhand logs in as this user with a key it creates on this iPhone. The password is for sudo — save it in your password manager.")
+            Text("Deckhand logs in as this user with a key it creates on this \(Device.name). The password is for sudo — save it in your password manager.")
         }
         Section {
             if f["firewall"] == "none" { Toggle("Firewall: block everything except SSH and open web ports", isOn: binding(.firewall)) }
@@ -245,7 +245,7 @@ struct ProvisionView: View {
     /// Every step, in order — shown before starting and then as the progress list.
     private var plan: [Step] {
         var p = [
-            Step(id: "user", title: String(localized: "Create \(username) with sudo and this iPhone's key")),
+            Step(id: "user", title: String(localized: "Create \(username) with sudo and this \(Device.name)'s key")),
             Step(id: "login", title: String(localized: "Log in as \(username) with the key")),
             Step(id: "ssh", title: String(localized: "Turn off root and password logins")),
         ]

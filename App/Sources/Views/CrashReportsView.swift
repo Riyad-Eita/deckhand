@@ -24,7 +24,7 @@ struct CrashReportsView: View {
                             .accessibilityIdentifier("crash.report.\(r.kind.rawValue)")
                     }
                 } footer: {
-                    Text("Reports come from iOS (MetricKit) and stay on this iPhone. No crash service, no tracking.")
+                    Text("Reports come from iOS (MetricKit) and stay on this \(Device.name). No crash service, no tracking.")
                 }
                 Section {
                     Button("Delete all reports", role: .destructive) { confirmDelete = true }

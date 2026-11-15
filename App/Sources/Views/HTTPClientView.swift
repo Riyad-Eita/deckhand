@@ -18,7 +18,7 @@ struct HTTPCollectionsView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Send API requests").font(.headline)
-                        Text("Group requests in collections, switch between environments like staging and production, and send them from this iPhone or from one of your servers — handy for APIs that only that server can reach.")
+                        Text("Group requests in collections, switch between environments like staging and production, and send them from this \(Device.name) or from one of your servers — handy for APIs that only that server can reach.")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 4)
@@ -225,7 +225,7 @@ struct HTTPRequestView: View {
                 }
                 Section {
                     Picker("Send from", selection: $via) {
-                        Text("This iPhone").tag("")
+                        Text("This \(Device.name)").tag("")
                         ForEach(servers) { s in Text(s.displayName).tag(s.id.uuidString) }
                     }
                     .accessibilityIdentifier("http.via")
@@ -272,7 +272,7 @@ struct HTTPRequestView: View {
                     sentFrom = server.displayName
                 } else {
                     response = try await HTTPStore.sendFromPhone(r)
-                    sentFrom = String(localized: "this iPhone")
+                    sentFrom = String(localized: "this \(Device.name)")
                 }
             } catch is CancellationError {
             } catch let e as URLError where e.code == .cancelled {
@@ -431,7 +431,7 @@ struct HTTPEnvironmentsView: View {
                         store.collections[ci].environments.append(.init(name: String(localized: "Environment \(store.collections[ci].environments.count + 1)")))
                     } label: { Label("New environment", systemImage: "square.stack.3d.up") }
                 } footer: {
-                    Text("Swipe a variable to mark it secret: its value then lives in this iPhone's Keychain, not in the saved collection.")
+                    Text("Swipe a variable to mark it secret: its value then lives in this \(Device.name)'s Keychain, not in the saved collection.")
                 }
             }
             .navigationTitle("Variables")

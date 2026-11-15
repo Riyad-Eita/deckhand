@@ -48,7 +48,7 @@ struct ServerDashboardView: View {
                         NavigationLink {
                             EnvVaultView(server: server)
                         } label: {
-                            ManageRow(title: "Environment files", subtitle: ".env secrets kept on your iPhone, with history", symbol: "key.viewfinder")
+                            ManageRow(title: "Environment files", subtitle: ".env secrets kept on your \(Device.name), with history", symbol: "key.viewfinder")
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.vault")

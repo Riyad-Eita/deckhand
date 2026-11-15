@@ -59,7 +59,7 @@ struct PanicView: View {
             Label("Save the evidence first", systemImage: "archivebox").foregroundStyle(.secondary)
             Toggle(isOn: $onlyMe) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("SSH only from this iPhone")
+                    Text("SSH only from this \(Device.name)")
                     Text(myAddress.isEmpty ? String(localized: "Finding your address …") : String(localized: "Your address: \(myAddress)"))
                         .font(.caption).foregroundStyle(.secondary)
                 }

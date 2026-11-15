@@ -93,7 +93,7 @@ struct ServerListView: View {
                         .background(Theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                     VStack(spacing: 8) {
                         Text("Add your first server").font(.title2.weight(.semibold)).multilineTextAlignment(.center)
-                        Text("Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this iPhone.")
+                        Text("Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this \(Device.name).")
                             .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                     Button { addingServer = true } label: {

@@ -55,7 +55,7 @@ struct KeysView: View {
                 .disabled(rotating || keyServers.isEmpty)
                 .accessibilityIdentifier("keys.rotate")
             } header: {
-                Text("This iPhone's keys")
+                Text("This \(Device.name)'s keys")
             } footer: {
                 Text("Makes a new key for each server, installs it, logs in with it, and only then removes the old one. If anything fails, the old key stays.")
             }
@@ -66,7 +66,7 @@ struct KeysView: View {
                         HStack(spacing: 6) {
                             Text(group.entry.comment.isEmpty ? String(localized: "No name") : group.entry.comment)
                             if group.isThisIPhone {
-                                Text("this iPhone").font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
+                                Text("this \(Device.name)").font(.caption2.weight(.semibold)).foregroundStyle(Theme.accent)
                                     .padding(.horizontal, 6).padding(.vertical, 2).background(Theme.accent.opacity(0.12), in: Capsule())
                             }
                         }
@@ -82,7 +82,7 @@ struct KeysView: View {
             } header: {
                 Text("Keys that can log in")
             } footer: {
-                Text("Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This iPhone's own keys can't be removed here.")
+                Text("Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This \(Device.name)'s own keys can't be removed here.")
             }
         }
         .navigationTitle("SSH keys")
@@ -91,7 +91,7 @@ struct KeysView: View {
         .confirmationDialog("Rotate keys now?", isPresented: $confirmRotate, titleVisibility: .visible) {
             Button("Rotate") { Task { await rotateAll() } }
         } message: {
-            Text("Other apps or computers that use these exact keys from this iPhone stop working; your other devices keep their own keys.")
+            Text("Other apps or computers that use these exact keys from this \(Device.name) stop working; your other devices keep their own keys.")
         }
         .confirmationDialog("Remove “\(confirmRemove?.entry.comment ?? "")” from \(confirmRemove?.servers.count ?? 0) servers?",
                             isPresented: Binding(get: { confirmRemove != nil }, set: { if !$0 { confirmRemove = nil } }), titleVisibility: .visible) {

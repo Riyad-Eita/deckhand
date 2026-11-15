@@ -76,7 +76,7 @@ struct Fail2banView: View {
                             Button("Never ban my address (\(me))") {
                                 if let change = Fail2ban.allowList(custom + [me]) {
                                     task = RootTask(change: change, changeID: ConfigChange.makeID(title: change.title),
-                                                    summary: String(localized: "fail2ban will never ban \(me) — the address this iPhone reaches the server from right now. If you're on mobile data this address changes often."))
+                                                    summary: String(localized: "fail2ban will never ban \(me) — the address this \(Device.name) reaches the server from right now. If you're on mobile data this address changes often."))
                                 }
                             }
                             .accessibilityIdentifier("fail2ban.allowMe")

@@ -30,7 +30,7 @@ struct ServerCopySheet: View {
                 Section {
                     LabeledContent("From", value: "\(source.displayName): \(path)")
                 } footer: {
-                    Text("The copy goes straight from server to server — nothing passes through this iPhone.")
+                    Text("The copy goes straight from server to server — nothing passes through this \(Device.name).")
                 }
                 Section {
                     if targets.isEmpty { Text("Add another server first.").foregroundStyle(.secondary) }

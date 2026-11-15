@@ -38,7 +38,7 @@ struct ImportServersView: View {
                     Button { add(UIPasteboard.general.string ?? "", name: nil) } label: { Label("Paste from the clipboard", systemImage: "doc.on.clipboard") }
                         .accessibilityIdentifier("import.paste")
                 } footer: {
-                    Text("Your ~/.ssh/config, a CSV export (Termius and others) and the private key files it names — pick them together. Keys stay on this iPhone, in its Keychain.")
+                    Text("Your ~/.ssh/config, a CSV export (Termius and others) and the private key files it names — pick them together. Keys stay on this \(Device.name), in its Keychain.")
                 }
                 if let message { Section { Text(message).font(.subheadline) } }
                 if !candidates.isEmpty {

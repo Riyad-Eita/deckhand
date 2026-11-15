@@ -139,13 +139,13 @@ struct SettingsView: View {
                     }
                     .accessibilityIdentifier("settings.keys")
                     NavigationLink { AppBackupView() } label: {
-                        RowLabel(title: String(localized: "Move to a new iPhone"), subtitle: String(localized: "Encrypted backup of servers and settings")) {
+                        RowLabel(title: String(localized: "Move to a new \(Device.name)"), subtitle: String(localized: "Encrypted backup of servers and settings")) {
                             Image(systemName: "iphone.and.arrow.forward").foregroundStyle(Theme.accent).frame(width: 26)
                         }
                     }
                     .accessibilityIdentifier("settings.appBackup")
                     NavigationLink { CrashReportsView() } label: {
-                        RowLabel(title: String(localized: "Crash reports"), subtitle: String(localized: "From iOS, kept on this iPhone, shared only by you")) {
+                        RowLabel(title: String(localized: "Crash reports"), subtitle: String(localized: "From iOS, kept on this \(Device.name), shared only by you")) {
                             Image(systemName: "stethoscope").foregroundStyle(Theme.accent).frame(width: 26)
                         }
                     }
@@ -153,7 +153,7 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Keys", value: "Stored in this iPhone's Keychain")
+                    LabeledContent("Keys", value: "Stored in this \(Device.name)'s Keychain")
                     LabeledContent("Requests", value: "Go straight to your provider")
                 } header: {
                     Text("Privacy")
@@ -212,7 +212,7 @@ private struct VoiceSettingsSection: View {
         } header: {
             Text("Voice input")
         } footer: {
-            Text("Speech is turned into text on this iPhone with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.")
+            Text("Speech is turned into text on this \(Device.name) with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.")
         }
         .confirmationDialog("Remove the Whisper model?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Remove", role: .destructive) { voice.remove() }
@@ -310,7 +310,7 @@ private struct AppLockSection: View {
             Text("Security")
         } footer: {
             if method == nil {
-                Text("Set a passcode on this iPhone to use App Lock.")
+                Text("Set a passcode on this \(Device.name) to use App Lock.")
             } else {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Deckhand asks for \(method ?? "Face ID") when it opens and after it was in the background, and hides its content in the app switcher. Background checks and notifications keep working.")
