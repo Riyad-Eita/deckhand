@@ -131,6 +131,17 @@ struct RootView: View {
             // A window that fits a server list and a chat; not smaller than an iPad in portrait.
             for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
                 scene.sizeRestrictions?.minimumSize = CGSize(width: 760, height: 620)
+                #if DEBUG
+                // DECKHAND_WINDOW_SIZE=WxH in Mac points (store screenshots: 1440x900 → 2880x1800).
+                let size = (ProcessInfo.processInfo.environment["DECKHAND_WINDOW_SIZE"] ?? "").split(separator: "x").compactMap { Double($0) }
+                if size.count == 2 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        scene.requestGeometryUpdate(.Mac(systemFrame: CGRect(x: 40, y: 60, width: size[0], height: size[1]))) { error in
+                            NSLog("DECKHAND_WINDOW_SIZE: \(error)")
+                        }
+                    }
+                }
+                #endif
             }
             #endif
         }
