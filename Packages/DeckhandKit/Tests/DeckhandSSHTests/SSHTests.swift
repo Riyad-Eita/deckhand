@@ -1396,3 +1396,78 @@ struct LiveCLISessionsTests {
         await conn.disconnect()
     }
 }
+
+/// Scheduled agent tasks on the disposable server (DECKHAND_BACKUP_*, DECKHAND_CRON_TEST=1), with a fake `codex`
+/// (the server has no real one, so nothing spends a subscription): cron really starts a run, pause comments the line
+/// out, "run now" works while paused, a failing run reports the CLI's reason, and delete leaves the crontab as it was.
+struct LiveAgentScheduleTests {
+    @Test func scheduleRunsFromCron() async throws {
+        let env = ProcessInfo.processInfo.environment
+        guard env["DECKHAND_CRON_TEST"] == "1" else { return }
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(
+            endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, username: env["DECKHAND_BACKUP_USER"]!),
+            credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        func sh(_ c: String) async throws -> String { try await conn.run(c, timeout: .seconds(60)).stdout }
+        let dir = "/tmp/dh-sched-\(UUID().uuidString.prefix(6).lowercased())"
+        let fake = #"""
+        #!/bin/bash
+        echo '{"type":"thread.started","thread_id":"t-1"}'
+        case "$*" in
+          *fail*) echo '{"type":"turn.failed","error":{"message":"disk is full"}}'; exit 1 ;;
+          *) echo '{"type":"item.completed","item":{"id":"i1","type":"agent_message","text":"all good"}}'
+             echo '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}' ;;
+        esac
+        """#
+        var s = AgentSchedule(name: "Live schedule test", prompt: "check the disks", cli: .codex, directory: "~", access: .readOnly, cron: "* * * * *")
+        // The runner gets the fake CLI on its PATH (no real codex exists on the server).
+        let usePath = "sed -i '2i export PATH=\(dir)/bin:$PATH' ~/.deckhand/schedules/\(s.id).sh"
+        func list() async throws -> AgentSchedules.Entry? {
+            AgentSchedules.parseList(try await sh(AgentSchedules.listCommand)).first { $0.id == s.id }
+        }
+        func waitForEnd(after previous: String?, seconds: Int) async throws -> AgentSchedules.Entry? {
+            for _ in 0..<seconds {
+                if let e = try await list(), let last = e.last, last.run.id != previous, case .ended = last.status { return e }
+                try await Task.sleep(for: .seconds(1))
+            }
+            return try await list()
+        }
+        do {
+            let before = try await sh("crontab -l 2>/dev/null")
+            _ = try await sh("mkdir -p \(dir)/bin && printf '%s\\n' \(ShellQuote.quote(fake)) > \(dir)/bin/codex && chmod +x \(dir)/bin/codex")
+            #expect(try await sh(AgentSchedules.saveCommand(s)).contains("@@ok"))
+            _ = try await sh(usePath)
+            #expect(try await sh("crontab -l").contains(AgentSchedules.cronLine(s)))
+            #expect(try await list()?.cron == .on)
+
+            // Cron starts it within the next minute.
+            let fromCron = try await waitForEnd(after: nil, seconds: 80)
+            #expect(fromCron?.last?.status == .ended(exitCode: 0), "\(String(describing: fromCron))")
+            let runs = DetachedRun.parseList(try await sh(DetachedRun.listCommand))
+            #expect(runs.contains { $0.meta?.schedule == s.id && $0.meta?.title == "Live schedule test" })
+
+            // Pause: the line stays, commented out; "run now" still works.
+            s.paused = true
+            s.prompt = "this one should fail"
+            #expect(try await sh(AgentSchedules.saveCommand(s)).contains("@@ok"))
+            _ = try await sh(usePath)
+            #expect(try await list()?.cron == .paused)
+            #expect(try await sh("crontab -l").contains("#* * * * * bash ~/.deckhand/schedules/\(s.id).sh"))
+            let started = try await sh(AgentSchedules.runNowCommand(id: s.id))
+            #expect(started.hasPrefix("@@run s-\(s.id)-"))
+            let failed = try await waitForEnd(after: fromCron?.last?.run.id, seconds: 20)
+            #expect(failed?.last?.failed == true)
+            #expect(failed?.last?.reason == "disk is full")
+
+            // Delete: crontab exactly as before, files gone.
+            #expect(try await sh(AgentSchedules.deleteCommand(id: s.id)).contains("@@ok"))
+            #expect(try await sh("crontab -l 2>/dev/null") == before)
+            #expect(try await sh("ls ~/.deckhand/schedules/ | grep -c \(s.id) || true").trimmingCharacters(in: .whitespacesAndNewlines) == "0")
+            #expect(try await list() == nil)
+        } catch { Issue.record(error) }
+        _ = try? await sh(AgentSchedules.deleteCommand(id: s.id))
+        _ = try? await sh("rm -f ~/.deckhand/runs/s-\(s.id)-*; rm -rf -- \(dir)")
+        await conn.disconnect()
+    }
+}

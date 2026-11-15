@@ -87,13 +87,16 @@ public struct DetachedRun: Sendable, Hashable, Codable {
         public var engine: String
         public var directory: String
         public var started: Date
-        public init(title: String, engine: String, directory: String, started: Date = Date()) {
-            self.title = title; self.engine = engine; self.directory = directory; self.started = started
+        /// The scheduled task that started this run, if any (`AgentSchedule.id`).
+        public var schedule: String?
+        public init(title: String, engine: String, directory: String, started: Date = Date(), schedule: String? = nil) {
+            self.title = title; self.engine = engine; self.directory = directory; self.started = started; self.schedule = schedule
         }
         var json: String {
-            let obj: JSONValue = ["title": .string(title), "engine": .string(engine), "directory": .string(directory),
-                                  "started": .number(started.timeIntervalSince1970.rounded())]
-            return obj.jsonString()
+            var obj: [String: JSONValue] = ["title": .string(title), "engine": .string(engine), "directory": .string(directory),
+                                            "started": .number(started.timeIntervalSince1970.rounded())]
+            if let schedule { obj["schedule"] = .string(schedule) }
+            return JSONValue.object(obj).jsonString()
         }
         init?(json line: String) {
             guard let j = try? JSONValue.parse(line), let title = j["title"]?.stringValue else { return nil }
@@ -101,6 +104,7 @@ public struct DetachedRun: Sendable, Hashable, Codable {
             engine = j["engine"]?.stringValue ?? ""
             directory = j["directory"]?.stringValue ?? "~"
             started = Date(timeIntervalSince1970: j["started"]?.doubleValue ?? 0)
+            schedule = j["schedule"]?.stringValue
         }
     }
 

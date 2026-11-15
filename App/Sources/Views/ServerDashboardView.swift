@@ -219,6 +219,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.xray")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            ScheduledTasksView(server: server)
+                        } label: {
+                            ManageRow(title: "Scheduled agent tasks", subtitle: "Claude Code or Codex on a schedule, also while your phone is off", symbol: "calendar.badge.clock")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.schedules")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")

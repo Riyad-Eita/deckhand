@@ -216,11 +216,9 @@ private struct JobEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var schedule = CronEditor.Schedule()
     @State private var command = ""
-    @State private var time = Calendar.current.date(from: DateComponents(hour: 3, minute: 0)) ?? Date()
 
     private var valid: Bool {
-        !command.trimmingCharacters(in: .whitespaces).isEmpty && CronEditor.isValidExpression(schedule.cron)
-            && !(schedule.frequency == .weekly && schedule.weekdays.isEmpty)
+        !command.trimmingCharacters(in: .whitespaces).isEmpty && ScheduleSection.isValid(schedule)
     }
 
     var body: some View {
@@ -231,46 +229,7 @@ private struct JobEditorSheet: View {
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                         .accessibilityIdentifier("cron.command")
                 } header: { Text("What") }
-                Section {
-                    Picker("Runs", selection: $schedule.frequency) {
-                        ForEach(CronEditor.Frequency.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
-                    }
-                    .accessibilityIdentifier("cron.frequency")
-                    switch schedule.frequency {
-                    case .minutes:
-                        Stepper(String(localized: "Every \(schedule.everyMinutes) minutes"), value: $schedule.everyMinutes, in: 1...30)
-                    case .hourly:
-                        Stepper(String(format: String(localized: "At minute %02d"), schedule.minute), value: $schedule.minute, in: 0...59)
-                    case .daily, .weekly, .monthly:
-                        DatePicker("Time", selection: $time, displayedComponents: .hourAndMinute)
-                        if schedule.frequency == .weekly {
-                            HStack(spacing: 6) {
-                                ForEach([1, 2, 3, 4, 5, 6, 0], id: \.self) { d in
-                                    let on = schedule.weekdays.contains(d)
-                                    Button(Calendar.current.veryShortWeekdaySymbols[d]) {
-                                        if on { schedule.weekdays.remove(d) } else { schedule.weekdays.insert(d) }
-                                    }
-                                    .buttonStyle(.bordered).tint(on ? Theme.accent : .secondary)
-                                    .accessibilityIdentifier("cron.day.\(d)")
-                                }
-                            }
-                        }
-                        if schedule.frequency == .monthly {
-                            Stepper(String(localized: "On day \(schedule.dayOfMonth)"), value: $schedule.dayOfMonth, in: 1...28)
-                        }
-                    case .custom:
-                        TextField("0 3 * * 1", text: $schedule.expression).font(Theme.mono)
-                            .textInputAutocapitalization(.never).autocorrectionDisabled()
-                    }
-                } header: {
-                    Text("When")
-                } footer: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(LocalizedStringKey(schedule.description)).accessibilityIdentifier("cron.preview")
-                        Text(schedule.cron).font(Theme.monoSmall)
-                        if !CronEditor.isValidExpression(schedule.cron) { Text("That isn't a valid cron expression.").foregroundStyle(.red) }
-                    }
-                }
+                ScheduleSection(schedule: $schedule)
             }
             .navigationTitle(line == nil ? String(localized: "New job") : String(localized: "Change job"))
             .navigationBarTitleDisplayMode(.inline)
@@ -282,15 +241,10 @@ private struct JobEditorSheet: View {
                         .accessibilityIdentifier("cron.save")
                 }
             }
-            .onChange(of: time) {
-                let c = Calendar.current.dateComponents([.hour, .minute], from: time)
-                schedule.hour = c.hour ?? 3; schedule.minute = c.minute ?? 0
-            }
             .onAppear {
                 guard let line, let p = CronWatch.parseLine(line) else { return }
                 schedule = CronEditor.Schedule.from(p.schedule)
                 command = p.command.replacingOccurrences(of: "\\%", with: "%")
-                time = Calendar.current.date(from: DateComponents(hour: schedule.hour, minute: schedule.minute)) ?? time
             }
         }
     }

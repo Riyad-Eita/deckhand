@@ -81,6 +81,14 @@ final class AppSettings {
     }
 
     /// What a task runs with: its own choice, else the default here, else the CLI's config.
+    /// The model and effort from Settings, for runs without a chat (scheduled tasks).
+    func cliOptions(for cli: ServerCLI) -> CLIOptions {
+        switch cli {
+        case .codex: CLIOptions(model: codexModel, effort: codexEffort)
+        case .claudeCode: CLIOptions(model: claudeModel, effort: claudeEffort)
+        }
+    }
+
     func cliOptions(for cli: ServerCLI, thread: ChatThread) -> CLIOptions {
         switch cli {
         case .codex: CLIOptions(model: thread.cliModel ?? codexModel, effort: thread.cliEffort ?? codexEffort)
