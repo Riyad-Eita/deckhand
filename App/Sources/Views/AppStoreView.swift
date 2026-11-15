@@ -54,7 +54,7 @@ struct AppStoreView: View {
                 }
                 .confirmationDialog("Disconnect App Store Connect?", isPresented: $confirmDisconnect, titleVisibility: .visible) {
                     Button("Disconnect", role: .destructive) { account.disconnect(); apps = nil; latest = [:] }
-                } message: { Text("The API key is removed from this iPhone. It stays valid in App Store Connect until you revoke it there.") }
+                } message: { Text("The API key is removed from this \(Device.name). It stays valid in App Store Connect until you revoke it there.") }
             } else {
                 ConnectAppStoreView { found in apps = found; Task { await load() } }
             }
@@ -120,7 +120,7 @@ private struct ConnectAppStoreView: View {
             } header: {
                 Text("API key")
             } footer: {
-                Text("App Store Connect → Users and Access → Integrations → Team Keys. A key with the Developer role is enough. The key stays in this iPhone's Keychain; the app talks to Apple directly.")
+                Text("App Store Connect → Users and Access → Integrations → Team Keys. A key with the Developer role is enough. The key stays in this \(Device.name)'s Keychain; the app talks to Apple directly.")
             }
             Section {
                 Button {
@@ -396,10 +396,10 @@ private struct ReplySheet: View {
                     .disabled(drafting || !QuickAI.isAvailable)
                     .accessibilityIdentifier("reply.draft")
                 } footer: {
-                    if !QuickAI.isAvailable { Text("Drafts need Apple Intelligence on this iPhone or a model key in Settings — or just write it yourself.") }
+                    if !QuickAI.isAvailable { Text("Drafts need Apple Intelligence on this \(Device.name) or a model key in Settings — or just write it yourself.") }
                     else if let source {
                         switch source {
-                        case .onDevice: Text("Drafted on this iPhone.")
+                        case .onDevice: Text("Drafted on this \(Device.name).")
                         case .key(let model): Text("Drafted with your key (\(model)).")
                         }
                     }

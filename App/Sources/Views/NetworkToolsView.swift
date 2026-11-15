@@ -25,7 +25,7 @@ struct NetworkToolsView: View {
                     .accessibilityIdentifier("net.tool")
                 Picker("From", selection: $fromPhone) {
                     Text(server.displayName).tag(false)
-                    Text("This iPhone").tag(true)
+                    Text("This \(Device.name)").tag(true)
                 }
                 .pickerStyle(.segmented)
                 .disabled(!tool.onPhone)
@@ -44,8 +44,8 @@ struct NetworkToolsView: View {
                 .disabled(running || !NetworkTools.isValidTarget(NetworkTools.host(from: target)))
                 .accessibilityIdentifier("net.run")
             } footer: {
-                if !tool.onPhone { Text("Traceroute runs on the server — iPhones can't send it.") }
-                else if fromPhone && tool == .ping { Text("From the iPhone, ping measures how long a connection to port 443 takes (iOS doesn't allow ICMP).") }
+                if !tool.onPhone { Text("Traceroute runs on the server — \(Device.name)s can't send it.") }
+                else if fromPhone && tool == .ping { Text("From the \(Device.name), ping measures how long a connection to port 443 takes (iOS doesn't allow ICMP).") }
             }
             if let error { ProblemView(message: error, compact: true) }
             if let result, let ranFor {
@@ -84,7 +84,7 @@ struct NetworkToolsView: View {
         error = nil
         let host = NetworkTools.host(from: target)
         let p = Int(port) ?? 443
-        let label = "\(tool.title) · \(host)\(tool == .port ? ":\(p)" : "") · " + (fromPhone ? String(localized: "from this iPhone") : String(localized: "from \(server.displayName)"))
+        let label = "\(tool.title) · \(host)\(tool == .port ? ":\(p)" : "") · " + (fromPhone ? String(localized: "from this \(Device.name)") : String(localized: "from \(server.displayName)"))
         do {
             if fromPhone {
                 result = try await PhoneNetwork.run(tool, host: host, port: p, dnsType: dnsType, url: target)

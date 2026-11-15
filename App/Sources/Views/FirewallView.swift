@@ -155,7 +155,7 @@ struct FirewallView: View {
         } header: {
             Text("Open to the outside")
         } footer: {
-            Text("Tries common ports from the network this iPhone is on. On the same Wi-Fi as the server you see more than the internet does — use mobile data for the real outside view.")
+            Text("Tries common ports from the network this \(Device.name) is on. On the same Wi-Fi as the server you see more than the internet does — use mobile data for the real outside view.")
         }
     }
 

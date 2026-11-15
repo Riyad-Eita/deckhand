@@ -51,7 +51,7 @@ struct WebAppsView: View {
                 } header: {
                     Text("Deployed app")
                 } footer: {
-                    Text("Its public address, straight from the iPhone.")
+                    Text("Its public address, straight from the \(Device.name).")
                 }
                 Section {
                     HStack {

@@ -37,7 +37,7 @@ struct EnvVaultView: View {
                 }
                 .onDelete { idx in files.remove(atOffsets: idx); VaultStore.save(files, for: server) }
             } footer: {
-                Text("Encrypted in this iPhone's Keychain, with the last 30 versions. Written to the server as 0600 files over SFTP — the values never appear in a command line.")
+                Text("Encrypted in this \(Device.name)'s Keychain, with the last 30 versions. Written to the server as 0600 files over SFTP — the values never appear in a command line.")
             }
             Section {
                 HStack {

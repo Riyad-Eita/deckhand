@@ -30,7 +30,7 @@ struct LoginAlertsView: View {
                         Button("Turn on login alerts") { turnOn(status) }.accessibilityIdentifier("alerts.enable")
                     } else {
                         if status.topicURL != settings.ntfyTopicURL && !settings.ntfyTopicURL.isEmpty {
-                            Button("Send alerts to this iPhone's ntfy topic") { turnOn(status) }
+                            Button("Send alerts to this \(Device.name)'s ntfy topic") { turnOn(status) }
                         }
                         Button("Turn off", role: .destructive) {
                             task = RootTask(change: LoginAlerts.disable, changeID: ConfigChange.makeID(title: LoginAlerts.disable.title),
@@ -45,7 +45,7 @@ struct LoginAlertsView: View {
                     ForEach(status.trusted, id: \.self) { ip in
                         HStack {
                             Text(ip).font(.body.monospaced())
-                            if ip == myAddress { Text("this iPhone").font(.caption).foregroundStyle(.secondary) }
+                            if ip == myAddress { Text("this \(Device.name)").font(.caption).foregroundStyle(.secondary) }
                         }
                         .swipeActions {
                             Button("Remove") { setTrusted(status.trusted.filter { $0 != ip }, status) }.tint(.red)
@@ -57,7 +57,7 @@ struct LoginAlertsView: View {
                 } header: {
                     Text("Trusted addresses")
                 } footer: {
-                    Text("No alerts for these. Deckhand trusts the address this iPhone connects from when you turn alerts on, so it doesn't alert you about itself.")
+                    Text("No alerts for these. Deckhand trusts the address this \(Device.name) connects from when you turn alerts on, so it doesn't alert you about itself.")
                 }
                 Section("Recent logins") {
                     if status.logins.isEmpty { Text("No logins found in the logs.").foregroundStyle(.secondary) }

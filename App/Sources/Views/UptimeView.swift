@@ -19,7 +19,7 @@ struct UptimeView: View {
             if let status {
                 if !status.installed {
                     Section {
-                        Label("Your server checks your sites every minute — also while this iPhone is off — and sends a push when one goes down or comes back.", systemImage: "waveform.path.ecg")
+                        Label("Your server checks your sites every minute — also while this \(Device.name) is off — and sends a push when one goes down or comes back.", systemImage: "waveform.path.ecg")
                             .font(.subheadline)
                         Button("Turn on uptime checks") { Task { await install() } }.disabled(busy)
                             .accessibilityIdentifier("uptime.install")

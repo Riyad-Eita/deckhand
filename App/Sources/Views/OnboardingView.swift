@@ -32,6 +32,9 @@ struct OnboardingView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.snappy, value: step)
         }
+        // A readable column on the Mac and the iPad; full width on the iPhone.
+        .frame(maxWidth: 680)
+        .frame(maxWidth: .infinity)
         .background(Color(uiColor: .systemGroupedBackground))
         .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
         .sheet(item: $signIn) { cli in
@@ -46,12 +49,12 @@ struct OnboardingView: View {
     private var welcome: some View {
         StepPage(
             title: "Your servers, in your pocket",
-            subtitle: "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your iPhone."
+            subtitle: "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your \(Device.name)."
         ) {
             VStack(alignment: .leading, spacing: 18) {
                 Feature(symbol: "sparkles", title: "Agents on your server", text: "Claude Code, Codex or your own model key fix, build and explain things for you.")
                 Feature(symbol: "terminal", title: "A real terminal", text: "Sessions keep running when the connection drops.")
-                Feature(symbol: "lock.shield", title: "Private by design", text: "No account, no tracking. Keys stay in your iPhone's Keychain.")
+                Feature(symbol: "lock.shield", title: "Private by design", text: "No account, no tracking. Keys stay in your \(Device.name)'s Keychain.")
             }
         } action: {
             Button { step = .server } label: { Text("Get Started").frame(maxWidth: .infinity) }
@@ -61,7 +64,7 @@ struct OnboardingView: View {
     private var server: some View {
         StepPage(
             title: "Add your server",
-            subtitle: "Host, user and password are enough — Deckhand swaps the password for a secure key it creates on this iPhone."
+            subtitle: "Host, user and password are enough — Deckhand swaps the password for a secure key it creates on this \(Device.name)."
         ) {
             if let s = servers.first {
                 Label("\(s.displayName) is ready", systemImage: "checkmark.circle.fill").foregroundStyle(.green).font(.headline)
@@ -83,7 +86,7 @@ struct OnboardingView: View {
     private var engine: some View {
         StepPage(
             title: "Pick your agent",
-            subtitle: "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this iPhone."
+            subtitle: "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this \(Device.name)."
         ) {
             VStack(spacing: 10) {
                 EngineChoice(brand: .claude, title: "Claude Code", detail: "Sign in with your Claude plan") { signIn = .claudeCode }

@@ -10,7 +10,9 @@ struct DeckhandApp: App {
         catch { fatalError("Couldn't open the app's data: \(error)") }
     }()
 
-    init() { TaskNotifier.shared.start() }
+    init() {
+        TaskNotifier.shared.start()
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -68,7 +70,15 @@ struct RootView: View {
         .hostKeyPrompt()
         .serverLinkImport(enabled: !showOnboarding)
         .onOpenURL { AppRouter.shared.handle($0) }
-        .onAppear { AppLock.shared.appeared(); CrashReporter.shared.start() }
+        .onAppear {
+            AppLock.shared.appeared(); CrashReporter.shared.start()
+            #if targetEnvironment(macCatalyst)
+            // A window that fits a server list and a chat; not smaller than an iPad in portrait.
+            for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
+                scene.sizeRestrictions?.minimumSize = CGSize(width: 760, height: 620)
+            }
+            #endif
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)) { _ in
             KeyProtection.shared.lockNow()
         }

@@ -25,7 +25,7 @@ struct ExplainSheet: View {
                     if let answer {
                         ReplyText(text: answer.text).accessibilityIdentifier("explain.answer")
                     } else if unavailable {
-                        Text("Explanations need Apple Intelligence on this iPhone or a model key in Settings.").foregroundStyle(.secondary)
+                        Text("Explanations need Apple Intelligence on this \(Device.name) or a model key in Settings.").foregroundStyle(.secondary)
                     } else if let error {
                         ProblemView(message: error, compact: true)
                     } else {
@@ -36,7 +36,7 @@ struct ExplainSheet: View {
                 } footer: {
                     if let answer {
                         switch answer.source {
-                        case .onDevice: Label("On this iPhone · free, nothing leaves the device", systemImage: "lock.iphone")
+                        case .onDevice: Label("On this \(Device.name) · free, nothing leaves the device", systemImage: "lock.iphone")
                         case .key(let model): Label("With your key · \(model)", systemImage: "key.horizontal")
                         }
                     }

@@ -914,6 +914,16 @@
     "..": {
       "shouldTranslate": false
     },
+    ".env secrets kept on your %@, with history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".env-Geheimnisse auf deinem %@, mit Verlauf"
+          }
+        }
+      }
+    },
     ".env secrets kept on your iPhone, with history": {
       "localizations": {
         "de": {
@@ -1764,6 +1774,22 @@
         }
       }
     },
+    "Afterwards you log in as %@ with this %@'s key; root and password logins are turned off. Keep the sudo password somewhere safe.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danach meldest du dich als %1$@ mit dem Schlüssel dieses %2$@s an; Root- und Passwort-Logins sind aus. Bewahre das Sudo-Passwort sicher auf."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afterwards you log in as %1$@ with this %2$@'s key; root and password logins are turned off. Keep the sudo password somewhere safe."
+          }
+        }
+      }
+    },
     "Afterwards you log in as %@ with this iPhone's key; root and password logins are turned off. Keep the sudo password somewhere safe.": {
       "localizations": {
         "de": {
@@ -2106,6 +2132,16 @@
         }
       }
     },
+    "Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Linux-Rechner, den du per SSH erreichst. Deckhand kann dafür auf diesem %@ einen sicheren Schlüssel erzeugen."
+          }
+        }
+      }
+    },
     "Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this iPhone.": {
       "localizations": {
         "de": {
@@ -2172,6 +2208,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "App Store Connect"
+          }
+        }
+      }
+    },
+    "App Store Connect → Users and Access → Integrations → Team Keys. A key with the Developer role is enough. The key stays in this %@'s Keychain; the app talks to Apple directly.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store Connect → Benutzer und Zugriff → Integrationen → Teamschlüssel. Ein Schlüssel mit der Rolle „Entwickler“ reicht. Der Schlüssel bleibt im Schlüsselbund dieses %@s; die App spricht direkt mit Apple."
           }
         }
       }
@@ -4820,6 +4866,22 @@
         }
       }
     },
+    "Create %@ with sudo and this %@'s key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ mit sudo und dem Schlüssel dieses %2$@s anlegen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create %1$@ with sudo and this %2$@'s key"
+          }
+        }
+      }
+    },
     "Create %@ with sudo and this iPhone's key": {
       "localizations": {
         "de": {
@@ -5111,6 +5173,16 @@
         }
       }
     },
+    "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand verbindet sich per SSH mit deinen Linux-Servern und lässt KI-Agenten die Arbeit machen – vom %@ aus."
+          }
+        }
+      }
+    },
     "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your iPhone.": {
       "localizations": {
         "de": {
@@ -5167,6 +5239,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deckhand meldet sich als root mit Passwort an. Stell zuerst auf einen Schlüssel um."
+          }
+        }
+      }
+    },
+    "Deckhand logs in as this user with a key it creates on this %@. The password is for sudo — save it in your password manager.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand meldet sich als dieser Nutzer mit einem Schlüssel an, den es auf diesem %@ erzeugt. Das Passwort ist für sudo – speichere es in deinem Passwortmanager."
           }
         }
       }
@@ -5973,6 +6055,16 @@
         }
       }
     },
+    "Drafted on this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem %@ entworfen."
+          }
+        }
+      }
+    },
     "Drafted on this iPhone.": {
       "localizations": {
         "de": {
@@ -5989,6 +6081,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mit deinem Schlüssel entworfen (%@)."
+          }
+        }
+      }
+    },
+    "Drafts need Apple Intelligence on this %@ or a model key in Settings — or just write it yourself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entwürfe brauchen Apple Intelligence auf diesem %@ oder einen Modell-Schlüssel in den Einstellungen – oder schreib die Antwort einfach selbst."
           }
         }
       }
@@ -6181,6 +6283,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verschlüsseltes Backup von Servern und Einstellungen"
+          }
+        }
+      }
+    },
+    "Encrypted in this %@'s Keychain, with the last 30 versions. Written to the server as 0600 files over SFTP — the values never appear in a command line.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschlüsselt im Schlüsselbund dieses %@s, mit den letzten 30 Versionen. Per SFTP als 0600-Datei auf den Server geschrieben – die Werte erscheinen nie in einer Befehlszeile."
           }
         }
       }
@@ -6476,6 +6588,16 @@
         }
       }
     },
+    "Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This %@'s own keys can't be removed here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Schlüssel in authorized_keys auf deinen Servern, nach Namen. Gerät verloren? Wische seinen Schlüssel, um ihn von allen Servern auf einmal zu entfernen. Die eigenen Schlüssel dieses %@s lassen sich hier nicht entfernen."
+          }
+        }
+      }
+    },
     "Every key in authorized_keys on your servers, by name. Lost a device? Swipe its key to remove it from all servers at once. This iPhone's own keys can't be removed here.": {
       "localizations": {
         "de": {
@@ -6642,6 +6764,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erklärt anhand von Code und Wiki, wie ein öffentliches Projekt funktioniert."
+          }
+        }
+      }
+    },
+    "Explanations need Apple Intelligence on this %@ or a model key in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erklärungen brauchen Apple Intelligence auf diesem %@ oder einen Modell-Schlüssel in den Einstellungen."
           }
         }
       }
@@ -7246,12 +7378,32 @@
         }
       }
     },
+    "From iOS, kept on this %@, shared only by you": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von iOS, bleiben auf diesem %@, nur du teilst sie"
+          }
+        }
+      }
+    },
     "From iOS, kept on this iPhone, shared only by you": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Von iOS, bleiben auf diesem iPhone, nur du teilst sie"
+          }
+        }
+      }
+    },
+    "From the %@, ping measures how long a connection to port 443 takes (iOS doesn't allow ICMP).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vom %@ aus misst Ping, wie lange eine Verbindung zu Port 443 dauert (iOS erlaubt kein ICMP)."
           }
         }
       }
@@ -7464,6 +7616,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gruppe (optional)"
+          }
+        }
+      }
+    },
+    "Group requests in collections, switch between environments like staging and production, and send them from this %@ or from one of your servers — handy for APIs that only that server can reach.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fasse Anfragen in Sammlungen zusammen, wechsle zwischen Umgebungen wie Staging und Produktion und sende sie von diesem %@ oder von einem deiner Server — praktisch für APIs, die nur dieser Server erreicht."
           }
         }
       }
@@ -7747,6 +7909,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Host oder IP"
+          }
+        }
+      }
+    },
+    "Host, user and password are enough — Deckhand swaps the password for a secure key it creates on this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host, Benutzer und Passwort reichen – Deckhand ersetzt das Passwort durch einen sicheren Schlüssel, den es auf diesem %@ erzeugt."
           }
         }
       }
@@ -8467,6 +8639,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Container werden gestoppt und entfernt. Eine Domain bleibt in Caddy, bis du sie unter Domains entfernst."
+          }
+        }
+      }
+    },
+    "Its public address, straight from the %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihre öffentliche Adresse, direkt vom %@."
           }
         }
       }
@@ -9601,6 +9783,16 @@
         }
       }
     },
+    "Move to a new %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf ein neues %@ umziehen"
+          }
+        }
+      }
+    },
     "Move to a new iPhone": {
       "localizations": {
         "de": {
@@ -10041,6 +10233,16 @@
         }
       }
     },
+    "No account, no tracking. Keys stay in your %@'s Keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Konto, kein Tracking. Schlüssel bleiben im Schlüsselbund deines %@s."
+          }
+        }
+      }
+    },
     "No account, no tracking. Keys stay in your iPhone's Keychain.": {
       "localizations": {
         "de": {
@@ -10057,6 +10259,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Aktionen."
+          }
+        }
+      }
+    },
+    "No alerts for these. Deckhand trusts the address this %@ connects from when you turn alerts on, so it doesn't alert you about itself.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese gibt es keine Benachrichtigung. Beim Einschalten vertraut Deckhand der Adresse, von der dieses %@ verbindet, damit es dich nicht über sich selbst benachrichtigt."
           }
         }
       }
@@ -11154,6 +11366,16 @@
         }
       }
     },
+    "On this %@ · free, nothing leaves the device": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem %@ · kostenlos, nichts verlässt das Gerät"
+          }
+        }
+      }
+    },
     "On this iPhone · free, nothing leaves the device": {
       "localizations": {
         "de": {
@@ -11470,6 +11692,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oder einfach mit einem Modell chatten"
+          }
+        }
+      }
+    },
+    "Other apps or computers that use these exact keys from this %@ stop working; your other devices keep their own keys.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Apps oder Computer, die genau diese Schlüssel dieses %@s nutzen, funktionieren danach nicht mehr; deine anderen Geräte behalten ihre eigenen Schlüssel."
           }
         }
       }
@@ -13030,6 +13262,16 @@
         }
       }
     },
+    "Reports come from iOS (MetricKit) and stay on this %@. No crash service, no tracking.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Berichte kommen von iOS (MetricKit) und bleiben auf diesem %@. Kein Absturzdienst, kein Tracking."
+          }
+        }
+      }
+    },
     "Reports come from iOS (MetricKit) and stay on this iPhone. No crash service, no tracking.": {
       "localizations": {
         "de": {
@@ -13781,6 +14023,16 @@
         }
       }
     },
+    "SSH only from this %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH nur von diesem %@"
+          }
+        }
+      }
+    },
     "SSH only from this iPhone": {
       "localizations": {
         "de": {
@@ -14261,6 +14513,16 @@
         }
       }
     },
+    "Send alerts to this %@'s ntfy topic": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benachrichtigungen an das ntfy-Topic dieses %@s senden"
+          }
+        }
+      }
+    },
     "Send alerts to this iPhone's ntfy topic": {
       "localizations": {
         "de": {
@@ -14481,6 +14743,16 @@
         }
       }
     },
+    "Sessions you start with claude or codex on this server — on your laptop over SSH, say — show up here, and you can carry on with them from your %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen, die du auf diesem Server mit claude oder codex startest — etwa vom Laptop über SSH —, erscheinen hier, und du kannst sie auf dem %@ fortsetzen."
+          }
+        }
+      }
+    },
     "Sessions you start with claude or codex on this server — on your laptop over SSH, say — show up here, and you can carry on with them from your iPhone.": {
       "localizations": {
         "de": {
@@ -14497,6 +14769,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einrichten"
+          }
+        }
+      }
+    },
+    "Set a passcode on this %@ to use App Lock.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege auf diesem %@ einen Code fest, um die App-Sperre zu nutzen."
           }
         }
       }
@@ -15191,6 +15473,16 @@
         }
       }
     },
+    "Speech is turned into text on this %@ with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache wird auf diesem %@ mit OpenAIs Whisper-Modell in Text umgewandelt. Nach der Installation erscheint ein Mikrofon neben dem Eingabefeld."
+          }
+        }
+      }
+    },
     "Speech is turned into text on this iPhone with OpenAI's Whisper model. Once it is installed, a microphone appears next to the message field.": {
       "localizations": {
         "de": {
@@ -15632,6 +15924,16 @@
         }
       }
     },
+    "Stored in this %@'s Keychain": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Schlüsselbund dieses %@s"
+          }
+        }
+      }
+    },
     "Stored on the server in ~/.deckhand/rules and checked there before every agent action — also for tasks you start from a laptop. A blocked action can be allowed once.": {
       "localizations": {
         "de": {
@@ -15698,6 +16000,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorschläge aus deinen Erreichbarkeitsprüfungen und Webservern."
+          }
+        }
+      }
+    },
+    "Swipe a variable to mark it secret: its value then lives in this %@'s Keychain, not in the saved collection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wische über eine Variable, um sie als geheim zu markieren: Ihr Wert liegt dann im Schlüsselbund dieses %@s, nicht in der gespeicherten Sammlung."
           }
         }
       }
@@ -16142,6 +16454,16 @@
         }
       }
     },
+    "The API key is removed from this %@. It stays valid in App Store Connect until you revoke it there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der API-Schlüssel wird von diesem %@ entfernt. In App Store Connect bleibt er gültig, bis du ihn dort widerrufst."
+          }
+        }
+      }
+    },
     "The API key is removed from this iPhone. It stays valid in App Store Connect until you revoke it there.": {
       "localizations": {
         "de": {
@@ -16388,6 +16710,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Container wird gelöscht. Volumes bleiben erhalten."
+          }
+        }
+      }
+    },
+    "The copy goes straight from server to server — nothing passes through this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kopie geht direkt von Server zu Server – nichts läuft über dieses %@."
           }
         }
       }
@@ -16912,6 +17244,26 @@
         }
       }
     },
+    "This %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesem %@"
+          }
+        }
+      }
+    },
+    "This %@'s keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel dieses %@s"
+          }
+        }
+      }
+    },
     "This alert is for a server that isn't in Deckhand anymore.": {
       "localizations": {
         "de": {
@@ -17242,6 +17594,16 @@
         }
       }
     },
+    "This server isn't a Mac. To build iOS apps from your %@, turn on Remote Login on your Mac (System Settings → General → Sharing) and add the Mac as a server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server ist kein Mac. Um iOS-Apps vom %@ aus zu bauen, schalte auf deinem Mac die Entfernte Anmeldung ein (Systemeinstellungen → Allgemein → Teilen) und füge den Mac als Server hinzu."
+          }
+        }
+      }
+    },
     "This server isn't a Mac. To build iOS apps from your iPhone, turn on Remote Login on your Mac (System Settings → General → Sharing) and add the Mac as a server.": {
       "localizations": {
         "de": {
@@ -17442,6 +17804,16 @@
         }
       }
     },
+    "Traceroute runs on the server — %@s can't send it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traceroute läuft auf dem Server – %@s können es nicht senden."
+          }
+        }
+      }
+    },
     "Traceroute runs on the server — iPhones can't send it.": {
       "localizations": {
         "de": {
@@ -17478,6 +17850,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verlauf der letzten 7 Tage"
+          }
+        }
+      }
+    },
+    "Tries common ports from the network this %@ is on. On the same Wi-Fi as the server you see more than the internet does — use mobile data for the real outside view.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probiert übliche Ports aus dem Netz, in dem dieses %@ ist. Im selben WLAN wie der Server siehst du mehr als das Internet – nutze mobile Daten für den echten Blick von außen."
           }
         }
       }
@@ -18213,6 +18595,16 @@
         }
       }
     },
+    "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze das Abo, das du schon bezahlst – der Agent läuft dann auf deinem Server. Oder bring einen API-Schlüssel mit, dann läuft der Agent auf diesem %@."
+          }
+        }
+      }
+    },
     "Use the plan you already pay for — the agent then runs on your server. Or bring an API key and the agent runs on this iPhone.": {
       "localizations": {
         "de": {
@@ -18806,6 +19198,16 @@
         }
       }
     },
+    "Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this %@'s keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne dieses Passwort kann niemand die Backups lesen – auch du nicht. Bewahre es in deinem Passwort-Manager auf. Deckhand speichert es zusätzlich im Schlüsselbund dieses %@s."
+          }
+        }
+      }
+    },
     "Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this iPhone's keychain.": {
       "localizations": {
         "de": {
@@ -19216,6 +19618,16 @@
         }
       }
     },
+    "Your server checks your sites every minute — also while this %@ is off — and sends a push when one goes down or comes back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Server prüft deine Websites jede Minute – auch wenn dieses %@ aus ist – und schickt einen Push, wenn eine ausfällt oder wieder da ist."
+          }
+        }
+      }
+    },
     "Your server checks your sites every minute — also while this iPhone is off — and sends a push when one goes down or comes back.": {
       "localizations": {
         "de": {
@@ -19272,6 +19684,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Benutzer darf Docker nicht nutzen. Füge ihn der Gruppe docker hinzu: sudo usermod -aG docker $USER (danach neu anmelden)."
+          }
+        }
+      }
+    },
+    "Your ~/.ssh/config, a CSV export (Termius and others) and the private key files it names — pick them together. Keys stay on this %@, in its Keychain.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine ~/.ssh/config, ein CSV-Export (Termius und andere) und die privaten Schlüsseldateien, die darin genannt werden – wähle sie zusammen aus. Schlüssel bleiben auf diesem %@, im Schlüsselbund."
           }
         }
       }
@@ -19416,6 +19838,22 @@
         }
       }
     },
+    "fail2ban will never ban %@ — the address this %@ reaches the server from right now. If you're on mobile data this address changes often.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban sperrt %1$@ nie – die Adresse, über die dieses %2$@ gerade den Server erreicht. Im Mobilfunknetz ändert sich diese Adresse oft."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fail2ban will never ban %1$@ — the address this %2$@ reaches the server from right now. If you're on mobile data this address changes often."
+          }
+        }
+      }
+    },
     "fail2ban will never ban %@ — the address this iPhone reaches the server from right now. If you're on mobile data this address changes often.": {
       "localizations": {
         "de": {
@@ -19512,6 +19950,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "von überall"
+          }
+        }
+      }
+    },
+    "from this %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "von diesem %@"
           }
         }
       }
@@ -19904,6 +20352,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "das Terminal"
+          }
+        }
+      }
+    },
+    "this %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dieses %@"
           }
         }
       }

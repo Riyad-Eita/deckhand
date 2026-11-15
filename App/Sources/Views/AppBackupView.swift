@@ -57,7 +57,7 @@ struct AppBackupView: View {
                 Text("Adds the servers and connections that aren't here yet and takes over the settings.")
             }
         }
-        .navigationTitle("Move to a new iPhone")
+        .navigationTitle("Move to a new \(Device.name)")
         .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .item]) { result in
             guard case .success(let url) = result else { return }
             let scoped = url.startAccessingSecurityScopedResource()

@@ -16,7 +16,7 @@ struct XcodeView: View {
             if let info {
                 if !info.isMac {
                     Section {
-                        Text("This server isn't a Mac. To build iOS apps from your iPhone, turn on Remote Login on your Mac (System Settings → General → Sharing) and add the Mac as a server.")
+                        Text("This server isn't a Mac. To build iOS apps from your \(Device.name), turn on Remote Login on your Mac (System Settings → General → Sharing) and add the Mac as a server.")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                 } else {

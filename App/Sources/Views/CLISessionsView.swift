@@ -19,7 +19,7 @@ struct CLISessionsView: View {
                     Section {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("No sessions on this server yet").font(.headline)
-                            Text("Sessions you start with claude or codex on this server — on your laptop over SSH, say — show up here, and you can carry on with them from your iPhone.")
+                            Text("Sessions you start with claude or codex on this server — on your laptop over SSH, say — show up here, and you can carry on with them from your \(Device.name).")
                                 .font(.subheadline).foregroundStyle(.secondary)
                         }
                         .padding(.vertical, 4)

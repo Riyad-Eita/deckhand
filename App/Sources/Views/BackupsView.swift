@@ -258,7 +258,7 @@ private struct PasswordSheet: View {
                     Text(password).font(.title3.monospaced()).textSelection(.enabled).accessibilityIdentifier("backup.password")
                     Button { UIPasteboard.general.string = password } label: { Label("Copy", systemImage: "doc.on.doc") }
                 } footer: {
-                    Text("Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this iPhone's keychain.")
+                    Text("Without this password nobody can read the backups — not even you. Keep it in your password manager. Deckhand also keeps it in this \(Device.name)'s keychain.")
                 }
             }
             .navigationTitle("Backup password")
