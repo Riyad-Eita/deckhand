@@ -47,6 +47,7 @@ struct ServerView: View {
         }
         .navigationTitle(server.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .focusedSceneValue(\.terminalOpen, tab == .terminal)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("View", selection: $tab) {
