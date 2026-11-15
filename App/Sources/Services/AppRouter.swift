@@ -22,6 +22,9 @@ final class AppRouter {
     enum Command: Equatable { case newServer, newChat, importServers, settings, search }
     var command: Command?
 
+    /// The morning briefing to open (`deckhand://briefing`, the link in the briefing push).
+    var pendingBriefing = false
+
     /// A server to open (`deckhand://server/<id>`, the status widget).
     var pendingServer: UUID?
 
@@ -64,6 +67,8 @@ final class AppRouter {
             if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
         case "add":
             if let c = HostLink.parse(url) { pendingImport = ImportLink(candidates: [c]) }
+        case "briefing":
+            pendingBriefing = true
         case "uptime":
             if parts.count == 2, let server = UUID(uuidString: parts[0]) { pendingIncident = IncidentLink(server: server, check: parts[1]) }
         default:

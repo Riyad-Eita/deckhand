@@ -21,6 +21,7 @@ struct ServerListView: View {
     @State private var showingConnections = false
     @State private var agentSetupServer: Server?
     @State private var showingMacSetup = false
+    @State private var showingBriefing = false
     @AppStorage("home.agentCardDismissed") private var agentCardDismissed = false
 
     var body: some View {
@@ -76,6 +77,11 @@ struct ServerListView: View {
             }
             if !servers.isEmpty {
                 Section("Tools") {
+                    NavigationLink { BriefingView().sidebarPage("briefing") } label: {
+                        Label("Morning Briefing", systemImage: "sun.horizon")
+                    }
+                    .sidebarRow("briefing")
+                    .accessibilityIdentifier("home.briefing")
                     NavigationLink { AppStoreView().sidebarPage("appstore") } label: {
                         Label("App Store Connect", systemImage: "app.badge.checkmark")
                     }
@@ -198,6 +204,7 @@ struct ServerListView: View {
             }
             if DebugSeed.pendingRun != nil, let s = seeded() { autoOpen = s }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
+            if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "briefing" { showingBriefing = true }
             #if targetEnvironment(macCatalyst)
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "macSetup" { showingMacSetup = true }
             #endif
@@ -212,6 +219,11 @@ struct ServerListView: View {
         .navigationDestination(isPresented: $showingMacSetup) { MacSetupView().sidebarPage("macSetup") }
         #endif
         #endif
+        .navigationDestination(isPresented: $showingBriefing) { BriefingView().sidebarPage("briefing") }
+        .onChange(of: AppRouter.shared.pendingBriefing, initial: true) { _, open in
+            // The morning push: open the briefing.
+            if open { showingBriefing = true; AppRouter.shared.pendingBriefing = false }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button { showingSettings = true } label: { Image(systemName: "gearshape") }

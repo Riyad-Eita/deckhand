@@ -478,6 +478,26 @@
         }
       }
     },
+    "%@: cron isn't installed on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: Auf diesem Server ist cron nicht installiert."
+          }
+        }
+      }
+    },
+    "%@: the server didn't accept the change.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: Der Server hat die Änderung nicht übernommen."
+          }
+        }
+      }
+    },
     "%lld %% of the %@ limit used.": {
       "localizations": {
         "de": {
@@ -574,6 +594,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "vor %lld Tagen"
+          }
+        }
+      }
+    },
+    "%lld failed logins in 24 hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld fehlgeschlagene Logins in 24 Stunden"
           }
         }
       }
@@ -688,6 +718,16 @@
         }
       }
     },
+    "%lld other updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld weitere Updates"
+          }
+        }
+      }
+    },
     "%lld processes · %lld cores": {
       "localizations": {
         "de": {
@@ -778,12 +818,32 @@
         }
       }
     },
+    "%lld security updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Sicherheitsupdates"
+          }
+        }
+      }
+    },
     "%lld servers and %lld connections, encrypted with your passphrase (at least 8 characters). Without the passphrase the file can't be opened. Secrets are only included if you switch it on.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld Server und %2$lld Verbindungen, verschlüsselt mit deiner Passphrase (mindestens 8 Zeichen). Ohne die Passphrase lässt sich die Datei nicht öffnen. Geheimnisse sind nur dabei, wenn du es einschaltest."
+          }
+        }
+      }
+    },
+    "%lld services failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Dienste ausgefallen"
           }
         }
       }
@@ -804,6 +864,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Tests bestanden"
+          }
+        }
+      }
+    },
+    "%lld things need you today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Dinge brauchen dich heute"
           }
         }
       }
@@ -940,6 +1010,56 @@
           "stringUnit": {
             "state": "translated",
             "value": ".env-Geheimnisse auf deinem iPhone, mit Verlauf"
+          }
+        }
+      }
+    },
+    "1 failed login in 24 hours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 fehlgeschlagener Login in 24 Stunden"
+          }
+        }
+      }
+    },
+    "1 other update": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 weiteres Update"
+          }
+        }
+      }
+    },
+    "1 security update": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Sicherheitsupdate"
+          }
+        }
+      }
+    },
+    "1 service failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Dienst ausgefallen"
+          }
+        }
+      }
+    },
+    "1 thing needs you today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Sache braucht dich heute"
           }
         }
       }
@@ -1887,6 +2007,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entwarnung: Abriegelung aufheben"
+          }
+        }
+      }
+    },
+    "All good": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles gut"
           }
         }
       }
@@ -3074,6 +3204,16 @@
         }
       }
     },
+    "Briefing Settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Briefing-Einstellungen"
+          }
+        }
+      }
+    },
     "Bring an agent": {
       "localizations": {
         "de": {
@@ -3305,12 +3445,42 @@
         }
       }
     },
+    "Certificate for %@ expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikat für %@ ist abgelaufen"
+          }
+        }
+      }
+    },
     "Certificate for %@ expires in %lld days": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Zertifikat für %1$@ läuft in %2$lld Tagen ab"
+          }
+        }
+      }
+    },
+    "Certificate for %@ expires today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikat für %@ läuft heute ab"
+          }
+        }
+      }
+    },
+    "Certificate for %@ expires tomorrow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zertifikat für %@ läuft morgen ab"
           }
         }
       }
@@ -3755,6 +3925,16 @@
         }
       }
     },
+    "Checking your servers…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server werden geprüft …"
+          }
+        }
+      }
+    },
     "Checking…": {
       "localizations": {
         "de": {
@@ -4001,6 +4181,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suche leeren"
+          }
+        }
+      }
+    },
+    "Cleared %lld MB of downloaded packages": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld MB heruntergeladene Pakete gelöscht"
           }
         }
       }
@@ -5152,6 +5342,26 @@
         }
       }
     },
+    "Cron job %@ didn't run on time": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cron-Job %@ lief nicht pünktlich"
+          }
+        }
+      }
+    },
+    "Cron job %@ failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cron-Job %@ fehlgeschlagen"
+          }
+        }
+      }
+    },
     "Cron jobs": {
       "localizations": {
         "de": {
@@ -5803,6 +6013,16 @@
         }
       }
     },
+    "Didn't clear the package cache: a house rule forbids it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paket-Cache nicht geleert: eine Hausregel verbietet es"
+          }
+        }
+      }
+    },
     "Didn't finish": {
       "localizations": {
         "de": {
@@ -5839,6 +6059,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lief nicht rechtzeitig (bemerkt %@)"
+          }
+        }
+      }
+    },
+    "Didn't shrink the journal: a house rule forbids it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journal nicht verkleinert: eine Hausregel verbietet es"
           }
         }
       }
@@ -5920,6 +6150,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Speicherplatz"
+          }
+        }
+      }
+    },
+    "Disk %@ grew %lld points to %lld%%": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Festplatte %@ ist um %lld Punkte auf %lld %% gewachsen"
+          }
+        }
+      }
+    },
+    "Disk %@ is %lld%% full": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Festplatte %@ ist zu %lld %% voll"
           }
         }
       }
@@ -6050,6 +6300,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Domain"
+          }
+        }
+      }
+    },
+    "Domain %@ expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain %@ ist abgelaufen"
+          }
+        }
+      }
+    },
+    "Domain %@ expires in %lld days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain %@ läuft in %lld Tagen ab"
+          }
+        }
+      }
+    },
+    "Domain %@ expires today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain %@ läuft heute ab"
+          }
+        }
+      }
+    },
+    "Domain %@ expires tomorrow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain %@ läuft morgen ab"
           }
         }
       }
@@ -6814,6 +7104,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jeden Monat"
+          }
+        }
+      }
+    },
+    "Every morning, each server checks itself and tells you only what needs you.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Morgen prüft sich jeder Server selbst und meldet dir nur, was dich braucht."
           }
         }
       }
@@ -8423,6 +8723,16 @@
         }
       }
     },
+    "In your time zone (%@), on every server. The reports are made on the servers, so your phone can be off.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In deiner Zeitzone (%@), auf jedem Server. Die Berichte entstehen auf den Servern – dein iPhone darf aus sein."
+          }
+        }
+      }
+    },
     "Incident": {
       "localizations": {
         "de": {
@@ -9363,6 +9673,16 @@
         }
       }
     },
+    "Last report %@ — this server didn't report today.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Bericht %@ – dieser Server hat sich heute nicht gemeldet."
+          }
+        }
+      }
+    },
     "Last result": {
       "localizations": {
         "de": {
@@ -9863,6 +10183,26 @@
         }
       }
     },
+    "Made %@ on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um %@ auf dem Server erstellt."
+          }
+        }
+      }
+    },
+    "Make Today's Report Now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heutigen Bericht jetzt erstellen"
+          }
+        }
+      }
+    },
     "Make sure this should be public.": {
       "localizations": {
         "de": {
@@ -10003,12 +10343,32 @@
         }
       }
     },
+    "Memory is %lld%% used": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeitsspeicher zu %lld %% belegt"
+          }
+        }
+      }
+    },
     "Memory is almost exhausted": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitsspeicher ist fast voll"
+          }
+        }
+      }
+    },
+    "Memory use went up from %lld%% to %lld%% on average": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichernutzung im Schnitt von %lld %% auf %lld %% gestiegen"
           }
         }
       }
@@ -10109,6 +10469,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Überwachung"
+          }
+        }
+      }
+    },
+    "More for %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr für %@"
+          }
+        }
+      }
+    },
+    "Morning Briefing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen-Briefing"
           }
         }
       }
@@ -10813,6 +11193,16 @@
         }
       }
     },
+    "No briefing yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Briefing"
+          }
+        }
+      }
+    },
     "No builds uploaded yet.": {
       "localizations": {
         "de": {
@@ -10909,6 +11299,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Dateien. Füge die .env einer App hinzu, um sie hier aufzubewahren."
+          }
+        }
+      }
+    },
+    "No fixes: house rules are read-only": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Fixes: Hausregeln sind schreibgeschützt"
           }
         }
       }
@@ -11552,6 +11952,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts passt."
+          }
+        }
+      }
+    },
+    "Nothing needs you today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute braucht dich nichts"
           }
         }
       }
@@ -13098,6 +13508,16 @@
         }
       }
     },
+    "Push only when something needs me": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push nur, wenn mich etwas braucht"
+          }
+        }
+      }
+    },
     "Push when a run ends": {
       "localizations": {
         "de": {
@@ -13762,6 +14182,26 @@
         }
       }
     },
+    "Removed %lld old task logs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld alte Task-Logs entfernt"
+          }
+        }
+      }
+    },
+    "Removed 1 old task log": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 altes Task-Log entfernt"
+          }
+        }
+      }
+    },
     "Removed from sale": {
       "localizations": {
         "de": {
@@ -13788,6 +14228,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entfernt %@ aus Caddy. Der Dienst dahinter läuft weiter."
+          }
+        }
+      }
+    },
+    "Removes Deckhand task logs older than 30 days and, where sudo needs no password, shrinks a system journal over 1 GB and clears downloaded packages. Never when your house rules are read-only or forbid it. Everything done is listed in the briefing.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt Deckhand-Task-Logs, die älter als 30 Tage sind, und – wo sudo kein Passwort braucht – verkleinert ein System-Journal über 1 GB und löscht heruntergeladene Pakete. Nie, wenn deine Hausregeln schreibgeschützt sind oder es verbieten. Alles Erledigte steht im Briefing."
           }
         }
       }
@@ -14019,6 +14469,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neustart nötig"
+          }
+        }
+      }
+    },
+    "Restart needed to finish updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neustart nötig, um Updates abzuschließen"
           }
         }
       }
@@ -15563,6 +16023,16 @@
         }
       }
     },
+    "Set Up Morning Briefing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen-Briefing einrichten"
+          }
+        }
+      }
+    },
     "Set a passcode on this %@ to use App Lock.": {
       "localizations": {
         "de": {
@@ -15983,6 +16453,16 @@
         }
       }
     },
+    "Shrank the system journal from %lld MB to %lld MB": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System-Journal von %lld MB auf %lld MB verkleinert"
+          }
+        }
+      }
+    },
     "Sign in": {
       "localizations": {
         "de": {
@@ -16199,6 +16679,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Langsamer Start"
+          }
+        }
+      }
+    },
+    "Small safe fixes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleine, sichere Fixes"
           }
         }
       }
@@ -17774,6 +18264,16 @@
         }
       }
     },
+    "The first report comes at the next briefing time.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der erste Bericht kommt zur nächsten Briefing-Zeit."
+          }
+        }
+      }
+    },
     "The first visit shows the installer; keep SQLite and create the admin account there.": {
       "localizations": {
         "de": {
@@ -18180,6 +18680,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Start-Befehl läuft im Release-Ordner und bleibt im Hintergrund aktiv. Antwortet die Health-URL nicht innerhalb von 30 Sekunden, kommt das vorherige Release von selbst zurück."
+          }
+        }
+      }
+    },
+    "The system journal uses %lld MB; shrinking it needs sudo without a password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das System-Journal belegt %lld MB; zum Verkleinern braucht es sudo ohne Passwort"
           }
         }
       }
@@ -19341,6 +19851,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Starten"
+          }
+        }
+      }
+    },
+    "Up %lld points since yesterday": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seit gestern %lld Punkte mehr"
           }
         }
       }
