@@ -27,6 +27,9 @@ struct DeckhandApp: App {
                 #endif
                 .environment(AppSettings.shared)
                 .environment(Connections.shared)
+                #if DEBUG
+                .overlay(alignment: .topLeading) { ReelTick() }
+                #endif
         }
         .modelContainer(Self.container)
         .commands { DeckhandCommands() }
@@ -259,3 +262,23 @@ extension FocusedValues {
     /// True while the focused window shows a terminal.
     @Entry var terminalOpen: Bool?
 }
+
+#if DEBUG
+/// DECKHAND_REEL_TICK=1: one corner pixel changes every frame. The simulator's screen recording only writes frames when
+/// something changes, which bends its timeline during still moments; this keeps it running at wall-clock speed.
+/// The pixel sits under the device frame's rounded corner in the reels.
+private struct ReelTick: View {
+    private let on = ProcessInfo.processInfo.environment["DECKHAND_REEL_TICK"] == "1"
+    var body: some View {
+        if on {
+            TimelineView(.animation) { context in
+                let odd = Int(context.date.timeIntervalSinceReferenceDate * 60) % 2 == 0
+                Rectangle().fill(Color(white: odd ? 0.02 : 0.06)).frame(width: 2, height: 2)
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+}
+#endif

@@ -38,6 +38,9 @@ struct TerminalScreen: View {
             if !saved.isEmpty { tabs = saved; selected = saved[0] }
         }
         .onChange(of: tabs) { UserDefaults.standard.set(tabs, forKey: tabsKey) }
+        #if DEBUG
+        .task { await runSeedScript() }
+        #endif
         #if targetEnvironment(macCatalyst)
         // The window's toolbar sits on the terminal's color, so its buttons follow the theme.
         .toolbarBackground(SSHTerminalView.swiftUIColor(TerminalTheme.named(settings.terminalTheme).background), for: .navigationBar)
@@ -93,6 +96,47 @@ struct TerminalScreen: View {
         case .clear: break   // handled by the pane
         }
     }
+
+    #if DEBUG
+    @MainActor private static var seedScriptStarted = false
+
+    /// DECKHAND_SEED_TERMSCRIPT="4:type:uptime;9:newtab;14:tab:1;18:theme:phosphor;22:font:21" with
+    /// DECKHAND_SEED_TERMSCRIPT_AT=<epoch seconds>: drives the terminal on a fixed clock (screen recordings; UI tests
+    /// can't type into a terminal quickly because it never goes idle). "type" types into the active tab and presses return.
+    private func runSeedScript() async {
+        let env = ProcessInfo.processInfo.environment
+        guard let script = env["DECKHAND_SEED_TERMSCRIPT"], let at = Double(env["DECKHAND_SEED_TERMSCRIPT_AT"] ?? ""),
+              !Self.seedScriptStarted else { return }
+        Self.seedScriptStarted = true   // once per launch, even if the terminal opens again
+        let sep = Character(env["DECKHAND_SEED_TERMSCRIPT_SEP"] ?? ";")
+        for item in script.split(separator: sep) {
+            let p = item.split(separator: ":", maxSplits: 2).map(String.init)
+            guard p.count >= 2, let t = Double(p[0]) else { continue }
+            let wait = at + t - Date().timeIntervalSince1970
+            if wait > 0 { try? await Task.sleep(for: .seconds(wait)) }
+            if Task.isCancelled { return }   // the terminal went away (another view): the rest is the test's job
+            let arg = p.count > 2 ? p[2] : ""
+            switch p[1] {
+            case "type": NotificationCenter.default.post(name: .deckhandSeedType, object: selected, userInfo: ["text": arg])
+            case "clear": NotificationCenter.default.post(name: .deckhandSeedType, object: selected, userInfo: ["text": "clear", "instant": true])
+            case "run": NotificationCenter.default.post(name: .deckhandSeedType, object: selected, userInfo: ["text": arg, "instant": true])
+            case "view": NotificationCenter.default.post(name: .deckhandSeedView, object: arg)
+            case "newtab": add()
+            case "tab": if let n = Int(arg), n <= tabs.count { selected = tabs[n - 1] }
+            case "theme": settings.terminalTheme = arg
+            case "fontnow": if let size = Double(arg) { settings.terminalFontSize = size }
+            case "font":
+                // Grows in small steps, like a pinch.
+                let target = Double(arg) ?? settings.terminalFontSize
+                while abs(settings.terminalFontSize - target) >= 1 {
+                    settings.terminalFontSize += target > settings.terminalFontSize ? 1 : -1
+                    try? await Task.sleep(for: .milliseconds(110))
+                }
+            default: break
+            }
+        }
+    }
+    #endif
 
     func add() {
         let n = TerminalTabs.next(after: tabs)
@@ -196,6 +240,17 @@ struct TerminalPane: View {
         }
         #endif
         .task(id: attempt) { await open() }
+        #if DEBUG
+        .onReceive(NotificationCenter.default.publisher(for: .deckhandSeedType)) { note in
+            guard note.object as? Int == tab, let text = note.userInfo?["text"] as? String, let session else { return }
+            if note.userInfo?["instant"] as? Bool == true { session.send(text + "\n"); return }
+            Task {
+                for ch in text { session.send(String(ch)); try? await Task.sleep(for: .milliseconds(120)) }
+                try? await Task.sleep(for: .milliseconds(300))
+                session.send("\n")
+            }
+        }
+        #endif
         .onChange(of: pendingCommand) { sendPending() }
         .onChange(of: session == nil) { sendPending() }
         .onChange(of: scenePhase) { _, phase in
@@ -542,3 +597,11 @@ final class DeckhandTerminalView: TerminalView {
         }
     }
 }
+
+#if DEBUG
+extension Notification.Name {
+    static let deckhandSeedType = Notification.Name("deckhand.seed.type")
+    /// Switches the server screen to "agent", "server" or "terminal" (screen recordings).
+    static let deckhandSeedView = Notification.Name("deckhand.seed.view")
+}
+#endif
