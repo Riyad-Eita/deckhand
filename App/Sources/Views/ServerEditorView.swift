@@ -255,7 +255,7 @@ struct ServerEditorView: View {
         }
         // Prove the key works before forgetting the password.
         let probe = SSHConnection(
-            endpoint: SSHEndpoint(host: target.host, port: target.port, username: target.username),
+            endpoint: DemoHosts.endpoint(host: target.host, port: target.port, username: target.username),
             credential: .privateKey(pair.privateKey, passphrase: nil))
         try await probe.connect(pinnedHostKey: target.pinnedHostKey) { _, _ in false }
         await probe.disconnect()
