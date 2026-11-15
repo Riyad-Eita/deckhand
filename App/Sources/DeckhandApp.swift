@@ -16,6 +16,9 @@ struct DeckhandApp: App {
     init() {
         _ = Self.launchedAt
         TaskNotifier.shared.start()
+        #if targetEnvironment(macCatalyst)
+        MacWatcher.shared.start()
+        #endif
     }
 
     var body: some Scene {
