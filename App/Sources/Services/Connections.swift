@@ -50,7 +50,7 @@ final class Connections {
         }
         let via = try await jumpConnection(for: server)
         let connection = SSHConnection(
-            endpoint: SSHEndpoint(host: server.host, port: server.port, username: server.username),
+            endpoint: DemoHosts.endpoint(host: server.host, port: server.port, username: server.username),
             credential: credential, via: via)
         states[server.id] = .connecting
         let name = server.displayName
@@ -96,7 +96,7 @@ final class Connections {
         }
         let via = try await jumpConnection(for: server)
         let connection = SSHConnection(
-            endpoint: SSHEndpoint(host: server.host, port: port, username: username ?? server.username), credential: credential, via: via)
+            endpoint: DemoHosts.endpoint(host: server.host, port: port, username: username ?? server.username), credential: credential, via: via)
         let pinned = server.pinnedHostKey
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask { try await connection.connect(pinnedHostKey: pinned) { _, _ in false } }
