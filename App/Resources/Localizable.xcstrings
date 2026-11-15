@@ -4476,6 +4476,26 @@
         }
       }
     },
+    "Continue on a Computer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf einem Computer weitermachen"
+          }
+        }
+      }
+    },
+    "Continue on a Computer…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf einem Computer weitermachen …"
+          }
+        }
+      }
+    },
     "Copied": {
       "localizations": {
         "de": {
@@ -4692,6 +4712,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der neue Schlüssel ließ sich nicht installieren"
+          }
+        }
+      }
+    },
+    "Couldn't open Terminal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminal ließ sich nicht öffnen"
           }
         }
       }
@@ -11226,6 +11256,16 @@
         }
       }
     },
+    "Nothing to continue yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nichts zum Weitermachen"
+          }
+        }
+      }
+    },
     "Nothing to fix.": {
       "localizations": {
         "de": {
@@ -13963,6 +14003,16 @@
         }
       }
     },
+    "Run it in a terminal on your Mac or PC: it signs in to %@ and opens this %@ session where it left off. That computer signs in with its own SSH key or the password — nothing secret is in the command.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führe ihn in einem Terminal auf deinem Mac oder PC aus: Er meldet sich bei %1$@ an und öffnet diese %2$@-Sitzung dort, wo sie aufgehört hat. Der Computer meldet sich mit seinem eigenen SSH-Schlüssel oder dem Passwort an – im Befehl steht nichts Geheimes."
+          }
+        }
+      }
+    },
     "Run on %lld servers": {
       "localizations": {
         "de": {
@@ -14749,6 +14799,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senden von"
+          }
+        }
+      }
+    },
+    "Send the first message; then %@ has a session to continue.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schick die erste Nachricht; dann hat %@ eine Sitzung zum Weitermachen."
           }
         }
       }
@@ -16934,6 +16994,16 @@
         }
       }
     },
+    "The command is copied — paste it into Terminal.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Befehl ist kopiert – füge ihn im Terminal ein."
+          }
+        }
+      }
+    },
     "The connection closed before the command finished.": {
       "localizations": {
         "de": {
@@ -17460,6 +17530,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Start-Befehl läuft im Release-Ordner und bleibt im Hintergrund aktiv. Antwortet die Health-URL nicht innerhalb von 30 Sekunden, kommt das vorherige Release von selbst zurück."
+          }
+        }
+      }
+    },
+    "The task is still running here. Stop it first, or both will write to the same session.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Aufgabe läuft hier noch. Stoppe sie zuerst, sonst schreiben beide in dieselbe Sitzung."
           }
         }
       }
