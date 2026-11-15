@@ -12,6 +12,7 @@ struct OnboardingView: View {
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @State private var step: Step = .welcome
     @State private var addingServer = false
+    @State private var pairing = false
     @State private var signIn: ServerCLI?
     @State private var showingSettings = false
 
@@ -37,6 +38,7 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity)
         .background(Color(uiColor: .systemGroupedBackground))
         .appSheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
+        .appSheet(isPresented: $pairing) { PairingGuideView() }
         .appSheet(item: $signIn) { cli in
             if let s = servers.first { CLILoginView(server: s, cli: cli) { ok in if ok { finish() } } }
         }
@@ -64,7 +66,7 @@ struct OnboardingView: View {
     private var server: some View {
         StepPage(
             title: "Add your server",
-            subtitle: "Host, user and password are enough — Deckhand swaps the password for a secure key it creates on this \(Device.name)."
+            subtitle: "Run one line on your server and scan the QR code it shows — or enter host, user and password. Either way Deckhand signs in with a key it creates on this \(Device.name)."
         ) {
             if let s = servers.first {
                 Label("\(s.displayName) is ready", systemImage: "checkmark.circle.fill").foregroundStyle(.green).font(.headline)
@@ -75,7 +77,10 @@ struct OnboardingView: View {
             }
         } action: {
             if servers.isEmpty {
-                Button { addingServer = true } label: { Text("Add Server").frame(maxWidth: .infinity) }
+                Button { pairing = true } label: { Label("Pair with a QR Code", systemImage: "qrcode.viewfinder").frame(maxWidth: .infinity) }
+                    .accessibilityIdentifier("onboarding.pair")
+                Button { addingServer = true } label: { Text("Enter the Details Instead").frame(maxWidth: .infinity) }
+                    .buttonStyle(.borderless)
                     .accessibilityIdentifier("onboarding.addServer")
             } else {
                 Button { step = .engine } label: { Text("Continue").frame(maxWidth: .infinity) }

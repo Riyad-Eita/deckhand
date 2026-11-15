@@ -324,9 +324,18 @@ public actor SSHConnection: StreamingShell {
 
     /// Runs `command` with bash as a login shell so PATH matches what the user sees in a terminal.
     public func run(_ command: String, timeout: Duration) async throws -> CommandResult {
-        let client = try connectedClient()
         let seconds = max(Int(timeout.components.seconds), 1)
-        let full = "timeout -k 5 \(seconds) bash -lc \(ShellQuote.quote(command))"
+        return try await execute("timeout -k 5 \(seconds) bash -lc \(ShellQuote.quote(command))", seconds: seconds)
+    }
+
+    /// Sends `command` exactly as it is, without a shell or time limit around it — for a forced command on the
+    /// server that reads `SSH_ORIGINAL_COMMAND` (pairing hands over a public key this way).
+    public func runVerbatim(_ command: String) async throws -> CommandResult {
+        try await execute(command, seconds: nil)
+    }
+
+    private func execute(_ full: String, seconds: Int?) async throws -> CommandResult {
+        let client = try connectedClient()
         var stdout = ByteBuffer(), stderr = ByteBuffer()
         var exitCode: Int32 = 0
         let limit = 4 * 1024 * 1024
@@ -343,7 +352,7 @@ public actor SSHConnection: StreamingShell {
         } catch {
             throw SSHError.translate(error, host: endpoint.host, port: endpoint.port, user: endpoint.username)
         }
-        if exitCode == 124 { stderr.writeString("\n[timed out after \(seconds) s]") }
+        if exitCode == 124, let seconds { stderr.writeString("\n[timed out after \(seconds) s]") }
         return CommandResult(stdout: String(buffer: stdout), stderr: String(buffer: stderr), exitCode: exitCode)
     }
 

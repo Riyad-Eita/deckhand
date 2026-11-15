@@ -37,8 +37,9 @@ Git client, database GUI, AI subscriptions).
 
 ## What works today
 
-- **SSH that just works** — password, imported key, or an Ed25519 key created on the phone. Host keys are pinned on
-  first connect. Connections quietly come back after dead spots.
+- **SSH that just works** — pair with a QR code (run [`scripts/pair.sh`](scripts/pair.sh) on the server, scan, done:
+  nothing to type or copy), or use a password, an imported key or an Ed25519 key created on the phone. Host keys are
+  pinned on first connect. Connections quietly come back after dead spots.
 - **A real terminal** — xterm-compatible, with Esc/Ctrl/arrow keys. Sessions live in `tmux` or `screen`, so you can
   reconnect and continue where you left off.
 - **Agents on your server**

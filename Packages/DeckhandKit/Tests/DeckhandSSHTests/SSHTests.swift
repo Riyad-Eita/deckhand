@@ -1552,3 +1552,63 @@ struct LiveBriefingTests {
         await conn.disconnect()
     }
 }
+
+/// Pairing by QR code against a disposable server: `scripts/pair.sh` runs there, the app's half hands over a new
+/// key, which then signs in; the code works once, an expired code and a wrong server are refused, and
+/// authorized_keys is restored afterwards. Opt-in: DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY plus DECKHAND_PAIR_TEST=1.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_PAIR_TEST"] != nil), .serialized)
+struct LivePairingTests {
+    static let script = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        .appendingPathComponent("../../../../scripts/pair.sh").standardized
+
+    @Test func pairOnceThenSignIn() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let host = env["DECKHAND_BACKUP_HOST"]!, port = Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!, user = env["DECKHAND_BACKUP_USER"]!
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let admin = SSHConnection(endpoint: SSHEndpoint(host: host, port: port, username: user), credential: .privateKey(key, passphrase: nil))
+        try await admin.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let b64 = try Data(contentsOf: Self.script).base64EncodedString()
+        _ = try await admin.run("cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys.dhbak && printf '%s' '\(b64)' | base64 -d > ~/dh-pair.sh", timeout: .seconds(20))
+        func newCode(minutes: Int = 15) async throws -> Pairing.Code {
+            let out = try await admin.run("PAIR_PRINT_LINK=1 PAIR_HOST=\(host) PAIR_PORT=\(port) PAIR_NAME=sandbox PAIR_MINUTES=\(minutes) sh ~/dh-pair.sh", timeout: .seconds(30))
+            let line = try #require(out.stdout.split(separator: "\n").first { $0.hasPrefix("@@link ") }, "\(out.stdout) \(out.stderr)")
+            return try #require(Pairing.parse(URL(string: String(line.dropFirst(7)))!))
+        }
+        do {
+            let code = try await newCode()
+            #expect(code.user == user && code.name == "sandbox" && !code.fingerprints.isEmpty)
+            #expect(try await admin.run("grep -c 'deckhand-pair-' ~/.ssh/authorized_keys", timeout: .seconds(10)).stdout.hasPrefix("1"))
+
+            // A different host key than the code names: refused before anything is sent.
+            var forged = code
+            forged.fingerprints = ["SHA256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"]
+            await #expect(throws: PairingClient.Failure.self) { _ = try await PairingClient.pair(forged, deviceName: "Test") }
+
+            let result = try await PairingClient.pair(code, deviceName: "Test iPhone ’27")
+            #expect(result.publicKey.hasSuffix(" deckhand Test iPhone 27"))
+            let phone = SSHConnection(endpoint: SSHEndpoint(host: host, port: port, username: user), credential: .privateKey(result.privateKey, passphrase: nil))
+            try await phone.connect(pinnedHostKey: result.hostKey, trustNewHostKey: { _, _ in false })
+            #expect(try await phone.run("echo signed-in", timeout: .seconds(10)).stdout == "signed-in\n")
+            await phone.disconnect()
+            let keys = try await admin.run("cat ~/.ssh/authorized_keys", timeout: .seconds(10)).stdout
+            #expect(!keys.contains("deckhand-pair-"), "the one-time key is gone")
+            #expect(keys.contains(result.publicKey))
+
+            // The same code again: the one-time key no longer exists.
+            do { _ = try await PairingClient.pair(code, deviceName: "Again"); Issue.record("reused code worked") } catch let f as PairingClient.Failure {
+                #expect(f == .expired)
+            }
+
+            // A code whose time on the server is up, even if the phone thinks it's still valid.
+            var stale = try await newCode(minutes: 0)
+            stale.expires = Date().addingTimeInterval(600)
+            do { _ = try await PairingClient.pair(stale, deviceName: "Late"); Issue.record("expired code worked") } catch let f as PairingClient.Failure {
+                #expect(f == .expired)
+            }
+        } catch {
+            Issue.record(error)
+        }
+        _ = try await admin.run("mv ~/.ssh/authorized_keys.dhbak ~/.ssh/authorized_keys; rm -rf ~/.deckhand/pair ~/dh-pair.sh", timeout: .seconds(20))
+        await admin.disconnect()
+    }
+}

@@ -15,6 +15,7 @@ struct ServerListView: View {
     @State private var searching = false
     @State private var editing: Server?
     @State private var confirmDelete: Server?
+    @State private var pairing = false
     @State private var sharing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
@@ -130,13 +131,19 @@ struct ServerListView: View {
                         .background(Theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
                     VStack(spacing: 8) {
                         Text("Add your first server").font(.title2.weight(.semibold)).multilineTextAlignment(.center)
-                        Text("Any Linux machine you can reach over SSH. Deckhand can create a secure key for it on this \(Device.name).")
+                        Text("Any Linux machine you can reach over SSH. Run one line on it and scan the QR code — or enter the details yourself.")
                             .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
+                    Button { pairing = true } label: {
+                        Label("Pair with a QR Code", systemImage: "qrcode.viewfinder").font(.headline).frame(maxWidth: 260).padding(.vertical, 6)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .accessibilityIdentifier("home.pair")
                     Button { addingServer = true } label: {
                         Text("Add Server").font(.headline).multilineTextAlignment(.center).frame(maxWidth: 260).padding(.vertical, 6)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
                     .controlSize(.large)
                     Button("Import from another SSH app") { importing = true }
                         .font(.subheadline).multilineTextAlignment(.center)
@@ -243,6 +250,7 @@ struct ServerListView: View {
             }
         }
         .appSheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
+        .appSheet(isPresented: $pairing) { PairingGuideView() }
         .appSheet(isPresented: $importing) { ImportServersView() }
         .appSheet(isPresented: $searching) {
             CommandPaletteView(openServer: { autoOpen = $0 }, openChat: { openChat = $0 })

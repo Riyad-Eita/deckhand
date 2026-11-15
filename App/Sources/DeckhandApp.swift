@@ -216,7 +216,9 @@ struct ServerLinkImportModifier: ViewModifier {
 }
 
 extension View {
-    func serverLinkImport(enabled: Bool) -> some View { modifier(ServerLinkImportModifier(enabled: enabled)) }
+    func serverLinkImport(enabled: Bool) -> some View {
+        modifier(ServerLinkImportModifier(enabled: enabled)).modifier(PairingLinkModifier(enabled: enabled))
+    }
 }
 
 /// Shows the first-connect host key question. Attach it to the root and to every sheet, because an alert
