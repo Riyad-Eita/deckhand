@@ -1,8 +1,8 @@
 import DeckhandCore
 import SwiftUI
 
-/// Model and effort for a Claude Code / Codex task, in the chat header (applies from the next message on) — and
-/// "Continue on a computer".
+/// Model and effort for a Claude Code / Codex task, in the chat header (applies from the next message on) — plus
+/// "Continue on a computer" and "Repeat on a schedule".
 struct CLIModelMenu: View {
     @Bindable var thread: ChatThread
     let server: Server
@@ -12,6 +12,7 @@ struct CLIModelMenu: View {
     private var settings: AppSettings { .shared }
     @State private var codexModels: [CLIModel] = AppSettings.shared.codexModels
     @State private var handingOff = false
+    @State private var scheduling = false
 
     private var models: [CLIModel] { cli == .codex ? codexModels : CLIModels.claude }
 
@@ -38,10 +39,23 @@ struct CLIModelMenu: View {
             Divider()
             Button { handingOff = true } label: { Label("Continue on a Computer…", systemImage: "laptopcomputer.and.arrow.down") }
                 .accessibilityIdentifier("chat.handoff")
+            Button { scheduling = true } label: { Label("Repeat on a Schedule…", systemImage: "calendar.badge.clock") }
+                .accessibilityIdentifier("chat.schedule")
         } label: {
             Image(systemName: "slider.horizontal.3")
         }
         .appSheet(isPresented: $handingOff) { HandOffSheet(thread: thread, server: server, cli: cli) }
+        .appSheet(isPresented: $scheduling) {
+            ScheduleEditorSheet(
+                server: server, original: nil,
+                prefill: (name: thread.title, prompt: thread.messages.first { $0.role == .user }?.text ?? "", cli: cli, directory: thread.workingDirectory)
+            ) { s in
+                Task {
+                    guard let conn = try? await connections.connection(for: server) else { return }
+                    _ = try? await conn.run(AgentSchedules.saveCommand(s), timeout: .seconds(30))
+                }
+            }
+        }
         .accessibilityLabel("Model and Effort")
         .accessibilityIdentifier("chat.modelMenu")
         .task { if cli == .codex { await loadCodexModels() } }

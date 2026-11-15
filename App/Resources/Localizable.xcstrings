@@ -245,6 +245,16 @@
         }
       }
     },
+    "%@ isn't installed for this user on the server. Install it under Server Tools, then run again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist für diesen Benutzer auf dem Server nicht installiert. Installiere es unter Server-Werkzeuge und starte dann erneut."
+          }
+        }
+      }
+    },
     "%@ may not write %@. As root it's saved like other changes: with a backup you can roll back in Change history.": {
       "localizations": {
         "de": {
@@ -2804,6 +2814,16 @@
         }
       }
     },
+    "Background Tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundaufgaben"
+          }
+        }
+      }
+    },
     "Background tasks": {
       "localizations": {
         "de": {
@@ -3841,6 +3861,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude Code ist auf dem Server nicht angemeldet. Melde dich in den CLI-Einstellungen des Servers an."
+          }
+        }
+      }
+    },
+    "Claude Code or Codex on a schedule, also while your phone is off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code oder Codex nach Zeitplan, auch wenn dein iPhone aus ist"
           }
         }
       }
@@ -5529,6 +5559,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delete %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ löschen?"
+          }
+        }
+      }
+    },
+    "Delete Scheduled Task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Aufgabe löschen"
           }
         }
       }
@@ -7569,6 +7619,16 @@
         }
       }
     },
+    "Full access without asking. Your house rules still block what they forbid.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voller Zugriff ohne Nachfrage. Deine Hausregeln blockieren trotzdem, was sie verbieten."
+          }
+        }
+      }
+    },
     "Full auto": {
       "extractionState": "manual",
       "localizations": {
@@ -7720,6 +7780,16 @@
         }
       }
     },
+    "Give Claude Code or Codex a job that comes back: \"Every Monday at 6:00, install security updates and restart what needs it.\"": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib Claude Code oder Codex eine wiederkehrende Aufgabe: „Jeden Montag um 6:00 Sicherheitsupdates installieren und neu starten, was es braucht.“"
+          }
+        }
+      }
+    },
     "Go through the risks with an agent": {
       "localizations": {
         "de": {
@@ -7859,6 +7929,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Härtungsprofile"
+          }
+        }
+      }
+    },
+    "Hasn't run yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht gelaufen"
           }
         }
       }
@@ -8089,6 +8169,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hausregeln für Agenten"
+          }
+        }
+      }
+    },
+    "How": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie"
           }
         }
       }
@@ -8493,6 +8583,16 @@
         }
       }
     },
+    "Install security updates and restart the services that need it. Tell me what changed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere Sicherheitsupdates und starte die Dienste neu, die es brauchen. Sag mir, was sich geändert hat."
+          }
+        }
+      }
+    },
     "Install the updates": {
       "localizations": {
         "de": {
@@ -8793,12 +8893,32 @@
         }
       }
     },
+    "It may change files in the folder; commands that aren't allowed by your house rules are refused.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er darf Dateien im Ordner ändern; Befehle, die deine Hausregeln nicht erlauben, werden abgelehnt."
+          }
+        }
+      }
+    },
     "It replaces your current reply.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Sie ersetzt deine aktuelle Antwort."
+          }
+        }
+      }
+    },
+    "It won't run again. Its earlier runs stay under Background tasks.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie läuft nicht mehr. Frühere Läufe bleiben unter Hintergrundaufgaben."
           }
         }
       }
@@ -9253,12 +9373,42 @@
         }
       }
     },
+    "Last run %@ didn't finish": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Lauf %@ nicht fertig geworden"
+          }
+        }
+      }
+    },
     "Last run %@, %lld s": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Zuletzt gelaufen %1$@, %2$lld s"
+          }
+        }
+      }
+    },
+    "Last run %@: done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Lauf %@: fertig"
+          }
+        }
+      }
+    },
+    "Last run %@: stopped": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Lauf %@: gestoppt"
           }
         }
       }
@@ -10223,6 +10373,16 @@
         }
       }
     },
+    "New Scheduled Task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue geplante Aufgabe"
+          }
+        }
+      }
+    },
     "New Server": {
       "localizations": {
         "de": {
@@ -10933,6 +11093,16 @@
         }
       }
     },
+    "No scheduled tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine geplanten Aufgaben"
+          }
+        }
+      }
+    },
     "No server status yet": {
       "localizations": {
         "de": {
@@ -11162,6 +11332,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht mit dem Server verbunden."
+          }
+        }
+      }
+    },
+    "Not in the crontab anymore. Open it and save to put it back.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steht nicht mehr in der Crontab. Öffnen und sichern, um sie wieder einzutragen."
           }
         }
       }
@@ -12306,6 +12486,16 @@
         }
       }
     },
+    "Pause": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausieren"
+          }
+        }
+      }
+    },
     "Peak": {
       "localizations": {
         "de": {
@@ -12908,6 +13098,16 @@
         }
       }
     },
+    "Push when a run ends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push, wenn ein Lauf endet"
+          }
+        }
+      }
+    },
     "Pushes go through ntfy; a private topic is created for you (Settings → Notifications).": {
       "localizations": {
         "de": {
@@ -13088,6 +13288,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur lesen"
+          }
+        }
+      }
+    },
+    "Read only: it can look around and report, but not change anything. Nobody is there to approve, so start here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur lesen: Er kann sich umsehen und berichten, aber nichts ändern. Niemand ist da, um zu bestätigen – fang also hier an."
           }
         }
       }
@@ -13652,6 +13862,16 @@
         }
       }
     },
+    "Repeat on a Schedule…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Zeitplan wiederholen …"
+          }
+        }
+      }
+    },
     "Repeat passphrase": {
       "localizations": {
         "de": {
@@ -13933,6 +14153,16 @@
         }
       }
     },
+    "Resume": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortsetzen"
+          }
+        }
+      }
+    },
     "Retry — picks up where it stopped": {
       "localizations": {
         "de": {
@@ -14163,6 +14393,16 @@
         }
       }
     },
+    "Run Now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt ausführen"
+          }
+        }
+      }
+    },
     "Run a command": {
       "localizations": {
         "de": {
@@ -14283,6 +14523,16 @@
         }
       }
     },
+    "Running now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft gerade"
+          }
+        }
+      }
+    },
     "Runs": {
       "localizations": {
         "de": {
@@ -14339,6 +14589,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Führt einen Shell-Befehl aus und gibt die Ausgabe zurück."
+          }
+        }
+      }
+    },
+    "Runs start from this server's crontab, also while your phone is off. Each run uses your house rules and the access you chose, waits out usage limits, and is listed under Background tasks.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Läufe starten aus der Crontab dieses Servers, auch wenn dein iPhone aus ist. Jeder Lauf hält sich an deine Hausregeln und den gewählten Zugriff, wartet Nutzungslimits ab und erscheint unter Hintergrundaufgaben."
           }
         }
       }
@@ -14719,6 +14979,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeitplan"
+          }
+        }
+      }
+    },
+    "Scheduled Task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Aufgabe"
+          }
+        }
+      }
+    },
+    "Scheduled Tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Aufgaben"
+          }
+        }
+      }
+    },
+    "Scheduled agent tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Agent-Aufgaben"
           }
         }
       }
@@ -15879,6 +16169,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Überspringen"
+          }
+        }
+      }
+    },
+    "Skipped %@: the run before was still going": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ übersprungen: der vorige Lauf lief noch"
           }
         }
       }
@@ -17534,6 +17834,16 @@
         }
       }
     },
+    "The last run of %@ is still going.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der letzte Lauf von %@ läuft noch."
+          }
+        }
+      }
+    },
     "The login check after closing the old port failed, so the server opens it again by itself within 5 minutes.": {
       "localizations": {
         "de": {
@@ -17710,6 +18020,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server konnte Port %1$@ nicht öffnen (%2$@). Die vorherige Konfiguration wurde wiederhergestellt."
+          }
+        }
+      }
+    },
+    "The server didn't accept the change.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat die Änderung nicht übernommen."
           }
         }
       }
@@ -18370,6 +18690,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Timer werden vom System verwaltet; Deckhand zeigt sie nur an."
+          }
+        }
+      }
+    },
+    "Times are the server's local time.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Zeiten sind die Ortszeit des Servers."
           }
         }
       }
@@ -19505,6 +19835,16 @@
         }
       }
     },
+    "Waiting for the usage limit until %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet bis %@ auf das Nutzungslimit"
+          }
+        }
+      }
+    },
     "Waiting for you": {
       "localizations": {
         "de": {
@@ -19641,6 +19981,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wöchentlich"
+          }
+        }
+      }
+    },
+    "Weekly security updates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wöchentliche Sicherheitsupdates"
           }
         }
       }
