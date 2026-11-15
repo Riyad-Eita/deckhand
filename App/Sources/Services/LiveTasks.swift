@@ -46,10 +46,21 @@ final class LiveTasks {
     }
 
 #else
-    // The Mac has no Live Activities: the same calls do nothing there.
-    func start(_ thread: ChatThread, server: Server) {}
-    func update(_ thread: ChatThread, phase: TaskActivityAttributes.Phase, step: String, waitingUntil: Date? = nil, force: Bool = false) {}
-    func end(_ thread: ChatThread, ok: Bool, stopped: Bool = false) {}
+    // The Mac has no Live Activities: running tasks and approvals show in the menu bar instead.
+    private var servers: [UUID: String] = [:]
+
+    func start(_ thread: ChatThread, server: Server) {
+        servers[thread.id] = server.displayName
+        MenuBarBridge.shared.set(thread.id, title: thread.title, server: server.displayName, phase: "running", step: String(localized: "Starting…"))
+    }
+    func update(_ thread: ChatThread, phase: TaskActivityAttributes.Phase, step: String, waitingUntil: Date? = nil, force: Bool = false) {
+        guard let server = servers[thread.id] else { return }
+        MenuBarBridge.shared.set(thread.id, title: thread.title, server: server, phase: phase.rawValue, step: step)
+    }
+    func end(_ thread: ChatThread, ok: Bool, stopped: Bool = false) {
+        servers[thread.id] = nil
+        MenuBarBridge.shared.remove(thread.id)
+    }
 
 #endif
 

@@ -19,6 +19,7 @@ struct DeckhandApp: App {
         ServerSyncService.shared.start()
         #if targetEnvironment(macCatalyst)
         MacWatcher.shared.start()
+        MenuBarBridge.shared.start()
         #endif
     }
 

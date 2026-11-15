@@ -34,6 +34,12 @@ targets:
     dependencies:
       - target: DeckhandWidgets
         embed: true
+      # Mac only: the AppKit bundle behind the menu bar item, loaded at runtime from PlugIns.
+      - target: DeckhandMenuBar
+        embed: true
+        platformFilter: macOS
+        copy:
+          destination: plugins
       - package: DeckhandKit
         product: DeckhandCore
       - package: DeckhandKit
@@ -106,6 +112,23 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: de.fs223.deckhand.uitests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: Deckhand
+  DeckhandMenuBar:
+    type: bundle
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - MacBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.fs223.deckhand.menubar
+        PRODUCT_NAME: DeckhandMenuBar
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSPrincipalClass: DeckhandMenuBar
+        SKIP_INSTALL: YES
+        DEVELOPMENT_TEAM: XB257YDVN7
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "6.0"
+
 schemes:
   Deckhand:
     build:

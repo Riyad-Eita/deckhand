@@ -258,8 +258,20 @@ final class ChatModel {
             pendingApproval = PendingApproval(call: request.call, danger: request.danger,
                                               rule: request.rule.map { HouseRulesStore.rules(for: server)?.title(for: $0) ?? $0.title }) { [weak self] decision in
                 self?.pendingApproval = nil
+                #if targetEnvironment(macCatalyst)
+                if let self {
+                    MenuBarBridge.shared.approvalDone(self.thread.id)
+                    LiveTasks.shared.update(self.thread, phase: .running, step: String(localized: "Working…"), force: true)
+                }
+                #endif
                 continuation.resume(returning: decision)
             }
+            #if targetEnvironment(macCatalyst)
+            // Allow / Deny right from the menu bar.
+            MenuBarBridge.shared.waitForApproval(thread.id) { [weak self] allow in
+                self?.pendingApproval?.respond(allow ? .allow : .deny(reason: "Denied from the menu bar."))
+            }
+            #endif
         }
     }
 
