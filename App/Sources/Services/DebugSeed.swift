@@ -202,6 +202,8 @@ enum DebugSeed {
             if env["DECKHAND_SEED_APIKEY"] == nil { AppSettings.shared.apiKey = "" }
             UserDefaults.standard.removeObject(forKey: "home.agentCardDismissed")
         }
+        // DECKHAND_SEED_NOCARD=1: the home card about setting up the agent is already dismissed (store screenshots).
+        if env["DECKHAND_SEED_NOCARD"] == "1" { UserDefaults.standard.set(true, forKey: "home.agentCardDismissed") }
         if let apiKey = env["DECKHAND_SEED_APIKEY"], !apiKey.isEmpty { AppSettings.shared.apiKey = apiKey }
         // DECKHAND_SEED_DIAGNOSTIC=1: one MetricKit payload with a crash and a hang (replaces stored reports).
         if env["DECKHAND_SEED_DIAGNOSTIC"] == "1" {

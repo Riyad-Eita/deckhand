@@ -153,7 +153,7 @@ struct ServerListView: View {
             // Learn which agents are ready on each server (quietly, for the home screen).
             for server in servers { await AgentStatus.shared.refresh(server) }
         }
-        .navigationDestination(item: $autoOpen) { ServerView(server: $0) }
+        .navigationDestination(item: $autoOpen) { ServerView(server: $0).sidebarPage("server.\($0.id)") }
         .navigationDestination(item: $openChat) { PlainChatView(thread: $0) }
         .sheet(item: Binding(get: { AppRouter.shared.pendingApproval }, set: { AppRouter.shared.pendingApproval = $0 })) { link in
             ApproveSheet(link: link, server: servers.first { $0.id == link.server })
