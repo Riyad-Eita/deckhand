@@ -255,7 +255,13 @@ enum DebugSeed {
         guard let host = env["DECKHAND_SEED_HOST"], let user = env["DECKHAND_SEED_USER"],
               let key = env["DECKHAND_SEED_KEY"] ?? env["DECKHAND_SEED_PASSWORD"] else { return }
         let existing = (try? context.fetch(FetchDescriptor<Server>())) ?? []
-        if existing.contains(where: { $0.host == host && $0.username == user }) { return }
+        // A server that's already there (re-added without its login, say) gets the login put back.
+        if let s = existing.first(where: { $0.host == host && $0.username == user }) {
+            s.authKind = env["DECKHAND_SEED_PASSWORD"] != nil ? .password : .key
+            Keychain.set(key, for: s.secretAccount)
+            try? context.save()
+            return
+        }
         let server = Server(
             name: env["DECKHAND_SEED_NAME"] ?? host, host: host,
             port: Int(env["DECKHAND_SEED_PORT"] ?? "22") ?? 22, username: user,
