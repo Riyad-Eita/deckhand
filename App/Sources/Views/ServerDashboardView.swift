@@ -357,6 +357,12 @@ struct ServerDashboardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.xcode")
+                        Divider().padding(.leading, 16)
+                        NavigationLink { MacControlView(server: server) } label: {
+                            ManageRow(title: "Control this Mac", subtitle: "Screen, Shortcuts, apps and links, clipboard, stay awake", symbol: "macwindow")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.macControl")
                     }
                     .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))
