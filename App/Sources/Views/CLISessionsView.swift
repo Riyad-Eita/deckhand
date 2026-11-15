@@ -7,7 +7,7 @@ struct CLISessionsView: View {
     let server: Server
     /// Opens the task that continues the session.
     let open: (ChatThread) -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var sessions: [CLISessions.Session]?
     @State private var error: String?
 
@@ -66,7 +66,7 @@ private struct CLISessionDetail: View {
     let server: Server
     let session: CLISessions.Session
     let open: (ChatThread) -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.modelContext) private var context
     @State private var messages: [Message]?
     @State private var error: String?

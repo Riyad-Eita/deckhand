@@ -5,8 +5,8 @@ import SwiftUI
 /// running; unwatching puts the original line back.
 struct CronWatchView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: CronWatch.Status?
     @State private var busy: String?
     @State private var error: String?
@@ -64,7 +64,7 @@ struct CronWatchView: View {
                     .accessibilityIdentifier("cron.new")
             }
         }
-        .sheet(item: $editing) { target in
+        .appSheet(item: $editing) { target in
             JobEditorSheet(line: target.line) { newLine in
                 Task {
                     await perform(target.line.map { CronEditor.replaceCommand($0, with: newLine) } ?? CronEditor.addCommand(newLine))

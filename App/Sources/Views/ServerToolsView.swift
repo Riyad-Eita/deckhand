@@ -9,7 +9,7 @@ struct ServerToolsView: View {
     let runInTerminal: (String) -> Void
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var inventory: ServerInventory?
     @State private var error: String?
     @State private var busy: ServerCLI?
@@ -62,8 +62,8 @@ struct ServerToolsView: View {
                 }
             }
             .task { await refresh() }
-            .sheet(isPresented: $githubSignIn, onDismiss: { githubClosed += 1 }) { GitHubLoginSheet(server: server) }
-            .sheet(item: $signingIn) { cli in
+            .appSheet(isPresented: $githubSignIn, onDismiss: { githubClosed += 1 }) { GitHubLoginSheet(server: server) }
+            .appSheet(item: $signingIn) { cli in
                 CLILoginView(server: server, cli: cli) { _ in Task { await refresh() } }
             }
         }

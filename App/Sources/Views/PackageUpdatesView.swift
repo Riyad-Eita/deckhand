@@ -5,7 +5,7 @@ import SwiftUI
 struct PackageUpdatesView: View {
     let server: Server
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var status: UpdateStatus?
     @State private var error: String?
     @State private var loading = true
@@ -49,7 +49,7 @@ struct PackageUpdatesView: View {
                     .disabled(status?.manager == nil)
             }
         }
-        .sheet(item: $task, onDismiss: { Task { await load() } }) { t in sheet(for: t) }
+        .appSheet(item: $task, onDismiss: { Task { await load() } }) { t in sheet(for: t) }
         .task { await load() }
         .refreshable { await load() }
     }

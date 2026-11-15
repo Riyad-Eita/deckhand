@@ -6,7 +6,7 @@ import SwiftUI
 struct ProcessesView: View {
     let server: Server
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @AppStorage("processes.sort") private var sort: ProcessSort = .cpu
     @AppStorage("processes.kernel") private var showKernel = false
     @State private var snapshot: ProcessSnapshot?

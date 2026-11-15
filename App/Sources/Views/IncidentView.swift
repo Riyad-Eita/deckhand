@@ -7,7 +7,7 @@ import SwiftUI
 struct IncidentView: View {
     let server: Server
     let checkID: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.modelContext) private var context
     @State private var check: Uptime.Check?
     @State private var evidence: [Incident.Evidence]?
@@ -70,8 +70,8 @@ struct IncidentView: View {
         .navigationTitle("Incident")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $thread) { AgentChatView(thread: $0, server: server) }
-        .sheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
+        .appSheet(item: $signingIn) { cli in CLILoginView(server: server, cli: cli) }
+        .appSheet(isPresented: $showingSettings) { SettingsView() }
         .task { await load() }
         .task { await AgentStatus.shared.refresh(server) }
     }

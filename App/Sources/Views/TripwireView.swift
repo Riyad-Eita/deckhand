@@ -4,8 +4,8 @@ import SwiftUI
 /// Decoy files that push the moment someone opens them.
 struct TripwireView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var root = RootRunner()
     @State private var status: Tripwire.Status?
     @State private var home = ""
@@ -69,7 +69,7 @@ struct TripwireView: View {
             }
         }
         .sudoPassword(root, server: server)
-        .sheet(item: $task) { t in
+        .appSheet(item: $task) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps) { _ in
                 Task { await load() }

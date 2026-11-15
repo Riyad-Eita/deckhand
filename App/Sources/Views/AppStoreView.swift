@@ -335,7 +335,7 @@ struct ReviewsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .refreshable { await load() }
         .task { await load() }
-        .sheet(item: $replying) { r in ReplySheet(app: app, review: r) { Task { await load() } } }
+        .appSheet(item: $replying) { r in ReplySheet(app: app, review: r) { Task { await load() } } }
     }
 
     private func load() async {

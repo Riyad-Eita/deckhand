@@ -4,7 +4,7 @@ import SwiftUI
 
 /// One command on several servers: pick servers (or a group), run at once or one after another, results side by side.
 struct FleetRunView: View {
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @State private var selected: Set<UUID> = []
     @State private var command = ""

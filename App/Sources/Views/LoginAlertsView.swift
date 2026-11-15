@@ -4,8 +4,8 @@ import SwiftUI
 /// A push for SSH logins from addresses you don't trust, and the list of recent logins.
 struct LoginAlertsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var root = RootRunner()
     @State private var status: LoginAlerts.Status?
     @State private var myAddress: String?
@@ -88,7 +88,7 @@ struct LoginAlertsView: View {
         .task { if status == nil { await load() } }
         .refreshable { await load() }
         .sudoPassword(root, server: server)
-        .sheet(item: $task, onDismiss: { Task { await load() } }) { t in
+        .appSheet(item: $task, onDismiss: { Task { await load() } }) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.changeID), steps: RootTaskSheet.changeSteps,
                           guardID: t.change.guardSeconds != nil ? t.changeID : nil)

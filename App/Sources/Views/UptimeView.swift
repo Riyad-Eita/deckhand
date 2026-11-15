@@ -4,8 +4,8 @@ import SwiftUI
 /// Uptime checks for websites and APIs, run by the server itself; pushes when something goes down.
 struct UptimeView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: Uptime.Status?
     @State private var error: String?
     @State private var adding = false
@@ -67,11 +67,11 @@ struct UptimeView: View {
         }
         .task { await load() }
         .refreshable { await load() }
-        .sheet(item: $remedyFor) { check in
+        .appSheet(item: $remedyFor) { check in
             RemedySheet(server: server, checkID: check.id, checkName: check.name, existing: check.remedy) { Task { await load() } }
         }
         .navigationDestination(item: $incident) { IncidentView(server: server, checkID: $0) }
-        .sheet(isPresented: $adding) {
+        .appSheet(isPresented: $adding) {
             AddCheckSheet { check in
                 Task {
                     // Refreshes the runner too, so pushes carry the link back into the app.

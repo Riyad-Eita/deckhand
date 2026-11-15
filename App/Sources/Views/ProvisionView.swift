@@ -7,7 +7,7 @@ import UIKit
 /// (only after the key login worked), firewall, fail2ban, automatic updates, time sync and swap.
 struct ProvisionView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var follow = RootRunner()
     @State private var facts: SecurityAudit.Facts?

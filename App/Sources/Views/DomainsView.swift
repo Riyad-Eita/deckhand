@@ -4,7 +4,7 @@ import SwiftUI
 /// Domains served by Caddy with automatic HTTPS: DNS check first, then a guarded change; certificate status per domain.
 struct DomainsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var caddy: String?
     @State private var domains: [Domains.Status]?
@@ -58,14 +58,14 @@ struct DomainsView: View {
         .toolbar { ToolbarItem(placement: .primaryAction) { Button { _Concurrency.Task { await load() } } label: { Image(systemName: "arrow.clockwise") }.accessibilityLabel("Refresh") } }
         .sudoPassword(root, server: server)
         .task { await load() }
-        .sheet(isPresented: $adding) {
+        .appSheet(isPresented: $adding) {
             AddDomainSheet(server: server) { d in
                 let c = Domains.addChange(d)
                 task = Task(id: ConfigChange.makeID(title: c.title), change: c,
                             summary: String(localized: "Installs Caddy if needed and serves \(d.name) from \(d.upstream) with HTTPS."))
             }
         }
-        .sheet(item: $task) { t in
+        .appSheet(item: $task) { t in
             RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title), summary: LocalizedStringKey(t.summary),
                           files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps) { _ in
                 _Concurrency.Task { try? await _Concurrency.Task.sleep(for: .seconds(2)); await load() }
@@ -86,7 +86,7 @@ struct DomainsView: View {
 private struct AddDomainSheet: View {
     let server: Server
     let add: (Domains.Domain) -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var upstream = "127.0.0.1:3000"

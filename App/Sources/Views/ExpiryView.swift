@@ -4,8 +4,8 @@ import SwiftUI
 /// Certificates and domain registrations with days left; the server checks daily and pushes at 30, 7 and 1 days.
 struct ExpiryView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: Expiry.Status?
     @State private var newDomain = ""
     @State private var busy = false

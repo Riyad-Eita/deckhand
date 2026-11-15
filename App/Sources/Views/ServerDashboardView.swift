@@ -7,7 +7,7 @@ struct ServerDashboardView: View {
     /// Opens the terminal with a command (e.g. something that needs a sudo password).
     var runInTerminal: (String) -> Void = { _ in }
     @Environment(\.dynamicTypeSize) private var typeSize
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var stats: ServerStats?
     @State private var error: String?
     @State private var updated: Date?

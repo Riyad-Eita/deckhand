@@ -9,7 +9,7 @@ struct ServerEditorView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
 
     @State private var name = ""
     @State private var group = ""

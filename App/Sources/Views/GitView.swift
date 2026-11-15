@@ -4,7 +4,7 @@ import SwiftUI
 /// Git repositories on a server.
 struct GitReposView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var repos: [String]?
     @State private var error: String?
 
@@ -58,7 +58,7 @@ struct GitReposView: View {
 struct GitRepoView: View {
     let server: Server
     let repo: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var status: Git.Status?
     @State private var message = ""
     @State private var busy: String?
@@ -143,8 +143,8 @@ struct GitRepoView: View {
         .toolbar { ToolbarItem(placement: .topBarTrailing) { if busy != nil { ProgressView() } } }
         .task { await refresh(fetch: true) }
         .refreshable { await refresh(fetch: true) }
-        .sheet(isPresented: $showBranches, onDismiss: { Task { await refresh() } }) { GitBranchesView(server: server, repo: repo) }
-        .sheet(isPresented: $showIdentity, onDismiss: { Task { await refresh() } }) { GitIdentityView(server: server, repo: repo) }
+        .appSheet(isPresented: $showBranches, onDismiss: { Task { await refresh() } }) { GitBranchesView(server: server, repo: repo) }
+        .appSheet(isPresented: $showIdentity, onDismiss: { Task { await refresh() } }) { GitIdentityView(server: server, repo: repo) }
         .confirmationDialog("Throw away the changes to \(confirmDiscard?.path ?? "")?", isPresented: Binding(get: { confirmDiscard != nil }, set: { if !$0 { confirmDiscard = nil } }), titleVisibility: .visible) {
             Button("Throw away", role: .destructive) { if let f = confirmDiscard { run(Git.discardCommand(repo, file: f)) } }
         } message: {
@@ -260,7 +260,7 @@ struct GitDiffView: View {
     let repo: String
     let file: Git.FileChange
     let staged: Bool
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var lines: [String]?
 
     var body: some View {
@@ -286,7 +286,7 @@ struct GitDiffView: View {
 struct GitLogView: View {
     let server: Server
     let repo: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var commits: [Git.Commit]?
 
     var body: some View {
@@ -316,7 +316,7 @@ struct GitLogView: View {
 struct GitBranchesView: View {
     let server: Server
     let repo: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var branches: [Git.Branch] = []
     @State private var newName = ""
@@ -366,7 +366,7 @@ struct GitBranchesView: View {
 struct GitIdentityView: View {
     let server: Server
     let repo: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var email = ""

@@ -4,7 +4,7 @@ import SwiftUI
 /// Log sources on one server: the journal and readable log files, newest first.
 struct LogsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var sources: [LogSource] = []
     @State private var loading = true
     @State private var error: String?
@@ -64,7 +64,7 @@ struct LogViewer: View {
         var id: String { rawValue }
     }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var lines: [LogLine] = []
     @State private var nextID = 0
     @State private var filter: Filter = .all
@@ -129,7 +129,7 @@ struct LogViewer: View {
             .padding(12)
             .background(.bar)
         }
-        .sheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
+        .appSheet(item: Binding(get: { explaining.map { ExplainText(text: $0) } }, set: { explaining = $0?.text })) { e in
             ExplainSheet(text: e.text, context: String(localized: "the log \(source.title)")) { _ in
                 investigatePrompt = Logs.explainPrompt(source: source, lines: shown)
             }

@@ -36,11 +36,11 @@ struct OnboardingView: View {
         .frame(maxWidth: 680)
         .frame(maxWidth: .infinity)
         .background(Color(uiColor: .systemGroupedBackground))
-        .sheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
-        .sheet(item: $signIn) { cli in
+        .appSheet(isPresented: $addingServer) { ServerEditorView(server: nil) }
+        .appSheet(item: $signIn) { cli in
             if let s = servers.first { CLILoginView(server: s, cli: cli) { ok in if ok { finish() } } }
         }
-        .sheet(isPresented: $showingSettings, onDismiss: { if AppSettings.shared.isConfigured { finish() } }) { SettingsView() }
+        .appSheet(isPresented: $showingSettings, onDismiss: { if AppSettings.shared.isConfigured { finish() } }) { SettingsView() }
         .onChange(of: servers.count) { _, count in if count > 0 && step == .server { step = .engine } }
     }
 

@@ -10,7 +10,7 @@ struct FilesView: View {
     var path: String?
     var runInTerminal: (String) -> Void = { _ in }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @AppStorage("files.sort") private var sort: FileSort = .name
     @AppStorage("files.showHidden") private var showHidden = false
     @State private var folder: RemoteFolder?
@@ -121,7 +121,7 @@ struct FilesView: View {
             }
         }
         .fileTask($task, server: server)
-        .sheet(item: Binding(get: { copying.map { ExplainText(text: $0) } }, set: { copying = $0?.text })) { c in
+        .appSheet(item: Binding(get: { copying.map { ExplainText(text: $0) } }, set: { copying = $0?.text })) { c in
             ServerCopySheet(source: server, path: c.text)
         }
         .task { await load() }

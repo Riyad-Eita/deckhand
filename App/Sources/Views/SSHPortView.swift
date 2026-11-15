@@ -5,7 +5,7 @@ import SwiftUI
 /// Moves SSH to another port in guarded steps, proving a login on the new port before the old one closes.
 struct SSHPortView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var inspection: SSHPort.Inspection?
     @State private var portText = ""

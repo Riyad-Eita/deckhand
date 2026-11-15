@@ -7,7 +7,7 @@ struct FileEditorView: View {
     let server: Server
     let path: String
     var onSaved: () -> Void = {}
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var root = RootRunner()
     @State private var text = ""

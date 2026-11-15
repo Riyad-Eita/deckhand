@@ -22,7 +22,7 @@ struct RemedySheet: View {
     var existing: Uptime.Remedy?
     var initialCommands = ""
     var saved: () -> Void = {}
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var commands = ""
     @State private var maxPerHour = 3

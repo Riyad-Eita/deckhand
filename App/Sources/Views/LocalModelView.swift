@@ -6,8 +6,8 @@ import SwiftUI
 /// and one tap to use it in chats (reached through the SSH connection, never exposed to the internet).
 struct LocalModelView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var root = RootRunner()
     @State private var status: OllamaSetup.Status?
     @State private var chosen = ""

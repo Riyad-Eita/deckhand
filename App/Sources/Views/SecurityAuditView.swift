@@ -57,13 +57,13 @@ struct SecurityAuditView: View {
         .refreshable { await run() }
         .sudoPassword(root, server: server)
         .investigate(on: server, prompt: $investigatePrompt)
-        .sheet(item: $fixing, onDismiss: { Task { await run() } }) { f in
+        .appSheet(item: $fixing, onDismiss: { Task { await run() } }) { f in
             RootTaskSheet(
                 server: server, title: LocalizedStringKey(f.change.title), summary: LocalizedStringKey(f.check.explanation),
                 files: f.change.files, script: f.change.script(id: f.changeID), steps: RootTaskSheet.changeSteps,
                 confirm: "Fix", guardID: f.guarded ? f.changeID : nil)
         }
-        .sheet(item: $installing, onDismiss: { Task { await run() } }) { check in
+        .appSheet(item: $installing, onDismiss: { Task { await run() } }) { check in
             if case .run(let title, let script)? = check.fix {
                 RootTaskSheet(
                     server: server, title: LocalizedStringKey(title),

@@ -9,7 +9,7 @@ struct FileViewer: View {
     let size: Int64
 
     static let maxBytes = 512 * 1024
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @AppStorage("viewer.wrap") private var wrap = false
     @State private var lines: [Substring] = []
     @State private var tokens: [[SyntaxHighlighter.Token]] = []
@@ -101,7 +101,7 @@ struct FileViewer: View {
         .fullScreenCover(isPresented: $editing) {
             FileEditorView(server: server, path: path) { Task { await load() } }
         }
-        .sheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
+        .appSheet(item: Binding(get: { shareURL.map { ShareItem(url: $0) } }, set: { shareURL = $0?.url })) { item in
             ShareSheet(items: [item.url]).presentationDetents([.medium, .large])
         }
     }

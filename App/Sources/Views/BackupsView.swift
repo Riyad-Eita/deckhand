@@ -4,8 +4,8 @@ import SwiftUI
 /// Real backups with restic: a wizard, the schedule, snapshots to browse and restore.
 struct BackupsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: Backups.Status?
     @State private var error: String?
     @State private var busy = false
@@ -48,7 +48,7 @@ struct BackupsView: View {
         }
         .task { await load() }
         .refreshable { await load() }
-        .sheet(item: Binding(get: { password.map { PasswordNote(value: $0) } }, set: { password = $0?.value })) { note in
+        .appSheet(item: Binding(get: { password.map { PasswordNote(value: $0) } }, set: { password = $0?.value })) { note in
             PasswordSheet(password: note.value)
         }
     }
@@ -273,7 +273,7 @@ struct SnapshotBrowser: View {
     let server: Server
     let snapshot: Backups.Snapshot
     let path: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var nodes: [Backups.Node]?
     @State private var error: String?
     @State private var restored: String?

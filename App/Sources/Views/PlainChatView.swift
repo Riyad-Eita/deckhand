@@ -134,7 +134,7 @@ struct PlainChatView: View {
     @State private var choosingFile = false
     @FocusState private var focused: Bool
     @State private var comparing = false
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
 
     init(thread: ChatThread) {
         self.thread = thread
@@ -211,7 +211,7 @@ struct PlainChatView: View {
                 .accessibilityIdentifier("chat.model")
             }
         }
-        .sheet(isPresented: $comparing) {
+        .appSheet(isPresented: $comparing) {
             NavigationStack { CompareModelsView(prompt: model.messages.last(where: { $0.role == .user })?.text ?? draft) }
         }
         #if DEBUG
@@ -341,7 +341,7 @@ struct PlainChatView: View {
 struct ModelCaption: View {
     let model: String
     let usage: Usage?
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
 
     var body: some View {
         let price = settings.routerCandidates.first { $0.model == model }?.price ?? ModelPrice.known(model)

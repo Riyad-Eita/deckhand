@@ -6,7 +6,7 @@ struct DockerView: View {
     let server: Server
     enum Mode: String, CaseIterable, Identifiable { case containers = "Containers", compose = "Compose"; var id: String { rawValue } }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var overview: Docker.Overview?
     @State private var mode: Mode = .containers
     @State private var error: String?
@@ -78,7 +78,7 @@ struct DockerView: View {
                             titleVisibility: .visible) {
             Button(confirmCompose?.action.title ?? "", role: .destructive) { composeRun = confirmCompose }
         }
-        .sheet(item: $composeRun, onDismiss: { Task { await load() } }) { run in
+        .appSheet(item: $composeRun, onDismiss: { Task { await load() } }) { run in
             CommandOutputSheet(server: server, title: "\(run.action.title) \(run.project.name)",
                                command: Docker.composeCommand(run.action, project: run.project))
         }
@@ -130,7 +130,7 @@ struct ContainerDetailView: View {
         self.changed = changed
     }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var logs = ""
     @State private var busy: ContainerAction?
@@ -258,7 +258,7 @@ struct CommandOutputSheet: View {
     let title: String
     let command: String
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var output = ""
     @State private var running = true
 

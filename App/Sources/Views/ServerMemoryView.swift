@@ -4,7 +4,7 @@ import SwiftUI
 /// The notes agents keep about this server — read them, fix them, clear them.
 struct ServerMemoryView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var text = ""
     @State private var loaded = false
     @State private var saved = ""

@@ -7,7 +7,7 @@ import SwiftUI
 struct ServerCopySheet: View {
     let source: Server
     let path: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @State private var targetID: UUID?

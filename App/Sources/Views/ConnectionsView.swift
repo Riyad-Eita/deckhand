@@ -55,8 +55,8 @@ struct ConnectionsView: View {
             }
         }
         .navigationTitle("Connections")
-        .sheet(item: $adding) { ConnectionEditor(record: nil, preset: $0) }
-        .sheet(item: $editing) { ConnectionEditor(record: $0, preset: nil) }
+        .appSheet(item: $adding) { ConnectionEditor(record: nil, preset: $0) }
+        .appSheet(item: $editing) { ConnectionEditor(record: $0, preset: nil) }
     }
 }
 

@@ -5,7 +5,7 @@ import SwiftUI
 /// model "Auto" would have picked.
 struct CompareModelsView: View {
     @State var prompt: String
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var left = ""
     @State private var right = ""

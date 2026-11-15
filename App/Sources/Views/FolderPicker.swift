@@ -8,7 +8,7 @@ struct FolderPicker: View {
     let onPick: (String) -> Void
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var path: String
     @State private var listing: DirectoryListing?
     @State private var error: String?

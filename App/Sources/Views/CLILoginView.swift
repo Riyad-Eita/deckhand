@@ -20,7 +20,7 @@ struct CLILoginView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var phase: Phase = .starting
     @State private var deviceCode: String?
     @State private var session: TerminalSession?

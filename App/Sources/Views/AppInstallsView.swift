@@ -4,7 +4,7 @@ import SwiftUI
 /// One-tap app installs: what's installed (status, link, credentials, start/stop/update/remove) and the catalog.
 struct AppInstallsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var installed: [AppTemplates.Installed]?
     @State private var error: String?
     @State private var installing: AppTemplates.Template?
@@ -65,7 +65,7 @@ struct AppInstallsView: View {
         .navigationTitle("Install apps")
         .refreshable { await load() }
         .task { await load() }
-        .sheet(item: $installing) { t in
+        .appSheet(item: $installing) { t in
             InstallAppSheet(server: server, template: t, taken: Set((installed ?? []).map(\.name))) { Task { await load() } }
         }
     }
@@ -95,7 +95,7 @@ private struct InstallAppSheet: View {
     let template: AppTemplates.Template
     let taken: Set<String>
     let done: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var domain = ""
@@ -170,12 +170,12 @@ private struct InstallAppSheet: View {
                     if result != nil { Button("Done") { done(); dismiss() }.accessibilityIdentifier("apps.done") }
                 }
             }
-            .sheet(item: $domainTask) { t in
+            .appSheet(item: $domainTask) { t in
                 RootTaskSheet(server: server, title: LocalizedStringKey(t.change.title),
                               summary: LocalizedStringKey(String(localized: "Serves \(domain.lowercased()) from \(template.name) with HTTPS (installs Caddy if needed).")),
                               files: t.change.files, script: t.change.script(id: t.id), steps: RootTaskSheet.changeSteps) { _ in }
             }
-            .sheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path) }
+            .appSheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path) }
         }
     }
 
@@ -271,7 +271,7 @@ private struct InstalledAppView: View {
     let server: Server
     let app: AppTemplates.Installed
     let changed: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var env: [String: String]?
     @State private var busy: AppTemplates.Action?
@@ -320,7 +320,7 @@ private struct InstalledAppView: View {
         } message: {
             Text("Its containers stop and are removed. A domain stays in Caddy until you remove it under Domains.")
         }
-        .sheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path) }
+        .appSheet(item: $browsing) { BrowserSheet(server: server, port: $0.port, path: $0.path) }
     }
 
     private func action(_ a: AppTemplates.Action, _ title: LocalizedStringKey, _ symbol: String) -> some View {

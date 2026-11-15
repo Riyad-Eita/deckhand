@@ -39,7 +39,7 @@ struct RootTaskSheet: View {
     var finished: (Bool) -> Void = { _ in }
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var runner = RootRunner()
     @State private var follow = RootRunner()
     @State private var showLog = false
@@ -191,7 +191,7 @@ struct RootTaskSheet: View {
 /// Every change Deckhand made on this server, with a diff and a one-tap rollback.
 struct ChangesView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var records: [ConfigChange.Record]?
     @State private var error: String?
 
@@ -309,7 +309,7 @@ struct ChangeDetailView: View {
         .navigationTitle(record.title)
         .navigationBarTitleDisplayMode(.inline)
         .sudoPassword(diff, server: server)
-        .sheet(isPresented: $rollingBack, onDismiss: { if rolledBack { dismiss() } }) {
+        .appSheet(isPresented: $rollingBack, onDismiss: { if rolledBack { dismiss() } }) {
             RootTaskSheet(
                 server: server, title: "Roll back", summary: "Restores the files from the backup made before “\(record.title)”, checks the configuration and reloads the service.",
                 files: record.files, script: ConfigChange.rollbackScript(id: record.id), steps: RootTaskSheet.rollbackSteps,

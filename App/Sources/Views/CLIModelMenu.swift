@@ -7,8 +7,8 @@ struct CLIModelMenu: View {
     let server: Server
     let cli: ServerCLI
 
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var codexModels: [CLIModel] = AppSettings.shared.codexModels
 
     private var models: [CLIModel] { cli == .codex ? codexModels : CLIModels.claude }
@@ -94,7 +94,7 @@ struct CLIModelMenu: View {
 
 /// Default model and effort for each server CLI.
 struct CLIDefaultsSection: View {
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
 
     var body: some View {
         @Bindable var settings = settings

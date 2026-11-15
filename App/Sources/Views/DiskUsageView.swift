@@ -8,7 +8,7 @@ struct DiskUsageView: View {
     @State var asRoot = false
     var isTop: Bool { path == "/" }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var scan: DiskUsage.Scan?
     @State private var suggestions: [DiskUsage.Suggestion] = []

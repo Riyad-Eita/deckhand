@@ -4,7 +4,7 @@ import SwiftUI
 /// Claude Code and Codex tasks that run on the server on their own — also while the phone is off.
 struct BackgroundTasksView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var runs: [DetachedRun.Info]?
     @State private var error: String?
     @State private var confirmStop: DetachedRun.Info?

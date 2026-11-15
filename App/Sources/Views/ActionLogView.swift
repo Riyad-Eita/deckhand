@@ -6,7 +6,7 @@ struct ActionLogView: View {
     let thread: ChatThread
     let server: Server
     @State private var open: Set<String> = []
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
 
     /// Secrets masked as in the chat (export: always redacted — it leaves the device).
     private func shown(_ text: String) -> String { settings.hideSecrets ? Secrets.mask(text) : text }
