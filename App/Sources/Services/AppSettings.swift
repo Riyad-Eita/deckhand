@@ -42,6 +42,10 @@ final class AppSettings {
     var codexModels: [CLIModel] {
         didSet { defaults.set(try? JSONEncoder().encode(codexModels), forKey: "cli.codex.models") }
     }
+    /// Plain chats without an API key: Claude Code or Codex on one of the user's servers, with their own plan
+    /// ("" = off). `planChatServer` is the server's id.
+    var planChatCLI: String { didSet { defaults.set(planChatCLI, forKey: "chat.plan.cli") } }
+    var planChatServer: String { didSet { defaults.set(planChatServer, forKey: "chat.plan.server") } }
     /// Face ID / passcode before the app shows anything.
     var appLock: Bool { didSet { defaults.set(appLock, forKey: "lock.enabled") } }
     /// Seconds in the background before the lock comes back (0 = every time).
@@ -68,6 +72,8 @@ final class AppSettings {
         claudeModel = defaults.string(forKey: "cli.claude.model") ?? ""
         claudeEffort = defaults.string(forKey: "cli.claude.effort") ?? ""
         codexModels = (defaults.data(forKey: "cli.codex.models")).flatMap { try? JSONDecoder().decode([CLIModel].self, from: $0) } ?? []
+        planChatCLI = defaults.string(forKey: "chat.plan.cli") ?? ""
+        planChatServer = defaults.string(forKey: "chat.plan.server") ?? ""
         appLock = defaults.bool(forKey: "lock.enabled")
         lockDelay = defaults.object(forKey: "lock.delay") as? Double ?? 60
         loadProviderFields()
@@ -98,6 +104,12 @@ final class AppSettings {
 
     var isConfigured: Bool {
         !model.isEmpty && (!apiKey.isEmpty || providerKind == .custom)
+    }
+
+    /// The plan route for new chats, when one is set up.
+    var planChat: (cli: ServerCLI, server: UUID)? {
+        guard let cli = ServerCLI(rawValue: planChatCLI), let id = UUID(uuidString: planChatServer) else { return nil }
+        return (cli, id)
     }
 
     /// Providers a plain chat can use: those with a key (the custom one with an address).

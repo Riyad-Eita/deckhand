@@ -65,6 +65,16 @@
         }
       }
     },
+    "%@ answers with your own plan — no API key. It runs in an empty folder on that server and only reads. Switch any time from the title.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ antwortet mit deinem eigenen Abo – ohne API-Schlüssel. Es läuft in einem leeren Ordner auf diesem Server und liest nur. Wechseln jederzeit im Titel."
+          }
+        }
+      }
+    },
     "%@ didn't quit in time and was forced to.": {
       "localizations": {
         "de": {
@@ -291,6 +301,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ CPU in %2$@"
+          }
+        }
+      }
+    },
+    "%@ on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ auf %2$@"
           }
         }
       }
@@ -2271,6 +2291,16 @@
         }
       }
     },
+    "Answer with": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antworten mit"
+          }
+        }
+      }
+    },
     "Answered": {
       "localizations": {
         "de": {
@@ -3405,6 +3435,16 @@
         }
       }
     },
+    "Can't reach the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server nicht erreichbar"
+          }
+        }
+      }
+    },
     "Can't read this server": {
       "localizations": {
         "de": {
@@ -3705,6 +3745,16 @@
         }
       }
     },
+    "Chats with your plan": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chats mit deinem Abo"
+          }
+        }
+      }
+    },
     "Check": {
       "localizations": {
         "de": {
@@ -3721,6 +3771,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "DNS und Ports prüfen"
+          }
+        }
+      }
+    },
+    "Check Sign-In": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung prüfen"
           }
         }
       }
@@ -3971,6 +4031,16 @@
           "stringUnit": {
             "state": "translated",
             "value": ".p8-Datei auswählen"
+          }
+        }
+      }
+    },
+    "Choose…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswählen …"
           }
         }
       }
@@ -5789,6 +5859,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geplante Aufgabe löschen"
+          }
+        }
+      }
+    },
+    "Delete Server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server löschen"
           }
         }
       }
@@ -9263,6 +9343,16 @@
         }
       }
     },
+    "Its saved password or key is removed from this device too, so you'd have to sign in again. Nothing on the server changes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das gespeicherte Passwort oder der Schlüssel wird auch von diesem Gerät entfernt – du müsstest dich neu anmelden. Auf dem Server ändert sich nichts."
+          }
+        }
+      }
+    },
     "Jail %@ · %lld failing right now": {
       "localizations": {
         "de": {
@@ -10823,6 +10913,16 @@
         }
       }
     },
+    "New chats need no API key: Claude Code or Codex on that server answers with your Claude or ChatGPT plan. Sign in once on the server (Tools → Server Tools → Log In). Anthropic and OpenAI don't allow apps to sign in to your plan directly, so it goes through their own apps on your server or Mac.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Chats brauchen keinen API-Schlüssel: Claude Code oder Codex auf diesem Server antwortet mit deinem Claude- oder ChatGPT-Abo. Melde dich einmal auf dem Server an (Werkzeuge → Server-Werkzeuge → Anmelden). Anthropic und OpenAI erlauben Apps nicht, sich direkt mit deinem Abo anzumelden – darum läuft es über ihre eigenen Apps auf deinem Server oder Mac."
+          }
+        }
+      }
+    },
     "New collection": {
       "localizations": {
         "de": {
@@ -11802,6 +11902,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In dieser Umgebung nicht gesetzt: %@"
+          }
+        }
+      }
+    },
+    "Not signed in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht angemeldet"
           }
         }
       }
@@ -12992,6 +13102,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simulator wird gewählt …"
+          }
+        }
+      }
+    },
+    "Pictures need a model with an API key. Pick one from the title.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilder brauchen ein Modell mit API-Schlüssel. Wähle eines im Titel."
           }
         }
       }
@@ -16573,6 +16693,16 @@
         }
       }
     },
+    "Signed in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angemeldet"
+          }
+        }
+      }
+    },
     "Signs the GitHub CLI in on this server: git push and pull, gh and the agents can use GitHub right away. The agents also get GitHub's MCP tools.": {
       "localizations": {
         "de": {
@@ -18540,6 +18670,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server hat die Anmeldung für %@ nicht angenommen."
+          }
+        }
+      }
+    },
+    "The server for this chat was removed. Pick another one from the title.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server dieses Chats wurde entfernt. Wähle im Titel einen anderen."
           }
         }
       }
@@ -21244,6 +21384,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Agent mit eigenem Key nutzt aktive Verbindungen sofort. Für Codex und Claude Code öffne die Server-Werkzeuge und tippe auf Übertragen."
+          }
+        }
+      }
+    },
+    "Your plan · no API key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Abo · ohne API-Schlüssel"
           }
         }
       }

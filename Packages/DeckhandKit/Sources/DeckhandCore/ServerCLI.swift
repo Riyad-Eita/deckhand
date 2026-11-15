@@ -133,9 +133,9 @@ public enum ServerCLIRun {
     /// Runs one turn and translates the CLI's JSON lines into agent events.
     public static func run(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
-        sessionID: String?, access: CLIAccess
+        sessionID: String?, access: CLIAccess, options: CLIOptions = .init()
     ) -> AsyncThrowingStream<AgentEvent, Error> {
-        let command = command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access)
+        let command = command(cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()

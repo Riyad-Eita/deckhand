@@ -59,6 +59,8 @@ struct SettingsView: View {
                     Text(keyHint)
                 }
 
+                PlanChatSection()
+
                 if settings.providerKind == .custom || settings.providerKind == .openRouter {
                     Section("Endpoint") {
                         if let url = URL(string: settings.baseURL), ServerModelURL.parse(url) != nil {
@@ -198,6 +200,64 @@ struct SettingsView: View {
         case .openAI: "Create a key at platform.openai.com → API keys."
         case .openRouter: "Create a key at openrouter.ai → Keys. One key, many models."
         case .custom: "Any OpenAI-compatible server, e.g. Ollama on your own machine."
+        }
+    }
+}
+
+/// Plain chats without an API key: Claude Code or Codex on one of your servers (or your Mac) answers, signed in
+/// with your own Claude or ChatGPT plan — the same official CLIs the server tasks use.
+private struct PlanChatSection: View {
+    private var settings: AppSettings { .shared }
+    @Query(sort: \Server.name) private var servers: [Server]
+    @State private var check: String?
+    @State private var checking = false
+
+    var body: some View {
+        @Bindable var settings = settings
+        Section {
+            Picker("Answer with", selection: $settings.planChatCLI) {
+                Text("Off").tag("")
+                ForEach(ServerCLI.allCases.reversed()) { Text($0.displayName).tag($0.rawValue) }
+            }
+            .modifier(AdaptivePickerStyle())
+            .accessibilityIdentifier("settings.plan.cli")
+            if !settings.planChatCLI.isEmpty {
+                Picker("On", selection: $settings.planChatServer) {
+                    if !servers.contains(where: { $0.id.uuidString == settings.planChatServer }) { Text("Choose…").tag(settings.planChatServer) }
+                    ForEach(servers) { Text($0.displayName).tag($0.id.uuidString) }
+                }
+                .modifier(AdaptivePickerStyle())
+                .accessibilityIdentifier("settings.plan.server")
+                if let plan = settings.planChat, let server = servers.first(where: { $0.id == plan.server }) {
+                    Button {
+                        Task { await verify(plan.cli, on: server) }
+                    } label: {
+                        HStack {
+                            Text("Check Sign-In")
+                            Spacer()
+                            if checking { ProgressView() } else if let check { Text(check).foregroundStyle(.secondary) }
+                        }
+                    }
+                    .accessibilityIdentifier("settings.plan.check")
+                }
+            }
+        } header: {
+            Text("Chats with your plan")
+        } footer: {
+            Text("New chats need no API key: Claude Code or Codex on that server answers with your Claude or ChatGPT plan. Sign in once on the server (Tools → Server Tools → Log In). Anthropic and OpenAI don't allow apps to sign in to your plan directly, so it goes through their own apps on your server or Mac.")
+        }
+        .onChange(of: settings.planChatCLI) { check = nil }
+        .onChange(of: settings.planChatServer) { check = nil }
+    }
+
+    private func verify(_ cli: ServerCLI, on server: Server) async {
+        checking = true
+        defer { checking = false }
+        await AgentStatus.shared.refresh(server)
+        check = switch AgentStatus.shared.isSignedIn(cli, on: server) {
+        case true?: String(localized: "Signed in")
+        case false?: String(localized: "Not signed in")
+        case nil: String(localized: "Can't reach the server")
         }
     }
 }

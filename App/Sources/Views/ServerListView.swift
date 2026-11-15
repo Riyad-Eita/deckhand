@@ -14,6 +14,7 @@ struct ServerListView: View {
     @State private var importing = false
     @State private var searching = false
     @State private var editing: Server?
+    @State private var confirmDelete: Server?
     @State private var sharing: Server?
     @State private var addingServer = false
     @State private var showingSettings = false
@@ -48,8 +49,9 @@ struct ServerListView: View {
                             NavigationLink(value: server) { ServerRow(server: server, state: connections.state(for: server)) }
                         }
                     }
-                    .swipeActions {
-                        Button("Delete", role: .destructive) { delete(server) }
+                    // No full swipe: deleting a server always asks first (it also removes its saved login).
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button("Delete") { confirmDelete = server }.tint(.red)
                         Button("Edit") { editing = server }.tint(.gray)
                     }
                     .swipeActions(edge: .leading) {
@@ -246,13 +248,38 @@ struct ServerListView: View {
             CommandPaletteView(openServer: { autoOpen = $0 }, openChat: { openChat = $0 })
         }
         .appSheet(item: $editing) { ServerEditorView(server: $0) }
+        .confirmationDialog(
+            "Delete “\(confirmDelete?.displayName ?? "")”?",
+            isPresented: Binding(get: { confirmDelete != nil }, set: { if !$0 { confirmDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Delete Server", role: .destructive) {
+                if let server = confirmDelete { delete(server) }
+                confirmDelete = nil
+            }
+            .accessibilityIdentifier("server.delete.confirm")
+        } message: {
+            Text("Its saved password or key is removed from this device too, so you'd have to sign in again. Nothing on the server changes.")
+        }
         .appSheet(isPresented: $showingSettings) { SettingsView() }
     }
 
-    /// A chat needs a model key first; without one, Settings opens.
+    /// A chat needs a model key or a plan route first; without either, Settings opens. With a plan route set up,
+    /// new chats use it (the user's own plan, no key).
     private func newChat() {
-        guard !settings.chatProviders.isEmpty else { showingSettings = true; return }
+        // The plan route from Settings; without a key and without one, any server with a signed-in CLI.
+        var plan = settings.planChat.flatMap { p in servers.contains { $0.id == p.server } ? p : nil }
+        if plan == nil, settings.chatProviders.isEmpty,
+           let server = servers.first(where: { !AgentStatus.shared.clis(for: $0).isEmpty }),
+           let cli = AgentStatus.shared.clis(for: server).last {
+            plan = (cli, server.id)
+        }
+        guard !settings.chatProviders.isEmpty || plan != nil else { showingSettings = true; return }
         let chat = ChatThread(chatWith: settings.chatProviders.contains(settings.providerKind) ? settings.providerKind : settings.chatProviders.first)
+        if let plan {
+            chat.chatProviderRaw = PlainChatModel.planPrefix + plan.cli.rawValue
+            chat.chatHostRaw = plan.server.uuidString
+        }
         context.insert(chat)
         openChat = chat
     }
