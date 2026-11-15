@@ -11996,6 +11996,16 @@
         }
       }
     },
+    "Pick a server, a chat or a tool on the left.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle links einen Server, einen Chat oder ein Werkzeug."
+          }
+        }
+      }
+    },
     "Pick a time…": {
       "localizations": {
         "de": {
@@ -14479,6 +14489,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicherheitsupdates"
+          }
+        }
+      }
+    },
+    "Select a server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server auswählen"
           }
         }
       }

@@ -55,9 +55,22 @@ struct RootView: View {
         #endif
     }
 
+    @Environment(\.horizontalSizeClass) private var horizontalSize
+
     private var main: some View {
-        NavigationStack {
-            ServerListView()
+        Group {
+            if horizontalSize == .regular {
+                // Mac and iPad: servers, chats and tools in a sidebar; what you pick opens next to it.
+                NavigationSplitView {
+                    ServerListView()
+                        .environment(\.inSidebar, true)
+                        .navigationSplitViewColumnWidth(min: 300, ideal: 340, max: 420)
+                } detail: {
+                    NavigationStack { SidebarPlaceholder() }
+                }
+            } else {
+                NavigationStack { ServerListView() }
+            }
         }
         .fullScreenCover(isPresented: Binding(get: { showOnboarding }, set: { if !$0 { onboardingDone = true } })) {
             OnboardingView { onboardingDone = true }
@@ -167,4 +180,18 @@ struct HostKeyPromptModifier: ViewModifier {
 
 extension View {
     func hostKeyPrompt(inSheet: Bool = false) -> some View { modifier(HostKeyPromptModifier(inSheet: inSheet)) }
+}
+
+/// Shown next to the sidebar until something is picked.
+struct SidebarPlaceholder: View {
+    var body: some View {
+        ContentUnavailableView("Select a server", systemImage: "server.rack",
+                               description: Text("Pick a server, a chat or a tool on the left."))
+            .accessibilityIdentifier("sidebar.placeholder")
+    }
+}
+
+extension EnvironmentValues {
+    /// The home list is the sidebar of a split view (Mac, iPad): links open in the detail column.
+    @Entry var inSidebar = false
 }

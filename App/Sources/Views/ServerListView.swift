@@ -2,6 +2,7 @@ import SwiftData
 import SwiftUI
 
 struct ServerListView: View {
+    @Environment(\.inSidebar) private var inSidebar
     @Environment(\.modelContext) private var context
     @Environment(Connections.self) private var connections
     @Environment(AppSettings.self) private var settings
@@ -34,8 +35,13 @@ struct ServerListView: View {
             }
             Section(servers.isEmpty ? "" : "Servers") {
                 ForEach(servers) { server in
-                    NavigationLink(value: server) {
-                        ServerRow(server: server, state: connections.state(for: server))
+                    Group {
+                        if inSidebar {
+                            // In a split view a destination link opens in the detail column.
+                            NavigationLink { ServerView(server: server) } label: { ServerRow(server: server, state: connections.state(for: server)) }
+                        } else {
+                            NavigationLink(value: server) { ServerRow(server: server, state: connections.state(for: server)) }
+                        }
                     }
                     .swipeActions {
                         Button("Delete", role: .destructive) { delete(server) }
