@@ -1184,6 +1184,16 @@
         }
       }
     },
+    "A sleeping Mac can't answer. To reach it any time, turn on \"Prevent automatic sleeping when the display is off\" in System Settings → Energy, or keep it on power.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein schlafender Mac kann nicht antworten. Damit er immer erreichbar ist, schalte in Systemeinstellungen → Energie „Automatischen Ruhezustand bei ausgeschaltetem Display verhindern“ ein oder lass ihn am Strom."
+          }
+        }
+      }
+    },
     "A system file changed since the baseline — normal after package updates. Re-baseline after updating (Install again) or check the package that owns it.": {
       "localizations": {
         "de": {
@@ -2730,6 +2740,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Durchschnitt"
+          }
+        }
+      }
+    },
+    "Away from home? Tailscale name or IP (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterwegs? Tailscale-Name oder IP (optional)"
           }
         }
       }
@@ -11586,6 +11606,16 @@
         }
       }
     },
+    "Open Sharing Settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilen-Einstellungen öffnen"
+          }
+        }
+      }
+    },
     "Open a server's dashboard in Deckhand once.": {
       "localizations": {
         "de": {
@@ -12648,6 +12678,16 @@
         }
       }
     },
+    "QR code for this Mac": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QR-Code für diesen Mac"
+          }
+        }
+      }
+    },
     "Queries then run for real against %@. Without this they run in a read-only transaction.": {
       "localizations": {
         "de": {
@@ -13058,6 +13098,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienst neu laden"
+          }
+        }
+      }
+    },
+    "Remote Login is off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernte Anmeldung ist aus"
+          }
+        }
+      }
+    },
+    "Remote Login is on": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernte Anmeldung ist an"
           }
         }
       }
@@ -14313,6 +14373,16 @@
         }
       }
     },
+    "Scan this code with Deckhand on your iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne diesen Code mit Deckhand auf deinem iPhone"
+          }
+        }
+      }
+    },
     "Scan this server": {
       "localizations": {
         "de": {
@@ -15303,6 +15373,16 @@
         }
       }
     },
+    "Sign in once on the iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal auf dem iPhone anmelden"
+          }
+        }
+      }
+    },
     "Sign in to %@": {
       "localizations": {
         "de": {
@@ -16190,6 +16270,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "System"
+          }
+        }
+      }
+    },
+    "System Settings → General → Sharing → Remote Login. Allow access for your user.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Systemeinstellungen → Allgemein → Teilen → Entfernte Anmeldung. Erlaube den Zugriff für deinen Benutzer."
           }
         }
       }
@@ -18164,6 +18254,16 @@
         }
       }
     },
+    "Turn on Remote Login": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernte Anmeldung einschalten"
+          }
+        }
+      }
+    },
     "Turn on SSH login alerts": {
       "localizations": {
         "de": {
@@ -18675,6 +18775,16 @@
         }
       }
     },
+    "Use This Mac From Your iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Mac vom iPhone aus nutzen"
+          }
+        }
+      }
+    },
     "Use a preset": {
       "localizations": {
         "de": {
@@ -18735,6 +18845,16 @@
         }
       }
     },
+    "Use this Mac from your iPhone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Mac vom iPhone aus nutzen"
+          }
+        }
+      }
+    },
     "Use this when you think someone else is on your server. Deckhand saves the evidence, then shuts the doors — and can open them again with one tap.": {
       "localizations": {
         "de": {
@@ -18751,6 +18871,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nutze dein Claude- oder ChatGPT-Abo über Claude Code und Codex auf deinem Server – oder füge einen API-Schlüssel hinzu."
+          }
+        }
+      }
+    },
+    "Use your Mac password the first time. Deckhand then installs its own key on this Mac and forgets the password. Claude Code and Codex run here like on a server — with your house rules and approvals.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze beim ersten Mal dein Mac-Passwort. Danach installiert Deckhand einen eigenen Schlüssel auf diesem Mac und vergisst das Passwort. Claude Code und Codex laufen hier wie auf einem Server – mit deinen Hausregeln und Freigaben."
           }
         }
       }
@@ -19614,6 +19744,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Home-Ordner"
+          }
+        }
+      }
+    },
+    "Your iPhone's camera opens Deckhand with this Mac filled in. The code holds only the address and your user name — no password, no key.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kamera deines iPhones öffnet Deckhand mit diesem Mac schon eingetragen. Der Code enthält nur die Adresse und deinen Benutzernamen – kein Passwort, keinen Schlüssel."
           }
         }
       }
