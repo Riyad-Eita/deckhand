@@ -31,6 +31,12 @@ struct ServerView: View {
         #endif
     }
 
+    #if targetEnvironment(macCatalyst)
+    private static let switchPlacement = ToolbarItemPlacement.topBarLeading
+    #else
+    private static let switchPlacement = ToolbarItemPlacement.principal
+    #endif
+
     var body: some View {
         Group {
             switch tab {
@@ -48,7 +54,8 @@ struct ServerView: View {
         .navigationTitle(server.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
+            // The Mac toolbar has no centre slot in a split view's detail column; there the switch sits after the title.
+            ToolbarItem(placement: Self.switchPlacement) {
                 Picker("View", selection: $tab) {
                     ForEach(Tab.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
