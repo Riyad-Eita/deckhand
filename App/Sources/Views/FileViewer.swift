@@ -9,7 +9,7 @@ struct FileViewer: View {
     let size: Int64
 
     static let maxBytes = 512 * 1024
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @AppStorage("viewer.wrap") private var wrap = false
     @State private var lines: [Substring] = []
     @State private var tokens: [[SyntaxHighlighter.Token]] = []

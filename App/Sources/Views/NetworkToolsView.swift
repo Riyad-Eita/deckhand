@@ -4,7 +4,7 @@ import SwiftUI
 /// Ping, traceroute, DNS, port and HTTP — from the server or from this iPhone — and "Ask an agent" with the result.
 struct NetworkToolsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var tool: NetworkTools.Tool = .ping
     @State private var fromPhone = false
     @State private var target = ""

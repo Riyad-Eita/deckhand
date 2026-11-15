@@ -7,7 +7,7 @@ import SwiftUI
 /// firewall closes), then apply it — server by server, each risky step confirmed by a fresh login or rolled back.
 struct HardeningProfilesView: View {
     var preselected: Server?
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Query(sort: \Server.name) private var servers: [Server]
     @State private var profile: HardeningProfile = .webServer
     @State private var clients = ""

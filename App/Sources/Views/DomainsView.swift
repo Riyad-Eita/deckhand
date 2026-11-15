@@ -4,7 +4,7 @@ import SwiftUI
 /// Domains served by Caddy with automatic HTTPS: DNS check first, then a guarded change; certificate status per domain.
 struct DomainsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var caddy: String?
     @State private var domains: [Domains.Status]?
@@ -86,7 +86,7 @@ struct DomainsView: View {
 private struct AddDomainSheet: View {
     let server: Server
     let add: (Domains.Domain) -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var upstream = "127.0.0.1:3000"

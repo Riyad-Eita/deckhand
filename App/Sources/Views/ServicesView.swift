@@ -5,7 +5,7 @@ import SwiftUI
 struct ServicesView: View {
     let server: Server
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var units: [ServiceUnit] = []
     @State private var query = ""
     @State private var showAll = false
@@ -80,7 +80,7 @@ struct ServiceDetailView: View {
     let server: Server
     let unit: ServiceUnit
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var status = ""
     @State private var logs = ""

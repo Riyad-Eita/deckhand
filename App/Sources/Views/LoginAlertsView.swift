@@ -4,8 +4,8 @@ import SwiftUI
 /// A push for SSH logins from addresses you don't trust, and the list of recent logins.
 struct LoginAlertsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var root = RootRunner()
     @State private var status: LoginAlerts.Status?
     @State private var myAddress: String?

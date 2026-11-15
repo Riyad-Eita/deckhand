@@ -8,8 +8,8 @@ import SwiftUI
 struct TerminalScreen: View {
     let server: Server
     @Binding var pendingCommand: String?
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var tabs: [Int] = [1]
     @State private var selected = 1
     @State private var titles: [Int: String] = [:]
@@ -121,8 +121,8 @@ struct TerminalPane: View {
     @Binding var pendingCommand: String?
     var onTitle: (String?) -> Void = { _ in }
     var onShortcut: (TerminalShortcut) -> Void = { _ in }
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @Environment(\.scenePhase) private var scenePhase
     @State private var session: TerminalSession?
     @State private var sessionID = UUID()

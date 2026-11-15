@@ -4,8 +4,8 @@ import SwiftUI
 /// Uptime checks for websites and APIs, run by the server itself; pushes when something goes down.
 struct UptimeView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: Uptime.Status?
     @State private var error: String?
     @State private var adding = false

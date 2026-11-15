@@ -10,7 +10,7 @@ struct FilesView: View {
     var path: String?
     var runInTerminal: (String) -> Void = { _ in }
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @AppStorage("files.sort") private var sort: FileSort = .name
     @AppStorage("files.showHidden") private var showHidden = false
     @State private var folder: RemoteFolder?

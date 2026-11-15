@@ -4,8 +4,8 @@ import SwiftUI
 /// Nightly database dumps with a test restore and a confirmed real restore.
 struct DatabaseDumpsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: DatabaseDumps.Status?
     @State private var found: [DatabaseDumps.Database]?
     @State private var chosen: Set<String> = []

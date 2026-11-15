@@ -5,7 +5,7 @@ import SwiftUI
 struct FilesChangedView: View {
     let server: Server
     let thread: ChatThread
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var changes: [Checkpoints.FileChange]?
     @State private var confirmAll = false
     @State private var error: String?

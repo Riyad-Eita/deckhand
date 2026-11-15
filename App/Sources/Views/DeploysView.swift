@@ -4,7 +4,7 @@ import SwiftUI
 /// Apps deployed from Git to this server: deploy, auto-deploy on push, releases with one-tap rollback, logs.
 struct DeploysView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var apps: [Deploys.Status]?
     @State private var adding = false
     @State private var error: String?
@@ -56,8 +56,8 @@ struct DeploysView: View {
 private struct NewAppSheet: View {
     let server: Server
     let saved: () -> Void
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var app = Deploys.App(name: "", repo: "")
     @State private var deployKey: String?
@@ -141,8 +141,8 @@ private struct NewAppSheet: View {
 private struct AppDetailView: View {
     let server: Server
     let name: String
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: Deploys.Status?
     @State private var rollingTo: String?
     @State private var removing = false
@@ -240,7 +240,7 @@ private struct LogView: View {
     let server: Server
     let title: String
     let command: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var text: String?
     var body: some View {
         ScrollView {

@@ -5,7 +5,7 @@ import SwiftUI
 /// (they keep running when the phone locks, and a push says when they're done).
 struct XcodeView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var info: XcodeServer.Info?
     @State private var projects: [XcodeServer.Project]?
     @State private var error: String?
@@ -74,8 +74,8 @@ struct XcodeView: View {
 private struct XcodeProjectView: View {
     let server: Server
     let project: XcodeServer.Project
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var schemes: [String]?
     @State private var scheme = ""
     @State private var run: DetachedRun?

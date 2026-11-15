@@ -18,7 +18,7 @@ struct ServerView: View {
     @State private var startTask: StartTask?
     /// A command for the terminal to run once it is connected (e.g. a CLI login).
     @State private var terminalCommand: String?
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
 
     init(server: Server) {
         self.server = server

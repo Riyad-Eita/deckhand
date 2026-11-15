@@ -4,7 +4,7 @@ import SwiftUI
 /// Databases on the server, browsed over SSH: tables, rows, filters, SQL (read-only unless allowed), Redis keys.
 struct DatabaseBrowserView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var dbs: [DatabaseBrowser.Database]?
     @State private var redis: [DatabaseBrowser.RedisTarget] = []
     @State private var error: String?
@@ -72,7 +72,7 @@ private func runSQL(_ connections: Connections, _ server: Server, _ db: Database
 private struct TablesView: View {
     let server: Server
     let db: DatabaseBrowser.Database
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var tables: DatabaseBrowser.Grid?
     @State private var error: String?
 
@@ -126,7 +126,7 @@ private struct TableView: View {
     let server: Server
     let db: DatabaseBrowser.Database
     let table: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var grid: DatabaseBrowser.Grid?
     @State private var key: [String] = []
     @State private var page = 0
@@ -232,7 +232,7 @@ private struct EditCellSheet: View {
     let key: [String]
     let edit: TableView.Edit
     let saved: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var value = ""
     @State private var null = false
@@ -289,7 +289,7 @@ private struct EditCellSheet: View {
 private struct QueryView: View {
     let server: Server
     let db: DatabaseBrowser.Database
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var sql = ""
     @State private var allowWrites = false
     @State private var askWrites = false
@@ -343,7 +343,7 @@ private struct QueryView: View {
 private struct RedisView: View {
     let server: Server
     let target: DatabaseBrowser.RedisTarget
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var pattern = "*"
     @State private var keys: [(type: String, key: String)] = []
     @State private var error: String?
@@ -389,7 +389,7 @@ private struct RedisValueView: View {
     let target: DatabaseBrowser.RedisTarget
     let key: String
     let type: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var ttl: String?
     @State private var value: String?
 
@@ -420,8 +420,8 @@ private struct RedisValueView: View {
 private struct AskDatabaseView: View {
     let server: Server
     let db: DatabaseBrowser.Database
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var question = ""
     @State private var sql = ""
     @State private var result: DatabaseBrowser.Grid?

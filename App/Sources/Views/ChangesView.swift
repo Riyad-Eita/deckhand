@@ -39,7 +39,7 @@ struct RootTaskSheet: View {
     var finished: (Bool) -> Void = { _ in }
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var runner = RootRunner()
     @State private var follow = RootRunner()
     @State private var showLog = false
@@ -191,7 +191,7 @@ struct RootTaskSheet: View {
 /// Every change Deckhand made on this server, with a diff and a one-tap rollback.
 struct ChangesView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var records: [ConfigChange.Record]?
     @State private var error: String?
 

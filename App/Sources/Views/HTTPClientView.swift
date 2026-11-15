@@ -160,7 +160,7 @@ struct HTTPRequestView: View {
     let collectionID: UUID
     let requestID: UUID
     @State private var store = HTTPStore.shared
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Query(sort: \Server.name) private var servers: [Server]
     @AppStorage("http.via") private var via = ""
     @State private var sending = false

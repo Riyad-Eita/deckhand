@@ -5,8 +5,8 @@ import SwiftUI
 /// running; unwatching puts the original line back.
 struct CronWatchView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @State private var status: CronWatch.Status?
     @State private var busy: String?
     @State private var error: String?

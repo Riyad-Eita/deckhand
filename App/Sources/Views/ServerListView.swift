@@ -6,8 +6,8 @@ struct ServerListView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
     @Environment(\.modelContext) private var context
-    @Environment(Connections.self) private var connections
-    @Environment(AppSettings.self) private var settings
+    private var connections: Connections { .shared }
+    private var settings: AppSettings { .shared }
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @Query(filter: #Predicate<ChatThread> { $0.server == nil }, sort: \ChatThread.updatedAt, order: .reverse) private var chats: [ChatThread]
     @State private var openChat: ChatThread?

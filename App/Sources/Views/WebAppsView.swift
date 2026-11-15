@@ -6,7 +6,7 @@ import WebKit
 /// Web apps running on the server — also ones that only listen on its localhost — opened through an SSH tunnel.
 struct WebAppsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var ports: [ListeningPorts.Port]?
     @State private var error: String?
     @State private var browsing: BrowserTarget?
@@ -106,7 +106,7 @@ struct BrowserSheet: View {
     var publicURL: URL? = nil
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var forward: PortForward?
     @State private var error: String?
     @State private var reloadToken = 0

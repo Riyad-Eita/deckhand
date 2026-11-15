@@ -5,7 +5,7 @@ import SwiftUI
 struct PackageUpdatesView: View {
     let server: Server
 
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var status: UpdateStatus?
     @State private var error: String?
     @State private var loading = true

@@ -8,7 +8,7 @@ struct QuickLookFileView: View {
     let server: Server
     let path: String
     let size: Int64
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var url: URL?
     @State private var error: String?
 

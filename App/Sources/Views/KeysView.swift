@@ -7,7 +7,7 @@ import UIKit
 /// SSH keys across all servers: rotate this iPhone's keys, and remove keys of lost devices everywhere.
 struct KeysView: View {
     @Query(sort: \Server.createdAt) private var servers: [Server]
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var results: [UUID: Outcome] = [:]
     @State private var rotating = false
     @State private var inventory: [UUID: [AuthorizedKeys.Entry]] = [:]

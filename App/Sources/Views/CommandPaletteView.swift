@@ -7,7 +7,7 @@ struct CommandPaletteView: View {
     let openServer: (Server) -> Void
     let openChat: (ChatThread) -> Void
     @Environment(\.dismiss) private var dismiss
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Query(sort: \Server.createdAt) private var servers: [Server]
     @Query(sort: \ChatThread.updatedAt, order: .reverse) private var threads: [ChatThread]
     @State private var query = ""

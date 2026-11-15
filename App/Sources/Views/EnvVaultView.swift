@@ -17,7 +17,7 @@ enum VaultStore {
 
 struct EnvVaultView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var files: [EnvVault.File] = []
     @State private var serverHashes: [UUID: String?] = [:]
     @State private var newPath = ""
@@ -107,7 +107,7 @@ private struct EnvFileView: View {
     let server: Server
     @Binding var file: EnvVault.File
     let changed: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var lines: [EnvVault.Line] = []
     @State private var revealed: Set<String> = []
     @State private var newKey = ""

@@ -5,7 +5,7 @@ import SwiftUI
 /// The panic button: when this server looks compromised, save the evidence and lock it down in one guarded step.
 struct PanicView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var myAddress = ""
     @State private var services: [ServiceUnit] = []
     @State private var stop: Set<String> = []

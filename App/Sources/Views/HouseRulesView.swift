@@ -17,7 +17,7 @@ enum HouseRulesStore {
 /// own-key agent. Enforced on the server, not just written into a prompt.
 struct HouseRulesView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var rules = HouseRules()
     @State private var loaded = false
     @State private var busy = false

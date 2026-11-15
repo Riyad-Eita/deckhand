@@ -4,7 +4,7 @@ import SwiftUI
 /// What changed on the server, and when: snapshots every 15 minutes, grouped by day, each with a readable diff.
 struct ChangeHistoryView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var timeline: ChangeHistory.Timeline?
     @State private var error: String?
     @State private var busy = false
@@ -145,7 +145,7 @@ struct ChangesDetailView: View {
     let server: Server
     let title: String
     let command: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var files: [ChangeHistory.FileDiff]?
     @State private var error: String?
     @State private var investigatePrompt: String?

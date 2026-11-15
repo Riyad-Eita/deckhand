@@ -4,7 +4,7 @@ import SwiftUI
 /// fail2ban: who is banned and why, unban, and keep your own address off the list.
 struct Fail2banView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var unbanner = RootRunner()
     @State private var status: Fail2ban.Status?

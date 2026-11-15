@@ -4,7 +4,7 @@ import SwiftUI
 /// A read-only scan of a server you don't know yet: the map, the risks, a handover document.
 struct ServerXrayView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var report: ServerXray.Report?
     @State private var changes: [String] = []
     @State private var scanning = false

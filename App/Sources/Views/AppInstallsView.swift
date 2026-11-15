@@ -4,7 +4,7 @@ import SwiftUI
 /// One-tap app installs: what's installed (status, link, credentials, start/stop/update/remove) and the catalog.
 struct AppInstallsView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var installed: [AppTemplates.Installed]?
     @State private var error: String?
     @State private var installing: AppTemplates.Template?
@@ -95,7 +95,7 @@ private struct InstallAppSheet: View {
     let template: AppTemplates.Template
     let taken: Set<String>
     let done: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var domain = ""
@@ -271,7 +271,7 @@ private struct InstalledAppView: View {
     let server: Server
     let app: AppTemplates.Installed
     let changed: () -> Void
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.dismiss) private var dismiss
     @State private var env: [String: String]?
     @State private var busy: AppTemplates.Action?

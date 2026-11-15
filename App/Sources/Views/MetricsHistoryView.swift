@@ -5,7 +5,7 @@ import SwiftUI
 /// Seven days of CPU, memory, disk, network and load from the server's own sampler, with spikes marked.
 struct MetricsHistoryView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var installed: Bool?
     @State private var samples: [MetricsHistory.Sample] = []
     @State private var metric: MetricsHistory.Metric = .cpu

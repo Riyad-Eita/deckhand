@@ -72,7 +72,7 @@ struct DeckhandCommands: Commands {
 struct RootView: View {
     @AppStorage("onboarding.done") private var onboardingDone = false
     @Query private var servers: [Server]
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var context
 
@@ -214,7 +214,7 @@ extension View {
 /// Shows the first-connect host key question. Attach it to the root and to every sheet, because an alert
 /// on a view that is covered by a sheet cannot appear.
 struct HostKeyPromptModifier: ViewModifier {
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.isPresented) private var isPresented
     let inSheet: Bool
 

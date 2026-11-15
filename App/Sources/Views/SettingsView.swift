@@ -11,7 +11,7 @@ struct AdaptivePickerStyle: ViewModifier {
 }
 
 struct SettingsView: View {
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -222,7 +222,7 @@ private struct VoiceSettingsSection: View {
 
 /// Local notifications always; optional push straight from the server through an ntfy topic.
 private struct NotificationSettingsSection: View {
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
     @State private var testResult: String?
     @State private var testing = false
 
@@ -262,7 +262,7 @@ private struct NotificationSettingsSection: View {
 
 /// App lock: on/off (needs one successful Face ID / passcode check) and how long the app may stay in the background.
 private struct AppLockSection: View {
-    @Environment(AppSettings.self) private var settings
+    private var settings: AppSettings { .shared }
     @Query private var servers: [Server]
     @State private var method = AppLock.shared.method
     @State private var keysProtected = KeyProtection.shared.enabled

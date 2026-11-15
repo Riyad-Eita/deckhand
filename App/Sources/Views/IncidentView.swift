@@ -7,7 +7,7 @@ import SwiftUI
 struct IncidentView: View {
     let server: Server
     let checkID: String
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @Environment(\.modelContext) private var context
     @State private var check: Uptime.Check?
     @State private var evidence: [Incident.Evidence]?

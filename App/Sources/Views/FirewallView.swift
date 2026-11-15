@@ -4,7 +4,7 @@ import SwiftUI
 /// Firewall rules with presets, guarded changes that can't lock you out, and a check from the outside.
 struct FirewallView: View {
     let server: Server
-    @Environment(Connections.self) private var connections
+    private var connections: Connections { .shared }
     @State private var root = RootRunner()
     @State private var status: Firewall.Status?
     @State private var task: RootTask?
