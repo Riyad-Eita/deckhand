@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ServerListView: View {
     @Environment(\.inSidebar) private var inSidebar
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
     @Environment(\.modelContext) private var context
     @Environment(Connections.self) private var connections
     @Environment(AppSettings.self) private var settings
@@ -50,6 +52,15 @@ struct ServerListView: View {
                     }
                     .swipeActions(edge: .leading) {
                         Button("Share") { sharing = server }.tint(Theme.accent)
+                    }
+                    .contextMenu {
+                        if supportsMultipleWindows {
+                            Button { openWindow(id: "server", value: server.id) } label: {
+                                Label("Open in New Window", systemImage: "macwindow.badge.plus")
+                            }
+                        }
+                        Button { editing = server } label: { Label("Edit", systemImage: "pencil") }
+                        Button { sharing = server } label: { Label("Share", systemImage: "square.and.arrow.up") }
                     }
                 }
             }
@@ -129,6 +140,15 @@ struct ServerListView: View {
         .navigationTitle("Deckhand")
         .navigationDestination(for: Server.self) { ServerView(server: $0) }
         .sheet(item: $agentSetupServer) { ServerToolsView(server: $0) { _ in } }
+        #if DEBUG
+        .task {
+            // DECKHAND_SEED_WINDOW=1: open the first server in its own window (Mac, iPad).
+            if ProcessInfo.processInfo.environment["DECKHAND_SEED_WINDOW"] == "1", supportsMultipleWindows, let first = servers.first {
+                try? await Task.sleep(for: .seconds(3))
+                openWindow(id: "server", value: first.id)
+            }
+        }
+        #endif
         .task {
             // Learn which agents are ready on each server (quietly, for the home screen).
             for server in servers { await AgentStatus.shared.refresh(server) }
