@@ -1624,6 +1624,16 @@
         }
       }
     },
+    "Add Repository": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repository hinzufügen"
+          }
+        }
+      }
+    },
     "Add Server": {
       "localizations": {
         "de": {
@@ -3544,6 +3554,26 @@
         }
       }
     },
+    "CI failed: %@ on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CI fehlgeschlagen: %1$@ auf %2$@"
+          }
+        }
+      }
+    },
+    "CI of %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CI von %@"
+          }
+        }
+      }
+    },
     "CPU": {
       "localizations": {
         "de": {
@@ -4241,6 +4271,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prüfe …"
+          }
+        }
+      }
+    },
+    "Checkout on the server, e.g. ~/shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checkout auf dem Server, z. B. ~/shop"
           }
         }
       }
@@ -7827,6 +7867,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagen %1$@ mit Exit-Code %2$lld"
+          }
+        }
+      }
+    },
+    "Failed GitHub Actions runs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagene GitHub-Actions-Läufe"
           }
         }
       }
@@ -13209,6 +13259,16 @@
         }
       }
     },
+    "Open Pull Request": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull Request öffnen"
+          }
+        }
+      }
+    },
     "Open Sharing Settings": {
       "localizations": {
         "de": {
@@ -13295,6 +13355,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offene Ports"
+          }
+        }
+      }
+    },
+    "Open the pull request": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull Request öffnen"
           }
         }
       }
@@ -21488,6 +21558,16 @@
         }
       }
     },
+    "Uses the GitHub CLI signed in on the server (Connections → GitHub). It looks every few minutes — no webhook, nothing public. With your approval the agent opens a pull request on a new branch.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzt die auf dem Server angemeldete GitHub-CLI (Verbindungen → GitHub). Sie schaut alle paar Minuten nach – kein Webhook, nichts Öffentliches. Mit deiner Freigabe öffnet der Agent einen Pull Request auf einem neuen Branch."
+          }
+        }
+      }
+    },
     "Valid": {
       "localizations": {
         "de": {
@@ -23148,6 +23228,16 @@
     },
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false
+    },
+    "owner/repository": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "besitzer/repository"
+          }
+        }
+      }
     },
     "password": {
       "localizations": {

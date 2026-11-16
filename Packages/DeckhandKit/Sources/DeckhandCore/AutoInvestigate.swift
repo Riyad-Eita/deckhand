@@ -30,6 +30,25 @@ public enum AutoInvestigate {
         public var server: String
         /// The server's name in the push.
         public var name: String
+        /// GitHub repositories whose failed Actions runs start an investigation (needs `gh` signed in on the server).
+        public var ciRepos: [CIRepo]?
+        /// Minutes between two looks at GitHub Actions.
+        public var ciMinutes: Int?
+
+        public struct CIRepo: Codable, Sendable, Hashable, Identifiable {
+            /// `owner/name`
+            public var repo: String
+            /// Where it is checked out on the server (the agent works and opens the pull request there).
+            public var dir: String
+            public var id: String { repo }
+            public init(repo: String, dir: String) { self.repo = repo; self.dir = dir }
+            public var isValid: Bool {
+                repo.range(of: #"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"#, options: .regularExpression) != nil
+                    && dir.range(of: #"^(~|/)[A-Za-z0-9_./~@+-]*$"#, options: .regularExpression) != nil && !dir.contains("..")
+            }
+        }
+
+        public var repos: [CIRepo] { (ciRepos ?? []).filter(\.isValid) }
 
         public init(
             cli: ServerCLI, options: CLIOptions = .init(), uptime: Bool = true, services: Bool = true, disk: Bool = true,
@@ -53,7 +72,7 @@ public enum AutoInvestigate {
         }
     }
 
-    public enum Kind: String, Sendable, Codable, Hashable { case uptime, service, disk }
+    public enum Kind: String, Sendable, Codable, Hashable { case uptime, service, disk, ci }
 
     public enum State: String, Sendable, Codable, Hashable {
         /// The agent is looking.
@@ -111,6 +130,9 @@ public enum AutoInvestigate {
         public var result: String?
         /// Who approved or dismissed (device name).
         public var who: String?
+        /// A failed CI run: its page, branch and workflow (`name`); `arg` is the repository.
+        public var url: String?
+        public var branch: String?
     }
 
     public struct Status: Sendable, Hashable {
@@ -197,6 +219,38 @@ public enum AutoInvestigate {
         If a command fails, stop and say why. Then check whether the problem is gone and answer in one line.
         """
 
+    /// A failed GitHub Actions run: the failing log and the commit's diff, a diagnosis and a change.
+    static let ciPromptTemplate = """
+        A GitHub Actions run failed: @@TITLE@@ (@@URL@@). You are in the repository's checkout on this server.
+
+        @@EVIDENCE@@
+
+        Find the cause. Read the code where the log points. Don't change anything yet: the owner approves a pull \
+        request from their phone first.
+
+        Answer in this shape, in plain words:
+        Cause: <the cause in one sentence>
+        <a short explanation>
+        ## \(Incident.fixHeading)
+        ```diff
+        <the change as a unified diff, or the exact commands if it is not a code change>
+        ```
+        If the failure is flaky or outside the code (a service outage, a missing secret), say so instead of the fix section.
+        """
+
+    /// The approved second run for CI: the change on a new branch and a pull request, never a push to the branch itself.
+    static let ciApplyTemplate = """
+        The owner approved this fix for the failed CI run "@@TITLE@@" (cause: @@CAUSE@@).
+        In the checkout of @@REPO@@ (clone it with `gh repo clone @@REPO@@` into this folder first if it isn't here): \
+        fetch, create a new branch @@BRANCH@@ from origin/@@BASE@@, make exactly this change and \
+        nothing else, commit it ("Fix CI: @@TITLE@@"), push the new branch and open a pull request into @@BASE@@ with \
+        `gh pr create`, explaining the cause in its description. Never push to @@BASE@@ itself.
+        ```diff
+        @@FIX@@
+        ```
+        The last line of your answer is the pull request's URL.
+        """
+
     /// The house rules' list of commands that can't easily be undone, taken from the checker so both agree.
     static var riskyLine: String {
         let s = HouseRules.hookScript
@@ -229,6 +283,9 @@ STATE = os.path.join(D, "state.json")
 EVIDENCE = json.loads(\#(pyString(ev)))
 PROMPT = \#(pyString(promptTemplate))
 APPLY = \#(pyString(applyTemplate))
+CI_PROMPT = \#(pyString(ciPromptTemplate))
+CI_APPLY = \#(pyString(ciApplyTemplate))
+GH = shutil.which("gh") or os.path.expanduser("~/.local/bin/gh")
 \#(riskyLine)
 OPEN = ("running", "applying")
 KEEP = 100
@@ -301,9 +358,121 @@ def probe(url, expect, keyword):
     return ok and (not keyword or keyword in body)
 
 
-def triggers(cfg):
+GH_ERROR = [""]
+
+
+def gh(args, cwd=None, timeout=60):
+    """stdout of the GitHub CLI, or None (the reason in GH_ERROR[0])."""
+    try:
+        p = subprocess.run([GH] + args, capture_output=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=cwd,
+                           encoding="utf-8", errors="replace")
+        GH_ERROR[0] = ([l for l in p.stderr.splitlines() if l.strip()] or [""])[-1][:300]
+        return p.stdout if p.returncode == 0 else None
+    except Exception as e:
+        GH_ERROR[0] = str(e)[:300]
+        return None
+
+
+def poll_ci(cfg, state):
+    """New failed GitHub Actions runs since the last look go to state["ciPending"]. The first look only remembers
+    where things stand, so old failures don't start anything."""
+    repos = [r for r in cfg.get("ciRepos") or [] if re.match(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", r.get("repo", ""))]
+    if not repos or not os.path.exists(GH):
+        return
+    minutes = cfg.get("ciMinutes")
+    minutes = 3 if minutes is None else max(0, int(minutes))
+    if minutes and time.time() - state.get("ciPolled", 0) < 60 * minutes - 5:
+        return
+    state["ciPolled"] = int(time.time())
+    seen, pending = state.setdefault("ciSeen", {}), state.setdefault("ciPending", {})
+    for r in repos:
+        out = gh(["run", "list", "-R", r["repo"], "--status", "failure", "--limit", "10",
+                  "--json", "databaseId,displayTitle,headBranch,headSha,workflowName,url"])
+        if out is None:
+            continue
+        try:
+            runs = json.loads(out)
+        except Exception:
+            continue
+        top = max([x.get("databaseId", 0) for x in runs] + [0])
+        if r["repo"] not in seen:
+            seen[r["repo"]] = top
+            continue
+        for x in sorted(runs, key=lambda x: x.get("databaseId", 0)):
+            rid = x.get("databaseId", 0)
+            if rid > seen[r["repo"]]:
+                pending["ci:%s:%d" % (r["repo"], rid)] = {
+                    "kind": "ci", "arg": r["repo"], "dir": r.get("dir") or "~", "runId": rid, "name": x.get("workflowName") or "CI",
+                    "branch": x.get("headBranch") or "", "sha": x.get("headSha") or "", "url": x.get("url") or "",
+                    "title": "CI failed: %s on %s" % (x.get("workflowName") or "CI", x.get("headBranch") or "?")}
+        seen[r["repo"]] = max(seen[r["repo"]], top)
+
+
+ANSI = re.compile(r"(\x1b|\^\[)\[[0-9;]*[A-Za-z]")
+STAMP = re.compile(r"^\S*\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?Z ?")
+PASSED = re.compile(r"^\s*[✔◇]|\bpassed after\b|\b(started|skipped)\.?$|^\s*ok \d|\bPASS(ED)?\b|^\[\d+/\d+\] Compiling")
+ERRORISH = re.compile(r"##\[error\]|✘|\bFAIL(ED|URE)?\b|(?i:\berror\b|\bfailed\b|\bfailure\b|\btraceback\b|\bexception\b|\bpanic\b|exit code [1-9])")
+
+
+def log_digest(text, context=2, tail=40, limit=7000):
+    """The useful part of a failed job's log (`gh run view --log-failed`): job and step columns and timestamps go;
+    first the error lines with a little context, then the end of the log; lines of things that passed are left out."""
+    lines = []
+    for raw in text.splitlines():
+        parts = raw.split("\t", 2)
+        line = parts[2] if len(parts) == 3 else raw
+        step = parts[1] if len(parts) == 3 else ""
+        line = STAMP.sub("", ANSI.sub("", line.replace("\ufeff", ""))).rstrip()
+        if line and not PASSED.search(line):
+            lines.append((step, line))
+
+    def block(indices):
+        out, last, step_now = [], -2, None
+        for i in sorted(indices):
+            step, line = lines[i]
+            if i != last + 1 and out:
+                out.append("…")
+            if step and step != step_now:
+                out.append("== %s" % step)
+                step_now = step
+            out.append(line)
+            last = i
+        return "\n".join(out)
+    errors = set()
+    for i, (_, line) in enumerate(lines):
+        if ERRORISH.search(line):
+            errors.update(range(max(0, i - context), min(len(lines), i + context + 1)))
+    head = block(errors)
+    if len(head) > limit * 2 // 3:
+        head = head[:limit * 2 // 3] + "\n…"
+    end = block(set(range(max(0, len(lines) - tail), len(lines))) - errors)
+    room = limit - len(head)
+    if len(end) > room:
+        end = "…\n" + end[-max(0, room):]
+    return (head + ("\n\n--- end of the log ---\n" + end if end.strip() else "")).strip()
+
+
+def ci_evidence(t):
+    log = gh(["run", "view", str(t["runId"]), "-R", t["arg"], "--log-failed"], timeout=120)
+    why = GH_ERROR[0] if log is None else ""
+    log = log or ""
+    sections = ["### Run\n```\n%s\nworkflow %s, branch %s, commit %s\n%s\n```" % (t["title"], t["name"], t["branch"], t["sha"][:12], t["url"])]
+    sections.append("### Failing steps (digest of the log)\n```\n%s\n```" % (log_digest(log) if log.strip() else "(the log couldn't be read%s)" % (": " + why if why else "")))
+    d = os.path.expanduser(t.get("dir") or "~")
+    diff = ""
+    if os.path.isdir(os.path.join(d, ".git")) and re.match(r"^[0-9a-f]{7,40}$", t["sha"]):
+        sh("git -C %s fetch -q origin %s 2>/dev/null" % (shlex.quote(d), t["sha"]), 60)
+        diff = sh("git -C %s show --stat --patch -U3 --format=fuller %s 2>/dev/null | head -n 400" % (shlex.quote(d), t["sha"]), 60)
+    if not diff.strip():
+        diff = gh(["api", "repos/%s/commits/%s" % (t["arg"], t["sha"]), "--jq", '.files[] | "--- " + .filename + "\\n" + (.patch // "")']) or ""
+        diff = "\n".join(diff.splitlines()[:400])
+    sections.append("### The commit's change\n```diff\n%s\n```" % (diff.strip() or "(not available)"))
+    return "\n\n".join(sections)
+
+
+def triggers(cfg, state=None):
     """Every problem right now, by key."""
-    found = {}
+    found = dict((state or {}).get("ciPending") or {})
     if cfg.get("uptime", True):
         try:
             with open(os.path.join(UPTIME, "checks.tsv")) as f:
@@ -346,6 +515,8 @@ def still_failing(cfg, r):
         return not probe(arg, r.get("expect") or "200-399", r.get("keyword") or "")
     if kind == "service":
         return subprocess.run(["systemctl", "is-failed", "--quiet", arg], stdin=subprocess.DEVNULL).returncode == 0
+    if kind == "ci":
+        return False
     return r.get("key") in triggers(cfg)
 
 
@@ -369,17 +540,23 @@ def exit_code(rid):
         return None
 
 
-def meta(rid, title, cfg):
+def meta(rid, title, cfg, directory="~"):
     os.makedirs(RUNS, exist_ok=True)
     with open(os.path.join(RUNS, rid + ".meta"), "w") as f:
-        f.write(json.dumps({"title": title, "engine": cfg.get("engine") or "", "directory": "~", "started": int(time.time())}) + "\n")
+        f.write(json.dumps({"title": title, "engine": cfg.get("engine") or "", "directory": directory, "started": int(time.time())}) + "\n")
 
 
-def launch(script, rid, iid, prompt):
+def workdir(directory):
+    """The checkout when it exists on this server, else the home folder."""
+    d = os.path.expanduser(directory or "~")
+    return directory if os.path.isdir(d) else "~"
+
+
+def launch(script, rid, iid, prompt, directory="~"):
     pf = os.path.join(D, "%s.%s.prompt" % (iid, script.split(".")[0]))
     with open(pf, "w") as f:
         f.write(prompt)
-    env = dict(os.environ, RID=rid, IID=iid, PF=pf)
+    env = dict(os.environ, RID=rid, IID=iid, PF=pf, DIR=os.path.expanduser(directory))
     subprocess.run(["bash", os.path.join(D, script)], env=env, stdin=subprocess.DEVNULL,
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=60)
 
@@ -414,6 +591,15 @@ def start(cfg, key, t):
     rid = "inv-" + iid[2:]
     r = dict(t, id=iid, key=key, started=int(time.time()), status="running", run=rid)
     put(r)
+    if t["kind"] == "ci":
+        d = workdir(t.get("dir"))
+        meta(rid, "Investigate: " + t["title"], cfg, d)
+        prompt = CI_PROMPT.replace("@@TITLE@@", t["title"]).replace("@@URL@@", t.get("url") or "").replace("@@EVIDENCE@@", ci_evidence(t))
+        if d == "~":
+            prompt = prompt.replace("You are in the repository's checkout on this server.",
+                                    "The repository %s isn't checked out on this server; read the code with `gh` if you need it." % t["arg"])
+        launch("start.sh", rid, iid, prompt, d)
+        return
     meta(rid, "Investigate: " + t["title"], cfg)
     launch("start.sh", rid, iid, PROMPT.replace("@@TITLE@@", t["title"]).replace("@@EVIDENCE@@", evidence(t)))
 
@@ -505,6 +691,16 @@ def finish(cfg, r, code, kind):
         text, err = answer(r.get("applyRun") or "")
         last = [l for l in (text or "").splitlines() if l.strip()]
         r["result"] = (last[-1] if last else (err or ""))[:300]
+        if r.get("kind") == "ci":
+            m = re.search(r"https://github\.com/[^\s)]+/pull/\d+", text or "")
+            if m:
+                r.update(status="fixed", result=m.group(0), note="Pull request opened")
+                push(cfg, r, "Pull request opened: " + r["title"], m.group(0), "white_check_mark")
+            else:
+                r.update(status="failed", note=(err or r["result"] or "No pull request was opened.")[:300])
+                push(cfg, r, "No pull request: " + r["title"], r["note"], "warning")
+            put(r)
+            return
         if still_failing(cfg, r):
             r["status"] = "stillfailing"
             push(cfg, r, "Still failing: " + r["title"], "The fix ran, but the problem is still there. " + r["result"], "warning", 4)
@@ -532,7 +728,8 @@ def finish(cfg, r, code, kind):
         put(r)
         push(cfg, r, r["title"], r["cause"] + "\n\nNothing on the server needs to change.", "mag")
         return
-    r.update(status="proposed", fix=fix, fp=hashlib.sha256((r["id"] + "\n" + fix).encode()).hexdigest()[:12], risky=bool(RISKY.search(fix)))
+    r.update(status="proposed", fix=fix, fp=hashlib.sha256((r["id"] + "\n" + fix).encode()).hexdigest()[:12],
+             risky=False if r.get("kind") == "ci" else bool(RISKY.search(fix)))
     put(r)
     reply = reply_topic(cfg)
     link = "deckhand://investigation/%s/%s" % (cfg.get("server") or "-", r["id"])
@@ -541,7 +738,8 @@ def finish(cfg, r, code, kind):
         if r["risky"]:
             actions.append({"action": "view", "label": "Review in Deckhand", "url": link, "clear": True})
         else:
-            actions.append({"action": "http", "label": "Apply", "url": reply, "method": "POST", "body": "apply:" + r["fp"], "clear": True})
+            actions.append({"action": "http", "label": "Open PR" if r.get("kind") == "ci" else "Apply", "url": reply, "method": "POST",
+                            "body": "apply:" + r["fp"], "clear": True})
         actions.append({"action": "http", "label": "Dismiss", "url": reply, "method": "POST", "body": "dismiss:" + r["fp"], "clear": True})
     push(cfg, r, r["title"], "%s\n\nFix:\n%s" % (r["cause"], short(fix)), "mag", 4, actions)
 
@@ -565,6 +763,16 @@ def rule_block(fix):
     return hit[1] if hit else None
 
 
+def read_only_rules():
+    try:
+        sys.path.insert(0, RULES)
+        import hook
+        rules = hook.load_rules() or {}
+    except Exception:
+        return None
+    return "Read-only mode: agents may look, not change" if rules.get("readOnly") else None
+
+
 def apply(cfg, r, who, in_app):
     if r.get("status") != "proposed" or not r.get("fix"):
         return "@@state " + str(r.get("status"))
@@ -573,7 +781,7 @@ def apply(cfg, r, who, in_app):
         r["note"] = "This fix needs approval in the app."
         put(r)
         return "@@needsapp"
-    block = rule_block(r["fix"])
+    block = rule_block(r["fix"]) if r.get("kind") != "ci" else read_only_rules()
     if block:
         r.update(status="blocked", note=block, who=who)
         put(r)
@@ -582,6 +790,15 @@ def apply(cfg, r, who, in_app):
     rid = "inv-" + r["id"][2:] + "-fix"
     r.update(status="applying", applyRun=rid, who=who, note=None)
     put(r)
+    if r.get("kind") == "ci":
+        d = workdir(r.get("dir"))
+        meta(rid, "Pull request: " + r["title"], cfg, d)
+        branch = "deckhand/fix-ci-%s" % r.get("runId", r["id"][2:])
+        prompt = (CI_APPLY.replace("@@TITLE@@", r["title"]).replace("@@CAUSE@@", r.get("cause") or "")
+                  .replace("@@BRANCH@@", branch).replace("@@BASE@@", r.get("branch") or "main").replace("@@FIX@@", r["fix"])
+                  .replace("@@REPO@@", r.get("arg") or ""))
+        launch("apply.sh", rid, r["id"], prompt, d)
+        return "@@applying " + rid
     meta(rid, "Fix: " + r["title"], cfg)
     launch("apply.sh", rid, r["id"], APPLY.replace("@@TITLE@@", r["title"]).replace("@@CAUSE@@", r.get("cause") or "").replace("@@FIX@@", r["fix"]))
     return "@@applying " + rid
@@ -635,15 +852,21 @@ def tick(cfg):
     opened = state.setdefault("open", {})
     replies(cfg, state)
     reap(cfg)
-    found = triggers(cfg)
+    poll_ci(cfg, state)
+    found = triggers(cfg, state)
     for key in list(opened):
+        if key.startswith("ci:"):
+            # A failed CI run is an event, not a state: it stays known for a week so it never starts twice.
+            if time.time() - opened[key] > 7 * 86400:
+                del opened[key]
+            continue
         if key not in found:
             del opened[key]
             for r in records():
                 if r.get("key") == key and r.get("status") == "proposed":
                     r["status"] = "resolved"
                     put(r)
-    order = {"service": 0, "uptime": 1, "disk": 2}
+    order = {"service": 0, "uptime": 1, "ci": 2, "disk": 3}
     new = sorted((k for k in found if k not in opened), key=lambda k: (order.get(found[k]["kind"], 9), k))
     busy = any(r.get("status") in OPEN and run_alive(r.get("run") if r.get("status") == "running" else r.get("applyRun") or "") for r in records())
     if new and not busy:
@@ -656,6 +879,7 @@ def tick(cfg):
             push(cfg, r, "Not looked into: " + t["title"], "The daily limit of %d automatic investigations is reached." % int(cfg.get("maxPerDay") or 3), "hourglass")
         else:
             start(cfg, key, t)
+        state.get("ciPending", {}).pop(key, None)
     old = records()[:-KEEP]
     for r in old:
         for suffix in (".json", ".start.prompt", ".apply.prompt"):
@@ -702,15 +926,16 @@ if __name__ == "__main__":
     /// when it ends. The investigation is read-only; the approved fix runs with full access, still under the house rules.
     static func launcher(_ c: Config, access: CLIAccess) -> String {
         let run = DetachedRun(id: "${RID}")
-        let cli = LimitAwareRun.command(c.cli, prompt: "@@PROMPT@@", workingDirectory: "~", sessionID: nil, access: access, options: c.options, run: run)
+        let cli = LimitAwareRun.command(c.cli, prompt: "@@PROMPT@@", workingDirectory: "@@DIR@@", sessionID: nil, access: access, options: c.options, run: run)
             .replacingOccurrences(of: ShellQuote.quote("@@PROMPT@@"), with: "\"$(cat \"$PF\")\"")
+            .replacingOccurrences(of: ShellQuote.quote("@@DIR@@"), with: "\"${DIR:-$HOME}\"")
         let kind = access == .readOnly ? "start" : "apply"
         let command = cli + "\nc=$?; python3 \"$HOME/.deckhand/investigate/inv.py\" finish \"$IID\" \"$c\" \(kind) >/dev/null 2>&1; (exit $c)"
         return """
         #!/bin/bash
         # Deckhand: one agent run for an investigation. Managed by the Deckhand app.
         export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/usr/local/bin:$PATH"
-        export RID IID PF
+        export RID IID PF DIR
         mkdir -p ~/.deckhand/runs; chmod 700 ~/.deckhand ~/.deckhand/runs
         \(run.startCommand(command))
         """
