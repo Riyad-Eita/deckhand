@@ -125,6 +125,16 @@
         }
       }
     },
+    "%@ failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ausgefallen"
+          }
+        }
+      }
+    },
     "%@ for server keys": {
       "localizations": {
         "de": {
@@ -738,6 +748,16 @@
         }
       }
     },
+    "%lld of %lld runs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld Läufen"
+          }
+        }
+      }
+    },
     "%lld of %lld tests failed": {
       "localizations": {
         "de": {
@@ -1204,6 +1224,16 @@
         }
       }
     },
+    "A failing uptime check, a crashed service or a full disk starts a read-only run on the server — your phone can be off. Nothing changes until you approve the fix.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein fehlschlagender Uptime-Check, ein abgestürzter Dienst oder eine volle Platte startet einen schreibgeschützten Lauf auf dem Server – dein iPhone darf aus sein. Nichts ändert sich, bis du den Fix freigibst."
+          }
+        }
+      }
+    },
     "A firewall blocks everything you didn't open on purpose — a database or admin panel that listens by accident stays private.": {
       "localizations": {
         "de": {
@@ -1260,6 +1290,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine versteckte Datei in einem installierten Paket (oft Testdaten oder ein Platzhalter). Meist harmlos — mit dpkg -S prüfen, zu welchem Paket sie gehört."
+          }
+        }
+      }
+    },
+    "A house rule stopped the fix: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Hausregel hat den Fix gestoppt: %@"
           }
         }
       }
@@ -2101,6 +2141,16 @@
         }
       }
     },
+    "All quiet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles ruhig"
+          }
+        }
+      }
+    },
     "All servers": {
       "localizations": {
         "de": {
@@ -2592,6 +2642,26 @@
         }
       }
     },
+    "Apply Fix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fix anwenden"
+          }
+        }
+      }
+    },
+    "Apply a fix on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einen Fix auf dem Server anwenden"
+          }
+        }
+      }
+    },
     "Apply a hardening profile": {
       "localizations": {
         "de": {
@@ -2618,6 +2688,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "„%@“ anwenden?"
+          }
+        }
+      }
+    },
+    "Applying…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird angewendet …"
           }
         }
       }
@@ -2874,6 +2954,16 @@
         }
       }
     },
+    "At most %lld a day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höchstens %lld pro Tag"
+          }
+        }
+      }
+    },
     "At most %lld× an hour": {
       "localizations": {
         "de": {
@@ -2950,6 +3040,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auto-Fix"
+          }
+        }
+      }
+    },
+    "Auto-investigate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selbst untersuchen"
           }
         }
       }
@@ -3250,6 +3350,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wiederholte Fehlversuche blockieren (fail2ban)"
+          }
+        }
+      }
+    },
+    "Blocked by a house rule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von einer Hausregel gestoppt"
           }
         }
       }
@@ -3881,6 +3991,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "DNS und Ports prüfen"
+          }
+        }
+      }
+    },
+    "Check Now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt prüfen"
           }
         }
       }
@@ -4906,6 +5026,16 @@
         }
       }
     },
+    "Contains a command that can't easily be undone — only the app can approve it, with %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enthält einen Befehl, der sich nicht leicht rückgängig machen lässt – nur die App kann ihn freigeben, mit %@."
+          }
+        }
+      }
+    },
     "Continue": {
       "localizations": {
         "de": {
@@ -5426,6 +5556,16 @@
         }
       }
     },
+    "Crashed services": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgestürzten Diensten"
+          }
+        }
+      }
+    },
     "Create": {
       "localizations": {
         "de": {
@@ -5649,6 +5789,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kunden, Zahlungen, Abos und Erstattungen."
+          }
+        }
+      }
+    },
+    "Daily limit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tageslimit"
           }
         }
       }
@@ -6427,6 +6577,16 @@
         }
       }
     },
+    "Disk %@ is %lld %% full": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platte %1$@ ist zu %2$lld %% voll"
+          }
+        }
+      }
+    },
     "Disk %@ is %lld%% full": {
       "localizations": {
         "de": {
@@ -6483,6 +6643,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Festplatten"
+          }
+        }
+      }
+    },
+    "Dismiss": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwerfen"
+          }
+        }
+      }
+    },
+    "Dismissed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verworfen"
           }
         }
       }
@@ -6894,6 +7074,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jede Nachricht geht an das günstigste deiner Modelle, das gut genug dafür ist. Kein Server, keine Werkzeuge — wähle jederzeit über den Titel ein festes Modell."
+          }
+        }
+      }
+    },
+    "Each run uses your Claude or ChatGPT plan. Runs are read-only; a fix runs only after you approve it, within the house rules.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Lauf nutzt dein Claude- oder ChatGPT-Abo. Läufe sind schreibgeschützt; ein Fix läuft erst nach deiner Freigabe und im Rahmen der Hausregeln."
           }
         }
       }
@@ -7681,6 +7871,16 @@
         }
       }
     },
+    "Failing uptime checks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlschlagenden Uptime-Checks"
+          }
+        }
+      }
+    },
     "Fast key-value store for caches and queues.": {
       "localizations": {
         "de": {
@@ -7971,6 +8171,16 @@
         }
       }
     },
+    "Fix ready": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fix bereit"
+          }
+        }
+      }
+    },
     "Fix with an agent": {
       "localizations": {
         "de": {
@@ -8171,6 +8381,16 @@
         }
       }
     },
+    "From %lld %% full": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ab %lld %% voll"
+          }
+        }
+      }
+    },
     "From Git to this server; auto-deploy, rollback, logs": {
       "localizations": {
         "de": {
@@ -8259,6 +8479,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voll automatisch"
+          }
+        }
+      }
+    },
+    "Full disks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollen Platten"
           }
         }
       }
@@ -9466,6 +9696,16 @@
         }
       }
     },
+    "Investigations": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untersuchungen"
+          }
+        }
+      }
+    },
     "Invite Code": {
       "localizations": {
         "de": {
@@ -10546,6 +10786,26 @@
         }
       }
     },
+    "Look into": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untersuchen bei"
+          }
+        }
+      }
+    },
+    "Look into failures by itself": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler selbst untersuchen"
+          }
+        }
+      }
+    },
     "Look up customers and payments and act on them. Use a restricted key with only the permissions you want the agent to have.": {
       "localizations": {
         "de": {
@@ -10572,6 +10832,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Projekte werden gesucht …"
+          }
+        }
+      }
+    },
+    "Looking…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sucht …"
           }
         }
       }
@@ -11102,6 +11372,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exportkonformität fehlt"
+          }
+        }
+      }
+    },
+    "Needs python3 on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht python3 auf dem Server."
           }
         }
       }
@@ -11772,6 +12052,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Dateien. Füge die .env einer App hinzu, um sie hier aufzubewahren."
+          }
+        }
+      }
+    },
+    "No fix needed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Fix nötig"
           }
         }
       }
@@ -16756,6 +17046,16 @@
         }
       }
     },
+    "Set up notifications in Settings to get the cause and the fix as a push, with Apply and Dismiss on the lock screen.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richte in den Einstellungen Mitteilungen ein, um Ursache und Fix als Push zu bekommen – mit „Anwenden“ und „Verwerfen“ auf dem Sperrbildschirm."
+          }
+        }
+      }
+    },
     "Set up the server": {
       "localizations": {
         "de": {
@@ -17763,6 +18063,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bleibt auf deinem Server in ~/.deckhand/history. Private Schlüssel und Passwortdateien werden ausgelassen."
+          }
+        }
+      }
+    },
+    "Still failing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällt weiter aus"
           }
         }
       }
@@ -19897,6 +20207,16 @@
         }
       }
     },
+    "This server has no cron, so nothing can run on a schedule.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server gibt es kein cron, also kann nichts nach Zeitplan laufen."
+          }
+        }
+      }
+    },
     "This server has no diff command, which the history needs.": {
       "localizations": {
         "de": {
@@ -19913,6 +20233,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf diesem Server fehlt git. Installiere es unter Updates oder im Terminal."
+          }
+        }
+      }
+    },
+    "This server has no python3, which the checker needs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server fehlt python3, das der Prüfer braucht."
           }
         }
       }
@@ -20103,6 +20433,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bis"
+          }
+        }
+      }
+    },
+    "Today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
           }
         }
       }
@@ -20908,6 +21248,16 @@
         }
       }
     },
+    "Uptime check “%@” failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uptime-Check „%@“ fehlgeschlagen"
+          }
+        }
+      }
+    },
     "Usage limit reached. The task waits on the server and continues at %@ by itself — you can close the app.": {
       "localizations": {
         "de": {
@@ -21328,6 +21678,16 @@
         }
       }
     },
+    "Watches": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beobachtet"
+          }
+        }
+      }
+    },
     "Watching — no run yet": {
       "localizations": {
         "de": {
@@ -21424,6 +21784,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gut geschützt"
+          }
+        }
+      }
+    },
+    "Went away": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von selbst behoben"
           }
         }
       }
@@ -21584,6 +21954,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wenn Deckhand abstürzt oder hängt, gibt iOS der App innerhalb eines Tages einen Bericht. Er erscheint hier, und nur du entscheidest, ob du ihn teilst."
+          }
+        }
+      }
+    },
+    "When something fails, the agent finds the cause and a fix by itself": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn etwas ausfällt, findet der Agent Ursache und Fix selbst"
+          }
+        }
+      }
+    },
+    "When something fails, the investigation shows up here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn etwas ausfällt, erscheint die Untersuchung hier."
           }
         }
       }
@@ -22341,6 +22731,16 @@
         }
       }
     },
+    "disks ≥ %lld %%": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platten ≥ %lld %%"
+          }
+        }
+      }
+    },
     "exit %lld": {
       "localizations": {
         "de": {
@@ -22726,6 +23126,16 @@
         }
       }
     },
+    "nothing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nichts"
+          }
+        }
+      }
+    },
     "npm cache": {
       "localizations": {
         "de": {
@@ -22825,6 +23235,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dienst"
+          }
+        }
+      }
+    },
+    "services": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dienste"
           }
         }
       }
@@ -22988,6 +23408,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "unbekannter Dienst"
+          }
+        }
+      }
+    },
+    "uptime checks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uptime-Checks"
           }
         }
       }

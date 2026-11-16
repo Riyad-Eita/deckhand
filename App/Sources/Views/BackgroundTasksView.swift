@@ -8,6 +8,8 @@ struct BackgroundTasksView: View {
     @State private var runs: [DetachedRun.Info]?
     @State private var error: String?
     @State private var confirmStop: DetachedRun.Info?
+    @State private var adopted: ChatThread?
+    @Environment(\.modelContext) private var context
 
     private var threadsByRun: [String: ChatThread] {
         Dictionary((server.threads ?? []).compactMap { t in t.cliRunID.map { ($0, t) } }, uniquingKeysWith: { a, _ in a })
@@ -48,6 +50,7 @@ struct BackgroundTasksView: View {
             }
         }
         .navigationTitle("Background tasks")
+        .navigationDestination(item: $adopted) { AgentChatView(thread: $0, server: server) }
         .task {
             // Refresh while the screen is open.
             while !Task.isCancelled {
@@ -69,7 +72,13 @@ struct BackgroundTasksView: View {
             if let thread {
                 NavigationLink { AgentChatView(thread: thread, server: server) } label: { RunRow(info: info) }
             } else {
-                RunRow(info: info)
+                // Started on the server (a scheduled task, an investigation): open it as a task, read from the start.
+                Button {
+                    adopted = ServerRuns.thread(for: info.id, title: info.meta?.title ?? info.id,
+                                                engine: info.meta?.engine == ServerCLI.codex.displayName ? .codex : .claudeCode,
+                                                directory: info.meta?.directory ?? "~", server: server, context: context)
+                } label: { RunRow(info: info) }
+                .foregroundStyle(.primary)
             }
         }
         .swipeActions {

@@ -233,6 +233,14 @@ struct ServerDashboardView: View {
                         .accessibilityIdentifier("dashboard.schedules")
                         Divider().padding(.leading, 58)
                         NavigationLink {
+                            InvestigationsView(server: server)
+                        } label: {
+                            ManageRow(title: "Auto-investigate", subtitle: "When something fails, the agent finds the cause and a fix by itself", symbol: "stethoscope")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.investigate")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
                             BackgroundTasksView(server: server)
                         } label: {
                             ManageRow(title: "Background tasks", subtitle: "Agent tasks that keep running without the app", symbol: "moon.stars")

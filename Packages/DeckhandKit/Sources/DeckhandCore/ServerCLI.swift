@@ -86,11 +86,11 @@ public enum ServerCLIRun {
     }
 
     /// Runs one turn detached from the connection: it keeps going on the server if the phone disconnects.
-    /// Pass `fromLine` > 1 to reattach to a run that is already going; nothing is started then.
+    /// Pass `fromLine` > 1, or `start: false`, to reattach to a run that is already there; nothing is started then.
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
         sessionID: String?, access: CLIAccess, options: CLIOptions = .init(), run: DetachedRun, fromLine: Int = 1,
-        meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil
+        start: Bool? = nil, meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil
     ) -> AsyncThrowingStream<AgentEvent, Error> {
         let cliCommand = LimitAwareRun.command(
             cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run,
@@ -99,7 +99,8 @@ public enum ServerCLIRun {
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()
                 do {
-                    if fromLine <= 1 {
+                    // Reattaching never starts anything, also when no line was read yet.
+                    if start ?? (fromLine <= 1) {
                         let started = try await shell.run(run.startCommand(cliCommand, meta: meta, notify: notify), timeout: .seconds(30))
                         guard started.stdout.contains("started") else { throw CLIError("Couldn't start \(cli.displayName) on the server.") }
                     }

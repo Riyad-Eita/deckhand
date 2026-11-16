@@ -25,6 +25,15 @@ final class AppRouter {
     /// The morning briefing to open (`deckhand://briefing`, the link in the briefing push).
     var pendingBriefing = false
 
+    /// An investigation to open (`deckhand://investigation/<server>/<id>`, the link in its push).
+    var pendingInvestigation: InvestigationLink?
+
+    struct InvestigationLink: Identifiable, Equatable {
+        let server: UUID
+        let investigation: String
+        var id: String { server.uuidString + investigation }
+    }
+
     /// A scanned pairing code (`deckhand://pair?…` from the Camera app or a link).
     var pendingPairing: PairingLink?
 
@@ -73,6 +82,10 @@ final class AppRouter {
             }
         case "server":
             if let id = UUID(uuidString: url.lastPathComponent) { pendingServer = id }
+        case "investigation":
+            if parts.count == 2, let server = UUID(uuidString: parts[0]), parts[1].range(of: #"^i-[0-9]{8}-[0-9]{6}(-[0-9]+)?$"#, options: .regularExpression) != nil {
+                pendingInvestigation = InvestigationLink(server: server, investigation: parts[1])
+            }
         case "pair":
             if let c = Pairing.parse(url) { pendingPairing = PairingLink(code: c) }
         case "add":
