@@ -46,11 +46,14 @@ struct AutoInvestigateTests {
         var bin: URL { home.appendingPathComponent(".local/bin") }
         var dir: URL { home.appendingPathComponent(".deckhand/investigate") }
 
-        init(maxPerDay: Int = 3) throws {
+        init(maxPerDay: Int = 3, ci: [AutoInvestigate.Config.CIRepo]? = nil) throws {
             home = FileManager.default.temporaryDirectory.appendingPathComponent("dh-inv-\(UUID().uuidString.prefix(8))")
             try FileManager.default.createDirectory(at: home.appendingPathComponent(".local/bin"), withIntermediateDirectories: true)
             try FileManager.default.createDirectory(at: home.appendingPathComponent(".deckhand/investigate"), withIntermediateDirectories: true)
-            let c = AutoInvestigate.Config(cli: .claudeCode, maxPerDay: maxPerDay, topic: "", server: "S", name: "test")
+            var c = AutoInvestigate.Config(cli: .claudeCode, uptime: ci == nil, services: ci == nil, disk: ci == nil, maxPerDay: maxPerDay,
+                                           topic: "", server: "S", name: "test")
+            c.ciRepos = ci
+            c.ciMinutes = 0
             try write(AutoInvestigate.script, to: dir.appendingPathComponent("inv.py"))
             try write(AutoInvestigate.launcher(c, access: .readOnly), to: dir.appendingPathComponent("start.sh"))
             try write(AutoInvestigate.launcher(c, access: .full), to: dir.appendingPathComponent("apply.sh"))
@@ -76,7 +79,14 @@ struct AutoInvestigateTests {
             home = os.environ["HOME"]
             open(home + "/claude-args", "a").write(" ".join(sys.argv[3:]) + "\\n")
             print(json.dumps({"type": "system", "subtype": "init", "session_id": "s-1"}))
-            if "Run exactly these commands" in sys.argv[2]:
+            open(home + "/claude-cwd", "a").write(os.getcwd() + "\\n")
+            if "open a pull request" in sys.argv[2]:
+                text = "Opened it.\\nhttps://github.com/me/shop/pull/42"
+            elif "GitHub Actions run failed" in sys.argv[2]:
+                open(home + "/ci-prompt", "w").write(sys.argv[2])
+                text = ("Cause: the cart test expects a 2 % fee but the new code charges 3 %.\\n\\n"
+                        "## Suggested fix\\n```diff\\n-FEE = 0.03\\n+FEE = 0.02\\n```\\n")
+            elif "Run exactly these commands" in sys.argv[2]:
                 open(home + "/failed", "w").write("")
                 text = "nginx is running again."
             else:
@@ -84,6 +94,16 @@ struct AutoInvestigateTests {
                         "## Suggested fix\\n```sh\\n" + os.environ.get("FAKE_FIX", "sudo -n systemctl restart nginx") + "\\n```\\n")
             print(json.dumps({"type": "result", "subtype": "success", "is_error": False, "result": text}))
             """, to: bin.appendingPathComponent("claude"), executable: true)
+            try write(#"""
+            #!/bin/sh
+            # Stand-in for the GitHub CLI.
+            case "$1 $2" in
+              "run list") cat "$HOME/gh-runs.json" ;;
+              "run view") cat "$HOME/gh-log.txt" ;;
+              "api "*) printf '%s\n' '--- shop/fees.py' '@@ -1 +1 @@' '-FEE = 0.02' '+FEE = 0.03' ;;
+              *) exit 1 ;;
+            esac
+            """#, to: bin.appendingPathComponent("gh"), executable: true)
         }
 
         deinit { try? FileManager.default.removeItem(at: home) }
@@ -185,5 +205,74 @@ struct AutoInvestigateTests {
         #expect(limited.status == .limited && limited.percent == 95)
         #expect(s.startedToday() == 1)
         #expect(try box.run("python3 ~/.deckhand/investigate/inv.py dismiss \(first.id) me").contains("@@state resolved"))
+    }
+
+    /// A failed GitHub Actions run: the first look only remembers where things stand, a new failure starts a read-only
+    /// run in the checkout with a digest of the log and the commit's change, and the approval opens a pull request.
+    @Test func failedCIRunIsInvestigatedAndAPullRequestOpened() throws {
+        let box = try Sandbox(ci: [.init(repo: "me/shop", dir: "~/shop")])
+        guard box.fakeWins else { return }
+        try FileManager.default.createDirectory(at: box.home.appendingPathComponent("shop"), withIntermediateDirectories: true)
+        func runs(_ ids: [Int]) throws {
+            let list = ids.map { #"{"databaseId":\#($0),"displayTitle":"Raise the fee","headBranch":"main","headSha":"abc1234def","workflowName":"Tests","url":"https://github.com/me/shop/actions/runs/\#($0)"}"# }
+            try box.write("[" + list.joined(separator: ",") + "]", to: box.home.appendingPathComponent("gh-runs.json"))
+        }
+        let noise = (1...200).map { "test\tSet up job\t2026-11-16T10:00:\(String(format: "%02d", $0 % 60)).1234567Z Downloading action \($0)" }
+        let log = noise + ["test\tRun tests\t2026-11-16T10:03:00.0000000Z \u{1B}[31m✘ test_cart_fee failed\u{1B}[0m",
+                           "test\tRun tests\t2026-11-16T10:03:00.0000000Z AssertionError: 2.0 != 3.0",
+                           "test\tRun tests\t2026-11-16T10:03:01.0000000Z ##[error]Process completed with exit code 1."]
+        try box.write(log.joined(separator: "\n"), to: box.home.appendingPathComponent("gh-log.txt"))
+
+        try runs([100])
+        try box.run("python3 ~/.deckhand/investigate/inv.py tick")
+        #expect(try box.status().investigations.isEmpty, "an old failure doesn't start anything")
+
+        try runs([101, 100])
+        try box.run("python3 ~/.deckhand/investigate/inv.py tick")
+        let found = try #require(try box.wait(for: .proposed))
+        #expect(found.kind == .ci && found.arg == "me/shop" && found.branch == "main" && found.name == "Tests")
+        #expect(found.title == "CI failed: Tests on main" && found.url == "https://github.com/me/shop/actions/runs/101")
+        #expect(found.cause == "the cart test expects a 2 % fee but the new code charges 3 %.")
+        #expect(found.fix == "-FEE = 0.03\n+FEE = 0.02" && found.risky == false)
+        let prompt = try String(contentsOf: box.home.appendingPathComponent("ci-prompt"), encoding: .utf8)
+        #expect(prompt.contains("✘ test_cart_fee failed") && prompt.contains("##[error]Process completed with exit code 1."))
+        #expect(!prompt.contains("\u{1B}[31m") && !prompt.contains("2026-11-16T10:03:00"), "colors and timestamps are gone")
+        #expect(!prompt.contains("Downloading action 50"), "the noise in the middle is cut")
+        #expect(prompt.contains("+FEE = 0.03"), "the commit's change is included")
+        #expect(try box.run("tail -n 1 ~/claude-cwd").trimmingCharacters(in: .whitespacesAndNewlines).hasSuffix("/shop"), "the agent works in the checkout")
+
+        try box.run("python3 ~/.deckhand/investigate/inv.py tick")
+        #expect(try box.status().investigations.filter { $0.kind == .ci }.count == 1, "the same failure never starts twice")
+
+        #expect(try box.run(AutoInvestigate.applyCommand(id: found.id, device: "iPhone")).hasPrefix("@@applying"))
+        let done = try #require(try box.wait(for: .fixed))
+        #expect(done.result == "https://github.com/me/shop/pull/42" && done.note == "Pull request opened")
+        #expect(try box.run("cat ~/.deckhand/investigate/\(found.id).apply.prompt").contains("deckhand/fix-ci-101"))
+    }
+
+    /// Against a real failed GitHub Actions run (read only): the real `gh` reads the failing log, the digest keeps the
+    /// error lines. Opt-in: DECKHAND_CI_LIVE=owner/repo (a repository with at least one failed run; `gh` signed in).
+    @Test(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_CI_LIVE"] != nil))
+    func realFailedRunLog() throws {
+        let repo = ProcessInfo.processInfo.environment["DECKHAND_CI_LIVE"]!
+        let box = try Sandbox(ci: [.init(repo: repo, dir: "~/checkout")])
+        guard box.fakeWins else { return }
+        // The real GitHub CLI with the real home folder (its sign-in), everything else in the sandbox.
+        let realGH = ["/opt/homebrew/bin/gh", "/usr/local/bin/gh", "/usr/bin/gh"].first { FileManager.default.isExecutableFile(atPath: $0) }
+        try box.write("#!/bin/sh\nHOME='\(NSHomeDirectory())' exec '\(try #require(realGH))' \"$@\"\n", to: box.bin.appendingPathComponent("gh"), executable: true)
+        let env = ["PATH": "\(box.bin.path):/usr/bin:/bin"]
+        let latest = try box.run("gh run list -R \(repo) --status failure --limit 1 --json databaseId --jq '.[0].databaseId'", env: env)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let id = try #require(Int(latest))
+        try box.write(#"{"open":{},"ciSeen":{"\#(repo)":\#(id - 1)}}"#, to: box.dir.appendingPathComponent("state.json"))
+        try box.run("python3 ~/.deckhand/investigate/inv.py tick", env: env)
+        let found = try #require(try box.wait(for: .proposed, timeout: 60))
+        #expect(found.kind == .ci && found.url?.hasSuffix("/runs/\(id)") == true)
+        let prompt = try String(contentsOf: box.home.appendingPathComponent("ci-prompt"), encoding: .utf8)
+        #expect(!prompt.contains("(the log couldn't be read)"))
+        #expect(prompt.range(of: #"(?i)error|failed|✘"#, options: .regularExpression) != nil)
+        #expect(prompt.count < 30_000)
+        let digest = prompt.components(separatedBy: "### Failing steps")[1].components(separatedBy: "### The commit")[0]
+        print("CI DIGEST (\(digest.count) chars):\n" + digest.prefix(1500))
     }
 }

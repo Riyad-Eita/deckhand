@@ -89,6 +89,7 @@ struct InvestigationsView: View {
         if c.uptime { parts.append(String(localized: "uptime checks")) }
         if c.services { parts.append(String(localized: "services")) }
         if c.disk { parts.append(String(localized: "disks ≥ \(c.diskPercent) %")) }
+        if !c.repos.isEmpty { parts.append(String(localized: "CI of \(c.repos.map(\.repo).joined(separator: ", "))")) }
         return parts.isEmpty ? String(localized: "nothing") : parts.joined(separator: ", ")
     }
 
@@ -175,6 +176,7 @@ struct InvestigationRow: View {
         case .uptime: String(localized: "Uptime check “\(inv.name ?? inv.arg)” failed")
         case .service: String(localized: "\(inv.arg) failed")
         case .disk: String(localized: "Disk \(inv.arg) is \(inv.percent ?? 0) % full")
+        case .ci: String(localized: "CI failed: \(inv.name ?? "CI") on \(inv.branch ?? "?")")
         }
     }
 
@@ -185,7 +187,11 @@ struct InvestigationRow: View {
                 Spacer()
                 pill
             }
-            Text(inv.started, format: .relative(presentation: .named)).font(.caption).foregroundStyle(.secondary)
+            HStack(spacing: 4) {
+                if inv.kind == .ci { Text(inv.arg).font(.caption.monospaced()) ; Text("·") }
+                Text(inv.started, format: .relative(presentation: .named))
+            }
+            .font(.caption).foregroundStyle(.secondary)
             if let cause = inv.cause { Text(cause).font(.subheadline) }
             if let fix = inv.fix {
                 Text(fix).font(Theme.monoSmall).padding(10).frame(maxWidth: .infinity, alignment: .leading)
@@ -197,16 +203,25 @@ struct InvestigationRow: View {
                 }
             }
             if let note = inv.note { Text(note).font(.caption).foregroundStyle(.secondary) }
-            if let result = inv.result, !result.isEmpty { Text(result).font(.caption).foregroundStyle(.secondary) }
+            if let result = inv.result, !result.isEmpty {
+                if let url = URL(string: result), result.hasPrefix("https://github.com/") {
+                    Link(destination: url) { Label("Open the pull request", systemImage: "arrow.triangle.pull") }.font(.subheadline)
+                } else {
+                    Text(result).font(.caption).foregroundStyle(.secondary)
+                }
+            }
             HStack(spacing: 10) {
                 if inv.status == .proposed {
-                    Button(action: apply) { HStack { if busy { ProgressView() }; Text("Apply Fix") } }
+                    Button(action: apply) { HStack { if busy { ProgressView() }; Text(inv.kind == .ci ? "Open Pull Request" : "Apply Fix") } }
                         .buttonStyle(.borderedProminent).disabled(busy)
                         .accessibilityIdentifier("investigate.apply")
                     Button("Dismiss", action: dismiss).buttonStyle(.bordered).disabled(busy)
                         .accessibilityIdentifier("investigate.dismiss")
                 }
                 Spacer()
+                if let link = inv.url.flatMap(URL.init(string:)), inv.kind == .ci {
+                    Link(destination: link) { Label("Run", systemImage: "safari") }.font(.caption)
+                }
                 if let run = inv.applyRun ?? inv.run {
                     Button { open(run) } label: { Label("Task", systemImage: "list.bullet.rectangle") }.font(.caption).buttonStyle(.borderless)
                 }
@@ -239,6 +254,8 @@ struct InvestigationRow: View {
 private struct InvestigateSettingsSheet: View {
     @State var config: AutoInvestigate.Config
     let save: (AutoInvestigate.Config) -> Void
+    @State private var newRepo = ""
+    @State private var newDir = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -250,6 +267,27 @@ private struct InvestigateSettingsSheet: View {
                     Toggle("Crashed services", isOn: $config.services)
                     Toggle("Full disks", isOn: $config.disk)
                     if config.disk { Stepper("From \(config.diskPercent) % full", value: $config.diskPercent, in: 50...99, step: 5) }
+                }
+                Section {
+                    ForEach(config.ciRepos ?? []) { r in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(r.repo).font(Theme.mono)
+                            Text(r.dir).font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                    .onDelete { config.ciRepos?.remove(atOffsets: $0) }
+                    TextField("owner/repository", text: $newRepo).textInputAutocapitalization(.never).autocorrectionDisabled().font(Theme.mono)
+                        .accessibilityIdentifier("investigate.repo")
+                    TextField("Checkout on the server, e.g. ~/shop", text: $newDir).textInputAutocapitalization(.never).autocorrectionDisabled().font(Theme.mono)
+                    Button("Add Repository") {
+                        let r = AutoInvestigate.Config.CIRepo(repo: newRepo.trimmingCharacters(in: .whitespaces), dir: newDir.isEmpty ? "~" : newDir.trimmingCharacters(in: .whitespaces))
+                        if r.isValid { config.ciRepos = (config.ciRepos ?? []).filter { $0.repo != r.repo } + [r]; newRepo = ""; newDir = "" }
+                    }
+                    .disabled(!AutoInvestigate.Config.CIRepo(repo: newRepo, dir: newDir.isEmpty ? "~" : newDir).isValid)
+                } header: {
+                    Text("Failed GitHub Actions runs")
+                } footer: {
+                    Text("Uses the GitHub CLI signed in on the server (Connections → GitHub). It looks every few minutes — no webhook, nothing public. With your approval the agent opens a pull request on a new branch.")
                 }
                 Section {
                     Stepper("At most \(config.maxPerDay) a day", value: $config.maxPerDay, in: 1...20)
