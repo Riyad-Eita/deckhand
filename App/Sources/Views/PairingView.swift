@@ -94,7 +94,7 @@ struct PairingConfirmView: View {
                         .accessibilityIdentifier("pair.host")
                     TextField("Port", text: $port).keyboardType(.numberPad).font(Theme.mono)
                 } else {
-                    LabeledContent("Address", value: "\(host):\(port)")
+                    LabeledContent("Address", value: shownAddress)
                     Button("Use Another Address") { editingAddress = true }.font(.subheadline)
                 }
             } footer: {
@@ -118,6 +118,14 @@ struct PairingConfirmView: View {
         .navigationTitle("Pair with \(code.name)")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { if host.isEmpty { host = code.host; port = String(code.port) } }
+    }
+
+    /// The address as shown; screen recordings can show a stand-in for a private test server (DEBUG only).
+    private var shownAddress: String {
+        #if DEBUG
+        if let demo = ProcessInfo.processInfo.environment["DECKHAND_DEMO_PAIRADDRESS"], !demo.isEmpty { return demo }
+        #endif
+        return "\(host):\(port)"
     }
 
     private func pair() async {
