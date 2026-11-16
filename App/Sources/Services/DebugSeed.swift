@@ -172,6 +172,9 @@ enum DebugSeed {
         return (String(raw[..<bar]), String(raw[raw.index(after: bar)...]))
     }()
 
+    /// The plain chat DECKHAND_SEED_PLANCHAT made, opened on the home screen.
+    @MainActor static var planChatID: UUID?
+
     /// When this launch started seeding: servers created after it are this launch's, not leftovers being deleted.
     @MainActor static var seededAt = Date.distantPast
 
@@ -269,6 +272,22 @@ enum DebugSeed {
         context.insert(server)
         Keychain.set(key, for: server.secretAccount)
         try? context.save()
+        // DECKHAND_SEED_PLANCHAT="question|answer": a plain chat answered by Claude Code on the seeded server (your plan).
+        if let raw = env["DECKHAND_SEED_PLANCHAT"] {
+            let p = raw.split(separator: "|", maxSplits: 1).map(String.init)
+            if p.count == 2 {
+                let chat = ChatThread(chatWith: nil)
+                chat.chatProviderRaw = PlainChatModel.planPrefix + ServerCLI.claudeCode.rawValue
+                chat.chatHostRaw = server.id.uuidString
+                chat.title = String(p[0].prefix(60))
+                var answer = Message(role: .assistant, blocks: [.text(p[1].replacingOccurrences(of: "\\n", with: "\n"))])
+                answer.model = "Claude Code · \(server.displayName)"
+                chat.messages = [.user(p[0]), answer]
+                context.insert(chat)
+                try? context.save()
+                planChatID = chat.id
+            }
+        }
         // DECKHAND_SEED_TASKS="title|question|answer;…": finished tasks on the seeded server (for search and export).
         if let raw = env["DECKHAND_SEED_TASKS"] {
             for (i, entry) in raw.split(separator: ";").enumerated() {
