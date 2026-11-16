@@ -22,8 +22,9 @@ struct LocalShellTests {
     @Test func stopsAfterTheTimeout() async throws {
         let clock = ContinuousClock()
         let start = clock.now
-        let r = try await LocalShell().run("echo begin; sleep 30", timeout: .seconds(1))
-        #expect(clock.now - start < .seconds(10))
+        // The bound is far from the 60 s the command would take, so a busy CI machine doesn't fail it.
+        let r = try await LocalShell().run("echo begin; sleep 60", timeout: .seconds(1))
+        #expect(clock.now - start < .seconds(25))
         #expect(r.exitCode == 124)
         #expect(r.stdout == "begin\n")
     }
@@ -32,8 +33,8 @@ struct LocalShellTests {
     @Test func backgroundChildDoesNotBlock() async throws {
         let clock = ContinuousClock()
         let start = clock.now
-        let r = try await LocalShell().run("sleep 20 & echo done", timeout: .seconds(30))
-        #expect(clock.now - start < .seconds(10))
+        let r = try await LocalShell().run("sleep 60 & echo done", timeout: .seconds(90))
+        #expect(clock.now - start < .seconds(25))
         #expect(r.stdout == "done\n")
         #expect(r.exitCode == 0)
     }

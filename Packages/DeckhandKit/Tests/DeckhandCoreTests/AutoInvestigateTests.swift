@@ -2,6 +2,7 @@ import Foundation
 import Testing
 @testable import DeckhandCore
 
+@Suite(.serialized)
 struct AutoInvestigateTests {
     @Test func configIsClampedAndStoredWithTheEngineName() throws {
         let c = AutoInvestigate.Config(cli: .codex, diskPercent: 10, maxPerDay: 99, topic: "https://ntfy.sh/t", server: "S", name: "web-1")
