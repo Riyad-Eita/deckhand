@@ -334,6 +334,14 @@ struct ServerDashboardView: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("dashboard.loginAlerts")
+                            Divider().padding(.leading, 58)
+                            NavigationLink {
+                                TeamView(server: server)
+                            } label: {
+                                ManageRow(title: "People", subtitle: "Invite someone with their own account and the rights you pick", symbol: "person.2")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("dashboard.team")
                         }
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.corner, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Theme.corner, style: .continuous).stroke(Theme.hairline))

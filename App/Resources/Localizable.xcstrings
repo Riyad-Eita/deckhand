@@ -395,6 +395,16 @@
         }
       }
     },
+    "%@ wasn't created by Deckhand, so it isn't removed from here.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ wurde nicht von Deckhand angelegt und wird deshalb hier nicht entfernt."
+          }
+        }
+      }
+    },
     "%@ will work in %@": {
       "localizations": {
         "de": {
@@ -1044,6 +1054,16 @@
         }
       }
     },
+    "1 hour": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Stunde"
+          }
+        }
+      }
+    },
     "1 other update": {
       "localizations": {
         "de": {
@@ -1454,6 +1474,26 @@
         }
       }
     },
+    "Account ended": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto beendet"
+          }
+        }
+      }
+    },
+    "Account ends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto endet"
+          }
+        }
+      }
+    },
     "Accounts": {
       "localizations": {
         "de": {
@@ -1850,6 +1890,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anpassen"
+          }
+        }
+      }
+    },
+    "Admin": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin"
           }
         }
       }
@@ -2257,6 +2307,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine App namens %@ ist schon installiert."
+          }
+        }
+      }
+    },
+    "An ended account is locked on the server by itself, also while your %@ is off.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein beendetes Konto wird auf dem Server von selbst gesperrt, auch wenn dein %@ aus ist."
           }
         }
       }
@@ -3445,6 +3505,16 @@
         }
       }
     },
+    "Can change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darf ändern"
+          }
+        }
+      }
+    },
     "Can't open the file": {
       "localizations": {
         "de": {
@@ -3571,6 +3641,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ ändern"
+          }
+        }
+      }
+    },
+    "Change Role": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rolle ändern"
           }
         }
       }
@@ -3721,6 +3801,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Änderungen"
+          }
+        }
+      }
+    },
+    "Changing the role didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Rolle ließ sich nicht ändern."
           }
         }
       }
@@ -4405,6 +4495,16 @@
         }
       }
     },
+    "Code expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code abgelaufen"
+          }
+        }
+      }
+    },
     "Code from the page": {
       "localizations": {
         "de": {
@@ -4421,6 +4521,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Codesignierung konnte den Signierschlüssel nicht nutzen (errSecInternalComponent): Der Schlüsselbund, in dem er liegt, ist gesperrt. Entsperre ihn auf dem Mac."
+          }
+        }
+      }
+    },
+    "Code works for": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code gilt"
           }
         }
       }
@@ -4701,6 +4811,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "GitHub verbinden"
+          }
+        }
+      }
+    },
+    "Connect to the server once first.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde dich zuerst einmal mit dem Server."
           }
         }
       }
@@ -5342,6 +5462,16 @@
         }
       }
     },
+    "Create Account and Show Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto anlegen und Code zeigen"
+          }
+        }
+      }
+    },
     "Create a New Key": {
       "localizations": {
         "de": {
@@ -5408,6 +5538,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lege dein Konto im Web-Tresor an und melde dich dann in den Bitwarden-Apps mit der Adresse dieses Servers an."
+          }
+        }
+      }
+    },
+    "Creating the account didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Konto ließ sich nicht anlegen."
           }
         }
       }
@@ -6092,6 +6232,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Details"
+          }
+        }
+      }
+    },
+    "Developer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entwickler"
           }
         }
       }
@@ -7281,6 +7431,16 @@
         }
       }
     },
+    "Everything inside, also files added later. Needs the acl package on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles darin, auch später hinzugefügte Dateien. Braucht das Paket acl auf dem Server."
+          }
+        }
+      }
+    },
     "Evidence files": {
       "localizations": {
         "de": {
@@ -7487,6 +7647,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehlgeschlagene SSH-Logins"
+          }
+        }
+      }
+    },
+    "Failed at: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlgeschlagen bei: %@"
           }
         }
       }
@@ -7891,6 +8061,16 @@
         }
       }
     },
+    "Folders they may change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner, die die Person ändern darf"
+          }
+        }
+      }
+    },
     "Folders your login user can read. Databases are best backed up as dumps into one of these folders.": {
       "localizations": {
         "de": {
@@ -7921,6 +8101,16 @@
         }
       }
     },
+    "For %@, signing in as %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für %1$@, Anmeldung als %2$@"
+          }
+        }
+      }
+    },
     "For a private repository, add this server's key as a read-only deploy key (GitHub: repository → Settings → Deploy keys):": {
       "localizations": {
         "de": {
@@ -7937,6 +8127,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Für Server hinter einem Bastion-Host: Deckhand meldet sich zuerst am Jump-Host an und erreicht diesen Server darüber, wie ssh -J. Die Adresse oben ist dann so, wie der Jump-Host sie sieht (zum Beispiel eine private IP)."
+          }
+        }
+      }
+    },
+    "For when the first code expired or got lost. The old one stops working.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falls der erste Code abgelaufen ist oder verloren ging. Der alte gilt dann nicht mehr."
           }
         }
       }
@@ -8269,6 +8469,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fasse Anfragen in Sammlungen zusammen, wechsle zwischen Umgebungen wie Staging und Produktion und sende sie von diesem iPhone oder von einem deiner Server — praktisch für APIs, die nur dieser Server erreicht."
+          }
+        }
+      }
+    },
+    "Groups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppen"
+          }
+        }
+      }
+    },
+    "Groups and folders can be picked when you invite someone; changing to developer keeps none.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppen und Ordner wählst du beim Einladen; beim Wechsel zu Entwickler bleiben keine."
           }
         }
       }
@@ -9246,6 +9466,56 @@
         }
       }
     },
+    "Invite Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungscode"
+          }
+        }
+      }
+    },
+    "Invite Someone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jemanden einladen"
+          }
+        }
+      }
+    },
+    "Invite code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungscode"
+          }
+        }
+      }
+    },
+    "Invite someone with their own account and the rights you pick": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jemanden mit eigenem Konto und den Rechten deiner Wahl einladen"
+          }
+        }
+      }
+    },
+    "Invite someone: they get their own account with the rights you pick and join by scanning a QR code. Your password or key is never shared.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lade jemanden ein: Die Person bekommt ein eigenes Konto mit den Rechten, die du wählst, und tritt per QR-Code bei. Dein Passwort oder Schlüssel wird nie geteilt."
+          }
+        }
+      }
+    },
     "Invited": {
       "localizations": {
         "de": {
@@ -9412,6 +9682,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aufträge laufen im Hintergrund auf dem Mac – du kannst das iPhone sperren; eine Mitteilung sagt dir, wann sie fertig sind. Das Hochladen nutzt deinen App-Store-Connect-Schlüssel: Die .p8-Datei muss auf dem Mac in ~/.appstoreconnect/private_keys liegen."
+          }
+        }
+      }
+    },
+    "Joined": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beigetreten"
           }
         }
       }
@@ -9756,6 +10036,16 @@
         }
       }
     },
+    "Last day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Tag"
+          }
+        }
+      }
+    },
     "Last dump failed": {
       "localizations": {
         "de": {
@@ -9942,6 +10232,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schlankes Git-Hosting mit Issues und Pull-Requests."
+          }
+        }
+      }
+    },
+    "Like read only, plus the groups and folders you pick below — for example docker and your app's folder. No sudo.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie „Nur lesen“, plus die Gruppen und Ordner, die du unten auswählst – zum Beispiel docker und den Ordner deiner App. Kein sudo."
           }
         }
       }
@@ -10296,6 +10596,16 @@
         }
       }
     },
+    "Lowercase letters, digits, - and _; starting with a letter.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinbuchstaben, Ziffern, - und _; beginnt mit einem Buchstaben."
+          }
+        }
+      }
+    },
     "MCP servers like GitHub, documentation or your own tools — for every agent.": {
       "localizations": {
         "de": {
@@ -10382,6 +10692,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erzeugt für jeden Server einen neuen Schlüssel, installiert ihn, meldet sich damit an und entfernt erst dann den alten. Geht etwas schief, bleibt der alte Schlüssel."
+          }
+        }
+      }
+    },
+    "Making a new code didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein neuer Code ließ sich nicht erzeugen."
           }
         }
       }
@@ -10882,6 +11202,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "New Invite Code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Einladungscode"
           }
         }
       }
@@ -11752,6 +12082,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Versionen."
+          }
+        }
+      }
+    },
+    "Nobody else yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch niemand sonst"
           }
         }
       }
@@ -13109,6 +13449,16 @@
         }
       }
     },
+    "People": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personen"
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "de": {
@@ -14255,6 +14605,16 @@
         }
       }
     },
+    "Remove Account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto entfernen"
+          }
+        }
+      }
+    },
     "Remove Face ID from your server keys": {
       "localizations": {
         "de": {
@@ -14375,6 +14735,16 @@
         }
       }
     },
+    "Removed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt"
+          }
+        }
+      }
+    },
     "Removed %lld old task logs": {
       "localizations": {
         "de": {
@@ -14481,6 +14851,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beim Entfernen bleiben die Daten erhalten, wenn du nichts anderes wählst. Installierst du die App wieder unter demselben Namen, sind die Daten wieder da."
+          }
+        }
+      }
+    },
+    "Removing the account didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Konto ließ sich nicht entfernen."
           }
         }
       }
@@ -14852,6 +15232,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Risiken"
+          }
+        }
+      }
+    },
+    "Role": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rolle"
           }
         }
       }
@@ -16006,6 +16396,16 @@
         }
       }
     },
+    "Send the Link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link senden"
+          }
+        }
+      }
+    },
     "Send the first message; then %@ has a session to continue.": {
       "localizations": {
         "de": {
@@ -16466,6 +16866,16 @@
         }
       }
     },
+    "Share My Own Access Instead…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stattdessen meinen eigenen Zugang teilen …"
+          }
+        }
+      }
+    },
     "Share as Markdown": {
       "localizations": {
         "de": {
@@ -16512,6 +16922,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ganzen Bericht teilen"
+          }
+        }
+      }
+    },
+    "Share your own access?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deinen eigenen Zugang teilen?"
           }
         }
       }
@@ -16582,6 +17002,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kernel-Threads zeigen"
+          }
+        }
+      }
+    },
+    "Show a Code for My Account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code für mein Konto zeigen"
           }
         }
       }
@@ -16812,6 +17242,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Angemeldet"
+          }
+        }
+      }
+    },
+    "Signs in as %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung als %@"
           }
         }
       }
@@ -18037,6 +18477,16 @@
         }
       }
     },
+    "That lets them in as you: same files, same rights, and you can't tell apart what they do. Only for people you'd give your password to.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Damit kommt die Person als du hinein: dieselben Dateien, dieselben Rechte, und du kannst nicht unterscheiden, was sie tut. Nur für Menschen, denen du auch dein Passwort geben würdest."
+          }
+        }
+      }
+    },
     "That name is too long.": {
       "localizations": {
         "de": {
@@ -18747,6 +19197,16 @@
         }
       }
     },
+    "The person who scans it signs in as %@, with all your rights. You can remove their key later under SSH keys.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer ihn scannt, meldet sich als %@ an – mit all deinen Rechten. Den Schlüssel kannst du später unter SSH-Schlüssel wieder entfernen."
+          }
+        }
+      }
+    },
     "The provider rejected the API key (%lld). %@": {
       "localizations": {
         "de": {
@@ -19037,12 +19497,62 @@
         }
       }
     },
+    "Their account %@ and its home folder are deleted and running sessions end. This can't be undone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Konto %@ und sein Home-Ordner werden gelöscht, laufende Sitzungen enden. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "Their own account with sudo: they can change anything on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein eigenes Konto mit sudo: Die Person kann alles auf diesem Server ändern."
+          }
+        }
+      }
+    },
+    "Their own account without sudo. They can look around and read, but not change the system or your files.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein eigenes Konto ohne sudo. Die Person kann sich umsehen und lesen, aber weder das System noch deine Dateien ändern."
+          }
+        }
+      }
+    },
+    "There's already an account called %@ on this server. Pick another user name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server gibt es schon ein Konto namens %@. Wähle einen anderen Benutzernamen."
+          }
+        }
+      }
+    },
     "They run on the server with your own ChatGPT or Claude subscription. Updates install into your home folder, no root needed.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Sie laufen auf dem Server mit deinem eigenen ChatGPT- oder Claude-Abo. Updates landen in deinem Home-Ordner, ohne Root."
+          }
+        }
+      }
+    },
+    "They scan it with the Camera on their %@ (Deckhand installed). Works once, until %@. Anyone holding this code until then can join — send it only to them.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Person scannt ihn mit der Kamera auf ihrem %1$@ (mit Deckhand). Gilt einmal, bis %2$@. Wer den Code bis dahin hat, kann beitreten – schick ihn nur an sie."
           }
         }
       }
@@ -20578,6 +21088,26 @@
         }
       }
     },
+    "User name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzername"
+          }
+        }
+      }
+    },
+    "User name on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzername auf dem Server"
+          }
+        }
+      }
+    },
     "Username": {
       "localizations": {
         "de": {
@@ -21397,6 +21927,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xcode"
+          }
+        }
+      }
+    },
+    "You can't use sudo on this server, so Deckhand can't create accounts for other people. Sign in as root or an admin user to invite someone.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst auf diesem Server kein sudo nutzen, deshalb kann Deckhand keine Konten für andere anlegen. Melde dich als root oder als Admin an, um jemanden einzuladen."
           }
         }
       }

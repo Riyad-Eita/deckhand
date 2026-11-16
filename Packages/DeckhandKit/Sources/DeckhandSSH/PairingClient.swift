@@ -66,6 +66,13 @@ public enum PairingClient {
         }
     }
 
+    /// A one-time key for an invite: its 32-byte seed (goes into the QR code) and its `ssh-ed25519 AAAA…` line.
+    public static func makeOneTimeKey() -> (seed: Data, publicKey: String) {
+        let key = Curve25519.Signing.PrivateKey()
+        let line = SSHKeys.publicKeyLine(for: key, comment: "x")
+        return (key.rawRepresentation, String(line.dropLast(2)))
+    }
+
     /// `deckhand <device>` with only the characters the server's check accepts.
     static func comment(for deviceName: String) -> String {
         let allowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ._@()-")
