@@ -196,6 +196,7 @@ struct InviteCodeView: View {
                         Image(uiImage: qr).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).padding(16)
                             .background(.white, in: RoundedRectangle(cornerRadius: 16))
                             .accessibilityLabel("Invite code")
+                            .accessibilityValue(code.link)
                             .accessibilityIdentifier("team.qr")
                     }
                     Text(code.person.map { String(localized: "For \($0), signing in as \(code.user)") } ?? String(localized: "Signs in as \(code.user)"))

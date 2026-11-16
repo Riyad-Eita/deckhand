@@ -313,6 +313,8 @@ enum DebugSeed {
                 try? context.save()
             }
         }
+        // DECKHAND_SEED_SUDO_PASSWORD=<password>: the seeded server's sudo password for this session (no prompt in recordings).
+        if let sudo = env["DECKHAND_SEED_SUDO_PASSWORD"] { RootAccess.shared.setPassword(sudo, for: server) }
         // DECKHAND_SEED_LOCAL_MODEL=<model>: the OpenAI-compatible provider points at that model on the seeded server.
         if let local = env["DECKHAND_SEED_LOCAL_MODEL"] {
             UserDefaults.standard.set(ServerModelURL.make(serverID: server.id).absoluteString, forKey: "provider.custom.baseURL")
