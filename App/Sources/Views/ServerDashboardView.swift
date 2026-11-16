@@ -14,6 +14,10 @@ struct ServerDashboardView: View {
     @State private var investigatePrompt: String?
     @State private var isMac = false
 
+    #if DEBUG
+    @State private var seedTeam = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "team"
+    #endif
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -403,6 +407,9 @@ struct ServerDashboardView: View {
         }
         .refreshable { await refresh() }
         .investigate(on: server, prompt: $investigatePrompt)
+        #if DEBUG
+        .navigationDestination(isPresented: $seedTeam) { TeamView(server: server) }
+        #endif
     }
 
     private func percent(_ f: Double) -> String { "\(Int((f * 100).rounded())) %" }

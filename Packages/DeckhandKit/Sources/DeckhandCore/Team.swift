@@ -68,6 +68,10 @@ public enum Team {
         public var pending: Bool
         public var id: String { member.user }
 
+        public init(member: Member, exists: Bool, lastLogin: Date?, pending: Bool) {
+            self.member = member; self.exists = exists; self.lastLogin = lastLogin; self.pending = pending
+        }
+
         public func state(now: Date = Date()) -> State {
             if !exists { return .removed }
             if let e = member.expires, now >= e { return .expired }

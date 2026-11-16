@@ -214,6 +214,10 @@ struct ServerListView: View {
             if DebugSeed.pendingRun != nil, let s = seeded() { autoOpen = s }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "connections" { showingConnections = true }
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "briefing" { showingBriefing = true }
+            if let link = ProcessInfo.processInfo.environment["DECKHAND_SEED_PAIRLINK"], let url = URL(string: link) { AppRouter.shared.handle(url) }
+            if let id = DebugSeed.planChatID, let chat = try? context.fetch(FetchDescriptor<ChatThread>(predicate: #Predicate { $0.id == id })).first {
+                openChat = chat
+            }
             #if targetEnvironment(macCatalyst)
             if ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "macSetup" { showingMacSetup = true }
             #endif

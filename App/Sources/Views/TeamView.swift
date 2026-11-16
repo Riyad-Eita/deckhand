@@ -92,6 +92,9 @@ struct TeamView: View {
     }
 
     private func load() async {
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["DECKHAND_TEAM_DEMO"] == "1" { entries = TeamDemo.entries; return }
+        #endif
         do {
             let conn = try await connections.connection(for: server)
             let members = Team.parseRecords(try await conn.run(Team.recordsCommand, timeout: .seconds(15)).stdout)
@@ -407,3 +410,22 @@ private struct MemberSheet: View {
         done(try? InviteCode.make(server: server, user: member.user, seed: key.seed, until: until, person: member.person))
     }
 }
+
+#if DEBUG
+/// Sample people for screenshots (DECKHAND_TEAM_DEMO=1); fictional names.
+enum TeamDemo {
+    static var entries: [Team.Entry] {
+        let now = Date()
+        func m(_ user: String, _ person: String, _ role: Team.Role, _ groups: [String] = [], _ days: Double) -> Team.Member {
+            Team.Member(user: user, person: person, role: role, groups: groups, folders: role == .developer ? ["/srv/shop"] : [],
+                        invited: now.addingTimeInterval(-days * 86_400), inviteUntil: now.addingTimeInterval(86_400))
+        }
+        return [
+            Team.Entry(member: m("mara", "Mara Lindqvist", .admin, [], 40), exists: true, lastLogin: now.addingTimeInterval(-3 * 3600), pending: false),
+            Team.Entry(member: m("jonas", "Jonas Weber", .developer, ["docker"], 12), exists: true, lastLogin: now.addingTimeInterval(-26 * 60), pending: false),
+            Team.Entry(member: m("priya", "Priya Raman", .developer, ["docker"], 5), exists: true, lastLogin: now.addingTimeInterval(-2 * 86_400), pending: false),
+            Team.Entry(member: m("sam", "Sam Okafor", .readOnly, [], 0.1), exists: true, lastLogin: nil, pending: true),
+        ]
+    }
+}
+#endif
