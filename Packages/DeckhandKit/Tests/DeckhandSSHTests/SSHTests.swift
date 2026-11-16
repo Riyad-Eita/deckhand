@@ -1612,3 +1612,72 @@ struct LivePairingTests {
         await admin.disconnect()
     }
 }
+
+/// Team invites against a disposable server with sudo: a developer account with a group and a writable folder is
+/// created, joined with the one-time key, checked from inside, promoted to admin and removed again.
+/// Opt-in: DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY, DECKHAND_SUDO_PASSWORD and DECKHAND_TEAM_TEST=1.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_TEAM_TEST"] != nil), .serialized)
+struct LiveTeamTests {
+    @Test func inviteJoinPromoteRemove() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let host = env["DECKHAND_BACKUP_HOST"]!, port = Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let admin = SSHConnection(endpoint: SSHEndpoint(host: host, port: port, username: env["DECKHAND_BACKUP_USER"]!), credential: .privateKey(key, passphrase: nil))
+        try await admin.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let access = Sudo.parseProbe(try await admin.run(Sudo.probeCommand, timeout: .seconds(15)).stdout)
+        func root(_ script: String) async throws -> String {
+            var out: [String] = []
+            for try await line in Sudo.run(script, on: admin, access: access, password: env["DECKHAND_SUDO_PASSWORD"]) {
+                if case .output(let l) = line { out.append(l) }
+            }
+            return out.joined(separator: "\n")
+        }
+        _ = try await root("userdel -r dhanna 2>/dev/null; groupadd -f dhtest; mkdir -p /srv/dh-team-test; chmod 755 /srv/dh-team-test")
+        let fingerprint = SSHKeys.fingerprint(openSSHPublicKey: try #require(await admin.hostKey))
+        func signIn(_ privateKey: String) async throws -> SSHConnection {
+            let c = SSHConnection(endpoint: SSHEndpoint(host: host, port: port, username: "dhanna"), credential: .privateKey(privateKey, passphrase: nil))
+            try await c.connect(pinnedHostKey: nil, trustNewHostKey: { _, f in f == fingerprint })
+            return c
+        }
+        do {
+            let dev = Team.Member(user: "dhanna", person: "Anna (test)", role: .developer, groups: ["dhtest"], folders: ["/srv/dh-team-test"],
+                                  inviteUntil: Date().addingTimeInterval(900))
+            let oneTime = PairingClient.makeOneTimeKey()
+            let invited = try await root(Team.inviteScript(dev, oneTimePublicKey: oneTime.publicKey, id: "0123456789ab"))
+            #expect(invited.contains("@@invited") && !invited.contains("@@noacl"), "\(invited)")
+            #expect(try await root(Team.inviteScript(dev, oneTimePublicKey: oneTime.publicKey, id: "0123456789ab")).contains("@@exists"))
+            #expect(try await root(Team.statusScript(users: ["dhanna"])).contains("@@status dhanna 1 1 "), "pending before joining")
+
+            let code = Pairing.Code(host: host, port: port, user: "dhanna", name: "sandbox", seed: oneTime.seed,
+                                    fingerprints: [fingerprint], expires: dev.inviteUntil)
+            let joined = try await PairingClient.pair(try #require(Pairing.parse(URL(string: Pairing.link(code))!)), deviceName: "Anna's iPhone")
+            #expect(try await root(Team.statusScript(users: ["dhanna"])).contains("@@status dhanna 1 0 "), "joined")
+
+            let anna = try await signIn(joined.privateKey)
+            #expect(try await anna.run("id -nG", timeout: .seconds(10)).stdout.contains("dhtest"))
+            #expect(try await anna.run("touch /srv/dh-team-test/x && echo wrote", timeout: .seconds(10)).stdout == "wrote\n")
+            #expect(try await anna.run("sudo -n true 2>/dev/null && echo yes || echo no", timeout: .seconds(10)).stdout == "no\n")
+            #expect(try await anna.run("touch /etc/dh-x 2>/dev/null && echo yes || echo no", timeout: .seconds(10)).stdout == "no\n")
+            await anna.disconnect()
+
+            var promoted = dev
+            promoted.role = .admin
+            promoted.folders = []
+            promoted.groups = []
+            #expect(try await root(Team.changeScript(from: dev, to: promoted)).contains("@@changed"))
+            let annaAdmin = try await signIn(joined.privateKey)
+            #expect(try await annaAdmin.run("sudo -n true 2>/dev/null && echo yes || echo no", timeout: .seconds(10)).stdout == "yes\n")
+            #expect(try await annaAdmin.run("id -nG", timeout: .seconds(10)).stdout.contains("dhtest") == false)
+            await annaAdmin.disconnect()
+
+            #expect(try await root(Team.removeScript(promoted)).contains("@@removed"))
+            #expect(try await root(Team.statusScript(users: ["dhanna"])).contains("@@status dhanna 0 0 0"))
+            // Never removes an account Deckhand didn't make.
+            #expect(try await root(Team.removeScript(Team.Member(user: "tester", person: "", role: .admin, inviteUntil: Date()))).contains("@@notours"))
+        } catch {
+            Issue.record(error)
+        }
+        _ = try await root("pkill -u dhanna 2>/dev/null; userdel -r dhanna 2>/dev/null; rm -f /etc/sudoers.d/deckhand-dhanna; groupdel dhtest 2>/dev/null; rm -rf /srv/dh-team-test; true")
+        await admin.disconnect()
+    }
+}
