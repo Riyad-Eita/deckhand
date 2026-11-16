@@ -73,7 +73,7 @@ final class ChatModel {
         isRunning = true
         LiveTasks.shared.start(thread, server: server)
         notice = String(localized: "Reattaching to the run on the server…")
-        task = Task { await follow(cli, run: DetachedRun(id: id), prompt: "", access: AppSettings.shared.cliAccess) }
+        task = Task { await follow(cli, run: DetachedRun(id: id), prompt: "", access: AppSettings.shared.cliAccess, start: false) }
     }
 
     /// Reads a detached server run until it ends; reconnects and continues from the last line if the connection drops.
@@ -92,10 +92,10 @@ final class ChatModel {
         return o
     }
 
-    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess) async {
+    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool) async {
         var delay: Double = 2
-        var reconnecting = thread.cliRunLine > 1
-        let starting = thread.cliRunLine <= 1
+        var reconnecting = !start
+        var starting = start
         if starting { TaskNotifier.shared.requestPermission() }
         let topic = AppSettings.shared.ntfyTopicURL
         let notify = topic.isEmpty ? nil : DetachedRun.Notify(
@@ -107,11 +107,13 @@ final class ChatModel {
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
                     sessionID: thread.cliSessionID, access: access, options: cliOptions(cli),
-                    run: run, fromLine: thread.cliRunLine,
+                    run: run, fromLine: thread.cliRunLine, start: starting,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
                     notify: notify, startAt: starting ? startAfter : nil)
                 if starting { startAfter = nil }
                 for try await event in events {
+                    // Started: a dropped connection from here on only reattaches.
+                    starting = false
                     if reconnecting { notice = nil; reconnecting = false; delay = 2 }
                     handle(event)
                 }
@@ -192,7 +194,7 @@ final class ChatModel {
                     thread.cliRunID = run.id
                     thread.cliRunLine = 1
                     thread.cliRunActive = true
-                    await follow(cli, run: run, prompt: trimmed, access: access)
+                    await follow(cli, run: run, prompt: trimmed, access: access, start: true)
                     return
                 }
                 let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []

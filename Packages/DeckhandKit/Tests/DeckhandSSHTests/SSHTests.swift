@@ -1681,3 +1681,85 @@ struct LiveTeamTests {
         await admin.disconnect()
     }
 }
+
+/// Auto-investigate on a disposable server with sudo: a really failed systemd unit starts a read-only run (a stand-in
+/// `codex` in a temporary HOME answers, so no plan is used and no real CLI is reached), the proposal is applied, the
+/// unit is re-checked for real, and a full disk over the daily limit is only noted. Everything is removed afterwards.
+/// Opt-in: DECKHAND_BACKUP_HOST/_PORT/_USER/_KEY, DECKHAND_SUDO_PASSWORD and DECKHAND_INVESTIGATE_TEST=1.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_INVESTIGATE_TEST"] != nil), .serialized)
+struct LiveAutoInvestigateTests {
+    @Test func failedServiceIsInvestigatedAndRechecked() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let key = try String(contentsOfFile: (env["DECKHAND_BACKUP_KEY"]! as NSString).expandingTildeInPath, encoding: .utf8)
+        let conn = SSHConnection(endpoint: SSHEndpoint(host: env["DECKHAND_BACKUP_HOST"]!, port: Int(env["DECKHAND_BACKUP_PORT"] ?? "22")!,
+                                                       username: env["DECKHAND_BACKUP_USER"]!), credential: .privateKey(key, passphrase: nil))
+        try await conn.connect(pinnedHostKey: nil, trustNewHostKey: { _, _ in true })
+        let access = Sudo.parseProbe(try await conn.run(Sudo.probeCommand, timeout: .seconds(15)).stdout)
+        func root(_ script: String) async throws {
+            for try await _ in Sudo.run(script, on: conn, access: access, password: env["DECKHAND_SUDO_PASSWORD"]) {}
+        }
+        let T = "/tmp/dh-inv-\(UUID().uuidString.prefix(6).lowercased())"
+        func sh(_ cmd: String, timeout: Duration = .seconds(60)) async throws -> String {
+            try await conn.run("mkdir -p \(T) && export HOME=\(T) && cd \(T) && { " + cmd + "\n}", timeout: timeout).stdout
+        }
+        let c = AutoInvestigate.Config(cli: .codex, uptime: false, services: true, disk: true, diskPercent: 80, maxPerDay: 1, topic: "", server: "S", name: "sandbox")
+        let fake = #"""
+        #!/bin/bash
+        # Stand-in for Codex: answers like `codex exec --json`, no subscription involved.
+        case "$*" in
+          *"Run exactly these commands"*) msg="Ran it; the service is still failed." ;;
+          *) msg="Cause: dh-inv-test.service exits right away because its command is /bin/false.\n\nIt never stays up.\n\n## Suggested fix\n\`\`\`sh\nsudo -n systemctl restart dh-inv-test\n\`\`\`" ;;
+        esac
+        printf '%s\n' '{"type":"thread.started","thread_id":"0199-test"}'
+        printf '{"type":"item.completed","item":{"id":"i0","type":"agent_message","text":"%s"}}\n' "$msg"
+        printf '%s\n' '{"type":"turn.completed","usage":{"input_tokens":1,"cached_input_tokens":0,"output_tokens":1}}'
+        """#
+        try await root("""
+        printf '[Unit]\\nDescription=Deckhand test\\n[Service]\\nType=oneshot\\nExecStart=/bin/false\\n' > /etc/systemd/system/dh-inv-test.service
+        systemctl daemon-reload; systemctl start dh-inv-test 2>/dev/null; true
+        """)
+        do {
+            let files: [(String, String, String)] = [("inv.py", AutoInvestigate.script, "700"), ("start.sh", AutoInvestigate.launcher(c, access: .readOnly), "700"),
+                                                     ("apply.sh", AutoInvestigate.launcher(c, access: .full), "700"), ("config.json", c.json, "600")]
+            _ = try await sh("mkdir -p .deckhand/investigate .local/bin")
+            for (name, text, mode) in files {
+                _ = try await sh("printf '%s' '\(Data(text.utf8).base64EncodedString())' | base64 -d > .deckhand/investigate/\(name) && chmod \(mode) .deckhand/investigate/\(name)")
+            }
+            _ = try await sh("printf '%s' '\(Data(fake.utf8).base64EncodedString())' | base64 -d > .local/bin/codex && chmod 755 .local/bin/codex")
+            #expect(try await sh("systemctl is-failed dh-inv-test").contains("failed"))
+
+            func wait(for state: AutoInvestigate.State) async throws -> AutoInvestigate.Investigation? {
+                for _ in 0..<40 {
+                    if let i = AutoInvestigate.parse(try await sh(AutoInvestigate.statusCommand)).investigations.first(where: { $0.kind == .service }), i.status == state { return i }
+                    try await Task.sleep(for: .seconds(1))
+                }
+                return AutoInvestigate.parse(try await sh(AutoInvestigate.statusCommand)).investigations.first { $0.kind == .service }
+            }
+            _ = try await sh("python3 .deckhand/investigate/inv.py tick", timeout: .seconds(200))
+            let found = try #require(try await wait(for: .proposed))
+            #expect(found.arg == "dh-inv-test.service")
+            #expect(found.cause == "dh-inv-test.service exits right away because its command is /bin/false.")
+            #expect(found.fix == "sudo -n systemctl restart dh-inv-test" && found.risky == false)
+            #expect(try await sh("cat .deckhand/runs/\(found.run ?? "-").meta").contains("Investigate: dh-inv-test.service failed"))
+
+            // Over the daily limit (1): the full disk is only noted.
+            _ = try await sh("python3 .deckhand/investigate/inv.py tick", timeout: .seconds(200))
+            let rootUse = Int(try await sh("df -P / | awk 'NR==2 {print $5+0}'").trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
+            if rootUse >= 80 {
+                #expect(AutoInvestigate.parse(try await sh(AutoInvestigate.statusCommand)).investigations.contains { $0.kind == .disk && $0.status == .limited })
+            }
+
+            #expect(try await sh(AutoInvestigate.applyCommand(id: found.id, device: "Test iPhone")).hasPrefix("@@applying inv-"))
+            let after = try #require(try await wait(for: .stillfailing))
+            #expect(after.status == .stillfailing, "the unit is still failed, checked with systemctl")
+            #expect(after.result == "Ran it; the service is still failed." && after.who == "Test iPhone")
+            #expect(try await sh("cat .deckhand/investigate/apply.sh").contains("-s danger-full-access"), "only the approved fix may change things")
+            #expect(try await sh("cat .deckhand/investigate/start.sh").contains("-s read-only"), "the investigation is read-only")
+        } catch {
+            Issue.record(error)
+        }
+        _ = try? await conn.run("rm -rf \(T)", timeout: .seconds(20))
+        try await root("systemctl reset-failed dh-inv-test 2>/dev/null; rm -f /etc/systemd/system/dh-inv-test.service; systemctl daemon-reload; true")
+        await conn.disconnect()
+    }
+}

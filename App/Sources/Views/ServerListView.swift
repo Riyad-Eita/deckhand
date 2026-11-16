@@ -182,6 +182,16 @@ struct ServerListView: View {
             ApproveSheet(link: link, server: servers.first { $0.id == link.server })
         }
         .appSheet(item: $sharing) { ServerShareSheet(server: $0) }
+        .appSheet(item: Binding(get: { AppRouter.shared.pendingInvestigation }, set: { AppRouter.shared.pendingInvestigation = $0 })) { link in
+            NavigationStack {
+                if let server = servers.first(where: { $0.id == link.server }) {
+                    InvestigationsView(server: server, focus: link.investigation)
+                        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { AppRouter.shared.pendingInvestigation = nil } } }
+                } else {
+                    ContentUnavailableView("Server not found", systemImage: "server.rack", description: Text("This alert is for a server that isn't in Deckhand anymore."))
+                }
+            }
+        }
         .appSheet(item: Binding(get: { AppRouter.shared.pendingIncident }, set: { AppRouter.shared.pendingIncident = $0 })) { link in
             // A tapped uptime push: the incident for that check, over whatever is on screen.
             if let server = servers.first(where: { $0.id == link.server }) {
