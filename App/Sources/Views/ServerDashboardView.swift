@@ -16,6 +16,8 @@ struct ServerDashboardView: View {
 
     #if DEBUG
     @State private var seedTeam = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "team"
+    @State private var seedBackground = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "background"
+    @State private var seedSessions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "sessions"
     #endif
 
     var body: some View {
@@ -409,6 +411,8 @@ struct ServerDashboardView: View {
         .investigate(on: server, prompt: $investigatePrompt)
         #if DEBUG
         .navigationDestination(isPresented: $seedTeam) { TeamView(server: server) }
+        .navigationDestination(isPresented: $seedBackground) { BackgroundTasksView(server: server) }
+        .navigationDestination(isPresented: $seedSessions) { CLISessionsView(server: server) { _ in } }
         #endif
     }
 
