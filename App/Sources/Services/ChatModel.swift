@@ -240,7 +240,9 @@ final class ChatModel {
                     return
                 }
                 let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
-                let mcp = await MCPConnector.open(records.map { ($0.spec, $0.token) }, server: shell)
+                // The browser on this server (Server → Browser for the agent), when it is switched on there.
+                let browser = planning ? [] : [BrowserAccess.connection(for: server)].compactMap { $0 }.map { ($0, String?.none) }
+                let mcp = await MCPConnector.open(records.map { ($0.spec, $0.token) } + browser, server: shell)
                 defer { Task { await mcp.close() } }
                 if !mcp.failures.isEmpty {
                     notice = "Not available this time: " + mcp.failures.map { "\($0.name) (\($0.error))" }.joined(separator: ", ")

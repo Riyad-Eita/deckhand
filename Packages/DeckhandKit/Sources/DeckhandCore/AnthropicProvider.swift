@@ -81,9 +81,13 @@ public struct AnthropicProvider: LLMProvider {
             case .toolUse(let call):
                 return ["type": "tool_use", "id": .string(call.id), "name": .string(call.name), "input": call.input]
             case .toolResult(let result):
+                let content: JSONValue = result.images.isEmpty ? .string(result.content)
+                    : .array([["type": "text", "text": .string(result.content)]] + result.images.map {
+                        ["type": "image", "source": ["type": "base64", "media_type": .string($0.mediaType), "data": .string($0.data.base64EncodedString())]]
+                    })
                 return [
                     "type": "tool_result", "tool_use_id": .string(result.toolUseID),
-                    "content": .string(result.content), "is_error": .bool(result.isError),
+                    "content": content, "is_error": .bool(result.isError),
                 ]
             case .opaque(let provider, let value):
                 return provider == "anthropic" ? value : nil

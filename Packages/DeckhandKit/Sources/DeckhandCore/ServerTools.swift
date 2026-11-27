@@ -6,6 +6,14 @@ public protocol AgentTool: Sendable {
     /// Read-only tools can run without approval in the "auto-read" policy.
     var isReadOnly: Bool { get }
     func execute(_ input: JSONValue, shell: any RemoteShell) async throws -> String
+    /// Text plus pictures; tools without pictures get this for free.
+    func executeOutput(_ input: JSONValue, shell: any RemoteShell) async throws -> ToolOutput
+}
+
+public extension AgentTool {
+    func executeOutput(_ input: JSONValue, shell: any RemoteShell) async throws -> ToolOutput {
+        ToolOutput(text: try await execute(input, shell: shell))
+    }
 }
 
 public enum ToolError: Error, LocalizedError, Sendable {

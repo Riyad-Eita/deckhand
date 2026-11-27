@@ -30,13 +30,13 @@ enum MCPConnector {
 
     /// Opens all enabled connections in parallel; each gets 20 s.
     static func open(_ records: [(MCPConnection, String?)], server: SSHConnection?) async -> Opened {
-        await withTaskGroup(of: (String, Result<(MCPClient, [MCPTool]), Error>).self) { group in
+        await withTaskGroup(of: (String, Result<(MCPClient, [MCPTool], Bool), Error>).self) { group in
             for (spec, token) in records where spec.enabled {
                 group.addTask {
                     do {
                         let client = try await client(for: spec, token: token, server: server)
                         let tools = try await withTimeout(seconds: 20) { try await client.tools() }
-                        return (spec.slug, .success((client, tools)))
+                        return (spec.slug, .success((client, tools, spec.transport == .stdio(command: BrowserSetup.mcpCommand))))
                     } catch {
                         return (spec.slug, .failure(error))
                     }
@@ -45,9 +45,9 @@ enum MCPConnector {
             var opened = Opened()
             for await (name, result) in group {
                 switch result {
-                case .success(let (client, tools)):
+                case .success(let (client, tools, trusted)):
                     opened.clients.append(client)
-                    opened.tools += tools.map { MCPAgentTool(client: client, serverName: name, tool: $0) }
+                    opened.tools += tools.map { MCPAgentTool(client: client, serverName: name, tool: $0, trustsHints: trusted) }
                 case .failure(let error):
                     opened.failures.append((name, error.localizedDescription))
                 }
