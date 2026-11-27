@@ -301,6 +301,28 @@ enum DebugSeed {
             }
             try? context.save()
         }
+        // DECKHAND_SEED_BROWSERCHAT=<path to a JPEG/PNG>: a finished task where the agent opened a page in the server's
+        // browser and took a screenshot (opened at launch).
+        if let path = env["DECKHAND_SEED_BROWSERCHAT"], let picture = FileManager.default.contents(atPath: path) {
+            let thread = ChatThread(server: server, workingDirectory: "~")
+            thread.id = UUID(uuidString: "00000000-0000-0000-0000-00000000b005")!
+            thread.title = "Check the landing page"
+            let open = ToolCall(id: "seed-nav", name: "browser__browser_navigate", input: ["url": "https://example.com"])
+            let shot = ToolCall(id: "seed-shot", name: "browser__browser_take_screenshot", input: [:])
+            let mediaType = picture.starts(with: [0x89, 0x50]) ? "image/png" : "image/jpeg"
+            thread.messages = [
+                .user("Does the landing page load? Show me."),
+                Message(role: .assistant, blocks: [.text("I'll open it in the browser on the server."), .toolUse(open)]),
+                Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: "seed-nav", content: "Page URL: https://example.com/\nPage Title: Example Domain"))]),
+                Message(role: .assistant, blocks: [.toolUse(shot)]),
+                Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: "seed-shot", content: "Took a screenshot\n[image 1 attached]",
+                                                                     images: [ToolImage(mediaType: mediaType, data: picture)]))]),
+                Message(role: .assistant, blocks: [.text("The landing page loads in about a second: the heading, the text and the link are all there, and the console shows no errors.")]),
+            ]
+            context.insert(thread)
+            try? context.save()
+            AppRouter.shared.pendingThread = thread.id
+        }
         // DECKHAND_SEED_JUMP_TARGET="name|host|port": a second server with the same login, reached through the seeded one.
         if let raw = env["DECKHAND_SEED_JUMP_TARGET"] {
             let p = raw.split(separator: "|").map(String.init)

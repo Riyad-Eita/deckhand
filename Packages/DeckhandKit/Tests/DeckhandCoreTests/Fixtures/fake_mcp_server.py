@@ -10,15 +10,20 @@ for line in sys.stdin:
                   "serverInfo": {"name": "fake", "version": "1"}, "instructions": "Use echo."}
     elif method == "tools/list":
         if msg.get("params", {}).get("cursor") is None:
-            result = {"tools": [{"name": "echo", "description": "Echo text", "inputSchema": {"type": "object", "properties": {"text": {"type": "string"}}}}], "nextCursor": "p2"}
+            result = {"tools": [{"name": "echo", "description": "Echo text", "inputSchema": {"type": "object", "properties": {"text": {"type": "string"}}}, "annotations": {"readOnlyHint": True}}], "nextCursor": "p2"}
         else:
-            result = {"tools": [{"name": "boom.fail", "description": "Always fails", "inputSchema": {"type": "object"}}]}
+            result = {"tools": [{"name": "boom.fail", "description": "Always fails", "inputSchema": {"type": "object"}},
+                                {"name": "shot", "description": "A picture", "inputSchema": {"type": "object"}}]}
     elif method == "tools/call":
         name = msg["params"]["name"]
         if name == "echo":
             # ask the client something first, like real servers sometimes do
             print(json.dumps({"jsonrpc": "2.0", "id": 99, "method": "ping"}), flush=True)
             result = {"content": [{"type": "text", "text": "echo: " + msg["params"]["arguments"].get("text", "")}]}
+        elif name == "shot":
+            # 1x1 PNG plus a caption, like Playwright's browser_take_screenshot
+            png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+            result = {"content": [{"type": "text", "text": "Took a screenshot"}, {"type": "image", "data": png, "mimeType": "image/png"}]}
         else:
             result = {"content": [{"type": "text", "text": "it broke"}], "isError": True}
     else:

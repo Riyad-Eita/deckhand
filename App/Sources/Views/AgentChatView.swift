@@ -752,6 +752,21 @@ struct ToolCard: View {
                 }
             }
             .buttonStyle(.plain)
+            if case .done(let result) = status, !result.images.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(Array(result.images.enumerated()), id: \.offset) { _, img in
+                            if let ui = UIImage(data: img.data) {
+                                Image(uiImage: ui).resizable().scaledToFit().frame(maxWidth: 300, maxHeight: 220)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Theme.hairline))
+                                    .accessibilityLabel("Screenshot from the tool")
+                                    .accessibilityIdentifier("tool.image")
+                            }
+                        }
+                    }
+                }
+            }
             if expanded, case .done(let result) = status {
                 let output = String(result.content.prefix(8000))
                 ScrollView(.horizontal) {

@@ -17,6 +17,7 @@ struct ServerDashboardView: View {
     #if DEBUG
     @State private var seedTeam = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "team"
     @State private var seedBackground = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "background"
+    @State private var seedBrowser = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "browser"
     @State private var seedSessions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "sessions"
     #endif
 
@@ -167,6 +168,14 @@ struct ServerDashboardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.localModel")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            BrowserSetupView(server: server)
+                        } label: {
+                            ManageRow(title: "Browser for the agent", subtitle: "A headless browser on the server: open pages, fill forms, take screenshots", symbol: "macwindow.on.rectangle")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.browser")
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             DiskUsageView(server: server)
@@ -420,6 +429,7 @@ struct ServerDashboardView: View {
         #if DEBUG
         .navigationDestination(isPresented: $seedTeam) { TeamView(server: server) }
         .navigationDestination(isPresented: $seedBackground) { BackgroundTasksView(server: server) }
+        .navigationDestination(isPresented: $seedBrowser) { BrowserSetupView(server: server) }
         .navigationDestination(isPresented: $seedSessions) { CLISessionsView(server: server) { _ in } }
         #endif
     }

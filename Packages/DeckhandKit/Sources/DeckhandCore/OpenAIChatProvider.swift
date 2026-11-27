@@ -90,6 +90,10 @@ public struct OpenAIChatProvider: LLMProvider {
                 case .toolResult(let r):
                     let content = r.isError ? "ERROR: \(r.content)" : r.content
                     out.append(["role": "tool", "tool_call_id": .string(r.toolUseID), "content": .string(content)])
+                    // Tool messages can't carry pictures here: they follow as the user's message.
+                    for img in r.images {
+                        images.append(["type": "image_url", "image_url": ["url": .string("data:\(img.mediaType);base64,\(img.data.base64EncodedString())")]])
+                    }
                 case .text(let t): text += t
                 case .image(let type, let data):
                     images.append(["type": "image_url", "image_url": ["url": .string("data:\(type);base64,\(data.base64EncodedString())")]])

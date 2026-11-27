@@ -75,6 +75,8 @@ public struct MCPTool: Sendable, Hashable {
     public var name: String
     public var description: String
     public var inputSchema: JSONValue
+    /// The server says the tool only reads (`annotations.readOnlyHint`). Untrusted unless we installed the server.
+    public var readOnlyHint = false
 }
 
 public struct MCPError: Error, LocalizedError, Sendable, Equatable {
@@ -295,7 +297,8 @@ public actor MCPClient {
                 all.append(MCPTool(
                     name: name,
                     description: t["description"]?.stringValue ?? "",
-                    inputSchema: t["inputSchema"] ?? ["type": "object", "properties": [:]]))
+                    inputSchema: t["inputSchema"] ?? ["type": "object", "properties": [:]],
+                    readOnlyHint: t["annotations"]?["readOnlyHint"]?.boolValue ?? false))
             }
             cursor = result["nextCursor"]
             if cursor == .null { cursor = nil }
@@ -305,20 +308,31 @@ public actor MCPClient {
 
     /// Calls a tool; returns its text content and whether the server flagged an error.
     public func call(_ tool: String, arguments: JSONValue) async throws -> (text: String, isError: Bool) {
+        let r = try await callWithImages(tool, arguments: arguments)
+        return (r.text, r.isError)
+    }
+
+    /// Like `call`, with the pictures the tool returned (screenshots) as images instead of placeholders.
+    public func callWithImages(_ tool: String, arguments: JSONValue) async throws -> (text: String, isError: Bool, images: [ToolImage]) {
         try await connect()
         let result = try await transport.request("tools/call", params: ["name": .string(tool), "arguments": arguments])
-        var parts: [String] = []
+        var parts: [String] = [], images: [ToolImage] = []
         for item in result["content"]?.arrayValue ?? [] {
             switch item["type"]?.stringValue {
             case "text": parts.append(item["text"]?.stringValue ?? "")
             case "resource": parts.append(item["resource"]?["text"]?.stringValue ?? item["resource"]?["uri"]?.stringValue ?? "")
             case "resource_link": parts.append(item["uri"]?.stringValue ?? "")
-            case "image", "audio": parts.append("[\(item["type"]?.stringValue ?? "media") \(item["mimeType"]?.stringValue ?? "")]")
+            case "image":
+                if let b64 = item["data"]?.stringValue, let data = Data(base64Encoded: b64), images.count < 4 {
+                    images.append(ToolImage(mediaType: item["mimeType"]?.stringValue ?? "image/png", data: data))
+                    parts.append("[image \(images.count) attached]")
+                } else { parts.append("[image \(item["mimeType"]?.stringValue ?? "")]") }
+            case "audio": parts.append("[audio \(item["mimeType"]?.stringValue ?? "")]")
             default: parts.append(item.jsonString())
             }
         }
         if parts.isEmpty, let structured = result["structuredContent"] { parts.append(structured.jsonString()) }
-        return (parts.joined(separator: "\n"), result["isError"]?.boolValue ?? false)
+        return (parts.joined(separator: "\n"), result["isError"]?.boolValue ?? false, images)
     }
 
     public func close() async { await transport.close() }
@@ -329,12 +343,15 @@ public struct MCPAgentTool: AgentTool {
     public let client: MCPClient
     public let tool: MCPTool
     public let exposedName: String
-    public var isReadOnly: Bool { false }
+    /// Only servers Deckhand installed itself (the browser) are trusted to say a tool only reads.
+    public let trustsHints: Bool
+    public var isReadOnly: Bool { trustsHints && tool.readOnlyHint }
 
-    public init(client: MCPClient, serverName: String, tool: MCPTool) {
+    public init(client: MCPClient, serverName: String, tool: MCPTool, trustsHints: Bool = false) {
         self.client = client
         self.tool = tool
         self.exposedName = Self.toolName(server: serverName, tool: tool.name)
+        self.trustsHints = trustsHints
     }
 
     public var spec: ToolSpec {
@@ -342,9 +359,13 @@ public struct MCPAgentTool: AgentTool {
     }
 
     public func execute(_ input: JSONValue, shell: any RemoteShell) async throws -> String {
-        let (text, isError) = try await client.call(tool.name, arguments: input)
+        try await executeOutput(input, shell: shell).text
+    }
+
+    public func executeOutput(_ input: JSONValue, shell: any RemoteShell) async throws -> ToolOutput {
+        let (text, isError, images) = try await client.callWithImages(tool.name, arguments: input)
         if isError { throw ToolError.failed(text.isEmpty ? "The tool reported an error." : text) }
-        return clip(text)
+        return ToolOutput(text: clip(text), images: images)
     }
 
     /// Tool names must match ^[a-zA-Z0-9_-]{1,64}$ for the model APIs.
