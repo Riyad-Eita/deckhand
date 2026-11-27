@@ -49,7 +49,7 @@ public struct DetachedRun: Sendable, Hashable, Codable {
           kids=$(pgrep -P "$p" 2>/dev/null)
           kill -TERM -- "-$p" 2>/dev/null || { kill -TERM "$p" 2>/dev/null; [ -n "$kids" ] && kill -TERM $kids 2>/dev/null; }
         fi
-        rm -f \(base).waiting; echo 143 > \(base).exit; echo stopped
+        rm -rf \(base).waiting \(base).sudo; echo 143 > \(base).exit; echo stopped
         """
     }
 

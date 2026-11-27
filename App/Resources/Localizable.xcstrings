@@ -10516,6 +10516,16 @@
         }
       }
     },
+    "Lets this task use sudo as %@ on %@. Deckhand keeps the password in memory until you quit the app; the server deletes its copy when the task ends.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Damit kann diese Aufgabe sudo als %1$@ auf %2$@ nutzen. Deckhand behält das Passwort nur im Speicher, bis du die App beendest; der Server löscht seine Kopie, sobald die Aufgabe endet."
+          }
+        }
+      }
+    },
     "Lightweight Git hosting with issues and pull requests.": {
       "localizations": {
         "de": {
@@ -16876,12 +16886,12 @@
         }
       }
     },
-    "Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.": {
+    "Server runs can't stop to ask you. “Full access” runs any command, with sudo if you enter your sudo password once (kept in memory, deleted on the server when the task ends); your house rules still block what they forbid. “Edit files” only changes files in the task's folder and can't run most commands. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Server-Läufe können nicht anhalten, um dich zu fragen. „Dateien bearbeiten“ erlaubt Änderungen im Ordner der Aufgabe; „Voller Zugriff“ führt auch beliebige Befehle aus. Modell und Aufwand lassen sich pro Aufgabe auch im Chat-Kopf ändern; „Servereinstellung“ nutzt die Konfiguration der CLI."
+            "value": "Server-Läufe können nicht zwischendurch fragen. „Voller Zugriff“ führt jeden Befehl aus, mit sudo, wenn du dein sudo-Passwort einmal eingibst (nur im Speicher, auf dem Server gelöscht, sobald die Aufgabe endet); deine Hausregeln blockieren weiterhin, was sie verbieten. „Dateien bearbeiten“ ändert nur Dateien im Ordner der Aufgabe und kann die meisten Befehle nicht ausführen. Modell und Aufwand lassen sich auch pro Aufgabe im Chat-Kopf ändern; „Server-Einstellung“ nutzt die Konfiguration der CLI."
           }
         }
       }
@@ -22167,6 +22177,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ohne Domain ist die App nur über Deckhand erreichbar. Mit Domain liefert Caddy sie per HTTPS aus."
+          }
+        }
+      }
+    },
+    "Without sudo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne sudo"
           }
         }
       }

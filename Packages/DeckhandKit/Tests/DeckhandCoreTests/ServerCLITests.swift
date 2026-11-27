@@ -62,6 +62,25 @@ import Testing
         #expect(k == "cd '/srv' && claude -p 'hi' --output-format stream-json --verbose --permission-mode plan < /dev/null")
     }
 
+    /// Full access: bypassPermissions for a normal login; as root (where Claude Code refuses it) every shell command is allowed.
+    @Test func fullAccessForClaudeCodeWorksAsRootToo() async throws {
+        let bin = FileManager.default.temporaryDirectory.appending(path: "cli-\(UUID().uuidString.prefix(6))").path
+        try FileManager.default.createDirectory(atPath: bin, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: bin) }
+        for (name, body) in [("claude", "echo \"$@\""), ("id", "echo ${FAKE_UID:-501}")] {
+            try "#!/bin/sh\n\(body)\n".write(toFile: "\(bin)/\(name)", atomically: true, encoding: .utf8)
+            try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: "\(bin)/\(name)")
+        }
+        let cmd = ServerCLIRun.command(.claudeCode, prompt: "hi", workingDirectory: "/tmp", sessionID: nil, access: .full)
+        func args(uid: String) async throws -> String {
+            try await LocalShell().run("FAKE_UID=\(uid) PATH='\(bin)':/usr/bin:/bin /bin/bash -c \(ShellQuote.quote(cmd))", timeout: .seconds(10)).stdout
+        }
+        #expect(try await args(uid: "1000").contains("--verbose --permission-mode bypassPermissions"))
+        let root = try await args(uid: "0")
+        #expect(root.contains("--verbose --permission-mode acceptEdits --allowedTools Bash"))
+        #expect(!root.contains("bypassPermissions"))
+    }
+
     @Test func runsThroughStreamingShell() async throws {
         let url = try #require(Bundle.module.url(forResource: "codex-exec", withExtension: "jsonl", subdirectory: "Fixtures"))
         // Fake "codex" by catting the fixture: exercise ServerCLIRun.run end to end with LocalShell.

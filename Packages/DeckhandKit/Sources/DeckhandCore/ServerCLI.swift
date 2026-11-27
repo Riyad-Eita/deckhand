@@ -75,11 +75,13 @@ public enum ServerCLIRun {
             return cmd + " \(p) < /dev/null"
         case .claudeCode:
             let mode = switch access {
-            case .readOnly: "plan"
-            case .edit: "acceptEdits"
-            case .full: "bypassPermissions"
+            case .readOnly: "--permission-mode plan"
+            case .edit: "--permission-mode acceptEdits"
+            // Claude Code refuses bypassPermissions as root, so a root login allows every shell command instead
+            // (house rules still apply through the PreToolUse hook).
+            case .full: #"$([ "$(id -u)" = 0 ] && echo '--permission-mode acceptEdits --allowedTools Bash' || echo '--permission-mode bypassPermissions')"#
             }
-            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose --permission-mode \(mode)" + CLIModels.flags(cli, options)
+            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose \(mode)" + CLIModels.flags(cli, options)
             if let sessionID { cmd += " --resume \(ShellQuote.quote(sessionID))" }
             return cmd + " < /dev/null"
         }
@@ -87,14 +89,17 @@ public enum ServerCLIRun {
 
     /// Runs one turn detached from the connection: it keeps going on the server if the phone disconnects.
     /// Pass `fromLine` > 1, or `start: false`, to reattach to a run that is already there; nothing is started then.
+    /// `sudo`: the run uses the password stored by `RunSudo.prepare` (call that first).
     public static func runDetached(
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
         sessionID: String?, access: CLIAccess, options: CLIOptions = .init(), run: DetachedRun, fromLine: Int = 1,
-        start: Bool? = nil, meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil
+        start: Bool? = nil, meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil,
+        sudo: Bool = false
     ) -> AsyncThrowingStream<AgentEvent, Error> {
-        let cliCommand = LimitAwareRun.command(
+        let limitAware = LimitAwareRun.command(
             cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run,
             startAt: startAt)
+        let cliCommand = sudo ? RunSudo.wrap(limitAware, run: run) : limitAware
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()

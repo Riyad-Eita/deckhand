@@ -139,6 +139,14 @@ struct AgentChatView: View {
             }
             .background(.bar)
         }
+        .alert(model.sudoWrong ? "That sudo password didn't work." : "Sudo password", isPresented: $model.sudoPrompt) {
+            SecureField("Password", text: $model.sudoPassword)
+                .accessibilityIdentifier("chat.sudoPassword")
+            Button("Continue") { model.submitSudoPassword() }
+            Button("Without sudo", role: .cancel) { model.skipSudo() }
+        } message: {
+            Text("Lets this task use sudo as \(model.server.username) on \(model.server.displayName). Deckhand keeps the password in memory until you quit the app; the server deletes its copy when the task ends.")
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {

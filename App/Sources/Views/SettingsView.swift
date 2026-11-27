@@ -106,7 +106,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Codex & Claude Code on the server")
                 } footer: {
-                    Text("Server runs can't stop to ask you. “Edit files” lets them change files in the task's folder; “Full access” also runs any command. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.")
+                    Text("Server runs can't stop to ask you. “Full access” runs any command, with sudo if you enter your sudo password once (kept in memory, deleted on the server when the task ends); your house rules still block what they forbid. “Edit files” only changes files in the task's folder and can't run most commands. Model and effort can also be changed per task in the chat header; “Server setting” uses the CLI's own config.")
                 }
 
                 Section {

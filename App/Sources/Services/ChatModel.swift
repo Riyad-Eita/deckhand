@@ -57,6 +57,11 @@ final class ChatModel {
               let steps = PlanMode.steps(in: last.text) else { return nil }
         return (last.id, steps)
     }
+    /// Sudo for a server run with full access: asked once per app session, kept in memory only.
+    var sudoPrompt = false
+    var sudoPassword = ""
+    private(set) var sudoWrong = false
+    private var sudoReply: CheckedContinuation<Bool, Never>?
     private var task: Task<Void, Never>?
     private var waitingForLimit = false
     private var waitingLine = 0
@@ -92,7 +97,7 @@ final class ChatModel {
         return o
     }
 
-    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool) async {
+    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool, sudo: Bool = false) async {
         var delay: Double = 2
         var reconnecting = !start
         var starting = start
@@ -109,7 +114,7 @@ final class ChatModel {
                     sessionID: thread.cliSessionID, access: access, options: cliOptions(cli),
                     run: run, fromLine: thread.cliRunLine, start: starting,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
-                    notify: notify, startAt: starting ? startAfter : nil)
+                    notify: notify, startAt: starting ? startAfter : nil, sudo: sudo)
                 if starting { startAfter = nil }
                 for try await event in events {
                     // Started: a dropped connection from here on only reattaches.
@@ -141,6 +146,41 @@ final class ChatModel {
         clearLive()
         isRunning = false
         persist()
+    }
+
+    /// Sets up sudo for `run` when this login needs a password for it. Asks for the password if the app
+    /// doesn't have it yet; false means the run goes without sudo (no sudo, skipped, or it couldn't be set up).
+    private func prepareSudo(_ run: DetachedRun, connection: SSHConnection) async -> Bool {
+        guard let access = try? await RootAccess.shared.access(for: server, connection: connection), access == .password else { return false }
+        sudoWrong = false
+        while !Task.isCancelled {
+            if RootAccess.shared.password(for: server) == nil {
+                sudoPrompt = true
+                guard await withCheckedContinuation({ sudoReply = $0 }) else { return false }
+            }
+            guard let password = RootAccess.shared.password(for: server) else { return false }
+            switch try? await RunSudo.prepare(run, password: password, on: connection) {
+            case .ok?: return true
+            case .wrongPassword?:
+                RootAccess.shared.setPassword(nil, for: server)
+                sudoWrong = true
+            default: return false
+            }
+        }
+        return false
+    }
+
+    func submitSudoPassword() {
+        RootAccess.shared.setPassword(sudoPassword, for: server)
+        sudoPassword = ""
+        sudoReply?.resume(returning: true)
+        sudoReply = nil
+    }
+
+    func skipSudo() {
+        sudoPassword = ""
+        sudoReply?.resume(returning: false)
+        sudoReply = nil
     }
 
     func result(for callID: String) -> ToolResult? {
@@ -191,10 +231,12 @@ final class ChatModel {
                 _ = try? await shell.run(Checkpoints.createCommand(task: thread.id.uuidString, folder: thread.workingDirectory), timeout: .seconds(60))
                 if let cli = thread.engine.serverCLI {
                     let run = DetachedRun()
+                    // Full access includes sudo: the run gets the password through a helper that leaves with it.
+                    let sudo = access == .full ? await prepareSudo(run, connection: shell) : false
                     thread.cliRunID = run.id
                     thread.cliRunLine = 1
                     thread.cliRunActive = true
-                    await follow(cli, run: run, prompt: trimmed, access: access, start: true)
+                    await follow(cli, run: run, prompt: trimmed, access: access, start: true, sudo: sudo)
                     return
                 }
                 let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []
