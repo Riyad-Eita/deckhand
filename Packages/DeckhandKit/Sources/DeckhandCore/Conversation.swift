@@ -32,11 +32,35 @@ public struct ToolResult: Sendable, Hashable, Codable {
     public var toolUseID: String
     public var content: String
     public var isError: Bool
-    public init(toolUseID: String, content: String, isError: Bool = false) {
+    /// Pictures a tool returned (screenshots from a browser): shown in the chat and sent to the model.
+    public var images: [ToolImage]
+    public init(toolUseID: String, content: String, isError: Bool = false, images: [ToolImage] = []) {
         self.toolUseID = toolUseID
         self.content = content
         self.isError = isError
+        self.images = images
     }
+    enum CodingKeys: String, CodingKey { case toolUseID, content, isError, images }
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        toolUseID = try c.decode(String.self, forKey: .toolUseID)
+        content = try c.decode(String.self, forKey: .content)
+        isError = try c.decode(Bool.self, forKey: .isError)
+        images = try c.decodeIfPresent([ToolImage].self, forKey: .images) ?? []
+    }
+}
+
+public struct ToolImage: Sendable, Hashable, Codable {
+    public var mediaType: String
+    public var data: Data
+    public init(mediaType: String, data: Data) { self.mediaType = mediaType; self.data = data }
+}
+
+/// What a tool hands back: text, and pictures when it has some.
+public struct ToolOutput: Sendable {
+    public var text: String
+    public var images: [ToolImage]
+    public init(text: String, images: [ToolImage] = []) { self.text = text; self.images = images }
 }
 
 public struct Message: Sendable, Hashable, Codable, Identifiable {

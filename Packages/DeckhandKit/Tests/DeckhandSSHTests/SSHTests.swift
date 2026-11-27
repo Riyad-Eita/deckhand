@@ -1763,3 +1763,52 @@ struct LiveAutoInvestigateTests {
         await conn.disconnect()
     }
 }
+
+/// The browser for the agent, end to end in a temporary home on a real server (downloads ~400 MB).
+/// Opt-in: DECKHAND_BROWSER_TEST=1 plus the DECKHAND_TEST_* login. Everything is removed afterwards.
+extension LiveSSHTests {
+    @Test(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_BROWSER_TEST"] != nil))
+    func browserForTheAgentLive() async throws {
+        let conn = try await connection()
+        let home = try await conn.run("mktemp -d /tmp/dh-browser-XXXXXX", timeout: .seconds(20)).stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        #expect(home.hasPrefix("/tmp/dh-browser-"))
+        let inHome = "export HOME=\(home); cd; "
+        func sh(_ c: String, _ t: Int = 120) async throws -> String { try await conn.run(inHome + c, timeout: .seconds(t)).stdout }
+        do {
+            #expect(!BrowserSetup.parse(try await sh(BrowserSetup.statusCommand)).installed)
+            let install = try await sh(BrowserSetup.installScript + " 2>&1", 1200)
+            #expect(install.contains("@@ok"), "install ended with: \(install.suffix(600))")
+            let status = BrowserSetup.parse(try await sh(BrowserSetup.statusCommand, 120))
+            #expect(status.installed && status.browserReady && status.works)
+
+            // "Try it": a screenshot of a real page.
+            let shot = BrowserSetup.parseScreenshot(try await sh(BrowserSetup.screenshotCommand(url: "https://example.com"), 120))
+            #expect(shot.error == nil)
+            #expect((shot.image?.count ?? 0) > 2000)
+
+            // The agent's view: Playwright's MCP server over the SSH channel, a page and a screenshot as an image.
+            let client = MCPClient(name: "browser", transport: StdioMCPTransport(channel: try await conn.openChannel(inHome + BrowserSetup.mcpCommand)))
+            let tools = try await client.tools()
+            let byName = Dictionary(uniqueKeysWithValues: tools.map { ($0.name, $0) })
+            let navigate = try #require(byName["browser_navigate"]), screenshot = try #require(byName["browser_take_screenshot"])
+            #expect(!MCPAgentTool(client: client, serverName: "browser", tool: navigate, trustsHints: true).isReadOnly || navigate.readOnlyHint)
+            #expect(MCPAgentTool(client: client, serverName: "browser", tool: screenshot, trustsHints: true).isReadOnly)
+            if let click = byName["browser_click"] { #expect(!MCPAgentTool(client: client, serverName: "browser", tool: click, trustsHints: true).isReadOnly) }
+            let page = try await client.callWithImages("browser_navigate", arguments: ["url": "https://example.com"])
+            #expect(!page.isError)
+            #expect(page.text.localizedCaseInsensitiveContains("example"))
+            let picture = try await client.callWithImages("browser_take_screenshot", arguments: [:])
+            #expect(!picture.isError)
+            #expect(picture.images.count == 1)
+            #expect((picture.images.first?.data.count ?? 0) > 2000)
+            await client.close()
+        } catch {
+            Issue.record(error)
+        }
+        // rm first: the pkill pattern also matches this very command line.
+        _ = try? await conn.run("rm -rf \(home)", timeout: .seconds(60))
+        _ = try? await conn.run("pkill -f '[\(home.prefix(1))]\(home.dropFirst())/' 2>/dev/null; true", timeout: .seconds(20))
+        #expect(try await conn.run("[ -e \(home) ] && echo left || echo gone", timeout: .seconds(20)).stdout.contains("gone"))
+        await conn.disconnect()
+    }
+}

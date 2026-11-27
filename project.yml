@@ -23,6 +23,10 @@ packages:
   WhisperKit:
     url: https://github.com/argmaxinc/WhisperKit
     exactVersion: 1.1.1
+  # A2UI (agent-generated native UI, Apache-2.0). No release tags yet: pinned to a reviewed commit.
+  A2UI:
+    url: https://github.com/a2ui-project/a2ui
+    revision: 36725eee042da90c526f469f94246f96e16fdc35
 targets:
   Deckhand:
     type: application
@@ -47,6 +51,14 @@ targets:
       - package: SwiftTerm
       - package: WhisperKit
         product: WhisperKit
+      - package: A2UI
+        product: A2UISwiftCore
+      - package: A2UI
+        product: A2UISwiftUI
+      - package: A2UI
+        product: BasicCatalog
+      - package: A2UI
+        product: BasicCatalogSwiftUI
     entitlements:
       path: App/Deckhand.entitlements
       properties:

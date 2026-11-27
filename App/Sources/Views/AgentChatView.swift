@@ -610,10 +610,15 @@ private struct MessageView: View {
                 .accessibilityIdentifier("chat.sentImages")
             }
             if !message.text.isEmpty {
+                let tap = A2UI.displayText(message.text)
                 HStack {
                     Spacer(minLength: 48)
-                    UserBubble(text: PlanMode.isPlanRequest(message.text) ? PlanMode.unwrap(message.text) : message.text,
-                               icon: PlanMode.isPlanRequest(message.text) ? "list.bullet.clipboard" : nil)
+                    if tap.isAction {
+                        UserBubble(text: tap.text, icon: "hand.tap")
+                    } else {
+                        UserBubble(text: PlanMode.isPlanRequest(message.text) ? PlanMode.unwrap(message.text) : message.text,
+                                   icon: PlanMode.isPlanRequest(message.text) ? "list.bullet.clipboard" : nil)
+                    }
                 }
             }
             // Tool results render inside their tool cards.
@@ -632,6 +637,8 @@ private struct MessageView: View {
                         }
                     case .thinking(let t, _) where !t.isEmpty:
                         ThinkingView(text: t)
+                    case .toolUse(let call) where call.name == A2UI.toolName:
+                        A2UICallView(call: call, status: status(for: call), model: model)
                     case .toolUse(let call):
                         ToolCard(name: call.name, input: call.input, status: status(for: call))
                     default:
@@ -645,6 +652,24 @@ private struct MessageView: View {
     private func status(for call: ToolCall) -> ChatModel.ToolStatus {
         if let r = model.result(for: call.id) { return .done(r) }
         return model.toolStatus[call.id] ?? .running
+    }
+}
+
+/// A `show_ui` call: the views it created, drawn natively. Errors show as an ordinary tool card.
+private struct A2UICallView: View {
+    let call: ToolCall
+    let status: ChatModel.ToolStatus
+    let model: ChatModel
+
+    var body: some View {
+        if case .done(let result) = status, result.isError {
+            ToolCard(name: call.name, input: call.input, status: status)
+        } else {
+            let pending: Bool = { if case .done = status { return false } else { return true } }()
+            ForEach(A2UI.createdSurfaces(call.input), id: \.self) { id in
+                A2UISurfaceView(host: model.a2ui, surfaceID: id, pending: pending)
+            }
+        }
     }
 }
 
@@ -752,6 +777,21 @@ struct ToolCard: View {
                 }
             }
             .buttonStyle(.plain)
+            if case .done(let result) = status, !result.images.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(Array(result.images.enumerated()), id: \.offset) { _, img in
+                            if let ui = UIImage(data: img.data) {
+                                Image(uiImage: ui).resizable().scaledToFit().frame(maxWidth: 300, maxHeight: 220)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Theme.hairline))
+                                    .accessibilityLabel("Screenshot from the tool")
+                                    .accessibilityIdentifier("tool.image")
+                            }
+                        }
+                    }
+                }
+            }
             if expanded, case .done(let result) = status {
                 let output = String(result.content.prefix(8000))
                 ScrollView(.horizontal) {

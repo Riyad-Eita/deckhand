@@ -153,6 +153,14 @@ struct PairingConfirmView: View {
     }
 }
 
+#if targetEnvironment(macCatalyst)
+/// No camera scanner on the Mac (VisionKit's DataScanner is iPhone and iPad only): pairing uses a link or the code.
+struct QRScanner: View {
+    let found: (String) -> Void
+    @MainActor static var isAvailable: Bool { false }
+    var body: some View { EmptyView() }
+}
+#else
 /// A QR code reader (VisionKit). Calls back with the first code's text.
 struct QRScanner: UIViewControllerRepresentable {
     let found: (String) -> Void
@@ -189,6 +197,7 @@ struct QRScanner: UIViewControllerRepresentable {
         }
     }
 }
+#endif
 
 /// Opens a pairing code from a link (the Camera app, a tapped `deckhand://pair` link).
 struct PairingLinkModifier: ViewModifier {

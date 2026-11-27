@@ -1284,6 +1284,16 @@
         }
       }
     },
+    "A headless browser on the server: open pages, fill forms, take screenshots": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Browser ohne Fenster auf dem Server: Seiten öffnen, Formulare ausfüllen, Screenshots machen"
+          }
+        }
+      }
+    },
     "A hidden file inside an installed package (often test data or a placeholder). Usually harmless — check which package owns it with dpkg -S.": {
       "localizations": {
         "de": {
@@ -3460,6 +3470,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Durchsuchen, umbenennen, löschen; Ordner an den Agenten geben"
+          }
+        }
+      }
+    },
+    "Browser": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser"
+          }
+        }
+      }
+    },
+    "Browser for the agent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser für den Agent"
           }
         }
       }
@@ -6013,6 +6043,16 @@
         }
       }
     },
+    "Deckhand is built with these open-source packages. Thank you to their authors.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand ist mit diesen Open-Source-Paketen gebaut. Danke an ihre Autorinnen und Autoren."
+          }
+        }
+      }
+    },
     "Deckhand is locked": {
       "localizations": {
         "de": {
@@ -6312,6 +6352,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ gelöscht."
+          }
+        }
+      }
+    },
+    "Deletes Playwright and the browser from your home folder. Node.js stays.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löscht Playwright und den Browser aus deinem Home-Ordner. Node.js bleibt."
           }
         }
       }
@@ -6954,6 +7004,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Whisper laden (%@)"
+          }
+        }
+      }
+    },
+    "Downloaded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heruntergeladen"
           }
         }
       }
@@ -9526,6 +9586,16 @@
         }
       }
     },
+    "Install the libraries": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bibliotheken installieren"
+          }
+        }
+      }
+    },
     "Install the updates": {
       "localizations": {
         "de": {
@@ -9576,6 +9646,16 @@
         }
       }
     },
+    "Installing %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere %@ …"
+          }
+        }
+      }
+    },
     "Installing Ollama…": {
       "localizations": {
         "de": {
@@ -9592,6 +9672,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installiere die GitHub CLI …"
+          }
+        }
+      }
+    },
+    "Installing the libraries…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bibliotheken werden installiert …"
           }
         }
       }
@@ -9622,6 +9712,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installiert Caddy bei Bedarf und liefert %1$@ von %2$@ mit HTTPS aus."
+          }
+        }
+      }
+    },
+    "Installs Playwright and a headless Chromium into your home folder (Node.js too, if the server has none) — no root needed, about 400 MB. The browser only runs while the agent uses it, started through your SSH connection. Nothing listens on the network, and every chat starts with a fresh browser profile.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert Playwright und ein Chromium ohne Fenster in deinen Home-Ordner (auch Node.js, falls der Server keins hat) – ohne root, etwa 400 MB. Der Browser läuft nur, solange der Agent ihn nutzt, gestartet über deine SSH-Verbindung. Nichts lauscht im Netzwerk, und jeder Chat beginnt mit einem frischen Browser-Profil."
           }
         }
       }
@@ -11416,6 +11516,16 @@
         }
       }
     },
+    "Needs about 600 MB of free disk.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht etwa 600 MB freien Speicher."
+          }
+        }
+      }
+    },
     "Needs attention": {
       "localizations": {
         "de": {
@@ -12467,7 +12577,14 @@
       }
     },
     "Node.js": {
-      "shouldTranslate": false
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Node.js"
+          }
+        }
+      }
     },
     "None": {
       "localizations": {
@@ -12565,6 +12682,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht mit dem Server verbunden."
+          }
+        }
+      }
+    },
+    "Not downloaded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht heruntergeladen"
           }
         }
       }
@@ -13419,6 +13546,16 @@
         }
       }
     },
+    "Open-source licenses": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open-Source-Lizenzen"
+          }
+        }
+      }
+    },
     "Opened on the Mac.": {
       "localizations": {
         "de": {
@@ -13465,6 +13602,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffnet Port %1$@/%2$@%3$@ in der Firewall."
+          }
+        }
+      }
+    },
+    "Opens the page in the browser on your server, as the agent would see it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet die Seite im Browser auf deinem Server, so wie der Agent sie sieht."
           }
         }
       }
@@ -14005,6 +14152,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Legt Köder-Dateien dort ab, wo Eindringlinge zuerst suchen: gefälschte Cloud-Schlüssel, gefälschte App-Geheimnisse, ein gefälschtes Datenbank-Backup und ein alter gefälschter SSH-Schlüssel. Sobald eine geöffnet wird, bekommst du einen dringenden Push mit dem Verursacher."
+          }
+        }
+      }
+    },
+    "Playwright": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Playwright"
           }
         }
       }
@@ -15065,6 +15222,16 @@
         }
       }
     },
+    "Remove the browser": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser entfernen"
+          }
+        }
+      }
+    },
     "Remove tripwires": {
       "localizations": {
         "de": {
@@ -15231,6 +15398,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das Konto ließ sich nicht entfernen."
+          }
+        }
+      }
+    },
+    "Removing…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird entfernt …"
           }
         }
       }
@@ -16516,6 +16693,36 @@
         }
       }
     },
+    "Screenshot": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot"
+          }
+        }
+      }
+    },
+    "Screenshot from the tool": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot vom Werkzeug"
+          }
+        }
+      }
+    },
+    "Screenshot of %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshot von %@"
+          }
+        }
+      }
+    },
     "Search": {
       "localizations": {
         "de": {
@@ -17136,6 +17343,16 @@
         }
       }
     },
+    "Set up the browser": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser einrichten"
+          }
+        }
+      }
+    },
     "Set up the server": {
       "localizations": {
         "de": {
@@ -17212,6 +17429,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einstellungen …"
+          }
+        }
+      }
+    },
+    "Setup": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einrichtung"
           }
         }
       }
@@ -18617,6 +18844,16 @@
         }
       }
     },
+    "Tapped “%@”": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ angetippt"
+          }
+        }
+      }
+    },
     "Task": {
       "localizations": {
         "de": {
@@ -19037,6 +19274,16 @@
         }
       }
     },
+    "The agent can open pages, click, fill in forms and take screenshots. Clicks and form input wait for your approval like other actions.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Agent kann Seiten öffnen, klicken, Formulare ausfüllen und Screenshots machen. Klicks und Eingaben warten wie andere Aktionen auf deine Freigabe."
+          }
+        }
+      }
+    },
     "The agent does the work on your servers. Pick one way — you can add the other later.": {
       "localizations": {
         "de": {
@@ -19163,6 +19410,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die App hat in kurzer Zeit viele Daten gespeichert."
+          }
+        }
+      }
+    },
+    "The browser couldn't be set up.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Browser konnte nicht eingerichtet werden."
+          }
+        }
+      }
+    },
+    "The browser needs a few system libraries: %@%@. Installing them needs sudo.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Browser braucht ein paar Systembibliotheken: %1$@%2$@. Für die Installation ist sudo nötig."
           }
         }
       }
@@ -19473,6 +19740,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der letzte Lauf von %@ läuft noch."
+          }
+        }
+      }
+    },
+    "The libraries couldn't be installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bibliotheken konnten nicht installiert werden."
           }
         }
       }
@@ -20417,6 +20694,16 @@
         }
       }
     },
+    "This view was closed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Ansicht wurde geschlossen."
+          }
+        }
+      }
+    },
     "Thought": {
       "localizations": {
         "de": {
@@ -20763,6 +21050,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versuch es erneut. Wenn es immer wieder passiert, helfen die Details."
+          }
+        }
+      }
+    },
+    "Try it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausprobieren"
           }
         }
       }
@@ -21424,6 +21721,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Für Chats nutzen"
+          }
+        }
+      }
+    },
+    "Use in chats on this server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Chats auf diesem Server nutzen"
           }
         }
       }
@@ -22267,6 +22574,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arbeitet …"
+          }
+        }
+      }
+    },
+    "Works": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funktioniert"
           }
         }
       }

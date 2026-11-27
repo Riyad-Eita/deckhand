@@ -198,7 +198,7 @@ public struct Agent: Sendable {
             }
             let result = await runTool(call, emit: emit)
             emit(.toolFinished(call, result))
-            results.append(redactSecrets ? ToolResult(toolUseID: result.toolUseID, content: Secrets.redact(result.content), isError: result.isError) : result)
+            results.append(redactSecrets ? ToolResult(toolUseID: result.toolUseID, content: Secrets.redact(result.content), isError: result.isError, images: result.images) : result)
         }
         return results
     }
@@ -232,8 +232,8 @@ public struct Agent: Sendable {
         }
         emit(.toolRunning(call))
         do {
-            let output = try await tool.execute(call.input, shell: shell)
-            return ToolResult(toolUseID: call.id, content: output)
+            let output = try await tool.executeOutput(call.input, shell: shell)
+            return ToolResult(toolUseID: call.id, content: output.text, images: output.images)
         } catch {
             return ToolResult(toolUseID: call.id, content: error.localizedDescription, isError: true)
         }
