@@ -177,6 +177,8 @@ struct SettingsView: View {
                 Section {
                     LabeledContent("Keys", value: "Stored in this \(Device.name)'s Keychain")
                     LabeledContent("Requests", value: "Go straight to your provider")
+                    NavigationLink("Open-source licenses") { LicensesView() }
+                        .accessibilityIdentifier("settings.licenses")
                 } header: {
                     Text("Privacy")
                 }

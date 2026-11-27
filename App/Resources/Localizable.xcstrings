@@ -6043,6 +6043,16 @@
         }
       }
     },
+    "Deckhand is built with these open-source packages. Thank you to their authors.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand ist mit diesen Open-Source-Paketen gebaut. Danke an ihre Autorinnen und Autoren."
+          }
+        }
+      }
+    },
     "Deckhand is locked": {
       "localizations": {
         "de": {
@@ -13536,6 +13546,16 @@
         }
       }
     },
+    "Open-source licenses": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open-Source-Lizenzen"
+          }
+        }
+      }
+    },
     "Opened on the Mac.": {
       "localizations": {
         "de": {
@@ -18824,6 +18844,16 @@
         }
       }
     },
+    "Tapped “%@”": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ angetippt"
+          }
+        }
+      }
+    },
     "Task": {
       "localizations": {
         "de": {
@@ -20660,6 +20690,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Nutzer darf auf dem Server kein sudo verwenden. Melde dich als root oder als Admin-Nutzer an."
+          }
+        }
+      }
+    },
+    "This view was closed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Ansicht wurde geschlossen."
           }
         }
       }
