@@ -66,10 +66,19 @@ final class ChatModel {
     private var waitingForLimit = false
     private var waitingLine = 0
 
+    /// The views the agent drew with `show_ui` (A2UI), rebuilt from the history.
+    let a2ui = A2UIHost()
+
     init(thread: ChatThread, server: Server) {
         self.thread = thread
         self.server = server
         self.messages = thread.messages
+        a2ui.replay(messages)
+        // A tap on a button the agent drew is the user's next message (with the A2UI action for the agent).
+        a2ui.onAction = { [weak self] action in
+            guard let self, !self.isRunning else { return }
+            self.send(A2UI.message(for: action))
+        }
     }
 
     /// A server run that was going when the app closed or the connection dropped: pick it up again.
@@ -254,8 +263,9 @@ final class ChatModel {
                 let agent = Agent(
                     provider: AppProviders.make(config),
                     shell: shell,
-                    tools: planning ? PlanMode.tools(ServerTools.all(workingDirectory: thread.workingDirectory))
-                        : ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools,
+                    tools: (planning ? PlanMode.tools(ServerTools.all(workingDirectory: thread.workingDirectory))
+                        : ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools)
+                        + [ShowUITool(validate: { [a2ui] messages in await a2ui.apply(messages) })],
                     policy: policy,
                     system: Agent.systemPrompt(
                         host: server.host, user: server.username, workingDirectory: thread.workingDirectory,

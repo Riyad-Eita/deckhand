@@ -172,6 +172,36 @@ enum DebugSeed {
         return (String(raw[..<bar]), String(raw[raw.index(after: bar)...]))
     }()
 
+    /// The view DECKHAND_SEED_A2UI shows: services that need attention, with buttons and a short form.
+    static let a2uiDemo = #"""
+    {"messages":[{"version":"1.0","createSurface":{"surfaceId":"attention-1",
+     "dataModel":{"note":"","notify":true},
+     "components":[
+      {"id":"root","component":"Column","children":["title","svc1","svc2","div","form"]},
+      {"id":"title","component":"Text","text":"Needs attention","variant":"caption"},
+      {"id":"svc1","component":"Card","child":"svc1col"},
+      {"id":"svc1col","component":"Column","children":["svc1name","svc1why","svc1btns"]},
+      {"id":"svc1name","component":"Text","text":"**nginx.service**"},
+      {"id":"svc1why","component":"Text","text":"Failed 12 min ago: port 443 is already in use.","variant":"caption"},
+      {"id":"svc1btns","component":"Row","children":["svc1restart","svc1logs"]},
+      {"id":"svc1restart","component":"Button","variant":"primary","child":"svc1restartT","action":{"event":{"name":"restart","userMessage":"Restart nginx","context":{"unit":"nginx"}}}},
+      {"id":"svc1restartT","component":"Text","text":"Restart"},
+      {"id":"svc1logs","component":"Button","variant":"borderless","child":"svc1logsT","action":{"event":{"name":"logs","userMessage":"Show the nginx log","context":{"unit":"nginx"}}}},
+      {"id":"svc1logsT","component":"Text","text":"Show log"},
+      {"id":"svc2","component":"Card","child":"svc2col"},
+      {"id":"svc2col","component":"Column","children":["svc2name","svc2why","svc2btns"]},
+      {"id":"svc2name","component":"Text","text":"**Disk /var**"},
+      {"id":"svc2why","component":"Text","text":"91 % full, mostly old Docker images (6.2 GB).","variant":"caption"},
+      {"id":"svc2btns","component":"Row","children":["svc2prune"]},
+      {"id":"svc2prune","component":"Button","child":"svc2pruneT","action":{"event":{"name":"prune","userMessage":"Remove unused Docker images","context":{"target":"docker-images"}}}},
+      {"id":"svc2pruneT","component":"Text","text":"Clean up images"},
+      {"id":"div","component":"Divider"},
+      {"id":"form","component":"Column","children":["note","notify"]},
+      {"id":"note","component":"TextField","label":"Note for the change log","value":{"@path":"/note"},"placeholder":"optional"},
+      {"id":"notify","component":"CheckBox","label":"Tell me when it's fixed","value":{"@path":"/notify"}}
+     ]}}]}
+    """#
+
     /// The plain chat DECKHAND_SEED_PLANCHAT made, opened on the home screen.
     @MainActor static var planChatID: UUID?
 
@@ -318,6 +348,24 @@ enum DebugSeed {
                 Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: "seed-shot", content: "Took a screenshot\n[image 1 attached]",
                                                                      images: [ToolImage(mediaType: mediaType, data: picture)]))]),
                 Message(role: .assistant, blocks: [.text("The landing page loads in about a second: the heading, the text and the link are all there, and the console shows no errors.")]),
+            ]
+            context.insert(thread)
+            try? context.save()
+            AppRouter.shared.pendingThread = thread.id
+        }
+        // DECKHAND_SEED_A2UI=1 (or a path to show_ui JSON): a finished task where the agent answered with a native
+        // view (A2UI), opened at launch.
+        if let seedUI = env["DECKHAND_SEED_A2UI"] {
+            let thread = ChatThread(server: server, workingDirectory: "~")
+            thread.id = UUID(uuidString: "00000000-0000-0000-0000-00000000a2a1")!
+            thread.title = "What needs attention?"
+            let source = seedUI == "1" ? DebugSeed.a2uiDemo : (try? String(contentsOfFile: seedUI, encoding: .utf8)) ?? ""
+            let view = (try? JSONValue.parse(source)) ?? .object([:])
+            let call = ToolCall(id: "seed-ui", name: A2UI.toolName, input: view)
+            thread.messages = [
+                .user("What needs attention on this server?"),
+                Message(role: .assistant, blocks: [.text("Two things need you; everything else is fine."), .toolUse(call)]),
+                Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: "seed-ui", content: "Shown in the chat (attention-1)."))]),
             ]
             context.insert(thread)
             try? context.save()
