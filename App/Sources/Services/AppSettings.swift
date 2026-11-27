@@ -59,7 +59,13 @@ final class AppSettings {
         apiKey = ""
         effort = defaults.string(forKey: "provider.effort") ?? "high"
         approvalPolicy = ApprovalPolicy(rawValue: defaults.string(forKey: "agent.policy") ?? "") ?? .autoRead
-        cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .edit
+        // Server runs can't ask, so "Edit files" blocked even reading logs. Full access is the default since 1.5
+        // (house rules still block what they forbid); the old default moves up once.
+        if defaults.string(forKey: "cli.access") == CLIAccess.edit.rawValue && !defaults.bool(forKey: "cli.access.v2") {
+            defaults.set(CLIAccess.full.rawValue, forKey: "cli.access")
+        }
+        defaults.set(true, forKey: "cli.access.v2")
+        cliAccess = CLIAccess(rawValue: defaults.string(forKey: "cli.access") ?? "") ?? .full
         keepTerminalSessions = defaults.object(forKey: "terminal.keep") as? Bool ?? true
         syncServers = defaults.bool(forKey: "sync.servers")
         syncKeys = defaults.bool(forKey: "sync.keys")
