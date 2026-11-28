@@ -185,11 +185,11 @@ struct PullRequestDetailView: View {
                 Button { writing = .requestChanges } label: { Label("Request changes", systemImage: "exclamationmark.bubble") }
                 Button { writing = .approve } label: { Label("Approve with a comment", systemImage: "checkmark.bubble") }
             } label: {
-                Label("Review", systemImage: "text.bubble").frame(maxWidth: .infinity)
+                Text("Review").frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
             .accessibilityIdentifier("pr.reviewMenu")
-            Button { Task { await submit(.approve, "") } } label: { Label("Approve", systemImage: "checkmark").frame(maxWidth: .infinity) }
+            Button { Task { await submit(.approve, "") } } label: { Text("Approve").frame(maxWidth: .infinity) }
                 .buttonStyle(.bordered).tint(.green)
                 .accessibilityIdentifier("pr.approve")
             Button { merging = true } label: { Label("Merge", systemImage: "arrow.triangle.merge").frame(maxWidth: .infinity) }
@@ -197,6 +197,8 @@ struct PullRequestDetailView: View {
                 .accessibilityIdentifier("pr.merge")
         }
         .disabled(busy)
+        .lineLimit(1)
+        .minimumScaleFactor(0.85)
         .controlSize(.large)
         .padding(.horizontal).padding(.vertical, 10)
         .background(.bar)
