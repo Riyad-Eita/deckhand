@@ -171,6 +171,10 @@ struct ConnectionEditor: View {
     @State private var testing = false
     @State private var testResult: String?
     @State private var testFailed = false
+    /// OAuth sign-in: the tokens it got (saved with the connection), or nil = the token field.
+    @State private var oauth: MCPOAuth.Tokens?
+    @State private var signingIn = false
+    @State private var signInError: String?
 
     var body: some View {
         NavigationStack {
@@ -181,8 +185,10 @@ struct ConnectionEditor: View {
                         TextField("https://example.com/mcp", text: $url)
                             .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
                             .font(Theme.mono)
-                        SecureField(preset?.tokenHint.isEmpty == false ? preset!.tokenHint : "Bearer token (optional)", text: $token)
-                            .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        if oauth == nil {
+                            SecureField(preset?.tokenHint.isEmpty == false ? preset!.tokenHint : "Bearer token (optional)", text: $token)
+                                .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        }
                     } else {
                         TextField("npx -y @modelcontextprotocol/server-filesystem ~", text: $command, axis: .vertical)
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
@@ -198,6 +204,26 @@ struct ConnectionEditor: View {
                         Text("Runs on the server over SSH whenever an agent needs it.")
                     } else if preset?.id == "github" {
                         Text("Easier: open a server's tools and tap Connect next to GitHub — that signs in with your GitHub account and fills this in. Or create a token at github.com → Settings → Developer settings → Personal access tokens.")
+                    }
+                }
+                if kind == "http" {
+                    Section {
+                        if oauth != nil {
+                            Label("Signed in", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
+                                .accessibilityIdentifier("connection.signedIn")
+                            Button("Sign out", role: .destructive) { oauth = nil }
+                        } else {
+                            Button {
+                                Task { await signIn() }
+                            } label: {
+                                HStack { Text("Sign in"); Spacer(); if signingIn { ProgressView() } }
+                            }
+                            .disabled(URL(string: url)?.scheme != "https" || signingIn)
+                            .accessibilityIdentifier("connection.signIn")
+                        }
+                        if let signInError { Text(signInError).font(.footnote).foregroundStyle(.red) }
+                    } footer: {
+                        Text("For servers that use OAuth: you sign in on their page, Deckhand keeps the token in the Keychain and renews it. No token to copy.")
                     }
                 }
                 Section {
@@ -240,6 +266,7 @@ struct ConnectionEditor: View {
         loaded = true
         if let record {
             name = record.name; kind = record.kind; url = record.url; command = record.command; token = record.token ?? ""
+            oauth = MCPAuth.tokens(record)
         } else if let preset {
             name = preset.id == "url" || preset.id == "command" ? "" : preset.name
             kind = preset.kind; url = preset.url; command = preset.command
@@ -257,7 +284,15 @@ struct ConnectionEditor: View {
         target.url = url.trimmingCharacters(in: .whitespaces)
         target.command = command.trimmingCharacters(in: .whitespaces)
         if record == nil { context.insert(target) }
-        Keychain.set(token.isEmpty ? nil : token, for: target.secretAccount)
+        Keychain.set(token.isEmpty || oauth != nil ? nil : token, for: target.secretAccount)
+        MCPAuth.save(oauth, for: target)
+    }
+
+    private func signIn() async {
+        guard let u = URL(string: url.trimmingCharacters(in: .whitespaces)) else { return }
+        signingIn = true; signInError = nil
+        defer { signingIn = false }
+        do { oauth = try await MCPAuth.signIn(url: u); token = "" } catch { signInError = error.localizedDescription }
     }
 
     private func test() async {
@@ -270,7 +305,7 @@ struct ConnectionEditor: View {
                 guard let first = servers.first else { throw MCPError("Add a server first; the command runs there.") }
                 ssh = try await Connections.shared.connection(for: first)
             }
-            let client = try await MCPConnector.client(for: draft, token: token, server: ssh)
+            let client = try await MCPConnector.client(for: draft, token: oauth?.accessToken ?? token, server: ssh)
             let tools = try await MCPConnector.withTimeout(seconds: 20) { try await client.tools() }
             await client.close()
             testFailed = false
