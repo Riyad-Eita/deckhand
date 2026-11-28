@@ -1,8 +1,11 @@
 import Foundation
 
 /// Saved commands: one tap sends them to the terminal. `{{name}}` or `{{name:default}}` placeholders are asked for
-/// before sending. A snippet belongs to one server or to all.
+/// before sending. A snippet belongs to one server or to all. A task template is the same for an agent task: its
+/// text is the prompt.
 public struct Snippet: Codable, Sendable, Hashable, Identifiable {
+    public enum Kind: String, Codable, Sendable { case command, task }
+
     public var id = UUID()
     public var title: String
     public var command: String
@@ -10,9 +13,28 @@ public struct Snippet: Codable, Sendable, Hashable, Identifiable {
     public var serverID: UUID?
     public var uses = 0
     public var lastUsed: Date?
+    public var kind: Kind = .command
 
-    public init(title: String, command: String, serverID: UUID? = nil) {
-        self.title = title; self.command = command; self.serverID = serverID
+    public init(title: String, command: String, serverID: UUID? = nil, kind: Kind = .command) {
+        self.title = title; self.command = command; self.serverID = serverID; self.kind = kind
+    }
+
+    enum CodingKeys: String, CodingKey { case id, title, command, serverID, uses, lastUsed, kind }
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        title = try c.decode(String.self, forKey: .title)
+        command = try c.decode(String.self, forKey: .command)
+        serverID = try c.decodeIfPresent(UUID.self, forKey: .serverID)
+        uses = try c.decodeIfPresent(Int.self, forKey: .uses) ?? 0
+        lastUsed = try c.decodeIfPresent(Date.self, forKey: .lastUsed)
+        kind = try c.decodeIfPresent(Kind.self, forKey: .kind) ?? .command   // saved before templates existed
+    }
+
+    /// A title for a task saved from the chat: its first line, shortened.
+    public static func suggestedTaskTitle(for prompt: String) -> String {
+        let first = (prompt.split(separator: "\n").first.map(String.init) ?? prompt).trimmingCharacters(in: .whitespaces)
+        return first.count > 48 ? String(first.prefix(48)) + "…" : first
     }
 
     public struct Placeholder: Sendable, Hashable, Identifiable {
@@ -51,7 +73,8 @@ public struct Snippet: Codable, Sendable, Hashable, Identifiable {
     }
 
     /// Snippets for a server: its own first, then the global ones; most used first within each.
-    public static func forServer(_ id: UUID?, in all: [Snippet]) -> [Snippet] {
+    public static func forServer(_ id: UUID?, in all: [Snippet], kind: Kind = .command) -> [Snippet] {
+        let all = all.filter { $0.kind == kind }
         let order = { (a: Snippet, b: Snippet) in (a.uses, a.lastUsed ?? .distantPast) > (b.uses, b.lastUsed ?? .distantPast) }
         let own = id.map { sid in all.filter { $0.serverID == sid }.sorted(by: order) } ?? []
         return own + all.filter { $0.serverID == nil }.sorted(by: order)
