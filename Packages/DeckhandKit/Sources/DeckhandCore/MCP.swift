@@ -37,7 +37,11 @@ public final class LocalProcessChannel: LineChannel, @unchecked Sendable {
     private let process = Process()
     private let stdin = Pipe()
 
+    /// A write to a process that already ended must fail with EPIPE, not kill the app (SIGPIPE's default).
+    private static let ignoreSIGPIPE: Void = { signal(SIGPIPE, SIG_IGN) }()
+
     public init(command: String) throws {
+        _ = Self.ignoreSIGPIPE
         let stdout = Pipe()
         process.executableURL = URL(fileURLWithPath: "/bin/sh")
         process.arguments = ["-c", command]
