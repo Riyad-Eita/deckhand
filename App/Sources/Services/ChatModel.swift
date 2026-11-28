@@ -277,7 +277,8 @@ final class ChatModel {
                     policy: policy,
                     system: Agent.systemPrompt(
                         host: server.host, user: server.username, workingDirectory: thread.workingDirectory,
-                        extra: ServerMemory.promptSection((try? await shell.run(ServerMemory.readCommand, timeout: .seconds(10)).stdout) ?? "")),
+                        extra: ServerMemory.promptSection((try? await shell.run(ServerMemory.readCommand, timeout: .seconds(10)).stdout) ?? "")
+                            + "\n" + Skills.promptSection(Skills.parseList((try? await shell.run(Skills.listCommand, timeout: .seconds(10)).stdout) ?? ""))),
                     redactSecrets: hideSecrets,
                     ruleCheck: ruleCheck,
                     approve: { [weak self] request in

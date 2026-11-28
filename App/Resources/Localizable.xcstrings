@@ -1444,6 +1444,26 @@
         }
       }
     },
+    "A short name, e.g. deploy-web.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein kurzer Name, z. B. deploy-web."
+          }
+        }
+      }
+    },
+    "A skill is a folder with a SKILL.md: when to use it, then step-by-step instructions. Write one here, or import skills from a git repository such as github.com/anthropics/skills.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Skill ist ein Ordner mit einer SKILL.md: wann er passt, dann Schritt-für-Schritt-Anleitungen. Schreib hier einen oder importiere Skills aus einem Git-Repository wie github.com/anthropics/skills."
+          }
+        }
+      }
+    },
     "A sleeping Mac can't answer. To reach it any time, turn on \"Prevent automatic sleeping when the display is off\" in System Settings → Energy, or keep it on power.": {
       "localizations": {
         "de": {
@@ -1790,6 +1810,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Regel hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a skill": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skill hinzufügen"
           }
         }
       }
@@ -4491,6 +4521,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Claude Code oder Codex läuft auf %@. Einmal anmelden – kein API-Key nötig."
+          }
+        }
+      }
+    },
+    "Claude Code reads ~/.claude/skills, Codex ~/.codex/skills. Tasks with your own key see every skill's name and description and open the one that fits.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code liest ~/.claude/skills, Codex ~/.codex/skills. Aufgaben mit deinem eigenen Schlüssel sehen Name und Beschreibung jedes Skills und öffnen den passenden."
           }
         }
       }
@@ -7741,6 +7781,16 @@
         }
       }
     },
+    "Every folder with a SKILL.md in it is imported for Claude Code and Codex. Nothing from the repository runs.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Ordner mit einer SKILL.md wird für Claude Code und Codex importiert. Nichts aus dem Repository wird ausgeführt."
+          }
+        }
+      }
+    },
     "Every hour": {
       "localizations": {
         "de": {
@@ -9476,12 +9526,42 @@
         }
       }
     },
+    "Import a SKILL.md file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SKILL.md-Datei importieren"
+          }
+        }
+      }
+    },
+    "Import a SKILL.md from a URL": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SKILL.md von einer URL importieren"
+          }
+        }
+      }
+    },
     "Import a backup file": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Backup-Datei importieren"
+          }
+        }
+      }
+    },
+    "Import from a git repository": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus einem Git-Repository importieren"
           }
         }
       }
@@ -9522,6 +9602,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Server importiert. Starte Deckhand neu, um die Einstellungen zu laden."
+          }
+        }
+      }
+    },
+    "Imported %lld skills: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Skills importiert: %@"
           }
         }
       }
@@ -9982,6 +10072,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Statt Claude Code oder Codex nur zu stoppen, schickt der Server einen Push mit Erlauben und Ablehnen – auch wenn die App geschlossen ist. Befehle, die sich nicht rückgängig machen lassen, öffnen Deckhand für Face ID. Keine Antwort heißt nein."
+          }
+        }
+      }
+    },
+    "Instructions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anleitung"
+          }
+        }
+      }
+    },
+    "Instructions the agents follow: write or import once, use in Claude Code, Codex and your own key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anleitungen für die Agents: einmal schreiben oder importieren, in Claude Code, Codex und mit eigenem Schlüssel nutzen"
           }
         }
       }
@@ -12722,6 +12832,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine geteilten Schemes gefunden."
+          }
+        }
+      }
+    },
+    "No skills yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Skills"
           }
         }
       }
@@ -15492,6 +15612,16 @@
         }
       }
     },
+    "Remove from Claude Code and Codex": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Claude Code und Codex entfernen"
+          }
+        }
+      }
+    },
     "Remove keys you don't recognise. Then look for anything you didn't change yourself.": {
       "localizations": {
         "de": {
@@ -15562,6 +15692,16 @@
         }
       }
     },
+    "Remove “%@”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ entfernen?"
+          }
+        }
+      }
+    },
     "Remove, keep the data": {
       "localizations": {
         "de": {
@@ -15608,6 +15748,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aus dem Verkauf genommen"
+          }
+        }
+      }
+    },
+    "Removed “%@”.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ entfernt."
           }
         }
       }
@@ -16773,6 +16923,16 @@
         }
       }
     },
+    "Saved as %@. The description tells the agent when this skill fits.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird als %@ gesichert. Die Beschreibung sagt dem Agent, wann dieser Skill passt."
+          }
+        }
+      }
+    },
     "Saved in this repository's Git settings on the server and shown on your commits.": {
       "localizations": {
         "de": {
@@ -16799,6 +16959,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "In den Server-Notizen gesichert"
+          }
+        }
+      }
+    },
+    "Saved “%@”.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ gesichert."
           }
         }
       }
@@ -18273,6 +18443,26 @@
         }
       }
     },
+    "Skill": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skill"
+          }
+        }
+      }
+    },
+    "Skills": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skills"
+          }
+        }
+      }
+    },
     "Skip": {
       "localizations": {
         "de": {
@@ -18740,6 +18930,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schritt: %@ …"
+          }
+        }
+      }
+    },
+    "Steps, commands, what to check …": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritte, Befehle, was zu prüfen ist …"
           }
         }
       }
@@ -19434,6 +19634,16 @@
         }
       }
     },
+    "That address didn't give a SKILL.md.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter dieser Adresse gab es keine SKILL.md."
+          }
+        }
+      }
+    },
     "That didn't work on the Mac.": {
       "localizations": {
         "de": {
@@ -19520,6 +19730,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieses Programm ist auf dem Server nicht installiert oder nicht im PATH deiner Anmeldung."
+          }
+        }
+      }
+    },
+    "That repository has no SKILL.md.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Repository hat keine SKILL.md."
           }
         }
       }
@@ -20070,6 +20290,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Ordner und alles darin wird auf dem Server gelöscht. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
+    "The import didn't work.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Import hat nicht geklappt."
           }
         }
       }
@@ -22155,6 +22385,26 @@
         }
       }
     },
+    "Use an https:// address of a git repository.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze eine https://-Adresse eines Git-Repositorys."
+          }
+        }
+      }
+    },
+    "Use an https:// address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze eine https://-Adresse."
+          }
+        }
+      }
+    },
     "Use another address": {
       "localizations": {
         "de": {
@@ -22171,6 +22421,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Für Chats nutzen"
+          }
+        }
+      }
+    },
+    "Use in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzen in"
           }
         }
       }
@@ -22835,6 +23095,16 @@
         }
       }
     },
+    "When to use it": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann er passt"
+          }
+        }
+      }
+    },
     "When “%@” fails": {
       "localizations": {
         "de": {
@@ -23104,6 +23374,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ auf %2$@ schreiben?"
+          }
+        }
+      }
+    },
+    "Write a skill": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skill schreiben"
           }
         }
       }
