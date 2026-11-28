@@ -8,6 +8,8 @@ public struct CLIOptions: Sendable, Hashable {
     public var maxBudgetUSD: Double?
     /// Instructions added to the CLI's own (system/developer) prompt, e.g. how to draw views for the app.
     public var instructions: String?
+    /// Claude Code with "Edit files": steps outside that mode are asked on the phone; requests wait in this folder.
+    public var askDirectory: String?
     public init(model: String? = nil, effort: String? = nil, maxBudgetUSD: Double? = nil) {
         self.model = model.flatMap { $0.isEmpty ? nil : $0 }
         self.effort = effort.flatMap { $0.isEmpty ? nil : $0 }
