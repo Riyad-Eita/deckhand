@@ -3714,6 +3714,16 @@
         }
       }
     },
+    "CI failed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CI gescheitert: %@"
+          }
+        }
+      }
+    },
     "CI failed: %@ on %@": {
       "localizations": {
         "de": {
@@ -3730,6 +3740,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "CI von %@"
+          }
+        }
+      }
+    },
+    "CI passed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CI bestanden: %@"
           }
         }
       }
@@ -5191,6 +5211,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zuerst GitHub verbinden"
+          }
+        }
+      }
+    },
+    "Connect GitHub first: Tools → Connect GitHub signs the server's GitHub CLI in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuerst GitHub verbinden: Werkzeuge → GitHub verbinden meldet die GitHub-CLI des Servers an."
           }
         }
       }
@@ -9033,6 +9063,16 @@
         }
       }
     },
+    "GitHub Actions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub Actions"
+          }
+        }
+      }
+    },
     "GitHub CLI not installed yet": {
       "localizations": {
         "de": {
@@ -10522,6 +10562,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jail %1$@ · %2$lld scheitern gerade"
+          }
+        }
+      }
+    },
+    "Jobs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jobs"
           }
         }
       }
@@ -12966,6 +13016,16 @@
         }
       }
     },
+    "No runs yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Läufe."
+          }
+        }
+      }
+    },
     "No saved commands yet": {
       "localizations": {
         "de": {
@@ -13112,6 +13172,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Versionen."
+          }
+        }
+      }
+    },
+    "No workflow here can be started by hand. Add `workflow_dispatch:` to a workflow's `on:` to allow it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier lässt sich kein Workflow von Hand starten. Ergänze `workflow_dispatch:` im `on:` eines Workflows, um das zu erlauben."
           }
         }
       }
@@ -14072,6 +14142,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Im Terminal öffnen"
+          }
+        }
+      }
+    },
+    "Open on GitHub": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf GitHub öffnen"
           }
         }
       }
@@ -15248,6 +15328,16 @@
         }
       }
     },
+    "Push me when it ends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push-Nachricht, wenn er fertig ist"
+          }
+        }
+      }
+    },
     "Push only when something needs me": {
       "localizations": {
         "de": {
@@ -15417,6 +15507,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bewertungen und Rezensionen"
+          }
+        }
+      }
+    },
+    "Re-run failed jobs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gescheiterte Jobs neu starten"
           }
         }
       }
@@ -18183,6 +18283,16 @@
         }
       }
     },
+    "Set up push notifications in Settings first; the server sends them while your phone sleeps.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richte zuerst Push-Nachrichten in den Einstellungen ein; der Server schickt sie, während dein Handy schläft."
+          }
+        }
+      }
+    },
     "Set up the browser": {
       "localizations": {
         "de": {
@@ -19094,6 +19204,16 @@
         }
       }
     },
+    "Start a workflow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workflow starten"
+          }
+        }
+      }
+    },
     "Start after the reset": {
       "localizations": {
         "de": {
@@ -19140,6 +19260,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aufzeichnung starten"
+          }
+        }
+      }
+    },
+    "Start workflows, follow runs, see what failed and get a push": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workflows starten, Läufe verfolgen, sehen, was scheiterte, und eine Push-Nachricht bekommen"
           }
         }
       }
@@ -20624,6 +20754,16 @@
         }
       }
     },
+    "The failed jobs run again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die gescheiterten Jobs laufen erneut."
+          }
+        }
+      }
+    },
     "The file is removed and Claude Code and Codex aren't pointed to it anymore.": {
       "localizations": {
         "de": {
@@ -21120,6 +21260,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server hat zu lange gebraucht. Vielleicht ist er ausgelastet – schau in die Prozesse und versuch es dann erneut."
+          }
+        }
+      }
+    },
+    "The server watches this run and pushes when it ends.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server beobachtet diesen Lauf und meldet sich, wenn er fertig ist."
           }
         }
       }
@@ -22150,6 +22300,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Probiert übliche Ports aus dem Netz, in dem dieses iPhone ist. Im selben WLAN wie der Server siehst du mehr als das Internet – nutze mobile Daten für den echten Blick von außen."
+          }
+        }
+      }
+    },
+    "Trigger": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auslöser"
           }
         }
       }
@@ -23505,6 +23665,16 @@
         }
       }
     },
+    "What failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was gescheitert ist"
+          }
+        }
+      }
+    },
     "What happens": {
       "localizations": {
         "de": {
@@ -23824,6 +23994,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Workers, DNS, Pages, R2 und der Rest von Cloudflare."
+          }
+        }
+      }
+    },
+    "Workflow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workflow"
           }
         }
       }

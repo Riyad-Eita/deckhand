@@ -21,6 +21,7 @@ struct ServerDashboardView: View {
     @State private var seedSessions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "sessions"
     @State private var seedSkills = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "skills"
     @State private var seedPRs = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "pullRequests"
+    @State private var seedActions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "actions"
     #endif
 
     var body: some View {
@@ -194,6 +195,14 @@ struct ServerDashboardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.pullRequests")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            ActionsView(server: server)
+                        } label: {
+                            ManageRow(title: "GitHub Actions", subtitle: "Start workflows, follow runs, see what failed and get a push", symbol: "play.circle")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.actions")
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             DiskUsageView(server: server)
@@ -450,6 +459,7 @@ struct ServerDashboardView: View {
         .navigationDestination(isPresented: $seedBrowser) { BrowserSetupView(server: server) }
         .navigationDestination(isPresented: $seedSkills) { SkillsView(server: server) }
         .navigationDestination(isPresented: $seedPRs) { PullRequestsView(server: server) }
+        .navigationDestination(isPresented: $seedActions) { ActionsView(server: server) }
         .navigationDestination(isPresented: $seedSessions) { CLISessionsView(server: server) { _ in } }
         #endif
     }
