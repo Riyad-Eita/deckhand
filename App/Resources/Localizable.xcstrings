@@ -8741,6 +8741,16 @@
         }
       }
     },
+    "For servers that use OAuth: you sign in on their page, Deckhand keeps the token in the Keychain and renews it. No token to copy.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Server mit OAuth: Du meldest dich auf ihrer Seite an, Deckhand legt das Token im Schlüsselbund ab und erneuert es. Kein Token zum Kopieren."
+          }
+        }
+      }
+    },
     "For when the first code expired or got lost. The old one stops working.": {
       "localizations": {
         "de": {
@@ -18603,6 +18613,16 @@
         }
       }
     },
+    "Sign out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden"
+          }
+        }
+      }
+    },
     "Sign-in didn't finish": {
       "localizations": {
         "de": {
@@ -20914,6 +20934,36 @@
         }
       }
     },
+    "The server didn't hand out a token.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat kein Token ausgegeben."
+          }
+        }
+      }
+    },
+    "The server didn't register Deckhand as a client.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat Deckhand nicht als Client registriert."
+          }
+        }
+      }
+    },
+    "The server didn't say where to sign in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat nicht gesagt, wo man sich anmeldet."
+          }
+        }
+      }
+    },
     "The server didn't take the key: %@": {
       "localizations": {
         "de": {
@@ -21064,6 +21114,66 @@
         }
       }
     },
+    "The sign-in address is invalid.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldeadresse ist ungültig."
+          }
+        }
+      }
+    },
+    "The sign-in answer didn't match this request. Try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Antwort der Anmeldung passte nicht zu dieser Anfrage. Versuch es noch einmal."
+          }
+        }
+      }
+    },
+    "The sign-in ended without a code. Try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung endete ohne Code. Versuch es noch einmal."
+          }
+        }
+      }
+    },
+    "The sign-in server doesn't describe itself (or doesn't support PKCE).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Anmeldeserver beschreibt sich nicht (oder unterstützt kein PKCE)."
+          }
+        }
+      }
+    },
+    "The sign-in was cancelled.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde abgebrochen."
+          }
+        }
+      }
+    },
+    "The sign-in was refused: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde abgelehnt: %@"
+          }
+        }
+      }
+    },
     "The site is served over plain HTTP without a redirect.": {
       "localizations": {
         "de": {
@@ -21110,6 +21220,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Aufgabe läuft hier noch. Stoppe sie zuerst, sonst schreiben beide in dieselbe Sitzung."
+          }
+        }
+      }
+    },
+    "The token address is invalid.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Token-Adresse ist ungültig."
           }
         }
       }
@@ -21464,6 +21584,16 @@
         }
       }
     },
+    "This server doesn't ask for a sign-in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server verlangt keine Anmeldung."
+          }
+        }
+      }
+    },
     "This server doesn't offer /proc — the process list works on Linux servers.": {
       "localizations": {
         "de": {
@@ -21610,6 +21740,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Server ist kein Mac. Um iOS-Apps vom iPhone aus zu bauen, schalte auf deinem Mac die Entfernte Anmeldung ein (Systemeinstellungen → Allgemein → Teilen) und füge den Mac als Server hinzu."
+          }
+        }
+      }
+    },
+    "This server needs an app registered by hand; use a token from its settings instead.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server braucht eine von Hand registrierte App; nimm stattdessen ein Token aus seinen Einstellungen."
           }
         }
       }

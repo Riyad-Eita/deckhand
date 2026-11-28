@@ -192,7 +192,7 @@ private struct ConnectionSyncSection: View {
         defer { syncing = false }
         do {
             let conn = try await Connections.shared.connection(for: server)
-            let enabled = connections.filter(\.enabled).map { ($0.spec, $0.token) }
+            let enabled = await MCPAuth.resolved(connections.filter(\.enabled))
             let r = try await conn.run(ConnectionSync.script(enabled), timeout: .seconds(180))
             results = ConnectionSync.results(r.stdout)
             if enabled.isEmpty { results = [:] }
