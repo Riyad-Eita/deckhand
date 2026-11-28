@@ -77,6 +77,8 @@ public struct MCPTool: Sendable, Hashable {
     public var inputSchema: JSONValue
     /// The server says the tool only reads (`annotations.readOnlyHint`). Untrusted unless we installed the server.
     public var readOnlyHint = false
+    /// An A2UI layout the tool's results fill in (`_meta.ui.resourceUri`).
+    public var uiTemplate: String? = nil
 }
 
 public struct MCPError: Error, LocalizedError, Sendable, Equatable {
@@ -298,7 +300,8 @@ public actor MCPClient {
                     name: name,
                     description: t["description"]?.stringValue ?? "",
                     inputSchema: t["inputSchema"] ?? ["type": "object", "properties": [:]],
-                    readOnlyHint: t["annotations"]?["readOnlyHint"]?.boolValue ?? false))
+                    readOnlyHint: t["annotations"]?["readOnlyHint"]?.boolValue ?? false,
+                    uiTemplate: A2UI.mcpTemplateURI(t["_meta"])))
             }
             cursor = result["nextCursor"]
             if cursor == .null { cursor = nil }
@@ -314,10 +317,28 @@ public actor MCPClient {
 
     /// Like `call`, with the pictures the tool returned (screenshots) as images instead of placeholders.
     public func callWithImages(_ tool: String, arguments: JSONValue) async throws -> (text: String, isError: Bool, images: [ToolImage]) {
+        let r = try await callTool(tool, arguments: arguments)
+        return (r.text, r.isError, r.images)
+    }
+
+    public struct CallResult: Sendable {
+        public var text: String
+        public var isError: Bool
+        public var images: [ToolImage]
+        /// A2UI messages for the user: the layout template (if any) first, then the result's own messages.
+        public var a2ui: [JSONValue]
+    }
+
+    /// Calls a tool and collects everything it returned. `uiTemplate`: the tool's default A2UI layout.
+    public func callTool(_ tool: String, arguments: JSONValue, uiTemplate: String? = nil) async throws -> CallResult {
         try await connect()
         let result = try await transport.request("tools/call", params: ["name": .string(tool), "arguments": arguments])
-        var parts: [String] = [], images: [ToolImage] = []
+        var parts: [String] = [], images: [ToolImage] = [], views: [JSONValue] = []
         for item in result["content"]?.arrayValue ?? [] {
+            if let messages = A2UI.mcpMessages(item) {
+                views += messages
+                continue
+            }
             switch item["type"]?.stringValue {
             case "text": parts.append(item["text"]?.stringValue ?? "")
             case "resource": parts.append(item["resource"]?["text"]?.stringValue ?? item["resource"]?["uri"]?.stringValue ?? "")
@@ -332,7 +353,28 @@ public actor MCPClient {
             }
         }
         if parts.isEmpty, let structured = result["structuredContent"] { parts.append(structured.jsonString()) }
-        return (parts.joined(separator: "\n"), result["isError"]?.boolValue ?? false, images)
+        // The result's own template wins over the tool's; the layout is read once and kept.
+        if !views.isEmpty || A2UI.mcpTemplateURI(result["_meta"]) != nil,
+           let uri = A2UI.mcpTemplateURI(result["_meta"]) ?? uiTemplate,
+           let template = try? await a2uiTemplate(uri) {
+            views = template + views
+        }
+        if !views.isEmpty { parts.append("[A view was shown to the user in the chat.]") }
+        return CallResult(text: parts.joined(separator: "\n"), isError: result["isError"]?.boolValue ?? false, images: images, a2ui: views)
+    }
+
+    private var templates: [String: [JSONValue]] = [:]
+
+    /// An A2UI layout resource (`resources/read`), cached by URI.
+    func a2uiTemplate(_ uri: String) async throws -> [JSONValue] {
+        if let t = templates[uri] { return t }
+        let result = try await transport.request("resources/read", params: ["uri": .string(uri)])
+        var messages: [JSONValue] = []
+        for c in result["contents"]?.arrayValue ?? [] {
+            if let text = c["text"]?.stringValue, let json = try? JSONValue.parse(text) { messages += A2UI.messages(json) }
+        }
+        templates[uri] = messages
+        return messages
     }
 
     public func close() async { await transport.close() }
@@ -363,9 +405,9 @@ public struct MCPAgentTool: AgentTool {
     }
 
     public func executeOutput(_ input: JSONValue, shell: any RemoteShell) async throws -> ToolOutput {
-        let (text, isError, images) = try await client.callWithImages(tool.name, arguments: input)
-        if isError { throw ToolError.failed(text.isEmpty ? "The tool reported an error." : text) }
-        return ToolOutput(text: clip(text), images: images)
+        let r = try await client.callTool(tool.name, arguments: input, uiTemplate: tool.uiTemplate)
+        if r.isError { throw ToolError.failed(r.text.isEmpty ? "The tool reported an error." : r.text) }
+        return ToolOutput(text: clip(r.text), images: r.images, a2ui: r.a2ui)
     }
 
     /// Tool names must match ^[a-zA-Z0-9_-]{1,64}$ for the model APIs.

@@ -18,6 +18,8 @@ final class A2UIHost: ObservableObject {
     private let links = LinkOpener()
     /// A tap on a button the agent drew.
     var onAction: ((DeckhandCore.A2UI.Action) -> Void)?
+    /// Views that couldn't be drawn, by where they came from (a reply's block, a tool call's id): what went wrong.
+    @Published private(set) var problems: [String: String] = [:]
 
     init() {
         catalog = BasicCatalogImplementation.makeCatalog(version: .v10, openURLHandler: links)
@@ -38,10 +40,12 @@ final class A2UIHost: ObservableObject {
     }
 
     /// Applies messages in order. Returns what went wrong (for the agent), or nil when everything drew.
+    /// `reuseSurfaces`: a surface that is already there is kept (an MCP layout filled in again) instead of an error.
     @discardableResult
-    func apply(_ messages: [DeckhandCore.JSONValue]) -> String? {
+    func apply(_ messages: [DeckhandCore.JSONValue], reuseSurfaces: Bool = false) -> String? {
         outbox.reset()
         for m in DeckhandCore.A2UI.normalize(messages) {
+            if reuseSurfaces, let id = m["createSurface"]?["surfaceId"]?.stringValue, processor.surfaceGroupModel[id] != nil { continue }
             do {
                 processor.process(message: try parser.parse(jsonString: m.jsonString()))
             } catch {
@@ -51,7 +55,40 @@ final class A2UIHost: ObservableObject {
         return outbox.first
     }
 
-    /// Replays every `show_ui` call of a chat that wasn't an error, so its views come back.
+    /// A ```a2ui block in a session's reply (Claude Code, Codex). Drawn once; a block seen again is left alone.
+    func applyBlock(_ raw: String) {
+        guard !seenBlocks.contains(raw) else { return }
+        seenBlocks.insert(raw)
+        switch DeckhandCore.A2UI.parseBlock(raw) {
+        case .failure(let e): problems[raw] = e.message
+        case .success(let messages): if let p = apply(messages) { problems[raw] = p }
+        }
+    }
+    private var seenBlocks = Set<String>()
+
+    /// The view an MCP tool returned with its result.
+    func applyResult(_ result: ToolResult) {
+        guard !result.a2ui.isEmpty, !seenResults.contains(result.toolUseID) else { return }
+        seenResults.insert(result.toolUseID)
+        let messages = DeckhandCore.A2UI.normalize(result.a2ui)
+        if let p = DeckhandCore.A2UI.check(messages) ?? apply(messages, reuseSurfaces: true) { problems[result.toolUseID] = p }
+    }
+    private var seenResults = Set<String>()
+
+    /// Every view a message brings: blocks in a reply, views in tool results.
+    func take(_ message: Message) {
+        for block in message.blocks {
+            switch block {
+            case .text(let t) where message.role == .assistant:
+                DeckhandCore.A2UI.viewBlocks(t).forEach(applyBlock)
+            case .toolResult(let r):
+                applyResult(r)
+            default: break
+            }
+        }
+    }
+
+    /// Replays a chat in order — `show_ui` calls that weren't errors, reply blocks, tool results — so its views come back.
     func replay(_ history: [Message]) {
         var failed = Set<String>()
         for message in history {
@@ -61,7 +98,15 @@ final class A2UIHost: ObservableObject {
             for case .toolUse(let call) in message.blocks where call.name == DeckhandCore.A2UI.toolName && !failed.contains(call.id) {
                 apply(DeckhandCore.A2UI.messages(call.input))
             }
+            take(message)
         }
+    }
+
+    /// The surfaces a tool result or a reply block creates (where the chat draws them).
+    static func surfaces(in messages: [DeckhandCore.JSONValue]) -> [String] {
+        var ids: [String] = []
+        for m in messages { if let id = m["createSurface"]?["surfaceId"]?.stringValue, !ids.contains(id) { ids.append(id) } }
+        return ids
     }
 
     func surface(_ id: String) -> SurfaceViewModel? { processor.surfaceGroupModel[id] }

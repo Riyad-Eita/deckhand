@@ -233,7 +233,7 @@ public struct Agent: Sendable {
         emit(.toolRunning(call))
         do {
             let output = try await tool.executeOutput(call.input, shell: shell)
-            return ToolResult(toolUseID: call.id, content: output.text, images: output.images)
+            return ToolResult(toolUseID: call.id, content: output.text, images: output.images, a2ui: output.a2ui)
         } catch {
             return ToolResult(toolUseID: call.id, content: error.localizedDescription, isError: true)
         }

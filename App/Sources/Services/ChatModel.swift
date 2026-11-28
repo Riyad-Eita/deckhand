@@ -103,6 +103,7 @@ final class ChatModel {
     private func cliOptions(_ cli: ServerCLI) -> CLIOptions {
         var o = AppSettings.shared.cliOptions(for: cli, thread: thread)
         o.maxBudgetUSD = HouseRulesStore.rules(for: server)?.maxSpendUSD
+        o.instructions = A2UI.sessionGuide   // the session may answer with views the chat draws
         return o
     }
 
@@ -341,6 +342,7 @@ final class ChatModel {
         case .toolInputDelta(let id, let fragment):
             if let i = liveTools.firstIndex(where: { $0.id == id }) { liveTools[i].input += fragment }
         case .message(let message):
+            a2ui.take(message)   // views in a session's reply or an MCP tool's result
             messages.append(message)
             clearLive()
             persist()
