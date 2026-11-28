@@ -692,6 +692,8 @@ private struct MessageView: View {
             // Tool results render inside their tool cards.
         case .assistant:
             VStack(alignment: .leading, spacing: 8) {
+                let web = WebResearch.activity(in: message)
+                if !web.isEmpty { WebSourcesView(activity: web) }
                 ForEach(Array(message.blocks.enumerated()), id: \.offset) { _, block in
                     switch block {
                     case .text(let t) where !t.isEmpty:
@@ -1115,6 +1117,48 @@ private struct RunOnServerMenu: View {
         } message: {
             Text("Each run of this task gets your \(settings.providerKind.displayName) key over the encrypted connection. The server keeps it in a file only your user can read and deletes it before \(cli?.displayName ?? "") starts; it lives in that run's memory until the run ends. Anyone with root on this server could still read it while a task runs. Usage is billed to your key.")
         }
+    }
+}
+
+/// What a reply looked up on the web: its searches, then the pages, each a link.
+struct WebSourcesView: View {
+    let activity: WebResearch.Activity
+    @State private var expanded = false
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $expanded) {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(activity.queries, id: \.self) { q in
+                    Label(q, systemImage: q.hasPrefix("http") ? "doc.text" : "magnifyingglass").font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                }
+                ForEach(activity.sources) { s in
+                    if let url = URL(string: s.url) {
+                        Link(destination: url) {
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(s.title).font(.footnote.weight(.medium)).lineLimit(2).multilineTextAlignment(.leading)
+                                Text(s.host).font(.caption2).foregroundStyle(.secondary)
+                            }
+                        }
+                        .accessibilityIdentifier("web.source")
+                    }
+                }
+                if !activity.errors.isEmpty {
+                    Label(String(localized: "Some lookups failed: \(activity.errors.joined(separator: ", "))"), systemImage: "exclamationmark.triangle")
+                        .font(.caption).foregroundStyle(.orange)
+                }
+            }
+            .padding(.top, 4)
+        } label: {
+            Label(summary, systemImage: "globe").font(.footnote).foregroundStyle(.secondary)
+        }
+        .accessibilityIdentifier("web.sources")
+    }
+
+    private var summary: String {
+        let n = activity.sources.count
+        let searched = activity.queries.filter { !$0.hasPrefix("http") }.count
+        if n == 0 { return String(localized: "Searched the web") }
+        return searched > 0 ? String(localized: "Searched the web · \(n) sources") : String(localized: "Read \(n) pages")
     }
 }
 

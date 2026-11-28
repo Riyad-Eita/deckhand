@@ -33,6 +33,8 @@ final class AppSettings {
     var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
     /// Tokens, keys and passwords: masked in the chat, replaced before tool output goes to your model.
     var hideSecrets: Bool { didSet { defaults.set(hideSecrets, forKey: "agent.hideSecrets") } }
+    /// The own-key agent may search and read the web (Anthropic's web tools; a fetch through the server otherwise).
+    var webResearch: Bool { didSet { defaults.set(webResearch, forKey: "agent.webResearch") } }
     /// Spending limits for the own key, in US dollars (0 = no limit).
     var taskLimitUSD: Double { didSet { defaults.set(taskLimitUSD, forKey: "spend.limit.task") } }
     var dayLimitUSD: Double { didSet { defaults.set(dayLimitUSD, forKey: "spend.limit.day") } }
@@ -118,6 +120,7 @@ final class AppSettings {
         terminalFontSize = defaults.object(forKey: "terminal.fontSize") as? Double ?? TerminalFont.default
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
         hideSecrets = defaults.object(forKey: "agent.hideSecrets") as? Bool ?? true
+        webResearch = defaults.object(forKey: "agent.webResearch") as? Bool ?? true
         taskLimitUSD = defaults.double(forKey: "spend.limit.task")
         dayLimitUSD = defaults.double(forKey: "spend.limit.day")
         codexModel = defaults.string(forKey: "cli.codex.model") ?? ""
@@ -197,12 +200,14 @@ final class AppSettings {
     /// A provider's settings with another model (plain chats switch models per chat).
     func providerConfig(kind: ProviderKind, model: String?) -> ProviderConfig {
         let k = kind.rawValue
-        return ProviderConfig(
+        var c = ProviderConfig(
             kind: kind,
             baseURL: URL(string: defaults.string(forKey: "provider.\(k).baseURL") ?? "") ?? kind.defaultBaseURL,
             model: model ?? defaultModel(for: kind),
             apiKey: kind == providerKind ? apiKey : Keychain.get("apikey.\(k)") ?? "",
             effort: effort.isEmpty ? nil : effort)
+        c.webResearch = webResearch && kind == .anthropic && c.baseURL.host == "api.anthropic.com"
+        return c
     }
 
     var providerConfig: ProviderConfig {

@@ -108,10 +108,12 @@ struct SettingsView: View {
                     }
                     Toggle("Hide Secrets", isOn: $settings.hideSecrets)
                         .accessibilityIdentifier("settings.hideSecrets")
+                    Toggle("Web research", isOn: $settings.webResearch)
+                        .accessibilityIdentifier("settings.webResearch")
                 } header: {
                     Text("Agent")
                 } footer: {
-                    Text("“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model.")
+                    Text("“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model. “Web research” lets the agent search and read the web — with Claude through Anthropic's web tools (searches are billed to your key), with other models by fetching pages through your server — and shows the sources it used.")
                 }
 
                 Section {

@@ -368,6 +368,8 @@ struct PlainChatView: View {
             .padding(.leading, 48)
         case .assistant:
             VStack(alignment: .leading, spacing: 4) {
+                let web = WebResearch.activity(in: m)
+                if !web.isEmpty { WebSourcesView(activity: web) }
                 ReplyText(text: m.text)
                 if let name = m.model { ModelCaption(model: name, usage: m.usage) }
             }

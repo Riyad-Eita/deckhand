@@ -15411,6 +15411,16 @@
         }
       }
     },
+    "Read %lld pages": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Seiten gelesen"
+          }
+        }
+      }
+    },
     "Read and open issues and pull requests, search code, look at Actions runs. Give the token only the repositories it needs.": {
       "localizations": {
         "de": {
@@ -17583,6 +17593,26 @@
         }
       }
     },
+    "Searched the web": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Web gesucht"
+          }
+        }
+      }
+    },
+    "Searched the web · %lld sources": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Web gesucht · %lld Quellen"
+          }
+        }
+      }
+    },
     "Searches Cloudflare's documentation. No account needed.": {
       "localizations": {
         "de": {
@@ -18899,6 +18929,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Solider Allrounder; kann Werkzeuge für einfache Agent-Aufgaben nutzen."
+          }
+        }
+      }
+    },
+    "Some lookups failed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einige Abrufe sind gescheitert: %@"
           }
         }
       }
@@ -23225,6 +23265,16 @@
         }
       }
     },
+    "Web research": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Webrecherche"
+          }
+        }
+      }
+    },
     "Web server": {
       "localizations": {
         "de": {
@@ -25235,12 +25285,12 @@
         }
       }
     },
-    "“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model.": {
+    "“Ask before changes” lets the agent read files and list folders on its own and waits for you before it runs commands or edits files. “Hide Secrets” masks tokens, keys and passwords in the chat (tap to show) and replaces them before command output goes to your model. “Web research” lets the agent search and read the web — with Claude through Anthropic's web tools (searches are billed to your key), with other models by fetching pages through your server — and shows the sources it used.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "„Vor Änderungen fragen“ lässt den Agenten selbst Dateien lesen und Ordner auflisten und wartet auf dich, bevor er Befehle ausführt oder Dateien ändert. „Geheimnisse verbergen“ maskiert Tokens, Schlüssel und Passwörter im Chat (antippen zum Zeigen) und ersetzt sie, bevor Befehlsausgaben an dein Modell gehen."
+            "value": "„Vor Änderungen fragen“ lässt den Agent selbst Dateien lesen und Ordner auflisten und wartet auf dich, bevor er Befehle ausführt oder Dateien ändert. „Geheimnisse verbergen“ maskiert Tokens, Schlüssel und Passwörter im Chat (zum Anzeigen tippen) und ersetzt sie, bevor Befehlsausgaben an dein Modell gehen. „Webrecherche“ lässt den Agent im Web suchen und Seiten lesen – mit Claude über Anthropics Web-Werkzeuge (Suchen werden über deinen Schlüssel abgerechnet), mit anderen Modellen über Abrufe durch deinen Server – und zeigt die genutzten Quellen."
           }
         }
       }
