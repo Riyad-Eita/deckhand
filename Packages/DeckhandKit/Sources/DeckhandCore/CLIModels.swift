@@ -6,6 +6,8 @@ public struct CLIOptions: Sendable, Hashable {
     public var effort: String?
     /// Spending cap for one Claude Code run (house rule). Codex runs on a subscription and has no such cap.
     public var maxBudgetUSD: Double?
+    /// Instructions added to the CLI's own (system/developer) prompt, e.g. how to draw views for the app.
+    public var instructions: String?
     public init(model: String? = nil, effort: String? = nil, maxBudgetUSD: Double? = nil) {
         self.model = model.flatMap { $0.isEmpty ? nil : $0 }
         self.effort = effort.flatMap { $0.isEmpty ? nil : $0 }
@@ -63,11 +65,30 @@ public enum CLIModels {
         case .codex:
             if let m = options.model { out += " -m \(ShellQuote.quote(m))" }
             if let e = options.effort { out += " -c \(ShellQuote.quote("model_reasoning_effort=\"\(e)\""))" }
+            if let i = options.instructions { out += " -c \(ShellQuote.quote("developer_instructions=" + tomlString(i)))" }
         case .claudeCode:
             if let m = options.model { out += " --model \(ShellQuote.quote(m))" }
             if let e = options.effort { out += " --effort \(ShellQuote.quote(e))" }
             if let b = options.maxBudgetUSD { out += " --max-budget-usd \(String(format: "%.2f", locale: Locale(identifier: "en_US_POSIX"), b))" }
+            if let i = options.instructions { out += " --append-system-prompt \(ShellQuote.quote(i))" }
         }
         return out
+    }
+
+    /// A TOML basic string (for `codex -c key=value`).
+    static func tomlString(_ s: String) -> String {
+        var out = "\""
+        for u in s.unicodeScalars {
+            switch u {
+            case "\\": out += "\\\\"
+            case "\"": out += "\\\""
+            case "\n": out += "\\n"
+            case "\t": out += "\\t"
+            case "\r": out += "\\r"
+            case _ where u.value < 0x20 || u.value == 0x7F: out += String(format: "\\u%04X", u.value)
+            default: out.unicodeScalars.append(u)
+            }
+        }
+        return out + "\""
     }
 }

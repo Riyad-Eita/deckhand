@@ -29,6 +29,17 @@ import Testing
         #expect(CLIModels.flags(.claudeCode, CLIOptions(model: "it's", effort: nil)) == " --model 'it'\\''s'")
     }
 
+    /// Extra instructions (how to draw views for the app) go into each CLI's own prompt, safely quoted.
+    @Test func instructionsReachEachCLI() {
+        var o = CLIOptions()
+        o.instructions = "Say \"hi\"\nit's\\ok"
+        #expect(CLIModels.flags(.claudeCode, o) == " --append-system-prompt 'Say \"hi\"\nit'\\''s\\ok'")
+        #expect(CLIModels.flags(.codex, o) == #" -c 'developer_instructions="Say \"hi\"\nit'\''s\\ok"'"#)
+        #expect(CLIModels.tomlString("a\tb\u{1}") == #""a\tb\u0001""#)
+        o.instructions = A2UI.sessionGuide
+        #expect(ServerCLIRun.command(.codex, prompt: "hi", workingDirectory: "/srv", sessionID: nil, access: .edit, options: o).contains("developer_instructions="))
+    }
+
     @Test func commandsCarryTheOptions() {
         let codex = ServerCLIRun.command(.codex, prompt: "hi", workingDirectory: "/srv", sessionID: "s1", access: .edit,
                                          options: CLIOptions(model: "gpt-x", effort: "low"))

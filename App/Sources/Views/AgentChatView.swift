@@ -633,7 +633,7 @@ private struct MessageView: View {
                             PlanChecklist(steps: steps, model: model, active: model.planOffer?.message == message.id)
                             if !parts.after.isEmpty { ReplyText(text: parts.after) }
                         } else {
-                            ReplyText(text: t)
+                            ReplyBody(text: t, host: model.a2ui)
                         }
                     case .thinking(let t, _) where !t.isEmpty:
                         ThinkingView(text: t)
@@ -641,6 +641,9 @@ private struct MessageView: View {
                         A2UICallView(call: call, status: status(for: call), model: model)
                     case .toolUse(let call):
                         ToolCard(name: call.name, input: call.input, status: status(for: call))
+                        if case .done(let result) = status(for: call), !result.a2ui.isEmpty {
+                            A2UIResultView(host: model.a2ui, key: result.toolUseID, messages: result.a2ui)
+                        }
                     default:
                         EmptyView()
                     }
@@ -684,7 +687,7 @@ private struct LiveTurnView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if !model.liveThinking.isEmpty { ThinkingView(text: model.liveThinking, live: true) }
-            if !model.liveText.isEmpty { ReplyText(text: model.liveText) }   // same renderer as finished replies
+            if !model.liveText.isEmpty { ReplyBody(text: model.liveText, host: model.a2ui, live: true) }   // same renderer as finished replies
             ForEach(model.liveTools, id: \.id) { tool in
                 ToolCard(
                     name: tool.name,
@@ -1004,6 +1007,50 @@ private struct MicButton: View {
             Button("OK") { error = nil }
         } message: {
             Text(error ?? "")
+        }
+    }
+}
+
+/// A reply with the views a server session wrote in ```a2ui blocks drawn in place of the blocks.
+private struct ReplyBody: View {
+    let text: String
+    let host: A2UIHost
+    /// Still streaming: views are drawn once the reply is complete.
+    var live = false
+
+    var body: some View {
+        let segments = A2UI.segments(text)
+        if segments.count == 1, case .text(let t) = segments[0] {
+            ReplyText(text: t)
+        } else {
+            ForEach(Array(segments.enumerated()), id: \.offset) { _, segment in
+                switch segment {
+                case .text(let t): ReplyText(text: t)
+                case .view(let raw): A2UIResultView(host: host, key: raw, messages: (try? A2UI.parseBlock(raw).get()) ?? [], pending: live)
+                case .pendingView:
+                    Label("Drawing a view…", systemImage: "rectangle.on.rectangle").font(.caption).foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
+
+/// A view from a reply block or a tool result; what went wrong when it couldn't be drawn.
+private struct A2UIResultView: View {
+    @ObservedObject var host: A2UIHost
+    let key: String
+    let messages: [JSONValue]
+    var pending = false
+
+    var body: some View {
+        if let problem = host.problems[key] {
+            Label("This view couldn't be drawn: \(problem)", systemImage: "exclamationmark.triangle")
+                .font(.caption).foregroundStyle(.secondary)
+                .accessibilityIdentifier("a2ui.problem")
+        } else {
+            ForEach(A2UIHost.surfaces(in: messages), id: \.self) { id in
+                A2UISurfaceView(host: host, surfaceID: id, pending: pending)
+            }
         }
     }
 }

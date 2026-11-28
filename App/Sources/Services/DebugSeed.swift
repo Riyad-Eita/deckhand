@@ -371,6 +371,17 @@ enum DebugSeed {
             try? context.save()
             AppRouter.shared.pendingThread = thread.id
         }
+        // DECKHAND_SEED_A2UI_REPLY=<reply>: a finished Codex task whose reply holds ```a2ui view blocks.
+        if let reply = env["DECKHAND_SEED_A2UI_REPLY"] {
+            let thread = ChatThread(server: server, workingDirectory: "~")
+            thread.id = UUID(uuidString: "00000000-0000-0000-0000-00000000a2a2")!
+            thread.engineRaw = Engine.codex.rawValue
+            thread.title = env["DECKHAND_SEED_A2UI_PROMPT"] ?? "Clean up /tmp"
+            thread.messages = [.user(thread.title), Message(role: .assistant, blocks: [.text(reply)])]
+            context.insert(thread)
+            try? context.save()
+            AppRouter.shared.pendingThread = thread.id
+        }
         // DECKHAND_SEED_JUMP_TARGET="name|host|port": a second server with the same login, reached through the seeded one.
         if let raw = env["DECKHAND_SEED_JUMP_TARGET"] {
             let p = raw.split(separator: "|").map(String.init)

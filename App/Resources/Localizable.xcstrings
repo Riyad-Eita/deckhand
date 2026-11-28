@@ -7128,6 +7128,16 @@
         }
       }
     },
+    "Drawing a view…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeichne eine Ansicht …"
+          }
+        }
+      }
+    },
     "Dump now": {
       "localizations": {
         "de": {
@@ -20690,6 +20700,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Nutzer darf auf dem Server kein sudo verwenden. Melde dich als root oder als Admin-Nutzer an."
+          }
+        }
+      }
+    },
+    "This view couldn't be drawn: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Ansicht konnte nicht gezeichnet werden: %@"
           }
         }
       }

@@ -34,19 +34,31 @@ public struct ToolResult: Sendable, Hashable, Codable {
     public var isError: Bool
     /// Pictures a tool returned (screenshots from a browser): shown in the chat and sent to the model.
     public var images: [ToolImage]
-    public init(toolUseID: String, content: String, isError: Bool = false, images: [ToolImage] = []) {
+    /// A view the tool returned (A2UI messages from an MCP server): drawn in the tool card, not sent to the model.
+    public var a2ui: [JSONValue]
+    public init(toolUseID: String, content: String, isError: Bool = false, images: [ToolImage] = [], a2ui: [JSONValue] = []) {
         self.toolUseID = toolUseID
         self.content = content
         self.isError = isError
         self.images = images
+        self.a2ui = a2ui
     }
-    enum CodingKeys: String, CodingKey { case toolUseID, content, isError, images }
+    enum CodingKeys: String, CodingKey { case toolUseID, content, isError, images, a2ui }
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         toolUseID = try c.decode(String.self, forKey: .toolUseID)
         content = try c.decode(String.self, forKey: .content)
         isError = try c.decode(Bool.self, forKey: .isError)
         images = try c.decodeIfPresent([ToolImage].self, forKey: .images) ?? []
+        a2ui = try c.decodeIfPresent([JSONValue].self, forKey: .a2ui) ?? []
+    }
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(toolUseID, forKey: .toolUseID)
+        try c.encode(content, forKey: .content)
+        try c.encode(isError, forKey: .isError)
+        if !images.isEmpty { try c.encode(images, forKey: .images) }
+        if !a2ui.isEmpty { try c.encode(a2ui, forKey: .a2ui) }
     }
 }
 
@@ -56,11 +68,12 @@ public struct ToolImage: Sendable, Hashable, Codable {
     public init(mediaType: String, data: Data) { self.mediaType = mediaType; self.data = data }
 }
 
-/// What a tool hands back: text, and pictures when it has some.
+/// What a tool hands back: text, and pictures or a view when it has some.
 public struct ToolOutput: Sendable {
     public var text: String
     public var images: [ToolImage]
-    public init(text: String, images: [ToolImage] = []) { self.text = text; self.images = images }
+    public var a2ui: [JSONValue]
+    public init(text: String, images: [ToolImage] = [], a2ui: [JSONValue] = []) { self.text = text; self.images = images; self.a2ui = a2ui }
 }
 
 public struct Message: Sendable, Hashable, Codable, Identifiable {

@@ -9,6 +9,10 @@ public enum A2UI {
     public static let basicCatalogID = "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json"
     /// Fenced block that carries a tap back to the agent; the chat shows only the readable part.
     public static let actionFence = "a2ui-action"
+    /// Fenced block a server session (Claude Code, Codex) writes a view in; the chat draws it in place of the block.
+    public static let viewFence = "a2ui"
+    /// MIME type of A2UI messages carried in MCP results and resources.
+    public static let mimeType = "application/a2ui+json"
 
     static let messageKinds = ["createSurface", "updateComponents", "updateDataModel", "deleteSurface"]
     static let components: Set<String> = [
@@ -131,14 +135,116 @@ public enum A2UI {
         return (String(text[..<r.lowerBound]), true)
     }
 
+    // MARK: - Views in a session's reply
+
+    /// A piece of a reply: text, a view block (its raw JSON), or a view block still being written.
+    public enum Segment: Sendable, Hashable {
+        case text(String)
+        case view(String)
+        case pendingView
+    }
+
+    /// Splits a reply at its ```a2ui blocks. Other code blocks stay text.
+    public static func segments(_ text: String) -> [Segment] {
+        guard text.contains("```\(viewFence)") else { return [.text(text)] }
+        var out: [Segment] = []
+        var prose: [Substring] = []
+        var block: [Substring]?
+        func flushProse() {
+            let t = prose.joined(separator: "\n").trimmingCharacters(in: .newlines)
+            if !t.isEmpty { out.append(.text(t)) }
+            prose = []
+        }
+        for line in text.split(separator: "\n", omittingEmptySubsequences: false) {
+            let bare = line.trimmingCharacters(in: .whitespaces)
+            if var b = block {
+                if bare == "```" {
+                    out.append(.view(b.joined(separator: "\n")))
+                    block = nil
+                } else {
+                    b.append(line)
+                    block = b
+                }
+            } else if bare == "```\(viewFence)" {
+                flushProse()
+                block = []
+            } else {
+                prose.append(line)
+            }
+        }
+        flushProse()
+        if block != nil { out.append(.pendingView) }
+        return out
+    }
+
+    /// The raw JSON of every finished view block in a reply.
+    public static func viewBlocks(_ text: String) -> [String] {
+        segments(text).compactMap { if case .view(let raw) = $0 { raw } else { nil } }
+    }
+
+    /// The messages of a view block, or what's wrong with it.
+    public static func parseBlock(_ raw: String) -> Result<[JSONValue], CheckError> {
+        guard let json = try? JSONValue.parse(raw) else { return .failure(CheckError("The view isn't valid JSON.")) }
+        let list = normalize(messages(json))
+        if let problem = check(list) { return .failure(CheckError(problem)) }
+        return .success(list)
+    }
+
+    public struct CheckError: Error, Sendable, Hashable {
+        public var message: String
+        public init(_ message: String) { self.message = message }
+    }
+
+    // MARK: - Views from MCP tools
+
+    /// A2UI messages in one piece of MCP content (an embedded `application/a2ui+json` resource), if it is one.
+    public static func mcpMessages(_ item: JSONValue) -> [JSONValue]? {
+        guard item["type"]?.stringValue == "resource", let r = item["resource"], isA2UI(r) else { return nil }
+        guard let text = r["text"]?.stringValue, let json = try? JSONValue.parse(text) else { return [] }
+        return messages(json)
+    }
+
+    /// A resource (or `_meta.ui` entry) is A2UI by its MIME type or its `a2ui://` URI.
+    static func isA2UI(_ r: JSONValue) -> Bool {
+        r["mimeType"]?.stringValue == mimeType || (r["uri"]?.stringValue ?? r["resourceUri"]?.stringValue)?.hasPrefix("a2ui://") == true
+    }
+
+    /// The A2UI layout template a tool or a result points to (`_meta.ui.resourceUri`).
+    public static func mcpTemplateURI(_ meta: JSONValue?) -> String? {
+        guard let ui = meta?["ui"], let uri = ui["resourceUri"]?.stringValue, isA2UI(ui) else { return nil }
+        return uri
+    }
+
     // MARK: - What the agent is told
 
+    /// What the own-key agent is told about its `show_ui` tool.
     static let guide = """
     Show the user a native, interactive view in the chat (A2UI v1.0, basic catalog). Use it when a view is clearer \
     than text: a status overview, a table of items, a choice between options, a form to fill in, a confirmation. \
     Don't use it for a plain answer. Don't repeat the view's content in text afterwards.
 
-    Input: {"messages": [ … ]}. Each message is {"version": "1.0", <one of createSurface | updateComponents | \
+    """ + format
+
+    /// What a server session (Claude Code, Codex) is told, appended to its system prompt.
+    public static let sessionGuide = """
+    The user follows this session in Deckhand, an iPhone app that draws native, interactive views (A2UI v1.0, \
+    basic catalog) from blocks in your reply. When a view is clearer than text — a status overview, a table of \
+    items, a choice between options, a form to fill in, a confirmation — write a fenced code block with the info \
+    string \(viewFence) in your final reply, holding the JSON described below:
+
+    ```\(viewFence)
+    {"messages": [ … ]}
+    ```
+
+    The block itself is the view: write it out in full, nothing else draws it, and the app shows the view where \
+    the block is. Never answer as if you had shown a view without writing its block. Use views sparingly, never \
+    for a plain answer, and don't repeat their content in text. The JSON must be strict (no comments, no \
+    trailing commas); a block that doesn't parse shows the user an error instead.
+
+    """ + format
+
+    static let format = """
+    The JSON is {"messages": [ … ]}. Each message is {"version": "1.0", <one of createSurface | updateComponents | \
     updateDataModel | deleteSurface>}.
     - createSurface: {"surfaceId", "components": [...], "dataModel": {...}} (catalogId defaults to the basic catalog). \
     Use a new, unique surfaceId for each new view (e.g. "services-1").

@@ -59,4 +59,36 @@ import Testing
         #expect(A2UI.Action(name: "ok", surfaceId: "s").display.contains("ok"))
         #expect(A2UI.displayText("plain text") == ("plain text", false))
     }
+
+    /// A session (Claude Code, Codex) writes views as ```a2ui blocks; the chat draws them in place of the block.
+    @Test func replyBlocksBecomeViews() throws {
+        let view = #"{"messages":[{"version":"1.0","createSurface":{"surfaceId":"disk-1","components":[{"id":"root","component":"Text","text":"41%"}]}}]}"#
+        let reply = "Here is the disk:\n\n```a2ui\n\(view)\n```\n\nAnything else?"
+        #expect(A2UI.segments(reply) == [.text("Here is the disk:"), .view(view), .text("Anything else?")])
+        #expect(A2UI.viewBlocks(reply) == [view])
+        let messages = try A2UI.parseBlock(view).get()
+        #expect(messages[0]["createSurface"]?["catalogId"]?.stringValue == A2UI.basicCatalogID)
+        // Other code blocks and the tap block stay text; a block still streaming is pending.
+        let code = "Run:\n```sh\nls\n```"
+        #expect(A2UI.segments(code) == [.text(code)])
+        #expect(A2UI.viewBlocks("x\n\n```a2ui-action\n{}\n```").isEmpty)
+        #expect(A2UI.segments("Look:\n```a2ui\n{\"messages\":[") == [.text("Look:"), .pendingView])
+        // Broken blocks explain themselves.
+        if case .failure(let e) = A2UI.parseBlock("{not json") { #expect(e.message.contains("JSON")) } else { Issue.record("parsed") }
+        if case .failure(let e) = A2UI.parseBlock(#"{"messages":[]}"#) { #expect(e.message.contains("No A2UI")) } else { Issue.record("parsed") }
+        #expect(A2UI.sessionGuide.contains("```a2ui") && A2UI.sessionGuide.contains("createSurface"))
+        #expect(!A2UI.guide.contains("info string"))
+    }
+
+    /// A2UI over MCP: embedded `application/a2ui+json` resources and the `_meta.ui` layout pointer.
+    @Test func recognizesA2UIFromMCP() {
+        let data: JSONValue = ["version": "1.0", "updateDataModel": ["surfaceId": "c", "path": "/t", "value": "x"]]
+        let item: JSONValue = ["type": "resource", "resource": ["uri": "a2ui://c/data", "mimeType": .string(A2UI.mimeType), "text": .string(data.jsonString())]]
+        #expect(A2UI.mcpMessages(item) == [data])
+        #expect(A2UI.mcpMessages(["type": "resource", "resource": ["uri": "file:///x", "mimeType": "text/plain", "text": "hi"]]) == nil)
+        #expect(A2UI.mcpMessages(["type": "text", "text": "hi"]) == nil)
+        #expect(A2UI.mcpTemplateURI(["ui": ["resourceUri": "a2ui://card", "mimeType": .string(A2UI.mimeType)]]) == "a2ui://card")
+        #expect(A2UI.mcpTemplateURI(["ui": ["resourceUri": "ui://widget", "mimeType": "text/html;profile=mcp-app"]]) == nil)
+        #expect(A2UI.mcpTemplateURI(nil) == nil)
+    }
 }
