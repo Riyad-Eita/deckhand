@@ -81,7 +81,7 @@ public enum ServerCLIRun {
             // (house rules still apply through the PreToolUse hook).
             case .full: #"$([ "$(id -u)" = 0 ] && echo '--permission-mode acceptEdits --allowedTools Bash' || echo '--permission-mode bypassPermissions')"#
             }
-            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose \(mode)" + CLIModels.flags(cli, options)
+            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose --include-partial-messages \(mode)" + CLIModels.flags(cli, options)
             if let sessionID { cmd += " --resume \(ShellQuote.quote(sessionID))" }
             return cmd + " < /dev/null"
         }
@@ -350,6 +350,14 @@ struct ClaudeCodeEventDecoder: CLIEventDecoder {
         switch type {
         case "system":
             if json["subtype"]?.stringValue == "init", let id = json["session_id"]?.stringValue { return [.sessionStarted(id)] }
+        case "stream_event":
+            // --include-partial-messages: text while it is written; the whole message follows as "assistant".
+            guard let event = json["event"], event["type"]?.stringValue == "content_block_delta", let delta = event["delta"] else { return [] }
+            switch delta["type"]?.stringValue {
+            case "text_delta": return delta["text"]?.stringValue.map { [.textDelta($0)] } ?? []
+            case "thinking_delta": return delta["thinking"]?.stringValue.map { [.thinkingDelta($0)] } ?? []
+            default: return []
+            }
         case "assistant":
             var blocks: [ContentBlock] = []
             var running: [ToolCall] = []
