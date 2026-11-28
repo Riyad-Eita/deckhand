@@ -19,6 +19,7 @@ struct ServerDashboardView: View {
     @State private var seedBackground = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "background"
     @State private var seedBrowser = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "browser"
     @State private var seedSessions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "sessions"
+    @State private var seedSkills = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "skills"
     #endif
 
     var body: some View {
@@ -176,6 +177,14 @@ struct ServerDashboardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.browser")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            SkillsView(server: server)
+                        } label: {
+                            ManageRow(title: "Skills", subtitle: "Instructions the agents follow: write or import once, use in Claude Code, Codex and your own key", symbol: "book.pages")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.skills")
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             DiskUsageView(server: server)
@@ -430,6 +439,7 @@ struct ServerDashboardView: View {
         .navigationDestination(isPresented: $seedTeam) { TeamView(server: server) }
         .navigationDestination(isPresented: $seedBackground) { BackgroundTasksView(server: server) }
         .navigationDestination(isPresented: $seedBrowser) { BrowserSetupView(server: server) }
+        .navigationDestination(isPresented: $seedSkills) { SkillsView(server: server) }
         .navigationDestination(isPresented: $seedSessions) { CLISessionsView(server: server) { _ in } }
         #endif
     }
