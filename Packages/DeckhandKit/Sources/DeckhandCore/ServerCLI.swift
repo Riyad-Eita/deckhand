@@ -97,12 +97,14 @@ public enum ServerCLIRun {
         _ cli: ServerCLI, shell: any StreamingShell, prompt: String, workingDirectory: String,
         sessionID: String?, access: CLIAccess, options: CLIOptions = .init(), run: DetachedRun, fromLine: Int = 1,
         start: Bool? = nil, meta: DetachedRun.Meta? = nil, notify: DetachedRun.Notify? = nil, startAt: Date? = nil,
-        sudo: Bool = false
+        sudo: Bool = false, apiKey: Bool = false
     ) -> AsyncThrowingStream<AgentEvent, Error> {
         let limitAware = LimitAwareRun.command(
             cli, prompt: prompt, workingDirectory: workingDirectory, sessionID: sessionID, access: access, options: options, run: run,
             startAt: startAt)
-        let cliCommand = sudo ? RunSudo.wrap(limitAware, run: run) : limitAware
+        // An own-key task on the server: the CLI uses the API key RunKey.prepare stored (then deleted at once).
+        let keyed = apiKey ? RunKey.wrap(limitAware, run: run, cli: cli) : limitAware
+        let cliCommand = sudo ? RunSudo.wrap(keyed, run: run) : keyed
         return AsyncThrowingStream { continuation in
             let task = Task {
                 var decoder: any CLIEventDecoder = cli == .codex ? CodexEventDecoder() : ClaudeCodeEventDecoder()
@@ -429,6 +431,10 @@ struct ClaudeCodeEventDecoder: CLIEventDecoder {
     }
 
     static func friendly(_ message: String) -> String {
+        // An own-key run on the server: the key itself was refused.
+        if message.contains("external API key") {
+            return "Your API key was refused. Check it in Settings → Model."
+        }
         if message.contains("/login") || message.contains("Invalid API key") {
             return "Claude Code on the server is not logged in. Log in from the server's CLI settings."
         }

@@ -38,6 +38,7 @@ struct AgentChatView: View {
         if let cli = engine.serverCLI, let chosen = CLIModelMenu.summary(cli: cli, thread: model.thread, settings: AppSettings.shared) {
             parts.append(chosen)
         }
+        if engine == .ownKey, model.thread.ownKeyOnServerRaw != nil { parts.append(String(localized: "on the server")) }
         parts.append(model.thread.workingDirectory)
         return parts.joined(separator: " · ")
     }
@@ -170,6 +171,8 @@ struct AgentChatView: View {
                 ToolbarItem(placement: .primaryAction) {
                     CLIModelMenu(thread: model.thread, server: model.server, cli: cli)
                 }
+            } else if !model.thread.isPlainChat {
+                ToolbarItem(placement: .primaryAction) { RunOnServerMenu(model: model) }
             }
             ToolbarItem(placement: .primaryAction) {
                 NavigationLink { FilesChangedView(server: model.server, thread: model.thread) } label: {
@@ -746,7 +749,7 @@ private struct LiveTurnView: View {
 
     private func workingLabel(since start: Date, now: Date) -> String {
         let s = max(0, Int(now.timeIntervalSince(start)))
-        let who = model.thread.engine.serverCLI.map { "\($0.displayName) is working" } ?? "Working"
+        let who = model.thread.serverRunCLI.map { "\($0.displayName) is working" } ?? "Working"
         return s < 60 ? "\(who)… \(s) s" : "\(who)… \(s / 60) min \(s % 60) s"
     }
     var body: some View {
@@ -1072,6 +1075,45 @@ private struct MicButton: View {
             Button("OK") { error = nil }
         } message: {
             Text(error ?? "")
+        }
+    }
+}
+
+/// Own-key tasks: run in the app, or on the server so they keep going while the phone is locked.
+private struct RunOnServerMenu: View {
+    let model: ChatModel
+    @State private var asking = false
+    private var settings: AppSettings { .shared }
+    private var consentKey: String { "ownkey.onServer.consent.\(model.server.id.uuidString)" }
+
+    var body: some View {
+        let cli = RunKey.cli(for: settings.providerKind)
+        let on = model.thread.ownKeyOnServerRaw != nil
+        Menu {
+            Toggle(isOn: Binding(get: { on }, set: { want in
+                if want && !UserDefaults.standard.bool(forKey: consentKey) { asking = true } else { model.setRunsOnServer(want) }
+            })) {
+                Label("Keep running on the server", systemImage: "server.rack")
+            }
+            .disabled(cli == nil || model.isRunning)
+            if let cli {
+                Text("Uses \(cli.displayName) on \(model.server.displayName) with your key, so the task goes on while your phone is locked.")
+            } else {
+                Text("Works with an Anthropic or OpenAI key.")
+            }
+        } label: {
+            Image(systemName: on ? "server.rack" : "iphone")
+        }
+        .accessibilityLabel(on ? "Runs on the server" : "Runs in the app")
+        .accessibilityIdentifier("chat.runOnServer")
+        .alert("Send your key to \(model.server.displayName)?", isPresented: $asking) {
+            Button("Send for these tasks") {
+                UserDefaults.standard.set(true, forKey: consentKey)
+                model.setRunsOnServer(true)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Each run of this task gets your \(settings.providerKind.displayName) key over the encrypted connection. The server keeps it in a file only your user can read and deletes it before \(cli?.displayName ?? "") starts; it lives in that run's memory until the run ends. Anyone with root on this server could still read it while a task runs. Usage is billed to your key.")
         }
     }
 }
