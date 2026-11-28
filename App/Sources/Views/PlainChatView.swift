@@ -89,6 +89,11 @@ final class PlainChatModel {
             error = LLMError.missingAPIKey.localizedDescription
             return
         }
+        if case .stop(let why) = Spend.check(task: Spend.total(messages, price: AppSettings.shared.price(for:)).cost,
+                                            day: AppSettings.shared.spentToday, limits: AppSettings.shared.spendLimits) {
+            error = why
+            return
+        }
         error = nil
         let attached = files.map { "\($0.name):\n```\n\($0.text)\n```" }
         let user = Message(role: .user, blocks: images.map { .image(mediaType: "image/jpeg", data: $0) }
@@ -122,6 +127,7 @@ final class PlainChatModel {
                             var total = messages[i].usage ?? Usage()
                             total.inputTokens += u.inputTokens; total.outputTokens += u.outputTokens; total.cacheReadTokens += u.cacheReadTokens
                             messages[i].usage = total
+                            AppSettings.shared.recordSpend(AppSettings.shared.price(for: chosen)?.cost(u) ?? 0)
                             persist()
                         }
                     case .compacted(let summary, let dropped):
@@ -458,7 +464,7 @@ struct ModelCaption: View {
     private var settings: AppSettings { .shared }
 
     var body: some View {
-        let price = settings.routerCandidates.first { $0.model == model }?.price ?? ModelPrice.known(model)
+        let price = settings.price(for: model)
         HStack(spacing: 4) {
             Image(systemName: "cpu").font(.system(size: 9))
             Text(model)

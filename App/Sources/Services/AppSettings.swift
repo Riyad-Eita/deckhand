@@ -33,6 +33,21 @@ final class AppSettings {
     var ntfyTopicURL: String { didSet { defaults.set(ntfyTopicURL, forKey: "notify.ntfy") } }
     /// Tokens, keys and passwords: masked in the chat, replaced before tool output goes to your model.
     var hideSecrets: Bool { didSet { defaults.set(hideSecrets, forKey: "agent.hideSecrets") } }
+    /// Spending limits for the own key, in US dollars (0 = no limit).
+    var taskLimitUSD: Double { didSet { defaults.set(taskLimitUSD, forKey: "spend.limit.task") } }
+    var dayLimitUSD: Double { didSet { defaults.set(dayLimitUSD, forKey: "spend.limit.day") } }
+    var spendLimits: Spend.Limits { Spend.Limits(perTaskUSD: taskLimitUSD, perDayUSD: dayLimitUSD) }
+    /// What the own key cost today (all chats and tasks on this device).
+    var spentToday: Double { defaults.double(forKey: "spend.day.\(Spend.dayKey())") }
+    func recordSpend(_ dollars: Double) {
+        guard dollars > 0 else { return }
+        let key = "spend.day.\(Spend.dayKey())"
+        defaults.set(defaults.double(forKey: key) + dollars, forKey: key)
+    }
+    /// The price of a model: the router's list first (it knows local models are free), then the known prices.
+    func price(for model: String) -> ModelPrice? {
+        routerCandidates.first { $0.model == model }?.price ?? ModelPrice.known(model)
+    }
     /// Default model / effort per server CLI ("" = the CLI's own config on the server).
     var codexModel: String { didSet { defaults.set(codexModel, forKey: "cli.codex.model") } }
     var codexEffort: String { didSet { defaults.set(codexEffort, forKey: "cli.codex.effort") } }
@@ -73,6 +88,8 @@ final class AppSettings {
         terminalFontSize = defaults.object(forKey: "terminal.fontSize") as? Double ?? TerminalFont.default
         ntfyTopicURL = defaults.string(forKey: "notify.ntfy") ?? ""
         hideSecrets = defaults.object(forKey: "agent.hideSecrets") as? Bool ?? true
+        taskLimitUSD = defaults.double(forKey: "spend.limit.task")
+        dayLimitUSD = defaults.double(forKey: "spend.limit.day")
         codexModel = defaults.string(forKey: "cli.codex.model") ?? ""
         codexEffort = defaults.string(forKey: "cli.codex.effort") ?? ""
         claudeModel = defaults.string(forKey: "cli.claude.model") ?? ""
