@@ -14,15 +14,19 @@ struct TerminalScreen: View {
     @State private var selected = 1
     @State private var titles: [Int: String] = [:]
     @State private var loaded = false
+    /// Tabs opened on a session that isn't one of the app's own ("deckhand-N"): which one.
+    @State private var attached: [Int: TerminalSessions.Session] = [:]
+    @State private var showingSessions = false
 
     private var tabsKey: String { "terminal.tabs.\(server.id.uuidString)" }
+    private var attachedKey: String { "terminal.attached.\(server.id.uuidString)" }
 
     var body: some View {
         VStack(spacing: 0) {
             tabBar
             ZStack {
                 ForEach(tabs, id: \.self) { tab in
-                    TerminalPane(server: server, tab: tab, isActive: tab == selected,
+                    TerminalPane(server: server, tab: tab, isActive: tab == selected, attach: attached[tab],
                                  pendingCommand: tab == selected ? $pendingCommand : .constant(nil),
                                  onTitle: { titles[tab] = $0 }, onShortcut: handle)
                         .opacity(tab == selected ? 1 : 0)
@@ -36,8 +40,16 @@ struct TerminalScreen: View {
             loaded = true
             let saved = (UserDefaults.standard.array(forKey: tabsKey) as? [Int])?.filter { $0 >= 1 } ?? []
             if !saved.isEmpty { tabs = saved; selected = saved[0] }
+            if let data = UserDefaults.standard.data(forKey: attachedKey),
+               let map = try? JSONDecoder().decode([Int: TerminalSessions.Session].self, from: data) {
+                attached = map.filter { tabs.contains($0.key) }
+            }
         }
         .onChange(of: tabs) { UserDefaults.standard.set(tabs, forKey: tabsKey) }
+        .onChange(of: attached) { UserDefaults.standard.set(try? JSONEncoder().encode(attached), forKey: attachedKey) }
+        .appSheet(isPresented: $showingSessions) {
+            TerminalSessionsSheet(server: server, openTabs: openTabs) { openSession($0) }
+        }
         #if DEBUG
         .task { await runSeedScript() }
         #endif
@@ -74,6 +86,9 @@ struct TerminalScreen: View {
                 Button { add() } label: { Image(systemName: "plus").font(.footnote.weight(.semibold)).frame(width: 30, height: 28) }
                     .accessibilityLabel("New tab")
                     .accessibilityIdentifier("terminal.tab.new")
+                Button { showingSessions = true } label: { Image(systemName: "rectangle.stack").font(.footnote.weight(.semibold)).frame(width: 30, height: 28) }
+                    .accessibilityLabel("Sessions")
+                    .accessibilityIdentifier("terminal.sessions")
             }
             .padding(.horizontal, 8).padding(.vertical, 4)
         }
@@ -144,11 +159,33 @@ struct TerminalScreen: View {
         selected = n
     }
 
+    /// Session name shown in each tab (for the sessions list).
+    private var openTabs: [Int: String] {
+        var map: [Int: String] = [:]
+        for tab in tabs { map[tab] = attached[tab]?.name ?? PersistentSession.name(tab: tab) }
+        return map
+    }
+
+    /// Opens a session: the tab that already shows it, or a new tab attached to it.
+    private func openSession(_ s: TerminalSessions.Session) {
+        if let tab = tabs.first(where: { attached[$0] == nil && s.isDeckhandTab && PersistentSession.name(tab: $0) == s.shortName })
+            ?? tabs.first(where: { attached[$0]?.id == s.id }) {
+            selected = tab
+            return
+        }
+        let n = TerminalTabs.next(after: tabs)
+        if !(s.isDeckhandTab && s.kind == .tmux && PersistentSession.name(tab: n) == s.name) { attached[n] = s }
+        tabs.append(n)
+        selected = n
+    }
+
     private func close(_ tab: Int) {
         guard tabs.count > 1, let i = tabs.firstIndex(of: tab) else { return }
         tabs.remove(at: i)
         titles[tab] = nil
         if selected == tab { selected = tabs[max(0, i - 1)] }
+        // A session the tab was opened on keeps running: it isn't the app's to end.
+        if attached.removeValue(forKey: tab) != nil { return }
         // The tab is gone, so is its kept session on the server.
         if settings.keepTerminalSessions {
             let server = server
@@ -162,6 +199,8 @@ struct TerminalPane: View {
     let server: Server
     let tab: Int
     let isActive: Bool
+    /// Opened on this session instead of the tab's own kept one.
+    var attach: TerminalSessions.Session? = nil
     @Binding var pendingCommand: String?
     var onTitle: (String?) -> Void = { _ in }
     var onShortcut: (TerminalShortcut) -> Void = { _ in }
@@ -319,7 +358,9 @@ struct TerminalPane: View {
             let connection = try await connections.connection(for: server)
             let new = try await connection.openTerminal(cols: 80, rows: 24)
             // Logins and other queued commands run in a plain shell; otherwise attach to the kept session.
-            if settings.keepTerminalSessions && pendingCommand == nil {
+            if let attach, pendingCommand == nil {
+                new.send("clear; " + TerminalSessions.attachCommand(attach) + "\n")
+            } else if settings.keepTerminalSessions && pendingCommand == nil {
                 new.send("clear; " + PersistentSession.attachCommand(tab: tab) + "\n")
             }
             sessionID = UUID()

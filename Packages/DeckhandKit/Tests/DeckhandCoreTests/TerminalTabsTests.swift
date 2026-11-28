@@ -11,7 +11,7 @@ import Testing
         #expect(!a.contains("-g "))
         #expect(a.contains("screen -xRR -S deckhand-2"))
         #expect(PersistentSession.attachCommand == PersistentSession.attachCommand(tab: 1))
-        #expect(PersistentSession.endCommand(tab: 2).hasPrefix("tmux kill-session -t deckhand-2"))
+        #expect(PersistentSession.endCommand(tab: 2).contains("; tmux kill-session -t deckhand-2"))
     }
 
     @Test func numbersAndTitles() {

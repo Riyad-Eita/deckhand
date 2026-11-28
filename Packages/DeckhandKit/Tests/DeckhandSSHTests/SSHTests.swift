@@ -1812,3 +1812,35 @@ extension LiveSSHTests {
         await conn.disconnect()
     }
 }
+
+/// Opt-in: DECKHAND_TMUX_TEST=1 plus the DECKHAND_TEST_* login. Builds tmux without root into a throwaway HOME
+/// (a few minutes), then lists, starts and ends sessions with it. Everything is removed afterwards.
+extension LiveSSHTests {
+    @Test(.enabled(if: ProcessInfo.processInfo.environment["DECKHAND_TMUX_TEST"] != nil))
+    func tmuxWithoutRootLive() async throws {
+        let conn = try await connection()
+        let home = try await conn.run("mktemp -d /tmp/dh-tmux-XXXXXX", timeout: .seconds(20)).stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        #expect(home.hasPrefix("/tmp/dh-tmux-"))
+        // Only this HOME's tmux: its own socket dir, so the server's real sessions stay out of it.
+        let inHome = "export HOME=\(home) TMUX_TMPDIR=\(home); cd; "
+        func sh(_ c: String, _ t: Int = 60) async throws -> String { try await conn.run(inHome + c, timeout: .seconds(t)).stdout }
+        do {
+            let build = try await sh(TmuxInstall.buildScript + " 2>&1", 1500)
+            #expect(build.contains("@@ok"), "build ended with: \(build.suffix(800))")
+            #expect(try await sh("\(TerminalSessions.path); command -v tmux").hasPrefix(home + "/.local/bin/tmux"))
+
+            _ = try await sh(TerminalSessions.newCommand(name: "work.1"))
+            _ = try await sh(TerminalSessions.newCommand(name: "deckhand-2"))
+            var l = TerminalSessions.parse(try await sh(TerminalSessions.listCommand))
+            #expect(l.hasTmux)
+            let names = l.sessions.filter { $0.kind == .tmux }.map(\.name)
+            #expect(Set(names) == ["work-1", "deckhand-2"])
+            #expect(l.sessions.first { $0.name == "deckhand-2" }?.isDeckhandTab == true)
+            let work = try #require(l.sessions.first { $0.name == "work-1" })
+            _ = try await sh(TerminalSessions.killCommand(work))
+            l = TerminalSessions.parse(try await sh(TerminalSessions.listCommand))
+            #expect(l.sessions.filter { $0.kind == .tmux }.map(\.name) == ["deckhand-2"])
+        } catch { Issue.record(error) }
+        _ = try? await conn.run(inHome + "\(TerminalSessions.path); tmux kill-server 2>/dev/null; rm -rf \(home)", timeout: .seconds(30))
+    }
+}

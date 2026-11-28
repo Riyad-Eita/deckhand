@@ -29,7 +29,7 @@ public struct ServerInventory: Sendable, Hashable {
     p codex.auth "$(command -v codex >/dev/null 2>&1 && codex login status 2>&1 | head -3)"
     p claude.version "$(command -v claude >/dev/null 2>&1 && claude --version 2>/dev/null | head -1)"
     p claude.auth "$(command -v claude >/dev/null 2>&1 && claude auth status --json 2>/dev/null)"
-    p tmux "$(tmux -V 2>/dev/null)"
+    p tmux "$(PATH="$HOME/.local/bin:$PATH" tmux -V 2>/dev/null)"
     p node "$(node --version 2>/dev/null)"
     p screen "$(command -v screen 2>/dev/null)"
     p os "$( ( [ -r /etc/os-release ] && . /etc/os-release && echo "$PRETTY_NAME" ) || uname -sr)"
@@ -97,7 +97,7 @@ public enum PersistentSession {
     /// program (set for this session only, not globally), so the app can name the tab.
     public static func attachCommand(tab: Int = 1) -> String {
         let n = name(tab: tab)
-        return "if command -v tmux >/dev/null 2>&1; then exec tmux new-session -A -s \(n) \\; set-option set-titles on \\; "
+        return TerminalSessions.path + "; if command -v tmux >/dev/null 2>&1; then exec tmux new-session -A -s \(n) \\; set-option set-titles on \\; "
             + "set-option set-titles-string '#{pane_current_command}'; "
             + "elif command -v screen >/dev/null 2>&1; then exec screen -xRR -S \(n); fi"
     }
@@ -107,7 +107,7 @@ public enum PersistentSession {
     /// Ends a tab's kept session (when its tab is closed).
     public static func endCommand(tab: Int) -> String {
         let n = name(tab: tab)
-        return "tmux kill-session -t \(n) 2>/dev/null; screen -S \(n) -X quit 2>/dev/null; true"
+        return TerminalSessions.path + "; tmux kill-session -t \(n) 2>/dev/null; screen -S \(n) -X quit 2>/dev/null; true"
     }
 }
 
