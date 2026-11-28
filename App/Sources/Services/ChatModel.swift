@@ -336,6 +336,8 @@ final class ChatModel {
                     shell: shell,
                     tools: (planning ? PlanMode.tools(ServerTools.all(workingDirectory: thread.workingDirectory))
                         : ServerTools.all(workingDirectory: thread.workingDirectory) + mcp.tools)
+                        // Providers without Anthropic's web tools read pages through the server instead.
+                        + (settings.webResearch && config.webResearch != true ? [FetchURLTool()] : [])
                         + [ShowUITool(validate: { [a2ui] messages in await a2ui.apply(messages) })],
                     policy: policy,
                     system: Agent.systemPrompt(

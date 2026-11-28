@@ -44,6 +44,8 @@ public struct ProviderConfig: Sendable, Hashable, Codable {
     public var apiKey: String
     /// Reasoning effort where the provider supports it ("low" … "max").
     public var effort: String?
+    /// Let the model search and read the web itself (Anthropic's server tools); nil = off.
+    public var webResearch: Bool?
 
     public init(kind: ProviderKind, baseURL: URL? = nil, model: String, apiKey: String, effort: String? = nil) {
         self.kind = kind

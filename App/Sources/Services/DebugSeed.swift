@@ -374,6 +374,25 @@ enum DebugSeed {
             try? context.save()
             AppRouter.shared.pendingThread = thread.id
         }
+        // DECKHAND_SEED_WEBREPLY=1: a finished own-key task whose reply searched the web (sources shown).
+        if env["DECKHAND_SEED_WEBREPLY"] == "1" {
+            let thread = ChatThread(server: server, workingDirectory: "~")
+            thread.id = UUID(uuidString: "00000000-0000-0000-0000-00000000e3b1")!
+            thread.title = "What changed in nginx 1.29?"
+            let use: JSONValue = ["type": "server_tool_use", "id": "srvtoolu_1", "name": "web_search", "input": ["query": "nginx 1.29 changes"]]
+            let result: JSONValue = ["type": "web_search_tool_result", "tool_use_id": "srvtoolu_1", "content": [
+                ["type": "web_search_result", "title": "Changes with nginx 1.29", "url": "https://nginx.org/en/CHANGES", "encrypted_content": "x"],
+                ["type": "web_search_result", "title": "nginx news", "url": "https://nginx.org/", "encrypted_content": "y"],
+            ]]
+            thread.messages = [
+                .user(thread.title),
+                Message(role: .assistant, blocks: [.opaque(provider: "anthropic", value: use), .opaque(provider: "anthropic", value: result),
+                                                    .text("1.29 adds HTTP/3 fixes and a new `ssl_certificate_cache` directive. Your server runs 1.24, so none of it applies yet.")]),
+            ]
+            context.insert(thread)
+            try? context.save()
+            AppRouter.shared.pendingThread = thread.id
+        }
         // DECKHAND_SEED_EMPTYTASK=1: a new, empty own-key task on the seeded server, opened at launch.
         if env["DECKHAND_SEED_EMPTYTASK"] == "1" {
             let thread = ChatThread(server: server, workingDirectory: "~")

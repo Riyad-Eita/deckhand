@@ -62,6 +62,11 @@ public struct AnthropicProvider: LLMProvider {
                 ]
             })
         }
+        if config.webResearch == true {
+            var tools = body["tools"]?.arrayValue ?? []
+            tools += WebResearch.serverTools(model: config.model)
+            body["tools"] = .array(tools)
+        }
         if let effort = config.effort { body["output_config"] = ["effort": .string(effort)] }
         if usesFallback { body["fallbacks"] = "default" }
         // Cache the growing conversation prefix.
@@ -106,6 +111,8 @@ struct AnthropicStreamDecoder: StreamDecoder {
         case thinking(String, signature: String?)
         case toolUse(id: String, name: String, json: String)
         case opaque(JSONValue)
+        /// A server tool call (web search / fetch) whose input streams in.
+        case serverToolUse(JSONValue, json: String)
     }
 
     private var blocks: [Int: Partial] = [:]
@@ -132,8 +139,10 @@ struct AnthropicStreamDecoder: StreamDecoder {
                 let name = block["name"]?.stringValue ?? ""
                 blocks[index] = .toolUse(id: id, name: name, json: "")
                 return [.toolCallStarted(id: id, name: name)]
+            case "server_tool_use":
+                blocks[index] = .serverToolUse(block, json: "")
             default:
-                // redacted_thinking, fallback markers, server tool blocks: keep verbatim.
+                // redacted_thinking, fallback markers, server tool results: keep verbatim.
                 blocks[index] = .opaque(block)
             }
         case "content_block_delta":
@@ -153,6 +162,8 @@ struct AnthropicStreamDecoder: StreamDecoder {
                 let piece = delta["partial_json"]?.stringValue ?? ""
                 blocks[index] = .toolUse(id: id, name: name, json: partial + piece)
                 return [.toolInputDelta(id: id, fragment: piece)]
+            case ("input_json_delta", .serverToolUse(let block, let partial)):
+                blocks[index] = .serverToolUse(block, json: partial + (delta["partial_json"]?.stringValue ?? ""))
             default:
                 break
             }
@@ -180,6 +191,11 @@ struct AnthropicStreamDecoder: StreamDecoder {
                 let input = (try? JSONValue.parse(json.isEmpty ? "{}" : json)) ?? .object(["INVALID_JSON": .string(json)])
                 return .toolUse(ToolCall(id: id, name: name, input: input))
             case .opaque(let value): return .opaque(provider: "anthropic", value: value)
+            case .serverToolUse(let block, let json):
+                // Sent back exactly as the server made it, with the input it streamed.
+                guard case .object(var o) = block else { return .opaque(provider: "anthropic", value: block) }
+                if !json.isEmpty, let input = try? JSONValue.parse(json) { o["input"] = input }
+                return .opaque(provider: "anthropic", value: .object(o))
             }
         }
         return [.completed(Message(role: .assistant, blocks: content), stopReason, usage)]
