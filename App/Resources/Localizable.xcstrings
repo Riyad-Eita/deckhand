@@ -385,6 +385,16 @@
         }
       }
     },
+    "%@ tokens": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Tokens"
+          }
+        }
+      }
+    },
     "%@ via %@": {
       "localizations": {
         "de": {
@@ -8481,6 +8491,16 @@
         }
       }
     },
+    "For your own API key. A task stops before it goes over; from 80 % the chat warns you. Costs use list prices and count only this %@. Models without a known price count tokens only.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für deinen eigenen API-Schlüssel. Eine Aufgabe stoppt, bevor sie das Limit überschreitet; ab 80 % warnt der Chat. Die Kosten beruhen auf Listenpreisen und zählen nur auf diesem %@. Bei Modellen ohne bekannten Preis werden nur Tokens gezählt."
+          }
+        }
+      }
+    },
     "Force Quit": {
       "localizations": {
         "de": {
@@ -14046,6 +14066,26 @@
         }
       }
     },
+    "Per day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Tag"
+          }
+        }
+      }
+    },
+    "Per task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Aufgabe"
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "de": {
@@ -18203,6 +18243,26 @@
         }
       }
     },
+    "Spending limits": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabenlimits"
+          }
+        }
+      }
+    },
+    "Spent today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute ausgegeben"
+          }
+        }
+      }
+    },
     "Stage": {
       "localizations": {
         "de": {
@@ -20774,6 +20834,26 @@
         }
       }
     },
+    "This task has used %@ of its %@ limit.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Aufgabe hat %1$@ von ihrem Limit von %2$@ verbraucht."
+          }
+        }
+      }
+    },
+    "This task reached its limit of %@ (spent %@). Raise the limit in Settings to go on.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Aufgabe hat ihr Limit von %1$@ erreicht (ausgegeben: %2$@). Erhöhe das Limit in den Einstellungen, um weiterzumachen."
+          }
+        }
+      }
+    },
     "This user can't use sudo on the server. Log in as root or as an admin user.": {
       "localizations": {
         "de": {
@@ -20910,6 +20990,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Heute"
+          }
+        }
+      }
+    },
+    "Today's limit of %@ is reached (spent %@). It resets at midnight, or raise it in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Tageslimit von %1$@ ist erreicht (ausgegeben: %2$@). Es wird um Mitternacht zurückgesetzt, oder du erhöhst es in den Einstellungen."
+          }
+        }
+      }
+    },
+    "Today's spending is at %@ of %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die heutigen Ausgaben liegen bei %1$@ von %2$@."
           }
         }
       }

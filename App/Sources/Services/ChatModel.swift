@@ -213,8 +213,15 @@ final class ChatModel {
             error = LLMError.missingAPIKey.localizedDescription
             return
         }
+        if thread.engine == .ownKey,
+           case .stop(let why) = Spend.check(task: spent.cost, day: settings.spentToday, limits: settings.spendLimits) {
+            error = why
+            return
+        }
         error = nil
         notice = nil
+        spendStop = nil
+        runningModel = settings.providerConfig.model
         let user = Message(role: .user, blocks: images.map { .image(mediaType: "image/jpeg", data: $0) } + [.text(trimmed)])
         let history = Self.history(messages, start: thread.historyStart, summary: thread.historySummary)
         let historyStart = thread.historyStart
@@ -282,6 +289,8 @@ final class ChatModel {
                         thread.historyStart = min(historyStart + dropped, messages.count)
                     }
                     handle(event)
+                    // A spending limit was reached: no further model calls.
+                    if let why = spendStop { self.error = why; notice = nil; break }
                 }
             } catch {
                 self.error = error.localizedDescription
@@ -366,6 +375,7 @@ final class ChatModel {
         case .usage(let u):
             usage.inputTokens += u.inputTokens
             usage.outputTokens += u.outputTokens
+            if thread.engine == .ownKey { recordOwnKeyUsage(u) }
         case .finished(let reason):
             switch reason {
             case .refusal: error = "The model declined this request."
@@ -374,6 +384,30 @@ final class ChatModel {
             }
         }
     }
+
+    /// The model of the running own-key task (set when it starts).
+    private var runningModel: String?
+    /// Set when a spending limit is reached: the task stops before its next model call.
+    private var spendStop: String?
+
+    /// Puts a reply's tokens on it (with the model) and on today's ledger, then checks the limits.
+    private func recordOwnKeyUsage(_ u: Usage) {
+        guard let model = runningModel, let i = messages.lastIndex(where: { $0.role == .assistant }) else { return }
+        var total = messages[i].usage ?? Usage()
+        total.inputTokens += u.inputTokens; total.outputTokens += u.outputTokens; total.cacheReadTokens += u.cacheReadTokens
+        messages[i].usage = total
+        messages[i].model = model
+        let settings = AppSettings.shared
+        settings.recordSpend(settings.price(for: model)?.cost(u) ?? 0)
+        switch Spend.check(task: spent.cost, day: settings.spentToday, limits: settings.spendLimits) {
+        case .ok: break
+        case .warn(let why): notice = why
+        case .stop(let why): spendStop = why
+        }
+    }
+
+    /// Tokens and cost of this task so far (own key).
+    var spent: Spend.Total { Spend.total(messages, price: AppSettings.shared.price(for:)) }
 
     /// What the model sees: the summary of the older steps (if any), then the messages after it.
     static func history(_ all: [Message], start: Int, summary: String?) -> [Message] {

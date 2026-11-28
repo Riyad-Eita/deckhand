@@ -59,6 +59,8 @@ struct SettingsView: View {
                     Text(keyHint)
                 }
 
+                SpendLimitsSection()
+
                 PlanChatSection()
 
                 if settings.providerKind == .custom || settings.providerKind == .openRouter {
@@ -208,6 +210,38 @@ struct SettingsView: View {
 
 /// Plain chats without an API key: Claude Code or Codex on one of your servers (or your Mac) answers, signed in
 /// with your own Claude or ChatGPT plan — the same official CLIs the server tasks use.
+/// Spending limits for the own key: per task and per day, with a warning from 80 % on.
+private struct SpendLimitsSection: View {
+    private var settings: AppSettings { .shared }
+
+    var body: some View {
+        @Bindable var settings = settings
+        Section {
+            limitRow("Per task", value: $settings.taskLimitUSD, id: "settings.limit.task")
+            limitRow("Per day", value: $settings.dayLimitUSD, id: "settings.limit.day")
+            LabeledContent("Spent today", value: String(format: "$%.2f", settings.spentToday))
+                .accessibilityIdentifier("settings.spentToday")
+        } header: {
+            Text("Spending limits")
+        } footer: {
+            Text("For your own API key. A task stops before it goes over; from 80 % the chat warns you. Costs use list prices and count only this \(Device.name). Models without a known price count tokens only.")
+        }
+    }
+
+    private func limitRow(_ title: LocalizedStringKey, value: Binding<Double>, id: String) -> some View {
+        let on = Binding(get: { value.wrappedValue > 0 }, set: { value.wrappedValue = $0 ? (id.hasSuffix("task") ? 1 : 5) : 0 })
+        return VStack(alignment: .leading) {
+            Toggle(title, isOn: on).accessibilityIdentifier(id)
+            if value.wrappedValue > 0 {
+                Stepper(value: value, in: 0.25...500, step: value.wrappedValue < 5 ? 0.25 : 5) {
+                    Text(String(format: "$%.2f", value.wrappedValue)).monospacedDigit()
+                }
+                .accessibilityIdentifier(id + ".amount")
+            }
+        }
+    }
+}
+
 private struct PlanChatSection: View {
     private var settings: AppSettings { .shared }
     @Query(sort: \Server.name) private var servers: [Server]

@@ -118,6 +118,30 @@ public struct Agent: Sendable {
         """
     }
 
+    /// A turn that was stopped (by the user, or at a spending limit) can leave tool calls without results, which
+    /// the model APIs reject. Each such call gets a result saying it didn't run, right after its message.
+    public static func closeInterrupted(_ history: [Message]) -> [Message] {
+        var out = history
+        var i = 0
+        while i < out.count {
+            let calls = out[i].role == .assistant ? out[i].toolCalls : []
+            if !calls.isEmpty {
+                let hasResults = i + 1 < out.count && out[i + 1].role == .user
+                    && out[i + 1].blocks.contains { if case .toolResult = $0 { true } else { false } }
+                var answered = Set<String>()
+                if hasResults { for case .toolResult(let r) in out[i + 1].blocks { answered.insert(r.toolUseID) } }
+                let missing = calls.filter { !answered.contains($0.id) }.map {
+                    ContentBlock.toolResult(ToolResult(toolUseID: $0.id, content: "Not run: the task was stopped before this step.", isError: true))
+                }
+                if !missing.isEmpty {
+                    if hasResults { out[i + 1].blocks = missing + out[i + 1].blocks } else { out.insert(Message(role: .user, blocks: missing), at: i + 1) }
+                }
+            }
+            i += 1
+        }
+        return out
+    }
+
     /// Runs one user turn to completion. `history` is the conversation before `userMessage`.
     public func run(history: [Message], userMessage: Message) -> AsyncThrowingStream<AgentEvent, Error> {
         AsyncThrowingStream { continuation in
@@ -137,7 +161,7 @@ public struct Agent: Sendable {
     }
 
     private func loop(history: [Message], userMessage: Message, emit: (AgentEvent) -> Void) async throws {
-        var messages = history + [userMessage]
+        var messages = Self.closeInterrupted(history) + [userMessage]
         let specs = tools.map(\.spec)
         var prefix = Compaction.summaryPrefixCount(history)
         var droppedSoFar = 0

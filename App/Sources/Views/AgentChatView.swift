@@ -56,6 +56,11 @@ struct AgentChatView: View {
                         MessageView(message: message, model: model)
                     }
                     if model.isRunning { LiveTurnView(model: model) }
+                    if model.thread.engine == .ownKey, case let spent = model.spent, spent.tokens > 0 {
+                        Label(Spend.label(spent), systemImage: "dollarsign.circle")
+                            .font(.caption2.monospacedDigit()).foregroundStyle(.tertiary)
+                            .accessibilityIdentifier("chat.spent")
+                    }
                     if let notice = model.notice {
                         Label(notice, systemImage: "info.circle").font(.footnote).foregroundStyle(.secondary)
                     }

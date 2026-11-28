@@ -220,6 +220,8 @@ enum DebugSeed {
             if AppSettings.shared.providerKind != .anthropic { AppSettings.shared.providerKind = .anthropic }
             AppSettings.shared.terminalTheme = TerminalTheme.default.id
             AppSettings.shared.terminalFontSize = TerminalFont.default
+            AppSettings.shared.taskLimitUSD = 0
+            AppSettings.shared.dayLimitUSD = 0
             KeyProtection.shared.lockNow()
             ServerSnapshots.save([])
             // Tasks and plain chats first, then servers: deleting a task twice (once by the server's cascade) made
