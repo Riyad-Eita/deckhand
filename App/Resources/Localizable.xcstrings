@@ -1061,6 +1061,16 @@
     "%lld.": {
       "shouldTranslate": false
     },
+    "+%lld −%lld in %lld files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%1$lld −%2$lld in %3$lld Dateien"
+          }
+        }
+      }
+    },
     "..": {
       "shouldTranslate": false
     },
@@ -1280,6 +1290,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine Firewall blockt alles, was du nicht bewusst geöffnet hast – eine Datenbank oder ein Admin-Panel, das versehentlich lauscht, bleibt privat."
+          }
+        }
+      }
+    },
+    "A first read, not a verdict: check the diff before you approve.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein erster Blick, kein Urteil: Prüf den Diff, bevor du freigibst."
           }
         }
       }
@@ -2822,12 +2842,42 @@
         }
       }
     },
+    "Approve": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigeben"
+          }
+        }
+      }
+    },
+    "Approve with a comment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Kommentar freigeben"
+          }
+        }
+      }
+    },
     "Approved, waiting for release": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Genehmigt, wartet auf Veröffentlichung"
+          }
+        }
+      }
+    },
+    "Approved.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigegeben."
           }
         }
       }
@@ -4055,6 +4105,16 @@
         }
       }
     },
+    "Changes requested.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen angefordert."
+          }
+        }
+      }
+    },
     "Changing the role didn't work.": {
       "localizations": {
         "de": {
@@ -4391,6 +4451,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Checkout auf dem Server, z. B. ~/shop"
+          }
+        }
+      }
+    },
+    "Checks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checks"
           }
         }
       }
@@ -4955,6 +5025,26 @@
         }
       }
     },
+    "Comment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kommentieren"
+          }
+        }
+      }
+    },
+    "Comment posted.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kommentar gesendet."
+          }
+        }
+      }
+    },
     "Commit": {
       "localizations": {
         "de": {
@@ -5091,6 +5181,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "GitHub verbinden"
+          }
+        }
+      }
+    },
+    "Connect GitHub first": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuerst GitHub verbinden"
           }
         }
       }
@@ -5788,6 +5888,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neuen Schlüssel erzeugen"
+          }
+        }
+      }
+    },
+    "Create a merge commit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merge-Commit erstellen"
           }
         }
       }
@@ -6682,6 +6792,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Journal nicht verkleinert: eine Hausregel verbietet es"
+          }
+        }
+      }
+    },
+    "Diff": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diff"
           }
         }
       }
@@ -8939,6 +9059,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "GitHub Personal Access Token"
+          }
+        }
+      }
+    },
+    "GitHub reports conflicts; the merge will likely fail.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub meldet Konflikte; der Merge wird wahrscheinlich scheitern."
           }
         }
       }
@@ -11566,6 +11696,36 @@
         }
       }
     },
+    "Merge": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mergen"
+          }
+        }
+      }
+    },
+    "Merge #%lld?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "#%lld mergen?"
+          }
+        }
+      }
+    },
+    "Merged.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemergt."
+          }
+        }
+      }
+    },
     "Message": {
       "localizations": {
         "de": {
@@ -11822,6 +11982,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Namen dürfen kein „/“ enthalten."
+          }
+        }
+      }
+    },
+    "Needs Apple Intelligence on this device or a model key in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht Apple Intelligence auf diesem Gerät oder einen Modell-Schlüssel in den Einstellungen."
           }
         }
       }
@@ -13346,6 +13516,16 @@
         }
       }
     },
+    "Nothing waits for you.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts wartet auf dich."
+          }
+        }
+      }
+    },
     "Notifications": {
       "localizations": {
         "de": {
@@ -13632,6 +13812,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auf welchem Server?"
+          }
+        }
+      }
+    },
+    "On-device model": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modell auf dem Gerät"
           }
         }
       }
@@ -14022,6 +14212,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öffnet über deine SSH-Verbindung, sodass auch Apps funktionieren, die nur auf localhost des Servers lauschen (Dev-Server, Admin-Panels) – nichts wird ins Internet geöffnet."
+          }
+        }
+      }
+    },
+    "Optional comment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionaler Kommentar"
           }
         }
       }
@@ -14968,6 +15168,26 @@
         }
       }
     },
+    "Pull requests": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull Requests"
+          }
+        }
+      }
+    },
+    "Pull requests come from the GitHub CLI on this server. Sign in under Tools → Connect GitHub.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull Requests kommen von der GitHub-CLI auf diesem Server. Melde dich unter Werkzeuge → GitHub verbinden an."
+          }
+        }
+      }
+    },
     "Pulled back": {
       "localizations": {
         "de": {
@@ -15328,6 +15548,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hänge mich wieder an den Lauf auf dem Server …"
+          }
+        }
+      }
+    },
+    "Rebase and merge": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebase und mergen"
           }
         }
       }
@@ -15962,6 +16192,16 @@
         }
       }
     },
+    "Request changes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen anfordern"
+          }
+        }
+      }
+    },
     "Requests": {
       "localizations": {
         "de": {
@@ -16203,12 +16443,32 @@
         }
       }
     },
+    "Review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfen"
+          }
+        }
+      }
+    },
     "Review SSH keys": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "SSH-Schlüssel prüfen"
+          }
+        }
+      }
+    },
+    "Review, approve and merge on GitHub, with a summary and risk notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf GitHub prüfen, freigeben und mergen, mit Zusammenfassung und Risikohinweisen"
           }
         }
       }
@@ -18183,6 +18443,16 @@
         }
       }
     },
+    "Show the whole diff": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzen Diff zeigen"
+          }
+        }
+      }
+    },
     "Show this page to": {
       "localizations": {
         "de": {
@@ -18659,6 +18929,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Heute ausgegeben"
+          }
+        }
+      }
+    },
+    "Squash and merge": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squash und mergen"
           }
         }
       }
@@ -19220,6 +19500,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorschläge aus deinen Erreichbarkeitsprüfungen und Webservern."
+          }
+        }
+      }
+    },
+    "Summarize and check for risks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zusammenfassen und auf Risiken prüfen"
           }
         }
       }
@@ -20014,6 +20304,16 @@
         }
       }
     },
+    "The branch is deleted after the merge.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Branch wird nach dem Merge gelöscht."
+          }
+        }
+      }
+    },
     "The browser couldn't be set up.": {
       "localizations": {
         "de": {
@@ -20210,6 +20510,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Die Köder enthalten nichts Echtes und öffnen nichts. Pushes gehen an dein ntfy-Topic."
+          }
+        }
+      }
+    },
+    "The diff is cut at 300 kB.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Diff ist bei 300 kB abgeschnitten."
           }
         }
       }
@@ -20500,6 +20810,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Anbieter hat den API-Key abgelehnt (%1$lld). %2$@"
+          }
+        }
+      }
+    },
+    "The pull request couldn't be loaded.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Pull Request konnte nicht geladen werden."
           }
         }
       }
@@ -22735,6 +23055,16 @@
         }
       }
     },
+    "Waiting for your review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf deine Prüfung"
+          }
+        }
+      }
+    },
     "Waiting packages, security first; restart hint": {
       "localizations": {
         "de": {
@@ -22991,6 +23321,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Was hier läuft, wie es zusammenhängt und was riskant ist"
+          }
+        }
+      }
+    },
+    "What should change, or what you noticed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sich ändern soll oder was dir aufgefallen ist"
           }
         }
       }
@@ -23834,6 +24174,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine ~/.ssh/config, ein CSV-Export (Termius und andere) und die privaten Schlüsseldateien, die darin genannt werden – wähle sie zusammen aus. Schlüssel bleiben auf diesem iPhone, im Schlüsselbund."
+          }
+        }
+      }
+    },
+    "Yours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine"
           }
         }
       }
@@ -24731,6 +25081,16 @@
     },
     "·": {
       "shouldTranslate": false
+    },
+    "· Draft": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· Entwurf"
+          }
+        }
+      }
     },
     "· changed on the server": {
       "localizations": {

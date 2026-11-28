@@ -20,6 +20,7 @@ struct ServerDashboardView: View {
     @State private var seedBrowser = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "browser"
     @State private var seedSessions = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "sessions"
     @State private var seedSkills = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "skills"
+    @State private var seedPRs = ProcessInfo.processInfo.environment["DECKHAND_SEED_SCREEN"] == "pullRequests"
     #endif
 
     var body: some View {
@@ -185,6 +186,14 @@ struct ServerDashboardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("dashboard.skills")
+                        Divider().padding(.leading, 58)
+                        NavigationLink {
+                            PullRequestsView(server: server)
+                        } label: {
+                            ManageRow(title: "Pull requests", subtitle: "Review, approve and merge on GitHub, with a summary and risk notes", symbol: "arrow.triangle.pull")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("dashboard.pullRequests")
                         Divider().padding(.leading, 58)
                         NavigationLink {
                             DiskUsageView(server: server)
@@ -440,6 +449,7 @@ struct ServerDashboardView: View {
         .navigationDestination(isPresented: $seedBackground) { BackgroundTasksView(server: server) }
         .navigationDestination(isPresented: $seedBrowser) { BrowserSetupView(server: server) }
         .navigationDestination(isPresented: $seedSkills) { SkillsView(server: server) }
+        .navigationDestination(isPresented: $seedPRs) { PullRequestsView(server: server) }
         .navigationDestination(isPresented: $seedSessions) { CLISessionsView(server: server) { _ in } }
         #endif
     }
