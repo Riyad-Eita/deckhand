@@ -220,6 +220,7 @@ enum DebugSeed {
             if AppSettings.shared.providerKind != .anthropic { AppSettings.shared.providerKind = .anthropic }
             AppSettings.shared.terminalTheme = TerminalTheme.default.id
             AppSettings.shared.terminalFontSize = TerminalFont.default
+            SnippetStore.shared.snippets.removeAll { $0.kind == .task }
             AppSettings.shared.taskLimitUSD = 0
             AppSettings.shared.dayLimitUSD = 0
             KeyProtection.shared.lockNow()
@@ -369,6 +370,15 @@ enum DebugSeed {
                 Message(role: .assistant, blocks: [.text("Two things need you; everything else is fine."), .toolUse(call)]),
                 Message(role: .user, blocks: [.toolResult(ToolResult(toolUseID: "seed-ui", content: "Shown in the chat (attention-1)."))]),
             ]
+            context.insert(thread)
+            try? context.save()
+            AppRouter.shared.pendingThread = thread.id
+        }
+        // DECKHAND_SEED_EMPTYTASK=1: a new, empty own-key task on the seeded server, opened at launch.
+        if env["DECKHAND_SEED_EMPTYTASK"] == "1" {
+            let thread = ChatThread(server: server, workingDirectory: "~")
+            thread.id = UUID(uuidString: "00000000-0000-0000-0000-00000000e321")!
+            thread.title = "New task"
             context.insert(thread)
             try? context.save()
             AppRouter.shared.pendingThread = thread.id

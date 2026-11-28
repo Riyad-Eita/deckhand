@@ -7258,6 +7258,16 @@
         }
       }
     },
+    "Edit before starting": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vor dem Start bearbeiten"
+          }
+        }
+      }
+    },
     "Edit files": {
       "extractionState": "manual",
       "localizations": {
@@ -7275,6 +7285,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Snippet bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit template": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorlage bearbeiten"
           }
         }
       }
@@ -9292,6 +9312,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ich hab's gesichert"
+          }
+        }
+      }
+    },
+    "Ideas": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideen"
           }
         }
       }
@@ -11956,6 +11986,16 @@
         }
       }
     },
+    "New template": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Vorlage"
+          }
+        }
+      }
+    },
     "Next": {
       "localizations": {
         "de": {
@@ -13122,6 +13162,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aus: Das Snippet erscheint auf jedem Server."
+          }
+        }
+      }
+    },
+    "Off: the template shows up on every server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus: Die Vorlage erscheint bei jedem Server."
           }
         }
       }
@@ -16519,6 +16569,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Als Snippet speichern"
+          }
+        }
+      }
+    },
+    "Save as template": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Vorlage sichern"
           }
         }
       }
@@ -22505,6 +22565,16 @@
         }
       }
     },
+    "What the agent should do": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was der Agent tun soll"
+          }
+        }
+      }
+    },
     "What the agents remember about this server.": {
       "localizations": {
         "de": {
@@ -23244,6 +23314,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine Server in der Hosentasche"
+          }
+        }
+      }
+    },
+    "Your templates": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Vorlagen"
           }
         }
       }

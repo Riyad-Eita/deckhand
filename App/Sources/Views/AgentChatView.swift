@@ -47,7 +47,8 @@ struct AgentChatView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     if model.messages.isEmpty && !model.isRunning {
-                        EmptyChatHint(server: model.server, workingDirectory: model.thread.workingDirectory, engine: model.thread.engine) { draft = $0; composerFocused = true }
+                        EmptyChatHint(server: model.server, workingDirectory: model.thread.workingDirectory, engine: model.thread.engine,
+                                      pick: { draft = $0; composerFocused = true }, start: { model.send($0) })
                     }
                     ForEach(Array(model.messages.enumerated()), id: \.element.id) { i, message in
                         if i == model.thread.historyStart, i > 0, let summary = model.thread.historySummary {
@@ -461,6 +462,11 @@ private struct EmptyChatHint: View {
     let workingDirectory: String
     let engine: Engine
     let pick: (String) -> Void
+    /// Starts the task right away (a template the user saved).
+    let start: (String) -> Void
+    @State private var store = SnippetStore.shared
+    @State private var editing: Snippet?
+    @State private var filling: Snippet?
     private let ideas = [
         String(localized: "Check disk space, memory and failing services"),
         String(localized: "Show me what changed in the last git commit here"),
@@ -476,6 +482,21 @@ private struct EmptyChatHint: View {
                  ? "Working in \(workingDirectory). The agent asks before it changes anything."
                  : "Working in \(workingDirectory). Runs with your \(engine.serverCLI?.displayName ?? "") subscription on the server.")
                 .font(.subheadline).foregroundStyle(.secondary)
+            let templates = Snippet.forServer(server.id, in: store.snippets, kind: .task)
+            if !templates.isEmpty {
+                Text("Your templates").font(.footnote.weight(.semibold)).foregroundStyle(.secondary).padding(.top, 4)
+                ForEach(templates) { t in
+                    Button { use(t) } label: { card(t.title, icon: t.placeholders.isEmpty ? "play.fill" : "slider.horizontal.3") }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("template.\(t.title)")
+                        .contextMenu {
+                            Button { pick(t.command); store.used(t) } label: { Label("Edit before starting", systemImage: "text.insert") }
+                            Button { editing = t } label: { Label("Edit template", systemImage: "pencil") }
+                            Button(role: .destructive) { store.snippets.removeAll { $0.id == t.id } } label: { Label("Delete", systemImage: "trash") }
+                        }
+                }
+                Text("Ideas").font(.footnote.weight(.semibold)).foregroundStyle(.secondary).padding(.top, 4)
+            }
             ForEach(ideas, id: \.self) { idea in
                 Button { pick(idea) } label: {
                     HStack {
@@ -489,8 +510,36 @@ private struct EmptyChatHint: View {
                 }
                 .buttonStyle(.plain)
             }
+            Button { editing = Snippet(title: "", command: "", serverID: server.id, kind: .task) } label: {
+                Label("New template", systemImage: "plus").font(.subheadline)
+            }
+            .buttonStyle(.borderless)
+            .accessibilityIdentifier("template.new")
         }
         .padding(.top, 24)
+        .appSheet(item: $editing) { t in SnippetEditor(snippet: t, serverID: server.id, serverName: server.displayName) }
+        .appSheet(item: $filling) { t in
+            SnippetFillSheet(snippet: t) { text, now in
+                store.used(t)
+                if now { start(text) } else { pick(text) }
+            }
+        }
+    }
+
+    /// A template without values starts at once; with values it asks for them first.
+    private func use(_ t: Snippet) {
+        if t.placeholders.isEmpty { store.used(t); start(t.command) } else { filling = t }
+    }
+
+    private func card(_ title: String, icon: String) -> some View {
+        HStack {
+            Text(title).font(.subheadline.weight(.medium)).multilineTextAlignment(.leading).foregroundStyle(.primary)
+            Spacer(minLength: 8)
+            Image(systemName: icon).font(.caption.weight(.semibold)).foregroundStyle(Theme.accent)
+        }
+        .padding(12)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Theme.hairline))
     }
 }
 
@@ -595,6 +644,7 @@ private struct SummaryDivider: View {
 private struct MessageView: View {
     let message: Message
     let model: ChatModel
+    @State private var savingTemplate: Snippet?
 
     var body: some View {
         switch message.role {
@@ -621,8 +671,18 @@ private struct MessageView: View {
                     if tap.isAction {
                         UserBubble(text: tap.text, icon: "hand.tap")
                     } else {
-                        UserBubble(text: PlanMode.isPlanRequest(message.text) ? PlanMode.unwrap(message.text) : message.text,
-                                   icon: PlanMode.isPlanRequest(message.text) ? "list.bullet.clipboard" : nil)
+                        let asked = PlanMode.isPlanRequest(message.text) ? PlanMode.unwrap(message.text) : message.text
+                        UserBubble(text: asked, icon: PlanMode.isPlanRequest(message.text) ? "list.bullet.clipboard" : nil)
+                            .contextMenu {
+                                Button { UIPasteboard.general.string = asked } label: { Label("Copy", systemImage: "doc.on.doc") }
+                                Button {
+                                    savingTemplate = Snippet(title: Snippet.suggestedTaskTitle(for: asked), command: asked,
+                                                             serverID: model.server.id, kind: .task)
+                                } label: { Label("Save as template", systemImage: "square.and.arrow.down") }
+                            }
+                            .appSheet(item: $savingTemplate) { t in
+                                SnippetEditor(snippet: t, serverID: model.server.id, serverName: model.server.displayName)
+                            }
                     }
                 }
             }

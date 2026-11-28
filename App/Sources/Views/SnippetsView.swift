@@ -22,7 +22,7 @@ struct SnippetsSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                if store.snippets.isEmpty {
+                if !store.snippets.contains(where: { $0.kind == .command }) {
                     Section {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("No saved commands yet").font(.headline)
@@ -117,14 +117,18 @@ struct SnippetFillSheet: View {
                         }
                     }
                 }
-                Section("Command") {
-                    Text(snippet.filled(values)).font(Theme.mono).textSelection(.enabled)
+                Section(snippet.kind == .task ? "Task" : "Command") {
+                    Text(snippet.filled(values)).font(snippet.kind == .task ? .body : Theme.mono).textSelection(.enabled)
                         .accessibilityIdentifier("snippet.preview")
                 }
                 Section {
-                    Button { send(snippet.filled(values), true); dismiss() } label: { Label("Run", systemImage: "return") }
-                        .accessibilityIdentifier("snippet.run")
-                    Button { send(snippet.filled(values), false); dismiss() } label: { Label("Insert, don't run", systemImage: "text.insert") }
+                    Button { send(snippet.filled(values), true); dismiss() } label: {
+                        Label(snippet.kind == .task ? "Start" : "Run", systemImage: snippet.kind == .task ? "arrow.up.circle" : "return")
+                    }
+                    .accessibilityIdentifier("snippet.run")
+                    Button { send(snippet.filled(values), false); dismiss() } label: {
+                        Label(snippet.kind == .task ? "Edit before starting" : "Insert, don't run", systemImage: "text.insert")
+                    }
                 }
             }
             .navigationTitle(snippet.title)
@@ -151,10 +155,16 @@ struct SnippetEditor: View {
             Form {
                 Section {
                     TextField("Title", text: $snippet.title).accessibilityIdentifier("snippet.title")
-                    TextField("Command", text: $snippet.command, axis: .vertical)
-                        .font(Theme.mono).lineLimit(2...8)
-                        .textInputAutocapitalization(.never).autocorrectionDisabled()
-                        .accessibilityIdentifier("snippet.command")
+                    if snippet.kind == .task {
+                        TextField("What the agent should do", text: $snippet.command, axis: .vertical)
+                            .lineLimit(3...10)
+                            .accessibilityIdentifier("snippet.command")
+                    } else {
+                        TextField("Command", text: $snippet.command, axis: .vertical)
+                            .font(Theme.mono).lineLimit(2...8)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled()
+                            .accessibilityIdentifier("snippet.command")
+                    }
                 } footer: {
                     Text("Write {{name}} where a value changes, or {{name:default}}. Deckhand asks for the values before sending.")
                 }
@@ -162,7 +172,7 @@ struct SnippetEditor: View {
                     Section {
                         Toggle(String(localized: "Only for \(serverName)"), isOn: $forThisServer)
                     } footer: {
-                        Text("Off: the snippet shows up on every server.")
+                        Text(snippet.kind == .task ? "Off: the template shows up on every server." : "Off: the snippet shows up on every server.")
                     }
                 }
                 if !snippet.placeholders.isEmpty {
@@ -172,14 +182,18 @@ struct SnippetEditor: View {
                     }
                 }
             }
-            .navigationTitle(store.snippets.contains { $0.id == snippet.id } ? "Edit snippet" : "New snippet")
+            .navigationTitle(snippet.kind == .task
+                ? (store.snippets.contains { $0.id == snippet.id } ? "Edit template" : "New template")
+                : (store.snippets.contains { $0.id == snippet.id } ? "Edit snippet" : "New snippet"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         var s = snippet
-                        s.title = s.title.trimmingCharacters(in: .whitespaces).isEmpty ? Snippet.suggestedTitle(for: s.command) : s.title
+                        if s.title.trimmingCharacters(in: .whitespaces).isEmpty {
+                            s.title = s.kind == .task ? Snippet.suggestedTaskTitle(for: s.command) : Snippet.suggestedTitle(for: s.command)
+                        }
                         s.serverID = forThisServer ? (snippet.serverID ?? serverID) : nil
                         store.upsert(s)
                         dismiss()
