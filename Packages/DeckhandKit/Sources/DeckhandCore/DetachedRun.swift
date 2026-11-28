@@ -49,7 +49,7 @@ public struct DetachedRun: Sendable, Hashable, Codable {
           kids=$(pgrep -P "$p" 2>/dev/null)
           kill -TERM -- "-$p" 2>/dev/null || { kill -TERM "$p" 2>/dev/null; [ -n "$kids" ] && kill -TERM $kids 2>/dev/null; }
         fi
-        rm -rf \(base).waiting \(base).sudo \(base).ask; echo 143 > \(base).exit; echo stopped
+        rm -rf \(base).waiting \(base).sudo \(base).ask \(base).key; echo 143 > \(base).exit; echo stopped
         """
     }
 
@@ -79,7 +79,7 @@ public struct DetachedRun: Sendable, Hashable, Codable {
     }
 
     /// Removes a run's files from the server.
-    public var deleteCommand: String { "rm -f \(base).out \(base).err \(base).pid \(base).exit \(base).meta \(base).waiting; rm -rf \(base).ask" }
+    public var deleteCommand: String { "rm -f \(base).out \(base).err \(base).pid \(base).exit \(base).meta \(base).waiting; rm -rf \(base).ask \(base).key" }
 
     /// What a run is about, stored as `<id>.meta`.
     public struct Meta: Sendable, Hashable, Codable {

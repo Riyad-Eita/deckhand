@@ -7418,6 +7418,16 @@
         }
       }
     },
+    "Each run of this task gets your %@ key over the encrypted connection. The server keeps it in a file only your user can read and deletes it before %@ starts; it lives in that run's memory until the run ends. Anyone with root on this server could still read it while a task runs. Usage is billed to your key.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Lauf dieser Aufgabe bekommt deinen %1$@-Schlüssel über die verschlüsselte Verbindung. Der Server legt ihn in eine Datei, die nur dein Benutzer lesen kann, und löscht sie, bevor %2$@ startet; danach steckt er nur im Speicher dieses Laufs, bis er endet. Wer Root auf diesem Server hat, könnte ihn während eines Laufs trotzdem lesen. Die Nutzung wird über deinen Schlüssel abgerechnet."
+          }
+        }
+      }
+    },
     "Each run uses your Claude or ChatGPT plan. Runs are read-only; a fix runs only after you approve it, within the house rules.": {
       "localizations": {
         "de": {
@@ -10632,6 +10642,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "8 Stunden wach halten"
+          }
+        }
+      }
+    },
+    "Keep running on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Server weiterlaufen lassen"
           }
         }
       }
@@ -16873,6 +16893,26 @@
         }
       }
     },
+    "Runs in the app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft in der App"
+          }
+        }
+      }
+    },
+    "Runs on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft auf dem Server"
+          }
+        }
+      }
+    },
     "Runs on the server over SSH whenever an agent needs it.": {
       "localizations": {
         "de": {
@@ -17723,6 +17763,16 @@
         }
       }
     },
+    "Send for these tasks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese Aufgaben senden"
+          }
+        }
+      }
+    },
     "Send from": {
       "localizations": {
         "de": {
@@ -17749,6 +17799,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schick die erste Nachricht; dann hat %@ eine Sitzung zum Weitermachen."
+          }
+        }
+      }
+    },
+    "Send your key to %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deinen Schlüssel an %@ senden?"
           }
         }
       }
@@ -23035,6 +23095,16 @@
         }
       }
     },
+    "Uses %@ on %@ with your key, so the task goes on while your phone is locked.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzt %1$@ auf %2$@ mit deinem Schlüssel, damit die Aufgabe weiterläuft, während dein Handy gesperrt ist."
+          }
+        }
+      }
+    },
     "Uses a password": {
       "localizations": {
         "de": {
@@ -23828,6 +23898,16 @@
         }
       }
     },
+    "Works with an Anthropic or OpenAI key.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geht mit einem Anthropic- oder OpenAI-Schlüssel."
+          }
+        }
+      }
+    },
     "Wrap Lines": {
       "localizations": {
         "de": {
@@ -24084,6 +24164,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dein Key"
+          }
+        }
+      }
+    },
+    "Your key couldn't be handed to the server run. Try again, or run the task in the app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Schlüssel konnte nicht an den Lauf auf dem Server übergeben werden. Versuch es noch einmal oder lass die Aufgabe in der App laufen."
           }
         }
       }
@@ -24815,6 +24905,16 @@
     },
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false
+    },
+    "on the server": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "auf dem Server"
+          }
+        }
+      }
     },
     "open in a tab": {
       "localizations": {

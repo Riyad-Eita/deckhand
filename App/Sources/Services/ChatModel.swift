@@ -83,7 +83,7 @@ final class ChatModel {
 
     /// A server run that was going when the app closed or the connection dropped: pick it up again.
     func resumeIfNeeded() {
-        guard !isRunning, thread.cliRunActive, let id = thread.cliRunID, let cli = thread.engine.serverCLI else { return }
+        guard !isRunning, thread.cliRunActive, let id = thread.cliRunID, let cli = thread.serverRunCLI else { return }
         isRunning = true
         LiveTasks.shared.start(thread, server: server)
         notice = String(localized: "Reattaching to the run on the server…")
@@ -107,9 +107,11 @@ final class ChatModel {
         return o
     }
 
-    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool, sudo: Bool = false) async {
+    private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool, sudo: Bool = false, apiKey: Bool = false) async {
         // Claude Code with "Edit files" asks the phone before other steps (commands): answer them while it runs.
         var options = cliOptions(cli)
+        // An own-key task on the server uses the model chosen for the key, not the CLI's default.
+        if thread.engine == .ownKey { options.model = AppSettings.shared.providerConfig.model; options.effort = nil }
         let asks = cli == .claudeCode && access == .edit
         if asks { options.askDirectory = PermissionPrompt.directory(for: run) }
         let watcher = asks ? Task { await watchPermissionRequests(PermissionPrompt.directory(for: run)) } : nil
@@ -134,7 +136,7 @@ final class ChatModel {
                     sessionID: thread.cliSessionID, access: access, options: options,
                     run: run, fromLine: thread.cliRunLine, start: starting,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
-                    notify: notify, startAt: starting ? startAfter : nil, sudo: sudo)
+                    notify: notify, startAt: starting ? startAfter : nil, sudo: sudo, apiKey: apiKey && starting)
                 if starting { startAfter = nil }
                 for try await event in events {
                     // Started: a dropped connection from here on only reattaches.
@@ -235,6 +237,16 @@ final class ChatModel {
         sudoReply = nil
     }
 
+    struct RunKeyError: LocalizedError {
+        var errorDescription: String? { String(localized: "Your key couldn't be handed to the server run. Try again, or run the task in the app.") }
+    }
+
+    /// Moves this own-key task to the server (Claude Code with an Anthropic key, Codex with an OpenAI key) or back.
+    func setRunsOnServer(_ on: Bool) {
+        thread.ownKeyOnServerRaw = on ? RunKey.cli(for: AppSettings.shared.providerKind)?.rawValue : nil
+        persist()
+    }
+
     func result(for callID: String) -> ToolResult? {
         for message in messages {
             for case .toolResult(let r) in message.blocks where r.toolUseID == callID { return r }
@@ -281,21 +293,30 @@ final class ChatModel {
         let config = settings.providerConfig
         // A plan turn only looks: reading runs, anything else waits for the user (own key) or is read-only (CLIs).
         let policy = planning && settings.approvalPolicy == .auto ? .autoRead : settings.approvalPolicy
-        let access = planning ? .readOnly : accessOverride ?? settings.cliAccess
+        // An own-key task on the server keeps the key's approval rule: "ask" means Edit files, where Claude Code asks
+        // the phone before commands; "auto" means full access.
+        let ownKeyAccess: CLIAccess? = thread.engine == .ownKey && thread.serverRunCLI != nil
+            ? (settings.approvalPolicy == .auto ? .full : .edit) : nil
+        let access = planning ? .readOnly : accessOverride ?? ownKeyAccess ?? settings.cliAccess
         let hideSecrets = settings.hideSecrets
         task = Task {
             do {
                 let shell = try await Connections.shared.connection(for: server)
                 // Snapshot the folder before the agent touches it, so every change can be seen and undone.
                 _ = try? await shell.run(Checkpoints.createCommand(task: thread.id.uuidString, folder: thread.workingDirectory), timeout: .seconds(60))
-                if let cli = thread.engine.serverCLI {
+                if let cli = thread.serverRunCLI {
                     let run = DetachedRun()
                     // Full access includes sudo: the run gets the password through a helper that leaves with it.
                     let sudo = access == .full ? await prepareSudo(run, connection: shell) : false
+                    // Own key on the server: the key goes over stdin into a file the run deletes before the CLI starts.
+                    let keyed = thread.engine == .ownKey
+                    if keyed, !(try await RunKey.prepare(run, key: settings.apiKey, on: shell)) {
+                        throw RunKeyError()
+                    }
                     thread.cliRunID = run.id
                     thread.cliRunLine = 1
                     thread.cliRunActive = true
-                    await follow(cli, run: run, prompt: trimmed, access: access, start: true, sudo: sudo)
+                    await follow(cli, run: run, prompt: trimmed, access: access, start: true, sudo: sudo, apiKey: keyed)
                     return
                 }
                 let records = (try? thread.modelContext?.fetch(FetchDescriptor<ConnectionRecord>())) ?? []

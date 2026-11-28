@@ -120,6 +120,8 @@ final class ChatThread {
     var chatHostRaw: String?
     /// Pinned tasks stay at the top of the server's list.
     var pinned: Bool = false
+    /// Own-key task that runs on the server (keeps going while the phone is locked): the CLI doing it with the key.
+    var ownKeyOnServerRaw: String?
     var server: Server?
 
     /// A plain chat with a model, without a server.
@@ -138,6 +140,11 @@ final class ChatThread {
     }
 
     var engine: Engine { Engine(rawValue: engineRaw) ?? .ownKey }
+
+    /// The server CLI that runs this task's turns: Claude Code / Codex tasks, or an own-key task moved to the server.
+    var serverRunCLI: ServerCLI? {
+        engine.serverCLI ?? (engine == .ownKey ? ownKeyOnServerRaw.flatMap(ServerCLI.init(rawValue:)) : nil)
+    }
 
     var messages: [Message] {
         get { (try? JSONDecoder().decode([Message].self, from: messagesData)) ?? [] }
