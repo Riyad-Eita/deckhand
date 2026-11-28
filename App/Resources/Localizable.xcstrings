@@ -1018,6 +1018,16 @@
         }
       }
     },
+    "%lld windows": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Fenster"
+          }
+        }
+      }
+    },
     "%lld → %lld": {
       "localizations": {
         "de": {
@@ -1144,6 +1154,16 @@
         }
       }
     },
+    "1 window": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Fenster"
+          }
+        }
+      }
+    },
     "15 minutes": {
       "localizations": {
         "de": {
@@ -1230,6 +1250,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein Befehl, der sich nicht leicht rückgängig machen lässt"
+          }
+        }
+      }
+    },
+    "A download didn't match its checksum, so nothing was installed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Download passte nicht zu seiner Prüfsumme, deshalb wurde nichts installiert."
           }
         }
       }
@@ -1440,6 +1470,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eine Systemdatei, die jeder Nutzer ändern kann, ist ein einfacher Weg zu root."
+          }
+        }
+      }
+    },
+    "A tmux session that keeps running on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine tmux-Sitzung, die auf dem Server weiterläuft."
           }
         }
       }
@@ -7440,12 +7480,32 @@
         }
       }
     },
+    "End session": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung beenden"
+          }
+        }
+      }
+    },
     "End “%@” (PID %@)?": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "„%1$@“ (PID %2$@) beenden?"
+          }
+        }
+      }
+    },
+    "End “%@”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ beenden?"
           }
         }
       }
@@ -9716,6 +9776,16 @@
         }
       }
     },
+    "Install tmux": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tmux installieren"
+          }
+        }
+      }
+    },
     "Install updates": {
       "localizations": {
         "de": {
@@ -9786,6 +9856,16 @@
         }
       }
     },
+    "Installing with the package manager…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere mit dem Paketmanager …"
+          }
+        }
+      }
+    },
     "Installs %lld security updates. Services may restart briefly. Your changed config files are kept. This can't be rolled back.": {
       "localizations": {
         "de": {
@@ -9852,6 +9932,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Installiert restic bei Bedarf (ohne root), legt ein verschlüsseltes Repository an und plant den nächtlichen Lauf."
+          }
+        }
+      }
+    },
+    "Installs tmux from your distribution with sudo. Without root, Deckhand builds it into ~/.local instead.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiert tmux aus deiner Distribution mit sudo. Ohne Root baut Deckhand es stattdessen nach ~/.local."
           }
         }
       }
@@ -11936,6 +12026,16 @@
         }
       }
     },
+    "New session": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Sitzung"
+          }
+        }
+      }
+    },
     "New snippet": {
       "localizations": {
         "de": {
@@ -12582,6 +12682,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noch keine Sitzungen auf diesem Server"
+          }
+        }
+      }
+    },
+    "No sessions yet. Every terminal tab keeps one when “Keep terminal sessions” is on in Settings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Sitzungen. Jeder Terminal-Tab behält eine, wenn „Terminal-Sitzungen behalten“ in den Einstellungen an ist."
           }
         }
       }
@@ -14603,6 +14713,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Profil"
+          }
+        }
+      }
+    },
+    "Programs running in it stop.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programme darin werden beendet."
           }
         }
       }
@@ -17373,6 +17493,16 @@
         }
       }
     },
+    "Sessions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen"
+          }
+        }
+      }
+    },
     "Sessions keep running when the connection drops.": {
       "localizations": {
         "de": {
@@ -18584,6 +18714,16 @@
         }
       }
     },
+    "Step: %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt: %@ …"
+          }
+        }
+      }
+    },
     "Still failing": {
       "localizations": {
         "de": {
@@ -19040,6 +19180,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tippe auf „Anmelden“ und melde dich an – mit Google, Apple oder deiner E-Mail."
+          }
+        }
+      }
+    },
+    "Tap a session to open it in a new tab. Sessions keep running on the server when you leave.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf eine Sitzung, um sie in einem neuen Tab zu öffnen. Sitzungen laufen auf dem Server weiter, wenn du gehst."
           }
         }
       }
@@ -20200,6 +20350,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Server dieses Chats wurde entfernt. Wähle im Titel einen anderen."
+          }
+        }
+      }
+    },
+    "The server has no C compiler or make, and no sudo to install tmux. Ask its admin to install tmux; GNU screen works too, if it's there.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat keinen C-Compiler oder kein make und kein sudo, um tmux zu installieren. Bitte den Admin, tmux zu installieren; GNU screen geht auch, falls vorhanden."
           }
         }
       }
@@ -22758,6 +22918,16 @@
         }
       }
     },
+    "Without root, Deckhand builds tmux from its official sources into ~/.local (checked against fixed checksums). That takes a few minutes and needs a C compiler on the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Root baut Deckhand tmux aus den offiziellen Quellen nach ~/.local (gegen feste Prüfsummen geprüft). Das dauert ein paar Minuten und braucht einen C-Compiler auf dem Server."
+          }
+        }
+      }
+    },
     "Without sudo": {
       "localizations": {
         "de": {
@@ -23846,6 +24016,16 @@
     "npx -y @modelcontextprotocol/server-filesystem ~": {
       "shouldTranslate": false
     },
+    "open in a tab": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in einem Tab offen"
+          }
+        }
+      }
+    },
     "owner/repository": {
       "localizations": {
         "de": {
@@ -24078,6 +24258,26 @@
     },
     "tmux": {
       "shouldTranslate": false
+    },
+    "tmux couldn't be built.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tmux konnte nicht gebaut werden."
+          }
+        }
+      }
+    },
+    "tmux isn't installed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tmux ist nicht installiert"
+          }
+        }
+      }
     },
     "today": {
       "localizations": {
