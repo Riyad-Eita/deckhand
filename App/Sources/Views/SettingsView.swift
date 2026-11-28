@@ -43,11 +43,14 @@ struct SettingsView: View {
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                         .font(Theme.mono)
-                    if !settings.providerKind.suggestedModels.isEmpty {
+                    if !modelChoices.isEmpty {
                         Picker("Model", selection: $settings.model) {
-                            ForEach(modelChoices, id: \.self) { Text($0).tag($0) }
+                            ForEach(modelChoices, id: \.id) { m in
+                                if m.recommended { Label(m.id, systemImage: "star.fill").tag(m.id) } else { Text(m.id).tag(m.id) }
+                            }
                         }
                         .modifier(AdaptivePickerStyle())
+                        .accessibilityIdentifier("settings.model")
                     }
                     TextField("Model id", text: $settings.model, axis: .vertical)
                         .textInputAutocapitalization(.never)
@@ -56,7 +59,18 @@ struct SettingsView: View {
                 } header: {
                     Text("Model")
                 } footer: {
-                    Text(keyHint)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(keyHint)
+                        if settings.liveModels[settings.providerKind] != nil {
+                            Text("Models come from your provider's current list; ★ marks the recommended ones.")
+                        } else if let e = settings.modelListError[settings.providerKind] {
+                            Text("Couldn't load the model list: \(e)")
+                        }
+                    }
+                }
+                .task(id: "\(settings.providerKind.rawValue)|\(settings.apiKey.count)|\(settings.baseURL)") {
+                    try? await Task.sleep(for: .milliseconds(700))   // typing a key: ask once it's in
+                    if !Task.isCancelled { await settings.refreshModels(settings.providerKind) }
                 }
 
                 SpendLimitsSection()
@@ -193,9 +207,11 @@ struct SettingsView: View {
         }
     }
 
-    private var modelChoices: [String] {
-        let suggested = settings.providerKind.suggestedModels
-        return suggested.contains(settings.model) || settings.model.isEmpty ? suggested : suggested + [settings.model]
+    /// Live from the provider when it answered (recommended ones first, starred), else the built-in suggestions;
+    /// a model typed by hand stays in the list.
+    private var modelChoices: [(id: String, recommended: Bool)] {
+        let list = settings.modelChoices(for: settings.providerKind)
+        return list.contains { $0.id == settings.model } || settings.model.isEmpty ? list : list + [(settings.model, false)]
     }
 
     private var keyHint: String {

@@ -44,9 +44,39 @@ final class AppSettings {
         let key = "spend.day.\(Spend.dayKey())"
         defaults.set(defaults.double(forKey: key) + dollars, forKey: key)
     }
-    /// The price of a model: the router's list first (it knows local models are free), then the known prices.
+    /// The price of a model: the router's list first (it knows local models are free), then the known prices,
+    /// then what the provider's live list said (OpenRouter sends prices).
     func price(for model: String) -> ModelPrice? {
         routerCandidates.first { $0.model == model }?.price ?? ModelPrice.known(model)
+            ?? liveModels.values.lazy.compactMap { $0.first { $0.id == model }?.price?.price }.first
+    }
+
+    /// The provider's current models (`/models`), kept per provider until the next refresh.
+    private(set) var liveModels: [ProviderKind: [ModelList.Model]] = [:]
+    private(set) var modelListError: [ProviderKind: String] = [:]
+
+    func modelChoices(for kind: ProviderKind) -> [(id: String, recommended: Bool)] {
+        ModelList.choices(live: liveModels[kind], kind: kind)
+    }
+
+    /// Loads the provider's model list (needs its key, except for a local server). Keeps the last good list.
+    func refreshModels(_ kind: ProviderKind) async {
+        let config = providerConfig(kind: kind, model: nil)
+        guard !config.apiKey.isEmpty || kind == .custom || kind == .openRouter else { return }
+        do {
+            let (data, response) = try await URLSession.shared.data(for: ModelList.request(config))
+            if let http = response as? HTTPURLResponse, http.statusCode >= 400 {
+                _ = try ModelList.parse(data, kind: kind)   // throws the provider's own message when it sent one
+                throw LLMError.badStream(String(localized: "The provider answered \(http.statusCode)."))
+            }
+            let models = try ModelList.parse(data, kind: kind)
+            guard !models.isEmpty else { return }
+            liveModels[kind] = models
+            modelListError[kind] = nil
+            defaults.set(try? JSONEncoder().encode(models), forKey: "provider.\(kind.rawValue).liveModels")
+        } catch {
+            modelListError[kind] = error.localizedDescription
+        }
     }
     /// Default model / effort per server CLI ("" = the CLI's own config on the server).
     var codexModel: String { didSet { defaults.set(codexModel, forKey: "cli.codex.model") } }
@@ -100,6 +130,10 @@ final class AppSettings {
         appLock = defaults.bool(forKey: "lock.enabled")
         lockDelay = defaults.object(forKey: "lock.delay") as? Double ?? 60
         loadProviderFields()
+        for kind in ProviderKind.allCases {
+            if let data = defaults.data(forKey: "provider.\(kind.rawValue).liveModels"),
+               let models = try? JSONDecoder().decode([ModelList.Model].self, from: data) { liveModels[kind] = models }
+        }
     }
 
     private func loadProviderFields() {
