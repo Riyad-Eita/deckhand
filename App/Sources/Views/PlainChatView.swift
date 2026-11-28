@@ -308,7 +308,7 @@ struct PlainChatView: View {
                     }
                     ForEach(settings.chatProviders) { kind in
                         Section(kind.displayName) {
-                            let models = Array(Set(kind.suggestedModels + [settings.defaultModel(for: kind)])).filter { !$0.isEmpty }.sorted()
+                            let models = Array(Set(settings.modelChoices(for: kind).filter(\.recommended).map(\.id) + [settings.defaultModel(for: kind)])).filter { !$0.isEmpty }.sorted()
                             ForEach(models, id: \.self) { m in
                                 Button {
                                     model.use(kind, model: m)

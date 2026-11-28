@@ -5456,6 +5456,16 @@
         }
       }
     },
+    "Couldn't load the model list: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Modellliste konnte nicht geladen werden: %@"
+          }
+        }
+      }
+    },
     "Couldn't open Terminal": {
       "localizations": {
         "de": {
@@ -11512,6 +11522,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modell-ID"
+          }
+        }
+      }
+    },
+    "Models come from your provider's current list; ★ marks the recommended ones.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Modelle kommen aus der aktuellen Liste deines Anbieters; ★ markiert die empfohlenen."
           }
         }
       }
@@ -20230,6 +20250,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wer ihn scannt, meldet sich als %@ an – mit all deinen Rechten. Den Schlüssel kannst du später unter SSH-Schlüssel wieder entfernen."
+          }
+        }
+      }
+    },
+    "The provider answered %lld.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Anbieter antwortete mit %lld."
           }
         }
       }
