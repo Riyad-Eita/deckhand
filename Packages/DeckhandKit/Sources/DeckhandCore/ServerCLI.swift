@@ -81,7 +81,10 @@ public enum ServerCLIRun {
             // (house rules still apply through the PreToolUse hook).
             case .full: #"$([ "$(id -u)" = 0 ] && echo '--permission-mode acceptEdits --allowedTools Bash' || echo '--permission-mode bypassPermissions')"#
             }
-            var cmd = "cd \(dir) && claude -p \(p) --output-format stream-json --verbose --include-partial-messages \(mode)" + CLIModels.flags(cli, options)
+            let asks = access == .edit ? options.askDirectory : nil
+            var cmd = "cd \(dir) && " + (asks.map(PermissionPrompt.prefix) ?? "")
+                + "claude -p \(p) --output-format stream-json --verbose --include-partial-messages \(mode)" + CLIModels.flags(cli, options)
+                + (asks != nil ? PermissionPrompt.claudeFlags : "")
             if let sessionID { cmd += " --resume \(ShellQuote.quote(sessionID))" }
             return cmd + " < /dev/null"
         }

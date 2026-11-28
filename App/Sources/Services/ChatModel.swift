@@ -108,6 +108,16 @@ final class ChatModel {
     }
 
     private func follow(_ cli: ServerCLI, run: DetachedRun, prompt: String, access: CLIAccess, start: Bool, sudo: Bool = false) async {
+        // Claude Code with "Edit files" asks the phone before other steps (commands): answer them while it runs.
+        var options = cliOptions(cli)
+        let asks = cli == .claudeCode && access == .edit
+        if asks { options.askDirectory = PermissionPrompt.directory(for: run) }
+        let watcher = asks ? Task { await watchPermissionRequests(PermissionPrompt.directory(for: run)) } : nil
+        defer {
+            watcher?.cancel()
+            // A question still open when the run ends has nobody left to answer it.
+            if pendingApproval?.call.id.hasPrefix("ask-") == true { pendingApproval?.respond(.deny(reason: nil)) }
+        }
         var delay: Double = 2
         var reconnecting = !start
         var starting = start
@@ -121,7 +131,7 @@ final class ChatModel {
                 let shell = try await Connections.shared.connection(for: server)
                 let events = ServerCLIRun.runDetached(
                     cli, shell: shell, prompt: prompt, workingDirectory: thread.workingDirectory,
-                    sessionID: thread.cliSessionID, access: access, options: cliOptions(cli),
+                    sessionID: thread.cliSessionID, access: access, options: options,
                     run: run, fromLine: thread.cliRunLine, start: starting,
                     meta: DetachedRun.Meta(title: thread.title, engine: cli.displayName, directory: thread.workingDirectory),
                     notify: notify, startAt: starting ? startAfter : nil, sudo: sudo)
@@ -156,6 +166,38 @@ final class ChatModel {
         clearLive()
         isRunning = false
         persist()
+    }
+
+    /// Polls a Claude Code run's permission requests and shows each in the approval bar; the answer goes back to
+    /// the server, where the run waits for it (or refuses the step after a while without one).
+    private func watchPermissionRequests(_ directory: String) async {
+        var answered = Set<String>()
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(2))
+            guard pendingApproval == nil, let conn = try? await Connections.shared.connection(for: server),
+                  let out = try? await conn.run(PermissionPrompt.pendingCommand(directory: directory), timeout: .seconds(10)).stdout,
+                  let request = PermissionPrompt.parsePending(out).first(where: { !answered.contains($0.id) }) else { continue }
+            let call = PermissionPrompt.call(for: request)
+            TaskNotifier.shared.approvalNeeded(thread, command: call.input["command"]?.stringValue ?? call.name)
+            LiveTasks.shared.update(thread, phase: .approval, step: LiveTasks.step(for: call), force: true)
+            let decision: ApprovalDecision = await withCheckedContinuation { continuation in
+                pendingApproval = PendingApproval(call: call, danger: DangerCheck.assess(call)) { [weak self] d in
+                    self?.pendingApproval = nil
+                    continuation.resume(returning: d)
+                }
+            }
+            answered.insert(request.id)
+            if Task.isCancelled { break }
+            LiveTasks.shared.update(thread, phase: .running, step: String(localized: "Working…"), force: true)
+            let allow: Bool, reason: String?
+            switch decision {
+            case .allow: allow = true; reason = nil
+            case .deny(let r): allow = false; reason = r
+            }
+            if let cmd = PermissionPrompt.answerCommand(directory: directory, id: request.id, allow: allow, message: reason) {
+                _ = try? await conn.run(cmd, timeout: .seconds(10))
+            }
+        }
     }
 
     /// Sets up sudo for `run` when this login needs a password for it. Asks for the password if the app
