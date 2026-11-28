@@ -6003,6 +6003,16 @@
         }
       }
     },
+    "Deckhand checks this key on every connection and stops if it changes. Forget it only when the server was reinstalled or got a new key; the next connection shows the new key and asks you to trust it.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deckhand prüft diesen Schlüssel bei jeder Verbindung und bricht ab, wenn er sich ändert. Vergiss ihn nur, wenn der Server neu installiert wurde oder einen neuen Schlüssel bekommen hat; die nächste Verbindung zeigt den neuen Schlüssel und fragt, ob du ihm vertraust."
+          }
+        }
+      }
+    },
     "Deckhand connects to your Linux servers over SSH and lets AI agents do the work — from your %@.": {
       "localizations": {
         "de": {
@@ -8477,6 +8487,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sofort beenden"
+          }
+        }
+      }
+    },
+    "Forget the key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel vergessen"
+          }
+        }
+      }
+    },
+    "Forget the saved key of %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gespeicherten Schlüssel von %@ vergessen?"
+          }
+        }
+      }
+    },
+    "Forget the saved key…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gespeicherten Schlüssel vergessen …"
           }
         }
       }
@@ -11806,6 +11846,16 @@
         }
       }
     },
+    "New key for %@. Its fingerprint is\n%@\n\nOnly trust it if it matches the server's own (on the server: ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Schlüssel für %1$@. Sein Fingerabdruck ist\n%2$@\n\nVertrau ihm nur, wenn er mit dem des Servers übereinstimmt (auf dem Server: ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub)."
+          }
+        }
+      }
+    },
     "New password": {
       "localizations": {
         "de": {
@@ -13296,12 +13346,12 @@
         }
       }
     },
-    "Only continue if you know the server was reinstalled. Otherwise ask whoever runs it — someone may be in between.": {
+    "Only continue if you know the server was reinstalled — then forget the saved key in the server's settings (Edit Server → Server identity) and check the new one. Otherwise ask whoever runs it: someone may be in between.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mach nur weiter, wenn du weißt, dass der Server neu aufgesetzt wurde. Sonst frag, wer ihn betreibt – es könnte jemand dazwischen sein."
+            "value": "Mach nur weiter, wenn du weißt, dass der Server neu installiert wurde – dann vergiss den gespeicherten Schlüssel in den Server-Einstellungen (Server bearbeiten → Server-Identität) und prüfe den neuen. Sonst frag, wer den Server betreibt: Vielleicht sitzt jemand dazwischen."
           }
         }
       }
@@ -13322,6 +13372,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur von (Adresse oder Netz, optional)"
+          }
+        }
+      }
+    },
+    "Only if you know why the key changed. If you don't, someone may be between you and the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur wenn du weißt, warum sich der Schlüssel geändert hat. Wenn nicht, sitzt vielleicht jemand zwischen dir und dem Server."
           }
         }
       }
@@ -16483,6 +16543,16 @@
         }
       }
     },
+    "Saved key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gespeicherter Schlüssel"
+          }
+        }
+      }
+    },
     "Saved to server notes": {
       "localizations": {
         "de": {
@@ -17049,6 +17119,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server-Röntgen"
+          }
+        }
+      }
+    },
+    "Server identity": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server-Identität"
           }
         }
       }

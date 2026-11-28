@@ -63,7 +63,7 @@ public struct Problem: Sendable, Hashable {
 
         if has("host key changed", "host key", "host-schlüssel") && has("changed", "intercept", "geändert", "abfängt") {
             return Problem(kind: .hostKey, message: text, suggestion: String(localized:
-                "Only continue if you know the server was reinstalled. Otherwise ask whoever runs it — someone may be in between."))
+                "Only continue if you know the server was reinstalled — then forget the saved key in the server's settings (Edit Server → Server identity) and check the new one. Otherwise ask whoever runs it: someone may be in between."))
         }
         if has("refused the connection", "verbindung auf port") && !has("keine antwort") {
             return Problem(kind: .network, message: text, suggestion: String(localized:

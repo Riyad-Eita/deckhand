@@ -239,7 +239,11 @@ struct HostKeyPromptModifier: ViewModifier {
             Button("Trust") { prompt.respond(true) }
             Button("Cancel", role: .cancel) { prompt.respond(false) }
         } message: { prompt in
-            Text("First connection to \(prompt.serverName). Its host key fingerprint is\n\(prompt.fingerprint)\n\nDeckhand remembers it and warns you if it ever changes.")
+            if prompt.renewed {
+                Text("New key for \(prompt.serverName). Its fingerprint is\n\(prompt.fingerprint)\n\nOnly trust it if it matches the server's own (on the server: ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub).")
+            } else {
+                Text("First connection to \(prompt.serverName). Its host key fingerprint is\n\(prompt.fingerprint)\n\nDeckhand remembers it and warns you if it ever changes.")
+            }
         }
         .onAppear { if inSheet { connections.sheetOpen = true } }
         .onDisappear { if inSheet { connections.sheetOpen = false } }

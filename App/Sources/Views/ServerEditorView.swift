@@ -32,6 +32,7 @@ struct ServerEditorView: View {
     @State private var created: Server?
     /// Replace the password with a freshly made key after a successful password login.
     @State private var switchToKey = true
+    @State private var forgettingKey = false
 
     enum TestState: Equatable {
         case idle, running, ok(String), failed(String)
@@ -120,6 +121,28 @@ struct ServerEditorView: View {
                     }
                     if case .failed(let error) = testState {
                         ProblemView(message: error, compact: true)
+                    }
+                }
+
+                if let server, let pinned = server.pinnedHostKey {
+                    Section {
+                        LabeledContent("Saved key") {
+                            Text(SSHKeys.fingerprint(openSSHPublicKey: pinned)).font(Theme.monoSmall).foregroundStyle(.secondary)
+                                .textSelection(.enabled).multilineTextAlignment(.trailing)
+                        }
+                        Button("Forget the saved key…", role: .destructive) { forgettingKey = true }
+                            .accessibilityIdentifier("server.forgetKey")
+                    } header: {
+                        Text("Server identity")
+                    } footer: {
+                        Text("Deckhand checks this key on every connection and stops if it changes. Forget it only when the server was reinstalled or got a new key; the next connection shows the new key and asks you to trust it.")
+                    }
+                    .confirmationDialog("Forget the saved key of \(server.displayName)?", isPresented: $forgettingKey, titleVisibility: .visible) {
+                        Button("Forget the key", role: .destructive) {
+                            Task { await Connections.shared.forgetHostKey(of: server); testState = .idle }
+                        }
+                    } message: {
+                        Text("Only if you know why the key changed. If you don't, someone may be between you and the server.")
                     }
                 }
             }
