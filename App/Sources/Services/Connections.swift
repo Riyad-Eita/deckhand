@@ -14,6 +14,8 @@ final class Connections {
         let id = UUID()
         let serverName: String
         let fingerprint: String
+        /// The user forgot the server's old key (it was reinstalled): this is the new one to compare.
+        var renewed = false
         let respond: (Bool) -> Void
     }
 
@@ -55,14 +57,16 @@ final class Connections {
         states[server.id] = .connecting
         let name = server.displayName
         do {
+            let renewed = forgotten.contains(server.id)
             try await connection.connect(pinnedHostKey: server.pinnedHostKey) { [weak self] _, fingerprint in
-                await self?.askToTrust(serverName: name, fingerprint: fingerprint) ?? false
+                await self?.askToTrust(serverName: name, fingerprint: fingerprint, renewed: renewed) ?? false
             }
         } catch {
             states[server.id] = .failed(error.localizedDescription)
             throw error
         }
         if server.pinnedHostKey == nil, let key = await connection.hostKey { server.pinnedHostKey = key }
+        forgotten.remove(server.id)
         server.lastConnectedAt = Date()
         connections[server.id] = connection
         states[server.id] = .connected
@@ -147,12 +151,23 @@ final class Connections {
         states[server.id] = .idle
     }
 
-    private func askToTrust(serverName: String, fingerprint: String) async -> Bool {
+    /// Servers whose saved key the user forgot; their next connection asks again, as a renewed key.
+    private var forgotten = Set<UUID>()
+
+    /// Forgets a server's saved host key (after the user confirmed the server was reinstalled). Never automatic:
+    /// a changed key always stops the connection until the user does this, and the next connection asks again.
+    func forgetHostKey(of server: Server) async {
+        await disconnect(server)
+        server.pinnedHostKey = nil
+        forgotten.insert(server.id)
+    }
+
+    private func askToTrust(serverName: String, fingerprint: String, renewed: Bool = false) async -> Bool {
         #if DEBUG
         if ProcessInfo.processInfo.environment["DECKHAND_SEED_TRUST"] == "1" { return true }
         #endif
         return await withCheckedContinuation { continuation in
-            hostKeyPrompt = HostKeyPrompt(serverName: serverName, fingerprint: fingerprint) { [weak self] trusted in
+            hostKeyPrompt = HostKeyPrompt(serverName: serverName, fingerprint: fingerprint, renewed: renewed) { [weak self] trusted in
                 self?.hostKeyPrompt = nil
                 continuation.resume(returning: trusted)
             }
