@@ -42,6 +42,26 @@ import Testing
         #expect(events.last == .finished(.endTurn))
     }
 
+    /// --include-partial-messages: text and thinking arrive while they are written; the whole message still follows.
+    @Test func claudeCodeStreamsPartialText() throws {
+        var d = ClaudeCodeEventDecoder()
+        let lines = [
+            #"{"type":"stream_event","event":{"type":"message_start","message":{"id":"m1"}}}"#,
+            #"{"type":"stream_event","event":{"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"Checking"}}}"#,
+            #"{"type":"stream_event","event":{"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"The kernel "}}}"#,
+            #"{"type":"stream_event","event":{"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"is 6.8."}}}"#,
+            #"{"type":"stream_event","event":{"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"{"c"}}}"#,
+            #"{"type":"assistant","message":{"content":[{"type":"text","text":"The kernel is 6.8."}]}}"#,
+        ]
+        var events: [AgentEvent] = []
+        for l in lines { events += try d.consume(line: l) }
+        #expect(events == [
+            .thinkingDelta("Checking"), .textDelta("The kernel "), .textDelta("is 6.8."),
+            .message(events.last.flatMap { if case .message(let m) = $0 { m } else { nil } }!),
+        ])
+        if case .message(let m) = events.last { #expect(m.text == "The kernel is 6.8.") } else { Issue.record("no message") }
+    }
+
     @Test func claudeNotLoggedIn() throws {
         var d = ClaudeCodeEventDecoder()
         _ = try d.consume(line: #"{"type":"result","subtype":"success","is_error":true,"result":"Invalid API key · Please run /login"}"#)
@@ -59,7 +79,7 @@ import Testing
         let c = ServerCLIRun.command(.codex, prompt: "fix it's bug", workingDirectory: "~/app", sessionID: "abc", access: .edit)
         #expect(c == "cd ~/'app' && codex exec --json --skip-git-repo-check -s workspace-write resume 'abc' 'fix it'\\''s bug' < /dev/null")
         let k = ServerCLIRun.command(.claudeCode, prompt: "hi", workingDirectory: "/srv", sessionID: nil, access: .readOnly)
-        #expect(k == "cd '/srv' && claude -p 'hi' --output-format stream-json --verbose --permission-mode plan < /dev/null")
+        #expect(k == "cd '/srv' && claude -p 'hi' --output-format stream-json --verbose --include-partial-messages --permission-mode plan < /dev/null")
     }
 
     /// Full access: bypassPermissions for a normal login; as root (where Claude Code refuses it) every shell command is allowed.
@@ -75,9 +95,9 @@ import Testing
         func args(uid: String) async throws -> String {
             try await LocalShell().run("FAKE_UID=\(uid) PATH='\(bin)':/usr/bin:/bin /bin/bash -c \(ShellQuote.quote(cmd))", timeout: .seconds(10)).stdout
         }
-        #expect(try await args(uid: "1000").contains("--verbose --permission-mode bypassPermissions"))
+        #expect(try await args(uid: "1000").contains("--include-partial-messages --permission-mode bypassPermissions"))
         let root = try await args(uid: "0")
-        #expect(root.contains("--verbose --permission-mode acceptEdits --allowedTools Bash"))
+        #expect(root.contains("--include-partial-messages --permission-mode acceptEdits --allowedTools Bash"))
         #expect(!root.contains("bypassPermissions"))
     }
 
